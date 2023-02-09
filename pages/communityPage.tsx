@@ -1,7 +1,7 @@
 import React from "react";
 
-const communityPage = () => {
+const CommunityPage = () => {
   return <div>communityPage</div>;
 };
 
-export default communityPage;
+export default CommunityPage;
