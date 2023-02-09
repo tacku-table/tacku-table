@@ -10,10 +10,11 @@ import {
   getDocs,
   updateDoc,
   deleteDoc,
+  Timestamp,
 } from "firebase/firestore";
 
 import { dbService } from "@/firebase";
-const CommunityPage = () => {
+const NewCommunityPost = () => {
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
 
@@ -21,7 +22,7 @@ const CommunityPage = () => {
     // 유저 아이디 아직 안넣음
     title,
     content,
-    writtenDate: Date.now(),
+    writtenDate: Timestamp.now(),
   };
 
   const handleOnSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -43,15 +44,21 @@ const CommunityPage = () => {
   return (
     <div className="px-4 py-8 bg-slate-400">
       <span>글쓰기</span>
-      <form onSubmit={handleOnSubmit}>
+      <form
+        onSubmit={handleOnSubmit}
+        className="flex flex-col w-full items-center justify-center"
+      >
         <input
+          className="w-96 h-10 mb-4"
           type="text"
           onChange={handleChangeTitle}
           value={title}
           required
         ></input>
+
         <input
           type="text"
+          className="w-96 h-80"
           onChange={handleChangeContent}
           value={content}
           required
@@ -62,4 +69,4 @@ const CommunityPage = () => {
   );
 };
 
-export default CommunityPage;
+export default NewCommunityPost;
