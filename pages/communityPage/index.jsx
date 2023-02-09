@@ -10,7 +10,7 @@ import {
   getDocs,
   Timestamp,
 } from "firebase/firestore";
-import { dbService } from "@/firebase";
+import { dbService } from "@/share/firebase";
 import Link from "next/link";
 
 const Community = () => {

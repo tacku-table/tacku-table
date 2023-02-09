@@ -13,7 +13,7 @@ import {
   Timestamp,
 } from "firebase/firestore";
 
-import { dbService } from "@/firebase";
+import { dbService } from "@/share/firebase";
 const NewCommunityPost = () => {
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
