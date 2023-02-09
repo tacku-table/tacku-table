@@ -9,6 +9,5 @@ import { initializeApp } from "firebase/app";
 //   appId: "1:351669114811:web:769e3f58dc6fd33b9d169e"
 // };
 
-// Initialize Firebase
-export const app = initializeApp(firebaseConfig);
-export const dbService = getFirestore(app);
+// export const app = initializeApp(firebaseConfig);
+// export const dbService = getFirestore(app);
