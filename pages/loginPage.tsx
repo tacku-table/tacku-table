@@ -4,7 +4,7 @@ import Header from "@/components/layout/Header";
 import Link from "next/link";
 import React, { useState } from "react";
 
-const loginPage = () => {
+const oginPage = () => {
   const [status, setStatus] = useState("login");
   return (
     <div>
@@ -32,4 +32,4 @@ const loginPage = () => {
   );
 };
 
-export default loginPage;
+export default LoginPage;
