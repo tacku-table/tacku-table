@@ -12,7 +12,6 @@ import {
 } from "firebase/firestore";
 import { dbService } from "@/share/firebase";
 import Link from "next/link";
-
 const Community = () => {
   const [communityPost, setCommunityPost] = useState([]);
   useEffect(() => {
@@ -32,7 +31,6 @@ const Community = () => {
         return newPost;
       });
       setCommunityPost(newPosts);
-      console.log("community", communityPost);
     });
   }, []);
 
