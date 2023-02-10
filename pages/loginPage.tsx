@@ -4,7 +4,7 @@ import Header from "@/components/layout/Header";
 import Link from "next/link";
 import React, { useState } from "react";
 
-const oginPage = () => {
+const LoginPage = () => {
   const [status, setStatus] = useState("login");
   return (
     <div>
