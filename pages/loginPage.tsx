@@ -1,13 +1,14 @@
 import React from "react";
 import FindPassword from "../components/findPassword";
 
-const loginPage = () => {
+const LoginPage = () => {
   return (
     <div>
       아이디
       <FindPassword />
     </div>
   );
+
 };
 
-export default loginPage;
+export default LoginPage;
