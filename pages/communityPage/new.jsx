@@ -12,7 +12,7 @@ import {
   deleteDoc,
   Timestamp,
 } from "firebase/firestore";
-import { dbService } from "@/config/firebase";
+import { dbService } from "../../config/firebase";
 
 // import TextEditor from "../../components/TextEditor";
 
