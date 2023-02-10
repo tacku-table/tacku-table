@@ -13,7 +13,7 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import { dbService } from "@/share/firebase";
-import TextEditor from "../../components/TextEditor";
+// import TextEditor from "../../components/TextEditor";
 
 const NewCommunityPost = () => {
   const [content, setContent] = useState("");
@@ -67,7 +67,7 @@ const NewCommunityPost = () => {
           value={title}
           required
         ></input>
-        <TextEditor content={content} setContent={setContent} />
+        {/* <TextEditor content={content} setContent={setContent} /> */}
         <button type="submit">등록</button>
       </form>
     </div>
