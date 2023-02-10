@@ -1,6 +1,12 @@
 import React, { useRef, useState } from "react";
+import Link from "next/link";
 import { authService } from "@/shared/firebase";
-import { getAuth, updatePassword, sendPasswordResetEmail } from "firebase/auth";
+import {
+  getAuth,
+  updatePassword,
+  reauthenticateWithCredential,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 
 const FindPassword = () => {
   // useRef로 취득하는 DOM은 최초 mount되기 전엔 null이다
@@ -9,11 +15,8 @@ const FindPassword = () => {
   const passwordConfirmRef = useRef<HTMLInputElement>(null);
 
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
-  const auth = getAuth();
-  const user = auth.currentUser;
-  console.log(user);
+  const [newpassword, setNewpassword] = useState("");
+  const [newpasswordConfirm, setNewpasswordConfirm] = useState("");
   // email, password 정규식
   const emailRegex =
     /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/;
@@ -30,19 +33,19 @@ const FindPassword = () => {
       return true;
     }
 
-    if (!(password || passwordConfirm)) {
-      alert("비밀번호 또는 비밀번호확인란이 비어있습니다");
-      passwordRef.current!.focus();
-      return true;
-    } else if (!password.match(passwordRegx)) {
-      alert("비밀번호형식에 맞게 입력해주세요");
-      passwordRef.current!.focus();
-      return true;
-    } else if (password !== passwordConfirm) {
-      alert("비밀번호 확인이 일치하지 않습니다");
-      passwordConfirmRef.current!.focus();
-      return true;
-    }
+    // if (!(password || passwordConfirm)) {
+    //   alert("비밀번호 또는 비밀번호확인란이 비어있습니다");
+    //   passwordRef.current!.focus();
+    //   return true;
+    // } else if (!password.match(passwordRegx)) {
+    //   alert("비밀번호형식에 맞게 입력해주세요");
+    //   passwordRef.current!.focus();
+    //   return true;
+    // } else if (password !== passwordConfirm) {
+    //   alert("비밀번호 확인이 일치하지 않습니다");
+    //   passwordConfirmRef.current!.focus();
+    //   return true;
+    // }
   };
 
   // 비밀번호 재설정 메일 보내기
@@ -56,6 +59,10 @@ const FindPassword = () => {
         console.log("보내기 성공");
       })
       .catch((error) => {
+        if (error.message.includes("auth/user-not-found")) {
+          alert("회원이 아님.");
+          return;
+        }
         console.log(error.message);
       });
   };
@@ -64,10 +71,10 @@ const FindPassword = () => {
     setEmail(e.target.value);
   };
   const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
+    setNewpassword(e.target.value);
   };
   const onChangePasswordConfirm = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPasswordConfirm(e.target.value);
+    setNewpasswordConfirm(e.target.value);
   };
   return (
     <>
@@ -79,12 +86,12 @@ const FindPassword = () => {
         value={email}
         onChange={onChangeEmail}
       />
-      <input
+      {/* <input
         id="pw"
         type="password"
         placeholder="password"
         ref={passwordRef}
-        value={password}
+        value={newpassword}
         onChange={onChangePassword}
       ></input>
       <input
@@ -92,11 +99,11 @@ const FindPassword = () => {
         type="password"
         placeholder="passwordConfirm"
         ref={passwordConfirmRef}
-        value={passwordConfirm}
+        value={newpasswordConfirm}
         onChange={onChangePasswordConfirm}
-      ></input>
+      ></input> */}
       <button type="submit" onClick={handleResetPassword}>
-        비밀번호 변경
+        이메일 인증
       </button>
     </>
   );
