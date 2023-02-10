@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { authService } from "@/firebase";
+import { authService } from "@/config/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { emailRegex, pwRegex } from "@/util";
 

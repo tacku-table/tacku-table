@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import Link from "next/link";
-import { authService } from "@/shared/firebase";
+import { authService } from "@/config/firebase";
 import {
   getAuth,
   updatePassword,

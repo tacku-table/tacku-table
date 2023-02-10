@@ -12,7 +12,8 @@ import {
   deleteDoc,
   Timestamp,
 } from "firebase/firestore";
-import { dbService } from "@/share/firebase";
+import { dbService } from "@/config/firebase";
+
 // import TextEditor from "../../components/TextEditor";
 
 const NewCommunityPost = () => {

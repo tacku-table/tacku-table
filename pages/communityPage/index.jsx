@@ -10,7 +10,8 @@ import {
   getDocs,
   Timestamp,
 } from "firebase/firestore";
-import { dbService } from "@/share/firebase";
+import { dbService } from "@/config/firebase";
+
 import Link from "next/link";
 const Community = () => {
   const [communityPost, setCommunityPost] = useState([]);
