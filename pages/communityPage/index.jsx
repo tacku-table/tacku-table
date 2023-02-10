@@ -23,10 +23,13 @@ const Community = () => {
 
     onSnapshot(q, (snapshot) => {
       const newPosts = snapshot.docs.map((doc) => {
-        console.log("doc.data().writtenDate.toDate()", doc.data().writtenDate);
+        console.log(doc.data().writtenDate.toDate());
+        console.log("doc.id", doc.id);
         const newPost = {
           id: doc.id,
-          ...doc.data(),
+          title: doc.data().title,
+          content: doc.data().content,
+          writtenDate: doc.data().writtenDate.toDate().toString(),
         };
         return newPost;
       });
@@ -39,9 +42,13 @@ const Community = () => {
       <Link href="/communityPage/new">글 작성하기</Link>
       <div>글 목록</div>
       {communityPost?.map((post) => (
+        // <Link key={post.id} href={`/communityPage/${post.id}`} post={post}>
+        //   {post.title}
+        // </Link>
         <div key={post.id}>
           <div>글 제목: {post.title}</div>
           <div>내용: {post.content}</div>
+          <div>작성일: {post.writtenDate}</div>
         </div>
       ))}
     </div>
