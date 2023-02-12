@@ -8,7 +8,7 @@ const MenuBtn = () => {
 
     return (
         <>
-            <div onClick={menuToggle} className="cursor-pointer ml-36">
+            <div onClick={menuToggle} className="cursor-pointer ml-[185px]">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -24,7 +24,7 @@ const MenuBtn = () => {
                     />
                 </svg>
             </div>
-            {showMenu ? (
+            {/* {showMenu ? (
                 <div className="grid grid-cols-3 absolute top-[83px] bg-slate-50 border border-gray-300 rounded-sm shadow-md">
                     <ul className="flex flex-col items-center">
                         <p className="border-b border-black text-lg font-bold">
@@ -59,7 +59,7 @@ const MenuBtn = () => {
                 </div>
             ) : (
                 <div>안보임</div>
-            )}
+            )} */}
         </>
     );
 };

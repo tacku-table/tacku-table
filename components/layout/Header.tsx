@@ -8,7 +8,7 @@ const Header = () => {
         <div className="flex py-7 justify-between items-center relative">
             <MenuBtn />
             {/* <DropdownMenu /> */}
-            <div className="space-x-3 mr-36">
+            <div className="space-x-3 mr-[185px]">
                 <Link href="/mainPage">메인페이지</Link>
                 <Link href="/communityPage">커뮤니티</Link>
                 {/* 로그인/로그아웃 토글 설정 필요합니다. */}

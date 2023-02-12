@@ -734,14 +734,6 @@
   dependencies:
     "tslib" "^2.4.0"
 
-"@types/hoist-non-react-statics@*":
-  "integrity" "sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA=="
-  "resolved" "https://registry.npmjs.org/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.3.1.tgz"
-  "version" "3.3.1"
-  dependencies:
-    "@types/react" "*"
-    "hoist-non-react-statics" "^3.3.0"
-
 "@types/json5@^0.0.29":
   "integrity" "sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ=="
   "resolved" "https://registry.npmjs.org/@types/json5/-/json5-0.0.29.tgz"
@@ -789,15 +781,6 @@
   "integrity" "sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew=="
   "resolved" "https://registry.npmjs.org/@types/scheduler/-/scheduler-0.16.2.tgz"
   "version" "0.16.2"
-
-"@types/styled-components@^5.1.26":
-  "integrity" "sha512-KuKJ9Z6xb93uJiIyxo/+ksS7yLjS1KzG6iv5i78dhVg/X3u5t1H7juRWqVmodIdz6wGVaIApo1u01kmFRdJHVw=="
-  "resolved" "https://registry.npmjs.org/@types/styled-components/-/styled-components-5.1.26.tgz"
-  "version" "5.1.26"
-  dependencies:
-    "@types/hoist-non-react-statics" "*"
-    "@types/react" "*"
-    "csstype" "^3.0.2"
 
 "@typescript-eslint/parser@^5.42.0":
   "integrity" "sha512-fEV0R9gGmfpDeRzJXn+fGQKcl0inIeYobmmUWijZh9zA7bxJ8clPhV9up2ZQzATxAiFAECqPQyMDB4o4B81AaA=="
@@ -1988,7 +1971,7 @@
   dependencies:
     "function-bind" "^1.1.1"
 
-"hoist-non-react-statics@^3.0.0", "hoist-non-react-statics@^3.3.0":
+"hoist-non-react-statics@^3.0.0":
   "integrity" "sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw=="
   "resolved" "https://registry.npmjs.org/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz"
   "version" "3.3.2"
@@ -3029,7 +3012,7 @@
   "resolved" "https://registry.npmjs.org/strip-json-comments/-/strip-json-comments-3.1.1.tgz"
   "version" "3.1.1"
 
-"styled-components@^5.3.6", "styled-components@>= 2", "styled-components@>=4.0.0 || >=5.0.0":
+"styled-components@^5.3.6", "styled-components@>= 2":
   "integrity" "sha512-hGTZquGAaTqhGWldX7hhfzjnIYBZ0IXQXkCYdvF1Sq3DsUaLx6+NTHC5Jj1ooM2F68sBiVz3lvhfwQs/S3l6qg=="
   "resolved" "https://registry.npmjs.org/styled-components/-/styled-components-5.3.6.tgz"
   "version" "5.3.6"
@@ -3051,11 +3034,6 @@
   "version" "5.1.1"
   dependencies:
     "client-only" "0.0.1"
-
-"styled-reset@^4.4.5":
-  "integrity" "sha512-uEQzbCqSBbx1ZT9VuquoGOJyVzs3kMIMCyjxmtSo4/JoTCrq92UFTJx91KcdMncDaymz6NE8sgSvstHHcJjExg=="
-  "resolved" "https://registry.npmjs.org/styled-reset/-/styled-reset-4.4.5.tgz"
-  "version" "4.4.5"
 
 "supports-color@^5.3.0":
   "integrity" "sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow=="
@@ -3090,18 +3068,6 @@
   dependencies:
     "@pkgr/utils" "^2.3.1"
     "tslib" "^2.5.0"
-
-"tailwind-merge@^1.3.0":
-  "integrity" "sha512-ED9MkiUHlmfh58EC1xHRqXcH1IQyRtmDP0AmXlugYkP2tvfu7ejtjFEHJLJt93mQ7ZJkcqSIgm9M394bq5vOJg=="
-  "resolved" "https://registry.npmjs.org/tailwind-merge/-/tailwind-merge-1.9.1.tgz"
-  "version" "1.9.1"
-
-"tailwind-styled-components@^2.2.0":
-  "integrity" "sha512-Ogemwk0p69aU8WE/ooJZHjqstdJgT5R6HGU6TFz2uSnveSEtvW+C6aWOjGCvCr5H/bREv0IbbQ4yODknRrLBRQ=="
-  "resolved" "https://registry.npmjs.org/tailwind-styled-components/-/tailwind-styled-components-2.2.0.tgz"
-  "version" "2.2.0"
-  dependencies:
-    "tailwind-merge" "^1.3.0"
 
 "tailwindcss@^3.2.4":
   "integrity" "sha512-AhwtHCKMtR71JgeYDaswmZXhPcW9iuI9Sp2LvZPo9upDZ7231ZJ7eA9RaURbhpXGVlrjX4cFNlB4ieTetEb7hQ=="
