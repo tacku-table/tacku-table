@@ -2,18 +2,32 @@ import React, { useRef, useState } from "react";
 import DropdownCategory from "./DropdownCategory";
 
 const MenuBtn = () => {
-    const [showMenu, setShowMenu] = useState(false);
-    const menuToggle = () => {
-        setShowMenu(!showMenu);
-    };
-
+    const [showMenu, setShowMenu] = useState<boolean>(false);
     const cls = (...classnames: string[]) => {
         return classnames.join(" ");
     };
 
+    const menuToggle = () => {
+        setShowMenu(!showMenu);
+    };
+
+    const dismissHandler = (
+        event: React.FocusEvent<HTMLButtonElement>
+    ): void => {
+        if (event.currentTarget === event.target) {
+            setShowMenu(false);
+        }
+    };
+
     return (
         <>
-            <div onClick={menuToggle} className="cursor-pointer ml-[185px]">
+            <button
+                onClick={menuToggle}
+                className="cursor-pointer ml-[185px]"
+                onBlur={(e: React.FocusEvent<HTMLButtonElement>): void =>
+                    dismissHandler(e)
+                }
+            >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -28,14 +42,19 @@ const MenuBtn = () => {
                         d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
                     />
                 </svg>
-            </div>
+            </button>
             <div
                 className={cls(
-                    "grid grid-cols-3 absolute top-[83px] w-full px-48 py-11 bg-slate-50 bg-opacity-50 rounded-sm shadow-md",
-                    showMenu ? "" : ""
+                    "grid grid-cols-3 absolute top-[83px] w-full px-48 py-16 bg-slate-50 bg-opacity-40 rounded-sm shadow-2xl",
+                    showMenu ? "" : "hidden"
                 )}
             >
-                <DropdownCategory />
+                {showMenu && (
+                    <DropdownCategory
+                        showMenu={false}
+                        menuToggle={menuToggle}
+                    />
+                )}
             </div>
         </>
     );
