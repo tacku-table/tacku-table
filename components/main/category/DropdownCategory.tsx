@@ -1,23 +1,23 @@
 import React from "react";
 
-const DropdownMenu = () => {
+const DropdownCategory = () => {
     return (
-        <div className="grid grid-cols-3 absolute top-[83px] w-full px-36 py-11 bg-red-50 border border-gray-300 rounded-sm shadow-md">
+        <>
             <div className="flex items-center">
-                <p className="border-b border-black text-lg font-bold py-2">
+                <p className="border-b border-black text-lg font-extrabold py-2">
                     조리시간
                 </p>
-                <ul className="ml-20 space-y-4">
+                <ul className="ml-20 space-y-4 font-medium">
                     <li>15분</li>
                     <li>30분</li>
                     <li>1시간</li>
                 </ul>
             </div>
             <div className="flex items-center">
-                <p className="border-b border-black text-lg font-bold py-2">
+                <p className="border-b border-black text-lg font-extrabold py-2">
                     음식종류
                 </p>
-                <ul className="ml-20 space-y-4">
+                <ul className="ml-20 space-y-4 font-medium">
                     <li>밥/도시락/면</li>
                     <li>국/탕/찌개</li>
                     <li>구이/볶음/찜</li>
@@ -28,10 +28,10 @@ const DropdownMenu = () => {
                 </ul>
             </div>
             <div className="flex items-center ml-7">
-                <p className="border-b border-black text-lg font-bold py-2">
+                <p className="border-b border-black text-lg font-extrabold py-2">
                     Best 5
                 </p>
-                <ul className="ml-20 space-y-4">
+                <ul className="ml-20 space-y-4 font-medium">
                     <li>하울음식</li>
                     <li>하울음식</li>
                     <li>하울음식</li>
@@ -69,8 +69,8 @@ const DropdownMenu = () => {
                 <li>하울음식</li>
                 <li>하울음식</li>
             </ul> */}
-        </div>
+        </>
     );
 };
 
-export default DropdownMenu;
+export default DropdownCategory;

@@ -8,7 +8,7 @@ const Video = () => {
         if (typeof window !== "undefined") {
             setHasWindow(true);
         }
-    }, []);
+    }, [hasWindow]);
 
     return (
         <>
