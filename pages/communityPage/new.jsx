@@ -13,47 +13,30 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import { dbService } from "../../config/firebase";
-
-// import TextEditor from "../../components/TextEditor";
+import EditorComponent from "../../components/write/textEditor";
 
 const NewCommunityPost = () => {
-  const [content, setContent] = useState("");
+  const [editorText, setEditorText] = useState("");
   const [title, setTitle] = useState("");
 
   const newPost = {
     // 유저 아이디 아직 안넣음
     title,
-    content,
+    editorText,
     writtenDate: Timestamp.now(),
   };
 
-  // const handleOnSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-
-  // const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setTitle(event.target.value);
-  // };
-
-  // 이 함수를 Quill의 onChange로 넘겨줬는데 value에러를 계속 뱉어냄
-  // setContent를 넘겨주어 해결
-  // const handleChangeContent = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setContent(event.target.value);
-  // };
   const handleOnSubmit = async (event) => {
     event.preventDefault();
-
     await addDoc(collection(dbService, "communityPost"), newPost);
     setTitle("");
-    setContent("");
+    setEditorText("");
   };
 
   const handleChangeTitle = (event) => {
     setTitle(event.target.value);
   };
 
-  // const handleChangeContent = (event) => {
-  //   setContent(event.target.value);
-  // };
   return (
     <div className="px-4 py-8 bg-slate-400">
       <span>글쓰기</span>
@@ -68,7 +51,10 @@ const NewCommunityPost = () => {
           value={title}
           required
         ></input>
-        {/* <TextEditor content={content} setContent={setContent} /> */}
+        <EditorComponent
+          editorText={editorText}
+          setEditorText={setEditorText}
+        />
         <button type="submit">등록</button>
       </form>
     </div>
