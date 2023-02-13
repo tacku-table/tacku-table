@@ -55,15 +55,11 @@ const Community = () => {
       {communityPost?.map((post) => (
         <div key={post.id}>
           <div>글 제목: {post.title}</div>
-          <div>글아이디:{post.id}</div>
-          <Link key={post.id} href={`/communityPage/${post.id}`} post={post}>
-            날 클릭하면 상세페이지로 이동해요😍 {post.title}
+          {/* <div>글아이디:{post.id}</div> */}
+          <Link legacyBehavior key={post.id} href={`/communityPage/${post.id}`}>
+            <a className="bg-orange-300">{post.title}</a>
           </Link>
-          {/* <div>내용: {post.editorText}</div> */}
           <div>작성일: {post.writtenDate}</div>
-          {/* <Link legacyBehavior href={`/communityPage/${post.id}`}>
-            <a>{post.title}</a>
-          </Link> */}
         </div>
       ))}
     </div>
