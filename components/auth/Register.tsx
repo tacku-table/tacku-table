@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
-import { authService } from "@/config/firebase";
+import { authService, dbService } from "@/config/firebase";
+import { setDoc, doc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { emailRegex, pwRegex } from "@/util";
 
@@ -9,7 +10,7 @@ const RegisterPage = () => {
   const pwRef = useRef<HTMLInputElement>(null);
   const pwConfirmRef = useRef<HTMLInputElement>(null);
   const nicknameRef = useRef<HTMLInputElement>(null);
-
+  const uid = authService.currentUser?.uid;
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
   const [pwConfirm, setPwConfirm] = useState("");
@@ -58,6 +59,11 @@ const RegisterPage = () => {
       .then((data) => {
         updateProfile(data.user, {
           displayName: nickname,
+        });
+        setDoc(doc(dbService, "user", email), {
+          userid: uid,
+          displayName: nickname,
+          email: email,
         });
         console.log("회원가입성공");
         return data.user;
