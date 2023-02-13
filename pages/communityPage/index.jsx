@@ -11,12 +11,11 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import { dbService } from "@/config/firebase";
-
 import Link from "next/link";
+
 const Community = () => {
   const [communityPost, setCommunityPost] = useState([]);
   useEffect(() => {
-    // const getList = async () => {
     const q = query(
       collection(dbService, "communityPost"),
       orderBy("writtenDate", "desc")
@@ -29,7 +28,7 @@ const Community = () => {
         const newPost = {
           id: doc.id,
           title: doc.data().title,
-          content: doc.data().content,
+          editorText: doc.data().editorText,
           writtenDate: doc.data().writtenDate.toDate().toString(),
         };
         return newPost;
@@ -46,6 +45,13 @@ const Community = () => {
       </div>
       {communityPost?.map((post) => (
         <div key={post.id}>
+          <div>글 제목: {post.title}</div>
+          <div>글아이디:{post.id}</div>
+          <Link key={post.id} href={`/communityPage/${post.id}`} post={post}>
+            날 클릭하면 상세페이지로 이동해요😍 {post.title}
+          </Link>
+          <div>내용: {post.editorText}</div>
+          <div>작성일: {post.writtenDate}</div>
           <Link legacyBehavior href={`/communityPage/${post.id}`}>
             <a>{post.title}</a>
           </Link>
