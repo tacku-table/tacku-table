@@ -1,21 +1,32 @@
+import {
+  onSnapshot,
+  query,
+  collection,
+  doc,
+  orderBy,
+  addDoc,
+  getDoc,
+  getDocs,
+  Timestamp,
+} from "firebase/firestore";
+import { dbService } from "@/config/firebase";
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 export default function DetailPage() {
-  // console.log("post", post);
+  const router = useRouter();
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  useEffect(() => {
+    getDoc(doc(dbService, "communityPost", router.query.id)).then((doc) => {
+      const data = doc.data();
+      setTitle(data.title);
+      setContent(data.content);
+    });
+  }, []);
   return (
-    <div></div>
-    // <div key={post.id}>
-    //   <div>글 제목: {post.title}</div>
-    //   <div>내용: {post.content}</div>
-    //   <div>작성일: {post.writtenDate}</div>
-    // </div>
+    <div>
+      <div>글 제목: {title}</div>
+      {content && <div dangerouslySetInnerHTML={{ __html: content }} />}
+    </div>
   );
 }
-// export async function getServerSideProps({ params: { params } }) {
-//     const response = await (
-//       await fetch(`https://billions-api.nomadcoders.workers.dev/person/${params}`)
-//     ).json();
-//     return {
-//       props: {
-//         response,
-//       },
-//     };
-//   }
