@@ -2,12 +2,13 @@ import React, { useRef, useState } from "react";
 import DropdownCategory from "./DropdownCategory";
 
 const MenuBtn = () => {
-    const [showMenu, setShowMenu] = useState<boolean>(false);
     const cls = (...classnames: string[]) => {
         return classnames.join(" ");
     };
+    const [showMenu, setShowMenu] = useState<boolean>(false);
 
     const menuToggle = () => {
+        console.log("click");
         setShowMenu(!showMenu);
     };
 
@@ -45,7 +46,7 @@ const MenuBtn = () => {
             </button>
             <div
                 className={cls(
-                    "grid grid-cols-3 absolute top-[83px] w-full px-48 py-16 bg-slate-50 bg-opacity-40 rounded-sm shadow-2xl",
+                    "flex justify-between absolute top-[83px] w-full px-48 py-16 bg-slate-50 bg-opacity-50 rounded-sm shadow-2xl",
                     showMenu ? "" : "hidden"
                 )}
             >
