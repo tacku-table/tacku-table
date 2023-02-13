@@ -15,6 +15,16 @@ import Link from "next/link";
 
 const Community = () => {
   const [communityPost, setCommunityPost] = useState([]);
+  // 타임스탬프 날짜 변경 함수
+  const convertTimestamp = (writtenDate) => {
+    let date = writtenDate.toDate();
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let mm = date.getMonth() + 1;
+    let dd = date.getDate();
+    let yyyy = date.getFullYear();
+    return (date = `${yyyy}-${mm}-${dd} ${hours}:${minutes}`);
+  };
   useEffect(() => {
     const q = query(
       collection(dbService, "communityPost"),
@@ -23,13 +33,12 @@ const Community = () => {
     // refetch함수를 쓰면 db 다시 불러온다.
     onSnapshot(q, (snapshot) => {
       const newPosts = snapshot.docs.map((doc) => {
-        console.log(doc.data().writtenDate.toDate());
         console.log("doc.id", doc.id);
         const newPost = {
           id: doc.id,
           title: doc.data().title,
           editorText: doc.data().editorText,
-          writtenDate: doc.data().writtenDate.toDate().toString(),
+          writtenDate: convertTimestamp(doc.data().writtenDate),
         };
         return newPost;
       });
@@ -50,11 +59,11 @@ const Community = () => {
           <Link key={post.id} href={`/communityPage/${post.id}`} post={post}>
             날 클릭하면 상세페이지로 이동해요😍 {post.title}
           </Link>
-          <div>내용: {post.editorText}</div>
+          {/* <div>내용: {post.editorText}</div> */}
           <div>작성일: {post.writtenDate}</div>
-          <Link legacyBehavior href={`/communityPage/${post.id}`}>
+          {/* <Link legacyBehavior href={`/communityPage/${post.id}`}>
             <a>{post.title}</a>
-          </Link>
+          </Link> */}
         </div>
       ))}
     </div>
