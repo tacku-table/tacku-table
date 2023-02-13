@@ -14,19 +14,34 @@ import {
 } from "firebase/firestore";
 import { dbService, storage } from "@/config/firebase";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { async } from "@firebase/util";
-
+import EditorComponent from "../../components/write/textEditor";
 export default function DetailPage(props) {
+  // useState 만들라는게 수정일어나면 페이지 리렌더링이 돼야하자나요??
+  // 그렇다면 그렇다면 isPostEdit이 일어나면 렌더링이 되면어떨까유
+  // 아니야
+
+  // 얘를 얘를 바꿔
   const [detailPageWholeData, setDetailPageWholeData] = useState({});
   const [comment, setComment] = useState("");
   const [boardComments, setBoardComments] = useState([]);
   let convertBoardComments;
   const [isEdit, setIsEdit] = useState(false);
+  const [isPostEdit, setIsPostEdit] = useState(false);
   const [editComment, setEditComment] = useState("");
+  const router = useRouter();
+  const [editPostTitle, setEditPostTitle] = useState(
+    props.targetWholeData.title
+  );
+  const [editPostContent, setEditPostContent] = useState(
+    props.targetWholeData.editorText
+  );
 
   //input을 입력할때마다 Detail페이지가 랜더링이 되는데??
+
   console.log("props", props);
-  console.log("post", props.targetWholeData);
+  console.log("post", props.targetWholeData.title);
   useEffect(() => {
     setDetailPageWholeData(props.targetWholeData);
     console.log(detailPageWholeData);
@@ -45,6 +60,40 @@ export default function DetailPage(props) {
     setBoardComments(convertBoardComments);
   }, [convertBoardComments]);
 
+  // 글 수정
+  const updatePost = async (postId) => {
+    // 수정이랑 완료랑 같이..관리중
+    // 버튼 클릭-> isPostEdit(true) -> 편집에서 완료
+    setIsPostEdit(!isPostEdit);
+    const docRef = doc(dbService, "communityPost", postId);
+    await updateDoc(docRef, {
+      title: editPostTitle,
+      editorText: editPostContent,
+      writtenDate: Timestamp.now(),
+    });
+    // 업데이트 된 후에...
+    // getDoc
+    getDoc(doc(dbService, "communityPost", postId)).then((doc) => {
+      const data = doc.data();
+      setDetailPageWholeData({
+        title: data.title,
+        editorText: data.editorText,
+        writtenDate: data.writtenDate,
+      });
+    });
+  };
+  // 글 삭제
+  const deletePost = async (postId) => {
+    const userConfirm = window.confirm("해당 글을 삭제하시겠습니까?");
+    if (userConfirm) {
+      try {
+        await deleteDoc(doc(dbService, "communityPost", postId));
+        router.back();
+      } catch (error) {
+        console.log("error: ", error);
+      }
+    }
+  };
   const addComment = async (event) => {
     event.preventDefault();
     const newComment = {
@@ -86,11 +135,37 @@ export default function DetailPage(props) {
     <div>
       <div style={{ border: "3px solid blue", width: 300 }}>
         <div>글id:{props.targetId}</div>
-        <div>글제목:{detailPageWholeData.title}</div>
+        {isPostEdit ? (
+          <>
+            <input
+              type="text"
+              value={editPostTitle}
+              onChange={(e) => {
+                setEditPostTitle(e.target.value);
+              }}
+            />
+            <EditorComponent
+              setEditorText={setEditPostContent}
+              editorText={editPostContent}
+            />
+          </>
+        ) : (
+          <>
+            <div>글제목:{detailPageWholeData.title}</div>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: detailPageWholeData.editorText,
+              }}
+            />
+          </>
+        )}
         <h3>텍스트 에디터 내용</h3>
-        <div
-          dangerouslySetInnerHTML={{ __html: detailPageWholeData.editorText }}
-        />
+        <div className="flex justify-between">
+          <button onClick={() => updatePost(props.targetId)}>
+            {isPostEdit ? "완료" : "편집"}
+          </button>
+          <button onClick={() => deletePost(props.targetId)}>삭제</button>
+        </div>
       </div>
 
       <div>
