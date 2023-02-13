@@ -13,17 +13,18 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import { dbService } from "../../config/firebase";
-
+import EditorComponent from "../../components/write/TextEditor";
 // import TextEditor from "../../components/TextEditor";
 
 const NewCommunityPost = () => {
-  const [content, setContent] = useState("");
+  // const [content, setContent] = useState("");
+  const [editorText, setEditorText] = useState("");
   const [title, setTitle] = useState("");
 
   const newPost = {
     // 유저 아이디 아직 안넣음
     title,
-    content,
+    content: editorText,
     writtenDate: Timestamp.now(),
   };
 
@@ -44,7 +45,8 @@ const NewCommunityPost = () => {
 
     await addDoc(collection(dbService, "communityPost"), newPost);
     setTitle("");
-    setContent("");
+    // setContent("");
+    setEditorText("");
   };
 
   const handleChangeTitle = (event) => {
@@ -68,6 +70,11 @@ const NewCommunityPost = () => {
           value={title}
           required
         ></input>
+        <EditorComponent
+          className="w-full h-96"
+          editorText={editorText}
+          setEditorText={setEditorText}
+        />
         {/* <TextEditor content={content} setContent={setContent} /> */}
         <button type="submit">등록</button>
       </form>
