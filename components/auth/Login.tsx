@@ -1,6 +1,10 @@
 import React, { useRef, useState } from "react";
 import { authService } from "@/config/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  setPersistence,
+  browserSessionPersistence,
+} from "firebase/auth";
 import { emailRegex, pwRegex } from "@/util";
 
 const Login = () => {
@@ -42,13 +46,15 @@ const Login = () => {
     if (validateInputs()) {
       return;
     }
-
-    // 파이어베이스 로그인 요청
-    signInWithEmailAndPassword(authService, email, pw)
+    setPersistence(authService, browserSessionPersistence)
       .then(() => {
-        alert("로그인 성공");
-        setEmail("");
-        setPw("");
+        // 파이어베이스 로그인 요청
+        signInWithEmailAndPassword(authService, email, pw).then((res) => {
+          console.log(res);
+          alert("로그인 성공");
+          setEmail("");
+          setPw("");
+        });
       })
       .catch((err) => {
         console.log("err.message:", err.message);
