@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useEffect, useState } from "react";
 //import ReactPlayer from "react-player/lazy";
 // import ReactPlayer from "react-player/youtube";
@@ -30,6 +31,31 @@ const Video = () => {
       )} */}
     </>
   );
+=======
+import React, { useEffect, useState } from "react";
+
+const Video: React.FC = () => {
+    const [hasWindow, setHasWindow] = useState(false);
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            setHasWindow(true);
+        }
+    }, [hasWindow]);
+
+    return (
+        <>
+            {hasWindow && (
+                <video
+                    autoPlay={true}
+                    muted={true}
+                    loop={true}
+                    style={{ width: "100%", height: "650px" }}
+                    src={require("../../public/assets/food.mp4")}
+                />
+            )}
+        </>
+    );
+>>>>>>> baf39cc666481744d870f486aeaebe5c83c2894e
 };
 
 export default Video;

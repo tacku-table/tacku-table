@@ -3,7 +3,7 @@ import { NextPage } from "next";
 
 const index: NextPage = () => {
     return (
-        <div /* className="w-full h-full" */>
+        <div>
             <LandingPage />
         </div>
     );
