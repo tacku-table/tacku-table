@@ -60,11 +60,6 @@ const RegisterPage = () => {
         updateProfile(data.user, {
           displayName: nickname,
         });
-        setDoc(doc(dbService, "user", email), {
-          userid: uid,
-          displayName: nickname,
-          email: email,
-        });
         console.log("회원가입성공");
         return data.user;
       })

@@ -8,22 +8,21 @@ import {
   addDoc,
   getDoc,
   getDocs,
-  Timestamp,
-  DocumentData,
+  deleteDoc,
+  setDoc,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { authService, dbService } from "@/config/firebase";
 import { useRouter } from "next/router";
-import Link from "next/link";
-import useToggleLike from "./like";
+import { useSession } from "next-auth/react";
 
 const DetailReciptPage = () => {
   const [recipeData, getRecipeData] = useState<any>("");
   const [creatorInfo, setCreatorInfo] = useState<any>("");
-  const authService = getAuth();
+  const { data: session } = useSession();
   const uid = authService.currentUser?.uid;
-  const displayName = authService.currentUser?.displayName;
-  const photoURL = authService.currentUser?.photoURL;
+  const [likes, setLikes] = useState<any[]>([]);
+  const [hasLikes, setHasLikes] = useState(false);
   const router = useRouter();
   const { id }: any = router.query;
 
@@ -32,10 +31,36 @@ const DetailReciptPage = () => {
     const data = snapshot.data(); // 가져온 doc의 객체 내용
     getRecipeData(data);
   };
+  const likePost = async () => {
+    try {
+      if (hasLikes) {
+        await deleteDoc(doc(dbService, "user", id, "likes", id));
+      } else {
+        console.log(dbService);
+        await setDoc(doc(dbService, "user", id, "likes"), {
+          post: id,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     getrecipePost();
   }, []);
 
+  useEffect(
+    () =>
+      onSnapshot(collection(dbService, "user", id, "likes"), (snapshot) =>
+        setLikes(snapshot.docs)
+      ),
+    [dbService, id]
+  );
+  // useEffect(
+  //   () => setHasLikes(likes.findIndex((like) => like.id === uid) !== -1),
+
+  //   [likes]
+  // );
   // useEffect(() => {
   //   const q = query(collection(dbService, "recipePost"));
   //   onSnapshot(q, (querySnapShot) => {
@@ -53,12 +78,11 @@ const DetailReciptPage = () => {
   //     setCreatorInfo(doc.data());
   //   });
   // }, []);
-
   return (
     <>
       <div>{recipeData.foodTitle}</div>
       <div>{recipeData.displayName}</div>
-      <button onClick={useToggleLike}>북마크</button>
+      <button onClick={likePost}>북마크</button>
       <div>{recipeData.thumbnail}</div>
       <div>{recipeData.viewCounting}</div>
       <div>{recipeData.ingredient}</div>
