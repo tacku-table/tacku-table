@@ -148,8 +148,10 @@ const RecipeWritePage = () => {
               selectChangeSetFunc(event, setTargetTitle);
             }}
           >
-            {titleArr?.map((item) => (
-              <option value={item.title}>{item.title}</option>
+            {titleArr?.map((item, index) => (
+              <option value={item.title} key={index}>
+                {item.title}
+              </option>
             ))}
           </select>
 
