@@ -6,12 +6,18 @@ import {
   browserSessionPersistence,
 } from "firebase/auth";
 import { emailRegex, pwRegex } from "@/util";
+import { useRouter } from "next/router";
 
 const Login = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const pwRef = useRef<HTMLInputElement>(null);
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
+
+  const router = useRouter();
+  const goToMain = () => {
+    router.push("/mainPage");
+  };
 
   // 유효성 검사
   const validateInputs = () => {
@@ -46,14 +52,15 @@ const Login = () => {
     if (validateInputs()) {
       return;
     }
+    // 로그인 유지 함수 추가 (희진)
     setPersistence(authService, browserSessionPersistence)
       .then(() => {
         // 파이어베이스 로그인 요청
-        signInWithEmailAndPassword(authService, email, pw).then((res) => {
-          console.log(res);
+        signInWithEmailAndPassword(authService, email, pw).then(() => {
           alert("로그인 성공");
           setEmail("");
           setPw("");
+          goToMain();
         });
       })
       .catch((err) => {
