@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import DropdownCategory from "./DropdownCategory";
 
 const MenuBtn = () => {
@@ -25,9 +25,9 @@ const MenuBtn = () => {
             <button
                 onClick={menuToggle}
                 className="cursor-pointer ml-[185px]"
-                onBlur={(e: React.FocusEvent<HTMLButtonElement>): void =>
-                    dismissHandler(e)
-                }
+                // onBlur={(e: React.FocusEvent<HTMLButtonElement>): void =>
+                //     dismissHandler(e)
+                // }
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -46,7 +46,7 @@ const MenuBtn = () => {
             </button>
             <div
                 className={cls(
-                    "flex justify-between absolute top-[83px] w-full px-48 py-16 bg-slate-50 bg-opacity-50 rounded-sm shadow-2xl",
+                    "flex justify-center absolute top-[83px] w-full space-x-7 md:py-16 lg:space-x-56 lg:py-16 bg-slate-50 bg-opacity-50 rounded-sm shadow-2xl",
                     showMenu ? "" : "hidden"
                 )}
             >
