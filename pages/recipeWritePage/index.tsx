@@ -7,7 +7,8 @@ import { storage } from "@/config/firebase";
 import EditorComponent from "@/components/write/TextEditor";
 import { collection, doc, addDoc } from "firebase/firestore";
 import { dbService } from "../../config/firebase";
-
+import baseImg from "/common/images/test1.png";
+import { authService } from "@/config/firebase";
 interface TitleType {
   title: string;
 }
@@ -24,10 +25,22 @@ const RecipeWritePage = () => {
   const [imagePreview, setImagePreview] = useState("");
   const [thumbnail, setThumbnail] = useState("");
   const [editorText, setEditorText] = useState("");
+  let currentUser: any;
+  const [uid, setUid] = useState("");
 
   const { data, refetch } = useQuery(["tmdb"], () => {
     return searchMovieTitle(searchTitle);
   });
+
+  if (authService.currentUser) {
+    console.log("hey");
+    currentUser = authService.currentUser;
+  }
+
+  useEffect(() => {
+    setUid(currentUser?.uid);
+    console.log("uid:", uid);
+  }, [currentUser]);
 
   useEffect(() => {
     if (searchTitle) {
@@ -62,8 +75,6 @@ const RecipeWritePage = () => {
 
   const postNewRecipe = async (event: any) => {
     event.preventDefault();
-    alert("나 작동하니");
-
     console.log("영화제목", targetTitle);
     console.log("음식명", foodTitle);
     console.log("재료명", ingredient);
@@ -72,9 +83,10 @@ const RecipeWritePage = () => {
     console.log("게시물 공개여부", displayStatus);
     console.log("대표사진 url", thumbnail);
     console.log("텍스트 에디터 내용", editorText);
+    console.log("uid", uid);
 
     const newRecipe = {
-      uid: "auth의 currentUser", // auth.currentUser에 있는 id
+      uid, // auth.currentUser에 있는 id
       animationTitle: targetTitle,
       foodTitle,
       ingredient,
@@ -123,7 +135,7 @@ const RecipeWritePage = () => {
       <div style={{ border: "1px solid blue" }}>
         <h3>레시피 글쓰기 페이지</h3>
         <form onSubmit={postNewRecipe}>
-          <b>영화 제목 : </b>
+          <h3>영화 제목 : </h3>
           <input
             type="text"
             onChange={(event) => inputChangeSetFunc(event, setSeachTitle)}
@@ -139,29 +151,25 @@ const RecipeWritePage = () => {
             {titleArr?.map((item) => (
               <option value={item.title}>{item.title}</option>
             ))}
-            <br />
           </select>
 
-          <br />
           <div>
-            <b>클릭한 영화제목(targetTitle):</b>
+            <h3>클릭한 영화제목(targetTitle):</h3>
             {targetTitle}
           </div>
-          <b> 음식명 :</b>
+          <h3> 음식명 :</h3>
           <input
             type="text"
             style={{ border: "1px solid black" }}
             onChange={(event) => inputChangeSetFunc(event, setFoodTitle)}
           />
-          <br />
-          <b> 재료 :</b>
+          <h3> 재료 :</h3>
           <input
             type="text"
             style={{ border: "1px solid black" }}
             onChange={(event) => inputChangeSetFunc(event, setIngredient)}
           />
-          <br />
-          <b> 소요시간 </b>
+          <h3> 소요시간 </h3>
           <select
             onChange={(event) => {
               selectChangeSetFunc(event, setSelectCookTime);
@@ -174,7 +182,7 @@ const RecipeWritePage = () => {
             <option value="1시간 이상">1시간 이상</option>
           </select>
           <div>클릭한 요리시간 : {selectCookTime}</div>
-          <b>음식 종류</b>
+          <h3>음식 종류</h3>
           <select
             onChange={(event) => {
               selectChangeSetFunc(event, setFoodCategory);
@@ -190,7 +198,7 @@ const RecipeWritePage = () => {
             <option value="식단/건강관리">식단/건강관리</option>
           </select>
           <div>클릭한 음식 종류 : {foodCategory}</div>
-          <b>대표 사진 : </b>
+          <h3>대표 사진 : </h3>
           <input
             onChange={(event) => {
               onFileChange(event);
@@ -198,14 +206,29 @@ const RecipeWritePage = () => {
             type="file"
             accept="images/*"
           />
-          <Image
+          {/* <Image
             style={{ border: "1px solid black" }}
             src={imagePreview}
             alt="선택된 대표사진이 없습니다"
             width={100}
             height={100}
-          />
-          <b>게시물 공개여부 </b>
+          /> */}
+          {imagePreview ? (
+            <Image
+              src={imagePreview}
+              width={100}
+              height={100}
+              alt="대표 이미지가 없습니다."
+            />
+          ) : (
+            <Image
+              src={baseImg}
+              width={100}
+              height={100}
+              alt="대표 이미지가 없습니다."
+            />
+          )}
+          <h3>게시물 공개여부 </h3>
           <select
             style={{ border: "1px solid black" }}
             onChange={(event) => {
