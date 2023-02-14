@@ -19,7 +19,7 @@ const DropdownCategory: React.FC<DropDownProps> = () => {
                     조리시간
                 </p>
                 <ul className="ml-20 space-y-4 font-medium">
-                    <li className="text-lg">15분</li>
+                    <li>15분</li>
                     <li>30분</li>
                     <li>1시간</li>
                 </ul>

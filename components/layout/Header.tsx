@@ -25,7 +25,6 @@ const Header = () => {
             </Link>
             <div className="space-x-10 mr-[185px] text-sm font-semibold">
                 <Link href="/communityPage">커뮤니티</Link>
-                {/* 로그인/로그아웃 토글 설정 필요합니다. */}
                 {authService.currentUser ? (
                     <button type="button" onClick={logoutAction}>
                         로그아웃
