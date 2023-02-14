@@ -1,19 +1,16 @@
-import Layout from "@/components/layout/Layout";
 import { Html, Head, Main, NextScript } from "next/document";
 
 export default function Document() {
-    return (
-        <Html lang="en">
-            <Head />
-            <link rel="icon" href="data:;base64,iVBORw0KGgo="></link>
-            <body>
-                <Layout>
-                    <Main />
-                    <NextScript />
-                </Layout>
-            </body>
-        </Html>
-    );
+  return (
+    <Html lang="en">
+      <Head />
+      <link rel="icon" href="data:;base64,iVBORw0KGgo="></link>
+      <body>
+        <Main />
+        <NextScript />
+      </body>
+    </Html>
+  );
 }
 
 // styled-components와 tailwind함께 사용 + SSR방식인 경우 필요
