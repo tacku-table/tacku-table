@@ -57,6 +57,11 @@ const Login = () => {
       .then(() => {
         // 파이어베이스 로그인 요청
         signInWithEmailAndPassword(authService, email, pw).then(() => {
+          // sessionStorage.setItem(
+          //   "Token",
+          //   JSON.stringify(authService.currentUser)
+          // );
+          // console.log(sessionStorage.getItem("Token"));
           alert("로그인 성공");
           setEmail("");
           setPw("");
