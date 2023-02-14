@@ -10,7 +10,7 @@ const RegisterPage = () => {
   const pwRef = useRef<HTMLInputElement>(null);
   const pwConfirmRef = useRef<HTMLInputElement>(null);
   const nicknameRef = useRef<HTMLInputElement>(null);
-  const uid = authService.currentUser?.uid;
+  const uid: any = authService.currentUser?.uid;
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
   const [pwConfirm, setPwConfirm] = useState("");
@@ -57,9 +57,15 @@ const RegisterPage = () => {
     }
     createUserWithEmailAndPassword(authService, email, pw)
       .then((data) => {
+        setDoc(doc(dbService, "user", data.user.uid), {
+          userid: data.user.uid,
+          displayName: nickname,
+          useremail: email,
+        });
         updateProfile(data.user, {
           displayName: nickname,
         });
+
         console.log("회원가입성공");
         return data.user;
       })

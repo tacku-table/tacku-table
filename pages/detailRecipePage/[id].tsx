@@ -15,74 +15,29 @@ import { getAuth } from "firebase/auth";
 import { authService, dbService } from "@/config/firebase";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import Like from "@/components/bookmark/Like";
 
 const DetailReciptPage = () => {
+  //레시피 데이터
   const [recipeData, getRecipeData] = useState<any>("");
   const [creatorInfo, setCreatorInfo] = useState<any>("");
-  const { data: session } = useSession();
-  const uid = authService.currentUser?.uid;
-  const [likes, setLikes] = useState<any[]>([]);
-  const [hasLikes, setHasLikes] = useState(false);
   const router = useRouter();
+  //해당 레시피 id 파람
   const { id }: any = router.query;
-
-  const getrecipePost: any = async () => {
-    const snapshot = await getDoc(doc(dbService, "recipePost", id));
-    const data = snapshot.data(); // 가져온 doc의 객체 내용
-    getRecipeData(data);
-  };
-  const likePost = async () => {
-    try {
-      if (hasLikes) {
-        await deleteDoc(doc(dbService, "user", id, "likes", id));
-      } else {
-        console.log(dbService);
-        await setDoc(doc(dbService, "user", id, "likes"), {
-          post: id,
-        });
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    getrecipePost();
-  }, []);
-
+  //레시피 데이터 불러오기
   useEffect(
     () =>
-      onSnapshot(collection(dbService, "user", id, "likes"), (snapshot) =>
-        setLikes(snapshot.docs)
-      ),
-    [dbService, id]
+      onSnapshot(doc(dbService, "recipePost", id), (snapshot) => {
+        getRecipeData(snapshot.data());
+      }),
+    [dbService]
   );
-  // useEffect(
-  //   () => setHasLikes(likes.findIndex((like) => like.id === uid) !== -1),
 
-  //   [likes]
-  // );
-  // useEffect(() => {
-  //   const q = query(collection(dbService, "recipePost"));
-  //   onSnapshot(q, (querySnapShot) => {
-  //     const userArray = querySnapShot.docs.map((doc) => ({
-  //       id: doc.id,
-  //       ...doc.data(),
-  //     }));
-  //     getRecipeData(userArray);
-  //     console.log("userArray", userArray);
-  //   });
-  // }, [uid]);
-
-  // useEffect(() => {
-  //   onSnapshot(doc(dbService, "user"), (doc) => {
-  //     setCreatorInfo(doc.data());
-  //   });
-  // }, []);
   return (
     <>
       <div>{recipeData.foodTitle}</div>
       <div>{recipeData.displayName}</div>
-      <button onClick={likePost}>북마크</button>
+      <Like id={id} recipeData={recipeData} />
       <div>{recipeData.thumbnail}</div>
       <div>{recipeData.viewCounting}</div>
       <div>{recipeData.ingredient}</div>
