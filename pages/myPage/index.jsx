@@ -4,10 +4,14 @@ import { updateProfile } from "firebase/auth";
 import { getDownloadURL, ref, listAll, uploadBytes } from "firebase/storage";
 import { useEffect, useState } from "react";
 import { storage } from "../../config/firebase";
+import profile from "../../public/images/profile.svg";
 const MyPage = () => {
   // 프로필이미지 업로드 관리
+  // 기본값 루트이미지
   const [photoImgURL, setPhotoImgURL] = useState("");
   const [imageUpload, setImageUpload] = useState(null);
+  const [defaultImg, setDefaultImg] = useState(profile);
+
   // const [isEdit, setIsEdit] = useState(true);
 
   const fbUser = authService?.currentUser;
@@ -22,17 +26,16 @@ const MyPage = () => {
   }
 
   const handleImageFile = (event) => {
-    if (event.target.files[0]) {
-      setImageUpload(event.target.files[0]);
-    }
+    setImageUpload(event.target.files?.[0]);
   };
 
-  // const imageListRef = ref(storage, "images/" + fbUser.uid);
   // 프로필 변경 함수 -> firebase storage
   const handleUpdateProfile = async () => {
     if (imageUpload === null) return;
     // 업로드 로직
-    const imageRef = ref(storage, fbUser.uid + ".png");
+    // 예전 프로필 링크를 상태저장 하고 그거랑 변경한 링크랑 다르면 렌더링??
+
+    const imageRef = ref(storage, "profileImage/" + fbUser.uid);
     await uploadBytes(imageRef, imageUpload).then((snapshot) => {
       // 화면에 표시
       getDownloadURL(snapshot.ref).then((url) => {
@@ -48,11 +51,23 @@ const MyPage = () => {
       });
     });
   };
+  const imageListRef = ref(storage, "profileImage/");
+  // useEffect(() => {
+  //   if (fbUser.photoURL !== photoImgURL) {
+  //     setPhotoImgURL(fbUser.photoURL);
+  //   }
+  // }, [photoImgURL]);
   useEffect(() => {
-    if (fbUser) {
-      setPhotoImgURL(fbUser.photoURL);
-    }
-  }, [photoImgURL]);
+    listAll(imageListRef).then((response) => {
+      response.items.forEach((item) => {
+        getDownloadURL(item).then((url) => {
+          if (url === fbUser.photoURL) {
+            setPhotoImgURL(url);
+          }
+        });
+      });
+    });
+  }, []);
 
   return (
     <>
@@ -60,7 +75,11 @@ const MyPage = () => {
         <span>{fbUser?.displayName}</span>
         {/* 프로필 이미지 */}
         <div>
-          <img src={photoImgURL} alt="profileImg" />
+          {fbUser?.photoURL === null ? (
+            <img src={defaultImg} alt="profileImg" />
+          ) : (
+            <img src={photoImgURL} alt="updateProfileImg" />
+          )}
         </div>
         <div onClick={() => setIsEdit(!isEdit)}>
           <svg
