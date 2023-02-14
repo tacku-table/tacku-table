@@ -7,7 +7,7 @@ import { storage } from "@/config/firebase";
 import EditorComponent from "@/components/write/TextEditor";
 import { collection, doc, addDoc } from "firebase/firestore";
 import { dbService } from "../../config/firebase";
-import baseImg from "/common/images/test1.png";
+import baseImg from "/public/images/test1.png";
 import { authService } from "@/config/firebase";
 interface TitleType {
   title: string;
