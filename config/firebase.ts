@@ -24,23 +24,23 @@ import { getStorage } from "firebase/storage";
 // };
 
 // 다경님꺼
-// const firebaseConfig = {
-//     apiKey: "AIzaSyC1Z5Sl0P_WuafG-4Fgx08TeKD1KzSAjFU",
-//     authDomain: "tacku-table.firebaseapp.com",
-//     projectId: "tacku-table",
-//     storageBucket: "tacku-table.appspot.com",
-//     messagingSenderId: "470777376989",
-//     appId: "1:470777376989:web:ed93c811f68a6dd2ee2b34",
-//   };
-// 희진
 const firebaseConfig = {
-    apiKey: "AIzaSyDKVOAQVuHCId2KTKdPFbzNvLpp8TXrLsU",
-    authDomain: "tacku-table-private.firebaseapp.com",
-    projectId: "tacku-table-private",
-    storageBucket: "tacku-table-private.appspot.com",
-    messagingSenderId: "351669114811",
-    appId: "1:351669114811:web:769e3f58dc6fd33b9d169e",
+  apiKey: "AIzaSyDKVOAQVuHCId2KTKdPFbzNvLpp8TXrLsU",
+  authDomain: "tacku-table-private.firebaseapp.com",
+  projectId: "tacku-table-private",
+  storageBucket: "tacku-table-private.appspot.com",
+  messagingSenderId: "351669114811",
+  appId: "1:351669114811:web:769e3f58dc6fd33b9d169e",
 };
+// 희진
+// const firebaseConfig = {
+//   apiKey: "AIzaSyDKVOAQVuHCId2KTKdPFbzNvLpp8TXrLsU",
+//   authDomain: "tacku-table-private.firebaseapp.com",
+//   projectId: "tacku-table-private",
+//   storageBucket: "tacku-table-private.appspot.com",
+//   messagingSenderId: "351669114811",
+//   appId: "1:351669114811:web:769e3f58dc6fd33b9d169e",
+// };
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
