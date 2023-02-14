@@ -33,7 +33,6 @@ const RecipeWritePage = () => {
   });
 
   if (authService.currentUser) {
-    console.log("hey");
     currentUser = authService.currentUser;
   }
 
