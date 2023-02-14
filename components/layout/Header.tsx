@@ -1,3 +1,4 @@
+import { authService } from "@/config/firebase";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import MenuBtn from "../main/category/MenuBtn";
@@ -5,6 +6,7 @@ import { authService } from "@/config/firebase";
 import { signOut } from "firebase/auth";
 
 const Header = () => {
+
   const logoutAction = () => {
     signOut(authService)
       .then(() => {
