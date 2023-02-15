@@ -19,7 +19,8 @@ const Community = () => {
   const convertTimestamp = (writtenDate) => {
     let date = writtenDate.toDate();
     let hours = date.getHours();
-    let minutes = date.getMinutes();
+    let minutes = date.getMinutes() < 10 ? "0" : "";
+    minutes = minutes + date.getMinutes();
     let mm = date.getMonth() + 1;
     let dd = date.getDate();
     let yyyy = date.getFullYear();
