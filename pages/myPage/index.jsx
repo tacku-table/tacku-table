@@ -1,63 +1,19 @@
-import { authService } from "@/config/firebase";
-// import { async } from "@firebase/util";
-import { updateProfile } from "firebase/auth";
 import { getDownloadURL, ref, listAll, uploadBytes } from "firebase/storage";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { storage } from "../../config/firebase";
+import { authService, storage } from "../../config/firebase";
 import profile from "../../public/images/profile.svg";
-const MyPage = () => {
-  // 프로필이미지 업로드 관리
-  // 기본값 루트이미지
-  const [photoImgURL, setPhotoImgURL] = useState("");
-  const [imageUpload, setImageUpload] = useState(null);
-  const [defaultImg, setDefaultImg] = useState(profile);
 
-  // const [isEdit, setIsEdit] = useState(true);
-
+const Mypage = () => {
   const fbUser = authService?.currentUser;
-  if (fbUser !== null) {
-    fbUser.providerData.forEach((profile) => {
-      console.log("Sign-in provider: " + profile.providerId);
-      console.log("Provider-specific UID: " + profile.uid);
-      console.log("Name: " + profile.displayName);
-      console.log("Email: " + profile.email);
-      console.log("Photo URL: " + profile.photoURL);
-    });
-  }
-
-  const handleImageFile = (event) => {
-    setImageUpload(event.target.files?.[0]);
-  };
-
-  // 프로필 변경 함수 -> firebase storage
-  const handleUpdateProfile = async () => {
-    if (imageUpload === null) return;
-    // 업로드 로직
-    // 예전 프로필 링크를 상태저장 하고 그거랑 변경한 링크랑 다르면 렌더링??
-
-    const imageRef = ref(storage, "profileImage/" + fbUser.uid);
-    await uploadBytes(imageRef, imageUpload).then((snapshot) => {
-      // 화면에 표시
-      getDownloadURL(snapshot.ref).then((url) => {
-        updateProfile(fbUser, {
-          photoURL: url,
-        }).then(() => {
-          alert("프로필이미지 업로드 성공");
-          console.log(fbUser.photoURL);
-        });
-        console.log(url);
-        // setPhotoURL((prev) => [...prev, url]);
-        setPhotoImgURL(url);
-      });
-    });
-  };
+  const [user, setUser] = useState([]);
+  const [photoImgURL, setPhotoImgURL] = useState("");
+  const [defaultImg, setDefaultImg] = useState(profile);
   const imageListRef = ref(storage, "profileImage/");
-  // useEffect(() => {
-  //   if (fbUser.photoURL !== photoImgURL) {
-  //     setPhotoImgURL(fbUser.photoURL);
-  //   }
-  // }, [photoImgURL]);
+
   useEffect(() => {
+    setUser(fbUser);
     listAll(imageListRef).then((response) => {
       response.items.forEach((item) => {
         getDownloadURL(item).then((url) => {
@@ -67,56 +23,46 @@ const MyPage = () => {
         });
       });
     });
-  }, []);
+  });
+  // useEffect(() => {
+  // }, []);
 
   return (
     <>
-      <div className="flex justify-between">
-        <span>{fbUser?.displayName}</span>
-        {/* 프로필 이미지 */}
-        <div>
-          {fbUser?.photoURL === null ? (
-            <img src={defaultImg} alt="profileImg" />
+      <div className="flex">
+        <div className="w-12 h-12">
+          {user.photoURL === null ? (
+            <img src={defaultImg} alt="기본이미지1" />
           ) : (
             <img src={photoImgURL} alt="updateProfileImg" />
           )}
         </div>
-        <div onClick={() => setIsEdit(!isEdit)}>
-          <svg
-            className="h-8 w-8"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"
-            ></path>
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-            ></path>
-          </svg>
-        </div>
-
-        <div>
-          <input
-            id="picture"
-            type="file"
-            accept="image/*"
-            onChange={handleImageFile}
-          />
-        </div>
-
-        <button onClick={handleUpdateProfile}>업로드</button>
+        <span>{fbUser.displayName}</span>
       </div>
+      <Link href="/myPage/editProfile">
+        <svg
+          className="h-8 w-8"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"
+          ></path>
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+          ></path>
+        </svg>
+      </Link>
     </>
   );
 };
 
-export default MyPage;
+export default Mypage;
