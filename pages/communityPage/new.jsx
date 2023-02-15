@@ -12,15 +12,17 @@ import {
   deleteDoc,
   Timestamp,
 } from "firebase/firestore";
-import { dbService } from "../../config/firebase";
+import { authService, dbService } from "../../config/firebase";
 import EditorComponent from "../../components/write/textEditor";
 
 const NewCommunityPost = () => {
   const [editorText, setEditorText] = useState("");
   const [title, setTitle] = useState("");
 
+  const user = authService?.currentUser;
+  const uid = user?.uid;
   const newPost = {
-    // 유저 아이디 아직 안넣음
+    uid,
     title,
     editorText,
     writtenDate: Timestamp.now(),
