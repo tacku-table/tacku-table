@@ -18,11 +18,6 @@ import { useRouter } from "next/router";
 import { async } from "@firebase/util";
 import EditorComponent from "../../components/write/textEditor";
 export default function DetailPage(props) {
-  // useState 만들라는게 수정일어나면 페이지 리렌더링이 돼야하자나요??
-  // 그렇다면 그렇다면 isPostEdit이 일어나면 렌더링이 되면어떨까유
-  // 아니야
-
-  // 얘를 얘를 바꿔
   const [detailPageWholeData, setDetailPageWholeData] = useState({});
   const [comment, setComment] = useState("");
   const [boardComments, setBoardComments] = useState([]);
@@ -53,7 +48,7 @@ export default function DetailPage(props) {
   useEffect(() => {
     setDetailPageWholeData(props.targetWholeData);
     console.log(detailPageWholeData);
-    console.log(props.targetId);
+    console.log(props.targetId); // uid
     getWholeComments();
   }, []);
 
@@ -75,9 +70,6 @@ export default function DetailPage(props) {
     });
     setBoardComments(commentWholeData);
   };
-
-  console.log("props", props);
-  console.log("post", props.targetWholeData.title);
 
   // 글 수정
   const updatePost = async (postId) => {
@@ -164,7 +156,6 @@ export default function DetailPage(props) {
   return (
     <div>
       <div style={{ border: "3px solid blue", width: 300 }}>
-        <div>글id:{props.targetId}</div>
         {isPostEdit ? (
           <>
             <input
@@ -189,13 +180,14 @@ export default function DetailPage(props) {
             />
           </>
         )}
-        <h3>텍스트 에디터 내용</h3>
-        <div className="flex justify-between">
-          <button onClick={() => updatePost(props.targetId)}>
-            {isPostEdit ? "완료" : "편집"}
-          </button>
-          <button onClick={() => deletePost(props.targetId)}>삭제</button>
-        </div>
+        {uid === props.targetWholeData.uid && (
+          <div className="flex justify-between">
+            <button onClick={() => updatePost(props.targetId)}>
+              {isPostEdit ? "완료" : "편집"}
+            </button>
+            <button onClick={() => deletePost(props.targetId)}>삭제</button>
+          </div>
+        )}
       </div>
 
       <div>
