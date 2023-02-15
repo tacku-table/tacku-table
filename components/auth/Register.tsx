@@ -60,6 +60,11 @@ const RegisterPage = () => {
     }
     createUserWithEmailAndPassword(authService, email, pw)
       .then((data) => {
+        setDoc(doc(dbService, "user", data.user.uid), {
+          userid: data.user.uid,
+          displayName: nickname,
+          useremail: email,
+        });
         updateProfile(data.user, {
           displayName: nickname,
         });
