@@ -2,6 +2,7 @@ import { authService } from "@/config/firebase";
 // import { async } from "@firebase/util";
 import { updateProfile } from "firebase/auth";
 import { getDownloadURL, ref, listAll, uploadBytes } from "firebase/storage";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { storage } from "../../config/firebase";
 import profile from "../../public/images/profile.svg";
@@ -14,14 +15,14 @@ const ProfileEdit = () => {
   // 설정버튼 상태체크
   const [isProfileEdit, setIsProfileEdit] = useState(false);
 
-  // fbUser: 로그인 유저
+  // // fbUser: 로그인 유저
   const fbUser = authService?.currentUser;
 
   if (fbUser !== null) {
     fbUser.providerData.forEach((profile) => {
       // console.log("Sign-in provider: " + profile.providerId);
       console.log("Provider-specific UID: " + profile.uid);
-      // console.log("Name: " + profile.displayName);
+      console.log("Name: " + profile.displayName);
       // console.log("Email: " + profile.email);
       console.log("Photo URL: " + profile.photoURL);
     });

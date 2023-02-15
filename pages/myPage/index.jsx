@@ -6,39 +6,46 @@ import { authService, storage } from "../../config/firebase";
 import profile from "../../public/images/profile.svg";
 
 const Mypage = () => {
-  const fbUser = authService?.currentUser;
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState({});
+  // user = sessionStorage.getItem("User").
   const [photoImgURL, setPhotoImgURL] = useState("");
   const [defaultImg, setDefaultImg] = useState(profile);
-  const imageListRef = ref(storage, "profileImage/");
 
+  // ReferenceError: sessionStorage is not defined
   useEffect(() => {
-    setUser(fbUser);
-    listAll(imageListRef).then((response) => {
-      response.items.forEach((item) => {
-        getDownloadURL(item).then((url) => {
-          if (url === fbUser.photoURL) {
+    const sessionStorageUser =
+      typeof window !== "undefined" ? sessionStorage.getItem("User") : null;
+    const parsingUser = JSON.parse(sessionStorageUser);
+    setUser(parsingUser);
+  }, []);
+  console.log(user);
+  useEffect(() => {
+    if (user) {
+      const imageListRef = ref(storage, "profileImage/");
+      listAll(imageListRef).then((response) => {
+        response.items.forEach((item) => {
+          getDownloadURL(item).then((url) => {
+            // if (url === user.photoURL) {
             setPhotoImgURL(url);
-          }
+            // }
+          });
         });
       });
-    });
-  });
-  // useEffect(() => {
-  // }, []);
+    }
+  }, [photoImgURL]);
 
   return (
     <>
-      <div className="flex">
+      <div>
         <div className="w-12 h-12">
-          {user.photoURL === null ? (
-            <img src={defaultImg} alt="기본이미지1" />
-          ) : (
+          {user?.photoURL ? (
             <img src={photoImgURL} alt="updateProfileImg" />
+          ) : (
+            <img src={defaultImg} alt="기본이미지1" />
           )}
         </div>
-        <span>{fbUser.displayName}</span>
       </div>
+      <span>{user?.displayName}</span>
       <Link href="/myPage/editProfile">
         <svg
           className="h-8 w-8"
