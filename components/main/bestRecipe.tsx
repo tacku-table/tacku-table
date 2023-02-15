@@ -1,36 +1,11 @@
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
-import {
-  onSnapshot,
-  query,
-  collection,
-  doc,
-  orderBy,
-  addDoc,
-  getDoc,
-  getDocs,
-  Timestamp,
-} from "firebase/firestore";
+import { onSnapshot, query, collection } from "firebase/firestore";
 import { dbService } from "@/config/firebase";
 import Link from "next/link";
 
-export interface PostType {
-  uid: string; // auth.currentUser에 있는 id
-  animationTitle: string;
-  foodTitle: string;
-  ingredient: string;
-  cookingTime: string;
-  foodCategory: string;
-  displayStatus: boolean;
-  thumbnail: string;
-  createdAt: string;
-  content: string;
-  viewCounting: number;
-  bookmarkCount: number;
-}
-
 const BestRecipe: NextPage = () => {
-  const [recipePost, setRecipePost]: any = useState([]);
+  const [recipePost, setRecipePost] = useState<any>([]);
   useEffect(() => {
     // const getList = async () => {
     const q = query(collection(dbService, "recipe"));
@@ -43,7 +18,7 @@ const BestRecipe: NextPage = () => {
       setRecipePost(newPosts);
     });
   }, []);
-  console.log(recipePost);
+
   return (
     <>
       {recipePost?.map((post: any) => (
@@ -51,7 +26,7 @@ const BestRecipe: NextPage = () => {
           key={post.id}
           className="space-x-7 flex justify-center items-center"
         >
-          <Link key={post.id} href={`/detailRecipePage/${post.id}`}>
+          <Link key={post.id} href={`/detailRecipePage/${post.id}`} post={post}>
             <div className="space-y-2">
               <div className="bg-slate-100 w-72 h-56">요리사진</div>
               <div className="text-sm text-slate-500 space-x-2">
