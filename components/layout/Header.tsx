@@ -5,10 +5,17 @@ import MenuBtn from "../main/category/MenuBtn";
 import { signOut } from "firebase/auth";
 
 const Header = () => {
+  const [storageCurrentUser, setStorageCurrentUser] = useState("");
+
+  useEffect(() => {
+    const user = sessionStorage.getItem("User") || "";
+    console.log("User", user);
+    setStorageCurrentUser(user);
+  }, []);
   const logoutAction = () => {
     signOut(authService)
       .then(() => {
-        localStorage.clear();
+        sessionStorage.clear();
         alert("로그아웃 성공!");
         location.reload();
       })
@@ -25,8 +32,7 @@ const Header = () => {
       </Link>
       <div className="space-x-10 mr-[185px] text-sm font-semibold">
         <Link href="/communityPage">커뮤니티</Link>
-        {/* 로그인/로그아웃 토글 설정 필요합니다. */}
-        {authService.currentUser ? (
+        {storageCurrentUser ? (
           <button type="button" onClick={logoutAction}>
             로그아웃
           </button>

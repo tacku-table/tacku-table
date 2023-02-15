@@ -1,8 +1,8 @@
 import React, { useRef, useState } from "react";
 import { authService, dbService } from "@/config/firebase";
-import { setDoc, doc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { emailRegex, pwRegex } from "@/util";
+import { doc, setDoc } from "@firebase/firestore";
 
 const RegisterPage = () => {
   // useRef로 취득하는 DOM은 최초 mount되기 전엔 null이다
@@ -65,7 +65,6 @@ const RegisterPage = () => {
         updateProfile(data.user, {
           displayName: nickname,
         });
-
         console.log("회원가입성공");
         return data.user;
       })

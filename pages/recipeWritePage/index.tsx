@@ -1,14 +1,15 @@
 import { searchMovieTitle } from "@/api/tmdb";
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import { storage } from "@/config/firebase";
 import EditorComponent from "@/components/write/TextEditor";
-import { collection, doc, addDoc } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import { dbService } from "../../config/firebase";
 import baseImg from "/public/images/test1.png";
 import { authService } from "@/config/firebase";
+
 interface TitleType {
   title: string;
 }
@@ -21,12 +22,19 @@ const RecipeWritePage = () => {
   const [ingredient, setIngredient] = useState("");
   const [selectCookTime, setSelectCookTime] = useState("");
   const [foodCategory, setFoodCategory] = useState("");
-  const [displayStatus, setDisplayStatus] = useState("전체 공개");
+  const [displayStatus, setDisplayStatus] = useState("");
   const [imagePreview, setImagePreview] = useState("");
   const [thumbnail, setThumbnail] = useState("");
   const [editorText, setEditorText] = useState("");
   let currentUser: any;
   const [uid, setUid] = useState("");
+  const movieTitleRef = useRef<HTMLInputElement>(null);
+  const foodTitleRef = useRef<HTMLInputElement>(null);
+  const ingredientRef = useRef<HTMLInputElement>(null);
+  const cookTimeRef = useRef<HTMLSelectElement>(null);
+  const foodCategoryRef = useRef<HTMLSelectElement>(null);
+  const thumbnailRef = useRef<HTMLInputElement>(null);
+  const displayStatusRef = useRef<HTMLSelectElement>(null);
 
   const { data, refetch } = useQuery(["tmdb"], () => {
     return searchMovieTitle(searchTitle);
@@ -44,9 +52,7 @@ const RecipeWritePage = () => {
   useEffect(() => {
     if (searchTitle) {
       refetch();
-      // 다시 input창을 지우면, 클릭한 영화제목에서 사라지도록
       setTargetTitle("");
-      // input창을 지우면 데이터도 다시 없어지도록
     }
     setTitleArr([]);
   }, [refetch, searchTitle]);
@@ -96,6 +102,56 @@ const RecipeWritePage = () => {
       createdAt: Date.now(),
       content: editorText,
     };
+    if (
+      !targetTitle ||
+      !foodTitle ||
+      !ingredient ||
+      !selectCookTime ||
+      !foodCategory ||
+      !displayStatus ||
+      !thumbnail ||
+      !editorText ||
+      editorText === "<p><br></p>"
+    ) {
+      if (!targetTitle) {
+        alert("영화 제목을 선택해주세요!");
+        movieTitleRef.current?.focus();
+        return false;
+      }
+      if (!foodTitle) {
+        alert("음식명을 작성해주세요!");
+        foodTitleRef.current?.focus();
+        return false;
+      }
+      if (!ingredient) {
+        alert("재료명을 작성해주세요!");
+        // ingredientRef.current?
+        ingredientRef.current?.focus();
+        return false;
+      }
+      if (!selectCookTime) {
+        alert("조리 시간을 작성해주세요!");
+        cookTimeRef.current?.focus();
+        return false;
+      }
+      if (!foodCategory) {
+        alert("음식 종류를 선택해주세요!");
+        foodCategoryRef.current?.focus();
+        return false;
+      }
+      if (!thumbnail) {
+        alert("대표 사진을 선택해주세요!");
+        thumbnailRef.current?.focus();
+        return false;
+      }
+      if (!displayStatus) {
+        alert("게시물 공개여부를 선택해주세요!");
+        displayStatusRef.current?.focus();
+        return false;
+      }
+      alert("게시글 본문이 채워지지 않았어요 😥");
+      return false;
+    }
     console.log("newRecipe", newRecipe);
     await addDoc(collection(dbService, "recipe"), newRecipe);
     alert("레시피 저장 성공!");
@@ -133,13 +189,20 @@ const RecipeWritePage = () => {
     <div>
       <div style={{ border: "1px solid blue" }}>
         <h3>레시피 글쓰기 페이지</h3>
+        <br />
+        <h2>📢 페이지 입력창을 모두 작성해주세요 📢</h2>
+        <br />
+        <br />
+
         <form onSubmit={postNewRecipe}>
-          <h3>영화 제목 : </h3>
+          <b> 영화 제목검색 : </b>
           <input
+            ref={movieTitleRef}
+            name="targetTitle"
             type="text"
             onChange={(event) => inputChangeSetFunc(event, setSeachTitle)}
-            placeholder="영화 제목 입력"
-            style={{ border: "1px solid black" }}
+            placeholder=" 원하는 제목을 검색하세요!"
+            style={{ border: "1px solid black", width: "210px" }}
           />
           <select
             style={{ border: "1px solid black" }}
@@ -155,41 +218,53 @@ const RecipeWritePage = () => {
           </select>
 
           <div>
-            <h3>클릭한 영화제목(targetTitle):</h3>
+            <b> 선택한 영화제목 👉 </b>
             {targetTitle}
           </div>
-          <h3> 음식명 :</h3>
+          <b> 음식명 : </b>
           <input
+            ref={foodTitleRef}
+            name="footTitle"
             type="text"
             style={{ border: "1px solid black" }}
             onChange={(event) => inputChangeSetFunc(event, setFoodTitle)}
           />
-          <h3> 재료 :</h3>
+          <br />
+          <b> 재료 :</b>
           <input
             type="text"
+            ref={ingredientRef}
+            name="ingredient"
             style={{ border: "1px solid black" }}
             onChange={(event) => inputChangeSetFunc(event, setIngredient)}
           />
-          <h3> 소요시간 </h3>
+          <br />
+          <b> 소요시간 </b>
           <select
+            ref={cookTimeRef}
             onChange={(event) => {
               selectChangeSetFunc(event, setSelectCookTime);
             }}
             style={{ border: "1px solid black" }}
           >
+            <option value="none"> === 소요시간 선택 === </option>
             <option value="15분 이하">15분 이하</option>
             <option value="30분 이하">30분 이하</option>
             <option value="1시간 이하">1시간 이하</option>
             <option value="1시간 이상">1시간 이상</option>
           </select>
-          <div>클릭한 요리시간 : {selectCookTime}</div>
-          <h3>음식 종류</h3>
+          <br />
+          <b>클릭한 요리시간 👉 {selectCookTime}</b>
+          <br />
+          <b> 음식 종류 : </b>
           <select
+            ref={foodCategoryRef}
             onChange={(event) => {
               selectChangeSetFunc(event, setFoodCategory);
             }}
             style={{ border: "1px solid black" }}
           >
+            <option value="none"> === 음식 종류 선택 === </option>
             <option value="국/탕/찌개">국/탕/찌개</option>
             <option value="구이/볶음/찜">구이/볶음/찜</option>
             <option value="튀김류">튀김류</option>
@@ -198,22 +273,19 @@ const RecipeWritePage = () => {
             <option value="밥/도시락/면">밥/도시락/면</option>
             <option value="식단/건강관리">식단/건강관리</option>
           </select>
-          <div>클릭한 음식 종류 : {foodCategory}</div>
-          <h3>대표 사진 : </h3>
+          <br />
+          <b>클릭한 음식 종류 : {foodCategory}</b>
+          <br />
+          <b>📸 대표 사진을 선택해주세요! </b>
           <input
+            ref={thumbnailRef}
+            name="thumbnail"
             onChange={(event) => {
               onFileChange(event);
             }}
             type="file"
             accept="images/*"
           />
-          {/* <Image
-            style={{ border: "1px solid black" }}
-            src={imagePreview}
-            alt="선택된 대표사진이 없습니다"
-            width={100}
-            height={100}
-          /> */}
           {imagePreview ? (
             <Image
               src={imagePreview}
@@ -229,17 +301,20 @@ const RecipeWritePage = () => {
               alt="대표 이미지가 없습니다."
             />
           )}
-          <h3>게시물 공개여부 </h3>
+          <b>게시물 공개여부 </b>
           <select
+            ref={displayStatusRef}
             style={{ border: "1px solid black" }}
             onChange={(event) => {
               selectChangeSetFunc(event, setDisplayStatus);
             }}
           >
+            <option value="none"> === 공개 여부 === </option>
             <option value="전체 공개">전체 공개</option>
             <option value="회원 공개">회원 공개</option>
           </select>
-          <div>공개여부:{displayStatus}</div>
+          <div>공개여부 👉 {displayStatus}</div>
+          <b>게시글 본문</b>
           <EditorComponent
             editorText={editorText}
             setEditorText={setEditorText}
