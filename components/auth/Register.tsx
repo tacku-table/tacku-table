@@ -1,6 +1,10 @@
 import React, { useRef, useState } from "react";
 import { authService } from "@/config/firebase";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signOut,
+  updateProfile,
+} from "firebase/auth";
 import { emailRegex, pwRegex } from "@/util";
 
 const RegisterPage = () => {
@@ -59,7 +63,11 @@ const RegisterPage = () => {
         updateProfile(data.user, {
           displayName: nickname,
         });
-        console.log("회원가입성공");
+        alert("회원가입성공! 로그인해주세요!");
+        signOut(authService).then(() => {
+          sessionStorage.clear();
+          location.href = "/loginPage";
+        });
         return data.user;
       })
       .catch((error) => {
