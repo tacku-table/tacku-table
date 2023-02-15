@@ -33,6 +33,7 @@ const SearchPage: NextPage = () => {
                 id: doc.id,
             }));
             setCurrentItems(newData);
+            console.log(newData);
         };
         getList();
     }, []);
@@ -72,8 +73,11 @@ const SearchPage: NextPage = () => {
                     {currentItems?.map((item) => {
                         return (
                             <div key={item.id} className="mr-7 mb-16">
-                                <div className="bg-slate-100 w-72 h-56">
-                                    {/* {item.thumbnail} */}
+                                <div className="bg-slate-100 w-72 h-56 overflow-hidden mx-auto">
+                                    <img
+                                        src={`${item.thumbnail}`}
+                                        className="w-full h-full object-cover"
+                                    />
                                 </div>
                                 <ul className="text-sm text-slate-500 space-x-2 flex">
                                     <li>{item.foodCategory}</li>
