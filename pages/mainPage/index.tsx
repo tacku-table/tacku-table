@@ -1,14 +1,11 @@
-import MenuBtn from "@/components/main/category/MenuBtn";
-import GoToCommunity from "@/components/main/goToCommunity";
-import React from "react";
-import BestRecipe from "../../components/main/bestRecipe";
-import NewRecipe from "../../components/main/newRecipe";
-import Video from "../../components/main/video";
+import BestRecipe from "@/components/main/BestRecipe";
+import GoToCommunity from "@/components/main/GoToCommunity";
+import NewRecipe from "@/components/main/NewRecipe";
+import Video from "@/components/main/Video";
 
 const MainPage = () => {
     return (
         <div className="w-full h-full">
-            <MenuBtn />
             <Video />
             <div className="h-[50px] bg-teal-200">태그</div>
             <div className="h-[1500px] py-20 flex flex-col items-center">
