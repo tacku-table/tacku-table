@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
-import { authService } from "@/config/firebase";
+import { authService, dbService } from "@/config/firebase";
+import { doc, setDoc } from "firebase/firestore";
 import {
   createUserWithEmailAndPassword,
   signOut,
@@ -64,6 +65,7 @@ const RegisterPage = () => {
           userid: data.user.uid,
           displayName: nickname,
           useremail: email,
+          imageUrl: "",
         });
         updateProfile(data.user, {
           displayName: nickname,

@@ -9,7 +9,6 @@ const Header = () => {
 
   useEffect(() => {
     const user = sessionStorage.getItem("User") || "";
-    console.log("User", user);
     setStorageCurrentUser(user);
   }, []);
   const logoutAction = () => {
