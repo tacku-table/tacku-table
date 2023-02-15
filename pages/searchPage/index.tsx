@@ -1,11 +1,5 @@
 import type { NextPage } from "next";
-import {
-    collection,
-    getDocs,
-    onSnapshot,
-    orderBy,
-    query,
-} from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { dbService } from "@/config/firebase";
 import { useEffect, useState } from "react";
 
@@ -27,36 +21,40 @@ interface RecipeProps {
 const SearchPage: NextPage = () => {
     const [currentItems, setCurrentItems] = useState<RecipeProps[]>([]);
 
-    // useEffect(() => {
-    //     const getList = async () => {
-    //         const items = query(
-    //             collection(dbService, "recipe"),
-    //             orderBy("createdAt", "desc")
-    //         );
-    //         const querySnapshot = await getDocs(items);
-    //         querySnapshot.forEach((doc) => {
-    //             console.log(doc.data());
-    //             setCurrentItems;
-    //         });
-    //     };
-    //     getList();
-    // }, [currentItems]);
-
     useEffect(() => {
-        const q = query(
-            collection(dbService, "recipe"),
-            orderBy("createdAt", "desc")
-        );
-        const getList = onSnapshot(q, (snapshot) => {
-            const newItems = snapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
-            }));
-            console.log(newItems);
-            setCurrentItems(newItems);
-        });
+        const getList = async () => {
+            const items = query(
+                collection(dbService, "recipe"),
+                orderBy("createdAt", "desc")
+            );
+            const querySnapshot = await getDocs(items);
+            querySnapshot.forEach((doc) => {
+                const newObj = {
+                    ...doc.data(),
+                    id: doc.id,
+                };
+                console.log(doc.data());
+                setCurrentItems((prev) => [...prev, newObj]);
+            });
+        };
         getList();
     }, []);
+
+    // useEffect(() => {
+    //     const q = query(
+    //         collection(dbService, "recipe"),
+    //         orderBy("createdAt", "desc")
+    //     );
+    //     const getList = onSnapshot(q, (snapshot) => {
+    //         const newItems = snapshot.docs.map((doc) => ({
+    //             id: doc.id,
+    //             ...doc.data(),
+    //         }));
+    //         console.log(newItems);
+    //         setCurrentItems(newItems);
+    //     });
+    //     getList();
+    // }, []);
 
     return (
         <div className="w-full h-screen flex justify-center">
