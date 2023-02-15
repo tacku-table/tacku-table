@@ -31,6 +31,17 @@ import { getStorage } from "firebase/storage";
 //     messagingSenderId: "351669114811",
 //     appId: "1:351669114811:web:769e3f58dc6fd33b9d169e",
 // };
+
+// 다경님꺼2
+const firebaseConfig = {
+  apiKey: "AIzaSyB_o07bi777IxMsKkBeNfOKZFHy-nKJ1gc",
+  authDomain: "testtest-9c70b.firebaseapp.com",
+  projectId: "testtest-9c70b",
+  storageBucket: "testtest-9c70b.appspot.com",
+  messagingSenderId: "472171635233",
+  appId: "1:472171635233:web:b539b40ca52e9b52d23960",
+};
+
 // 희진
 const firebaseConfig = {
   apiKey: "AIzaSyDKVOAQVuHCId2KTKdPFbzNvLpp8TXrLsU",
