@@ -14,10 +14,10 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
 
-  const router = useRouter();
-  const goToMain = () => {
-    router.push("/mainPage");
-  };
+  //   const router = useRouter();
+  //   const goToMain = () => {
+  //     router.push("/mainPage");
+  //   };
 
   // 유효성 검사
   const validateInputs = () => {
@@ -52,21 +52,15 @@ const Login = () => {
     if (validateInputs()) {
       return;
     }
-    // 로그인 유지 함수 추가 (희진)
-    setPersistence(authService, browserSessionPersistence)
+
+    // 파이어베이스 로그인 요청
+    signInWithEmailAndPassword(authService, email, pw)
       .then(() => {
-        // 파이어베이스 로그인 요청
-        signInWithEmailAndPassword(authService, email, pw).then(() => {
-          // sessionStorage.setItem(
-          //   "Token",
-          //   JSON.stringify(authService.currentUser)
-          // );
-          // console.log(sessionStorage.getItem("Token"));
-          alert("로그인 성공");
-          setEmail("");
-          setPw("");
-          goToMain();
-        });
+        alert("로그인 성공");
+        setEmail("");
+        setPw("");
+        sessionStorage.setItem("User", JSON.stringify(authService.currentUser));
+        location.href = "/mainPage";
       })
       .catch((err) => {
         console.log("err.message:", err.message);
