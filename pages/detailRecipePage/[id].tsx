@@ -14,7 +14,6 @@ import {
 import { getAuth } from "firebase/auth";
 import { authService, dbService } from "@/config/firebase";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import Bookmark from "@/components/bookmark/Bookmark";
 
 const DetailReciptPage = () => {
