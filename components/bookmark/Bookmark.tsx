@@ -54,7 +54,7 @@ const Bookmark = ({ id, recipeData }: any) => {
       await setDoc(doc(dbService, "user", currentUser, "like", id), {
         recipeData,
       });
-      await updateDoc(doc(dbService, "recipePost", id), {
+      await updateDoc(doc(dbService, "Recipe", id), {
         likecount: postbookMark,
       });
     }
