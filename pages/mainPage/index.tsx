@@ -1,7 +1,7 @@
 import BestRecipe from "@/components/main/BestRecipe";
 import GoToCommunity from "@/components/main/GoToCommunity";
 import NewRecipe from "@/components/main/NewRecipe";
-import Video from "@/components/main/Video";
+import Video from "@/components/main/video";
 
 const MainPage = () => {
     return (
