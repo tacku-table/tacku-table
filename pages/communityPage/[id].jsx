@@ -69,6 +69,10 @@ export default function DetailPage(props) {
       commentWholeData.push(comments);
     });
     setBoardComments(commentWholeData);
+    setComment("");
+    setTargetIndex("reset");
+    setTargetIsEdit("reset");
+    setEditComment("");
   };
 
   // 글 수정
@@ -146,7 +150,7 @@ export default function DetailPage(props) {
         comment: editComment,
       });
       alert("댓글 수정 완료!");
-      setEditComment("");
+      // setEditComment("");
       setTargetIsEdit(!index);
       setTargetIndex(!index);
       getWholeComments();
