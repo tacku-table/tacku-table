@@ -193,24 +193,28 @@ export default function DetailPage(props) {
           </div>
         )}
       </div>
+      {uid === "geust" ? (
+        <div> 로그인 시 댓글을 작성할 수 있습니다. </div>
+      ) : (
+        <div>
+          <input
+            type="text"
+            style={{ border: "1px solid black" }}
+            value={comment}
+            onChange={(e) => {
+              setComment(e.target.value);
+            }}
+          />
+          <button
+            type="button"
+            style={{ border: "1px solid black" }}
+            onClick={addComment}
+          >
+            댓글 추가하기
+          </button>
+        </div>
+      )}
 
-      <div>
-        <input
-          type="text"
-          style={{ border: "1px solid black" }}
-          value={comment}
-          onChange={(e) => {
-            setComment(e.target.value);
-          }}
-        />
-        <button
-          type="button"
-          style={{ border: "1px solid black" }}
-          onClick={addComment}
-        >
-          댓글 추가하기
-        </button>
-      </div>
       <div style={{ border: "1px solid black" }}>
         <h3>댓글창</h3>
         <div>
