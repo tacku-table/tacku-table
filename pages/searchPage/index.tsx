@@ -1,40 +1,38 @@
 import type { NextPage } from "next";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { dbService } from "@/config/firebase";
-import { useEffect, useState } from "react";
-
-interface RecipeProps {
-    id?: string | number;
-    uid?: string;
-    animationTitle?: string;
-    foodTitle?: string;
-    ingredient?: string;
-    cookingTime?: string;
-    foodCategory?: string;
-    displayStatus?: string;
-    thumbnail?: string;
-    createdAt?: string | number;
-    content?: string;
-    children?: JSX.Element | JSX.Element[];
-}
 
 const SearchPage: NextPage = () => {
+    const [text, setText] = useState("");
     const [currentItems, setCurrentItems] = useState<RecipeProps[]>([]);
 
+    const searchTextHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setText(e.target.value);
+    };
+
+    const getList = async () => {
+        const items = query(
+            collection(dbService, "recipe"),
+            orderBy("createdAt", "desc"),
+            where("foodTitle" || "content", "==", text)
+        );
+        const querySnapshot = await getDocs(items);
+        const newData = querySnapshot.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+        }));
+        setCurrentItems(newData);
+        console.log(newData);
+    };
+
+    const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        getList();
+        setText("");
+    };
+
     useEffect(() => {
-        const getList = async () => {
-            const items = query(
-                collection(dbService, "recipe"),
-                orderBy("createdAt", "desc")
-            );
-            const querySnapshot = await getDocs(items);
-            const newData = querySnapshot.docs.map((doc) => ({
-                ...doc.data(),
-                id: doc.id,
-            }));
-            setCurrentItems(newData);
-            console.log(newData);
-        };
         getList();
     }, []);
 
@@ -57,18 +55,22 @@ const SearchPage: NextPage = () => {
                             d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
                         />
                     </svg>
-                    <input
-                        type="text"
-                        className="w-[300px] text-sm font-medium px-5 py-2.5 pl-11 focus:outline-none rounded-lg rounded-r-none border border-slate-300"
-                    ></input>
-                    <button
-                        type="button"
-                        className="bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg rounded-l-none text-white text-sm px-5 py-[10.5px] text-center"
-                    >
-                        레시피검색
-                    </button>
+                    <form onSubmit={submitHandler}>
+                        <input
+                            type="text"
+                            value={text}
+                            onChange={searchTextHandler}
+                            className="w-[300px] text-sm font-medium px-5 py-2.5 pl-11 focus:outline-none rounded-lg rounded-r-none border border-slate-300"
+                        ></input>
+                        <button
+                            type="submit"
+                            className="bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg rounded-l-none text-white text-sm px-5 py-[10.5px] text-center"
+                        >
+                            레시피검색
+                        </button>
+                    </form>
                 </div>
-                {/* 검색결과 */}
+                {/* 목록데이터 */}
                 <div className="grid grid-cols-3 gap-3">
                     {currentItems?.map((item) => {
                         return (

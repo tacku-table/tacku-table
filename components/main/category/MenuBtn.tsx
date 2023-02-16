@@ -8,7 +8,6 @@ const MenuBtn = () => {
     const [showMenu, setShowMenu] = useState<boolean>(false);
 
     const menuToggle = () => {
-        console.log("click");
         setShowMenu(!showMenu);
     };
 
