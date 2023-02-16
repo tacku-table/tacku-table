@@ -9,13 +9,14 @@ import {
 } from "@firebase/firestore";
 import { authService, dbService } from "@/config/firebase";
 
-const Bookmark = ({ id, recipeData }: any) => {
+const Bookmark = (props: any) => {
   //북마크
   const [bookMark, setBookMark] = useState<any[]>([]);
   const [postbookMark, setpostBookMark] = useState<number>(0);
   const [toggleBookmark, setToggleBookmark] = useState<boolean>(false);
   //현재 로그인된 유저
   const currentUser: any = authService.currentUser?.uid;
+
   //유저 북마크 모아오기
   useEffect(
     () =>
@@ -23,12 +24,14 @@ const Bookmark = ({ id, recipeData }: any) => {
         collection(dbService, "user", currentUser, "bookmarkPost"),
         (snapshot) => setBookMark(snapshot.docs)
       ),
-    [dbService, id]
+    [dbService, props.postId]
   );
   //북마크 토글
   useEffect(
     () =>
-      setToggleBookmark(bookMark.findIndex((like) => like.id === id) !== -1),
+      setToggleBookmark(
+        bookMark.findIndex((mark) => mark.id === props.postId) !== -1
+      ),
     [bookMark]
   );
   //북마크 db 추가 삭제
@@ -36,17 +39,22 @@ const Bookmark = ({ id, recipeData }: any) => {
     if (toggleBookmark) {
       console.log("북마크 삭제");
       setpostBookMark(postbookMark + 1);
-      await deleteDoc(doc(dbService, "user", currentUser, "bookmarkPost", id));
-      updateDoc(doc(dbService, "recipe", id), {
+      await deleteDoc(
+        doc(dbService, "user", currentUser, "bookmarkPost", props.postId)
+      );
+      updateDoc(doc(dbService, "recipe", props.postId), {
         bookmarkCount: postbookMark,
       });
     } else {
       console.log("북마크 추가");
       setpostBookMark(postbookMark - 1);
-      await setDoc(doc(dbService, "user", currentUser, "bookmarkPost", id), {
-        recipeData,
-      });
-      updateDoc(doc(dbService, "recipe", id), {
+      await setDoc(
+        doc(dbService, "user", currentUser, "bookmarkPost", props.postId),
+        {
+          recipeData: props.recipeData,
+        }
+      );
+      updateDoc(doc(dbService, "recipe", props.postId), {
         bookmarkCount: postbookMark,
       });
     }

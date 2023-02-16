@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import { onSnapshot, query, collection } from "firebase/firestore";
 import { dbService } from "@/config/firebase";
 import Link from "next/link";
+import { RecipePosts } from "@/config/type";
 
 const BestRecipe: NextPage = () => {
-  const [recipePost, setRecipePost] = useState<any>([]);
+  const [recipePost, setRecipePost] = useState<any[]>([]);
   useEffect(() => {
     // const getList = async () => {
     const q = query(collection(dbService, "recipe"));
@@ -21,12 +22,12 @@ const BestRecipe: NextPage = () => {
 
   return (
     <>
-      {recipePost?.map((post: any) => (
+      {recipePost?.map((post: RecipePosts) => (
         <div
           key={post.id}
           className="space-x-7 flex justify-center items-center"
         >
-          <Link key={post.id} href={`/detailRecipePage/${post.id}`} post={post}>
+          <Link key={post.id} href={`/detailRecipePage/${post.id}`}>
             <div className="space-y-2">
               <div className="bg-slate-100 w-72 h-56">요리사진</div>
               <div className="text-sm text-slate-500 space-x-2">
@@ -35,7 +36,7 @@ const BestRecipe: NextPage = () => {
                 <span>#초간단</span>
               </div>
               <p className="text-lg text-slate-900 font-semibold">
-                라퓨타 토스트
+                {post.foodTitle}
               </p>
             </div>
           </Link>
