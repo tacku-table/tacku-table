@@ -1,11 +1,12 @@
 import React, { useRef, useState } from "react";
-import { authService } from "@/config/firebase";
+import { authService, dbService } from "@/config/firebase";
 import {
   createUserWithEmailAndPassword,
   signOut,
   updateProfile,
 } from "firebase/auth";
 import { emailRegex, pwRegex } from "@/util";
+import { doc, setDoc, addDoc, collection } from "firebase/firestore";
 
 const RegisterPage = () => {
   // useRef로 취득하는 DOM은 최초 mount되기 전엔 null이다
@@ -60,6 +61,13 @@ const RegisterPage = () => {
     }
     createUserWithEmailAndPassword(authService, email, pw)
       .then((data) => {
+        setDoc(doc(dbService, "user", data.user.uid), {
+          userId: data.user.uid,
+          displayName: nickname,
+          usermail: email,
+          userpw: pw,
+          photoURL: "",
+        });
         updateProfile(data.user, {
           displayName: nickname,
         });
