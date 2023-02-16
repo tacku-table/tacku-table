@@ -1,3 +1,5 @@
+import { async } from "@firebase/util";
+import { updateProfile } from "firebase/auth";
 import { getDownloadURL, ref, listAll, uploadBytes } from "firebase/storage";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -6,46 +8,51 @@ import { authService, storage } from "../../config/firebase";
 import profile from "../../public/images/profile.svg";
 
 const Mypage = () => {
-  const [user, setUser] = useState({});
-  // user = sessionStorage.getItem("User").
   const [photoImgURL, setPhotoImgURL] = useState("");
-  const [defaultImg, setDefaultImg] = useState(profile);
+  const [userInfo, setUserInfo] = useState();
+  // const [defaultImg, setDefaultImg] = useState(profile);
 
-  // ReferenceError: sessionStorage is not defined
+  const fbUser = authService?.currentUser;
   useEffect(() => {
-    const sessionStorageUser =
-      typeof window !== "undefined" ? sessionStorage.getItem("User") : null;
-    const parsingUser = JSON.parse(sessionStorageUser);
-    setUser(parsingUser);
+    if (fbUser) {
+      const getUserInfo = {
+        displayName: fbUser?.displayName,
+        photoURL: fbUser?.photoURL,
+        email: fbUser?.email,
+      };
+
+      setUserInfo(getUserInfo);
+    }
   }, []);
-  console.log(user);
-  useEffect(() => {
-    if (user) {
-      const imageListRef = ref(storage, "profileImage/");
-      listAll(imageListRef).then((response) => {
-        response.items.forEach((item) => {
-          getDownloadURL(item).then((url) => {
-            // if (url === user.photoURL) {
+
+  if (userInfo?.photoURL === null) {
+    setPhotoImgURL(profile);
+  }
+
+  const getUserProfileImg = () => {
+    const imageListRef = ref(storage, "profileImage/");
+    listAll(imageListRef).then((response) => {
+      response.items.forEach((item) => {
+        getDownloadURL(item).then((url) => {
+          if (url === userInfo?.photoURL) {
             setPhotoImgURL(url);
-            // }
-          });
+          }
         });
       });
-    }
-  }, [photoImgURL]);
+    });
+  };
 
   return (
     <>
       <div>
-        <div className="w-12 h-12">
-          {user?.photoURL ? (
-            <img src={photoImgURL} alt="updateProfileImg" />
-          ) : (
-            <img src={defaultImg} alt="기본이미지1" />
-          )}
+        <div className="w-18 h-18">
+          <img src={photoImgURL} alt="프로필이미지" />
+        </div>
+        <div>
+          <span>{userInfo?.displayName}</span>
         </div>
       </div>
-      <span>{user?.displayName}</span>
+
       <Link href="/myPage/editProfile">
         <svg
           className="h-8 w-8"

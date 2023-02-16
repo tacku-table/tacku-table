@@ -2,6 +2,7 @@ import { authService } from "@/config/firebase";
 // import { async } from "@firebase/util";
 import { updateProfile } from "firebase/auth";
 import { getDownloadURL, ref, listAll, uploadBytes } from "firebase/storage";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { storage } from "../../config/firebase";
@@ -80,13 +81,14 @@ const ProfileEdit = () => {
       <div className="flex justify-between">
         <span>{fbUser?.displayName}</span>
         {/* 프로필 이미지 */}
-        <div className="w-12 h-12">
-          {fbUser?.photoURL === null ? (
-            <img src={defaultImg} alt="기본이미지1" />
-          ) : (
-            <img src={photoImgURL} alt="updateProfileImg" />
-          )}
-        </div>
+
+        <Image
+          src={photoImgURL}
+          width={100}
+          height={100}
+          alt="updateProfileImg"
+        />
+
         <div className="flex flex-col">
           <div onClick={() => setIsProfileEdit(!isProfileEdit)}>
             <svg
