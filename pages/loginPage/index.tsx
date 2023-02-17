@@ -1,3 +1,4 @@
+import FindPassword from "@/components/auth/findPassword";
 import Login from "@/components/auth/Login";
 import Register from "@/components/auth/Register";
 import Header from "@/components/layout/Header";
@@ -10,7 +11,7 @@ const LoginPage = () => {
       Login Page입니다.
       {status === "login" && <Login setStatus={setStatus} status={status} />}
       {status === "signUp" && <Register />}
-      {status === "searchPW" && <Header />}
+      {status === "searchPW" && <FindPassword />}
     </div>
   );
 };
