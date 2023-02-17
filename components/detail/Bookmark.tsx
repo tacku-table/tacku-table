@@ -13,7 +13,7 @@ import { authService, dbService } from "@/config/firebase";
 const Bookmark = (props: any) => {
   //북마크
   const [bookMark, setBookMark] = useState<any[]>([]);
-  let [markArr, setmarkArr] = useState<any[]>([]);
+  const [countBookMark, setCountBookMark] = useState<any>();
   const [toggleBookmark, setToggleBookmark] = useState<boolean>(false);
   //현재 로그인된 유저
   const currentUser: any = authService.currentUser?.uid;
@@ -30,23 +30,27 @@ const Bookmark = (props: any) => {
       }
     };
     bookmarkLoad();
-  }, []);
+  }, [dbService, props.postId]);
+  console.log("countbookMark", countBookMark);
+  useEffect(() => {
+    onSnapshot(doc(dbService, "recipe", props.postId), (snapshot) => {
+      setCountBookMark(snapshot.data());
+    });
+  }, [dbService, props.postId]);
 
   //북마크 토글
-  useEffect(
-    () =>
-      setToggleBookmark(
-        bookMark.findIndex((mark) => mark.id === props.postId) !== -1
-      ),
-    [bookMark]
-  );
+  useEffect(() => {
+    setToggleBookmark(
+      bookMark.findIndex((mark) => mark.id === props.postId) !== -1
+    );
+  }, [bookMark]);
   //북마크 db 추가 삭제
   const bookMarkPost = async () => {
-    const copy = [...markArr, currentUser];
-    const filter = markArr.filter((item: any) => {
-      return item !== currentUser.item;
-    });
     if (toggleBookmark) {
+      const copy = [...countBookMark.bookmarkCount];
+      const filter = copy.filter((item: any) => {
+        return item !== currentUser;
+      });
       console.log("북마크 삭제");
       await deleteDoc(
         doc(dbService, "user", currentUser, "bookmarkPost", props.postId)
@@ -56,23 +60,29 @@ const Bookmark = (props: any) => {
       });
     } else {
       console.log("북마크 추가");
-
+      const copy = [...countBookMark.bookmarkCount];
+      copy.push(currentUser);
       await setDoc(
         doc(dbService, "user", currentUser, "bookmarkPost", props.postId),
         {
           recipeData: props.recipeData,
         }
       );
-      updateDoc(doc(dbService, "recipe", props.postId), {
-        bookmarkCount: copy,
-      });
+      //if 배열에 uid가 있으면 추가x,없으면 추가.
+      if (countBookMark.bookmarkCount?.includes(currentUser)) {
+        copy;
+      } else {
+        updateDoc(doc(dbService, "recipe", props.postId), {
+          bookmarkCount: copy,
+        });
+      }
     }
   };
 
   return (
     <>
       <button onClick={bookMarkPost}>북마크</button>
-      <div>북마크갯수 : {markArr}</div>
+      <div>북마크 갯수:{countBookMark.bookmarkCount.length}</div>
     </>
   );
 };
