@@ -1,82 +1,104 @@
-import { async } from "@firebase/util";
-import { updateProfile } from "firebase/auth";
-import { getDownloadURL, ref, listAll, uploadBytes } from "firebase/storage";
-import Link from "next/link";
-import { useRouter } from "next/router";
+import { authService } from "@/config/firebase";
+import { collection, getDoc, query, doc } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { authService, storage } from "../../config/firebase";
-import profile from "../../public/images/profile.svg";
+import { dbService, storage } from "../../config/firebase";
+import profile from "../../public/images/profile.jpeg";
+import Image from "next/image";
+import Link from "next/link";
+import { getDownloadURL, listAll, ref } from "firebase/storage";
 
-const Mypage = () => {
-  const [photoImgURL, setPhotoImgURL] = useState("");
-  const [userInfo, setUserInfo] = useState();
-  // const [defaultImg, setDefaultImg] = useState(profile);
+const MyPage = () => {
+  const [userInfo, setUserInfo] = useState({});
+  const [showUserImg, setShowUserImg] = useState(profile);
+  const [showUserUpdateImg, setShowUserUpdateImg] = useState("");
+  const [isEdit, setIsEdit] = useState(false);
 
-  const fbUser = authService?.currentUser;
   useEffect(() => {
-    if (fbUser) {
-      const getUserInfo = {
-        displayName: fbUser?.displayName,
-        photoURL: fbUser?.photoURL,
-        email: fbUser?.email,
-      };
-
-      setUserInfo(getUserInfo);
-    }
+    const { uid } = JSON.parse(sessionStorage.getItem("User"));
+    getCurrentUserInfo(uid);
+    getUserProfileImg();
   }, []);
+  const getCurrentUserInfo = async (currentUserUid) => {
+    await getDoc(doc(dbService, "user", currentUserUid)).then((doc) => {
+      console.log("getCurrentUserInfo의 data: ", doc.data());
+      setUserInfo(doc.data());
+    });
+    console.log("스테이트: ", userInfo);
+  };
 
-  if (userInfo?.photoURL === null) {
-    setPhotoImgURL(profile);
-  }
-
-  const getUserProfileImg = () => {
+  const getUserProfileImg = async () => {
+    if (userInfo?.userImg === "null") return;
     const imageListRef = ref(storage, "profileImage/");
-    listAll(imageListRef).then((response) => {
+    await listAll(imageListRef).then((response) => {
       response.items.forEach((item) => {
         getDownloadURL(item).then((url) => {
-          if (url === userInfo?.photoURL) {
-            setPhotoImgURL(url);
+          if (url === userInfo?.userImg) {
+            setShowUserUpdateImg(url);
           }
         });
       });
     });
   };
 
+  // 프로필이미지가 ""면, 기본 지정이미지 보이게 해주자
+
+  // 프로필 변경 함수
+  const handleUpdateProfile = () => {};
+
   return (
     <>
-      <div>
-        <div className="w-18 h-18">
-          <img src={photoImgURL} alt="프로필이미지" />
-        </div>
+      <div className="flex justify-between">
+        {/* 프로필 이미지 */}
         <div>
-          <span>{userInfo?.displayName}</span>
+          {userInfo?.userImg === "null" ? (
+            <Image
+              src={showUserImg}
+              width={100}
+              height={100}
+              alt="기본이미지"
+            />
+          ) : (
+            <img
+              src={showUserUpdateImg}
+              width={100}
+              height={100}
+              alt="업데이트이미지"
+            />
+          )}
+          <span>{userInfo?.userNickname}</span>
         </div>
-      </div>
-
-      <Link href="/myPage/editProfile">
-        <svg
-          className="h-8 w-8"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
+        <Link
+          href={{
+            pathname: `/myPage/editProfile/`,
+            query: {
+              id: userInfo?.userId,
+            },
+          }}
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"
-          ></path>
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-          ></path>
-        </svg>
-      </Link>
+          <svg
+            className="h-8 w-8"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"
+            ></path>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+            ></path>
+          </svg>
+        </Link>
+      </div>
     </>
   );
 };
 
-export default Mypage;
+export default MyPage;
