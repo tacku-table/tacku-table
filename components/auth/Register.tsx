@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { dbService, authService } from "@/config/firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { authService, dbService } from "@/config/firebase";
 import {
   createUserWithEmailAndPassword,
   signOut,
   updateProfile,
 } from "firebase/auth";
 import { emailRegex, pwRegex } from "@/util";
+import { setDoc, doc } from "firebase/firestore";
 
 const RegisterPage = () => {
   // useRef로 취득하는 DOM은 최초 mount되기 전엔 null이다
@@ -75,14 +75,16 @@ const RegisterPage = () => {
       return;
     }
     createUserWithEmailAndPassword(authService, email, pw)
-      .then((data) => {
-        setDoc(doc(dbService, "user", data.user.uid), {
-          userid: data.user.uid,
-          displayName: nickname,
-          useremail: email,
-          imageUrl: "",
+      .then(async (data) => {
+        console.log("회원 데이터", data.user.uid);
+        // const docRef = data.user.uid;
+        await setDoc(doc(dbService, "user", data.user.uid), {
+          userId: data.user.uid,
+          userNickname: nickname,
+          userEmail: email,
+          userPw: pw,
         });
-        updateProfile(data.user, {
+        await updateProfile(data.user, {
           displayName: nickname,
         });
         alert("회원가입성공! 로그인해주세요!");

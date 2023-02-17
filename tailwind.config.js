@@ -1,14 +1,25 @@
 //tailwind.config.js
 
 /** @type {import('tailwindcss').Config} */
+
+// const colors = require("tailwindcss/colors");
+
 module.exports = {
-  content: [
-    "./app/**/*.{js,ts,jsx,tsx}",
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
+    content: [
+        "./app/**/*.{js,ts,jsx,tsx}",
+        "./pages/**/*.{js,ts,jsx,tsx}",
+        "./components/**/*.{js,ts,jsx,tsx}",
+    ],
+    theme: {
+        extend: {
+            colors: {
+                // Colors you want to add go here
+                main: "#F16C34",
+                border: "#DFDFDF",
+                baseText: "#777777",
+                hoverGray: "#f5f5f5",
+            },
+        },
+    },
+    plugins: [],
 };

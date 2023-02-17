@@ -52,7 +52,7 @@ const EditorComponent = ({ editorText, setEditorText }: EditorProps) => {
       const uploadImage = inputImage[0];
       if (inputImage !== null) {
         const reader = new FileReader();
-        reader.readAsDataURL(uploadImage);
+        reader?.readAsDataURL(uploadImage);
         reader.onloadend = (finishedEvent: any) => {
           const imgDataUrl: any = finishedEvent.currentTarget.result;
           localStorage.setItem("imgDataUrl", imgDataUrl);
