@@ -1,3 +1,4 @@
+import SearchRecipeBar from "@/components/search/SearchRecipeBar";
 import { dbService } from "@/config/firebase";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import type { NextPage } from "next";
@@ -42,27 +43,42 @@ const ClassifiedRecipe: NextPage = () => {
     }, [router.query.cate]);
 
     return (
-        <>
-            {currentItems?.map((item) => {
-                return (
-                    <div key={item.id} className="mr-7 mb-16">
-                        <div className="bg-slate-100 w-72 h-56 overflow-hidden mx-auto">
-                            <img
-                                src={`${item.thumbnail}`}
-                                className="w-full h-full object-cover"
-                            />
-                        </div>
-                        <ul className="text-sm text-slate-500 space-x-2 flex">
-                            <li>{item.foodCategory}</li>
-                            <li>{item.ingredient}</li>
-                        </ul>
-                        <p className="text-lg text-slate-900 font-semibold">
-                            {item.foodTitle}
-                        </p>
-                    </div>
-                );
-            })}
-        </>
+        <div className="w-full h-screen flex flex-col justify-center items-center">
+            <SearchRecipeBar />
+            <ul className="w-3/4 flex justify-end mb-[20px]">
+                <li className="w-[87px] h-[35px] border border-border border-collapse hover:bg-main text-baseText hover:text-white flex justify-center items-center cursor-pointer">
+                    추천순
+                </li>
+                <li className="w-[87px] h-[35px] border border-border border-collapse hover:bg-main text-baseText hover:text-white flex justify-center items-center cursor-pointer">
+                    최신순
+                </li>
+            </ul>
+            <div className="w-3/4 border-b border-border mb-[30px]"></div>
+            <div className="w-3/4 flex justify-between">
+                <div className="bg-slate-100 w-[150px] h-full">카테고리</div>
+                <div className="grid grid-cols-3 gap-4">
+                    {currentItems?.map((item) => {
+                        return (
+                            <div key={item.id}>
+                                <div className="bg-slate-100 w-[300px] h-[226px] overflow-hidden mx-auto">
+                                    <img
+                                        src={`${item.thumbnail}`}
+                                        className="w-full h-full object-cover"
+                                    />
+                                </div>
+                                <ul className="text-sm text-slate-500 space-x-2 flex">
+                                    <li>{item.foodCategory}</li>
+                                    <li>{item.ingredient}</li>
+                                </ul>
+                                <p className="text-lg text-slate-900 font-semibold">
+                                    {item.foodTitle}
+                                </p>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+        </div>
     );
 };
 

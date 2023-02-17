@@ -4,7 +4,7 @@ import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 
 const NewRecipe: NextPage = () => {
-    const [newItems, setNewItems] = useState<RecipeProps[]>([]);
+    const [currentItems, setCurrentItems] = useState<RecipeProps[]>([]);
 
     const getList = async () => {
         const items = query(
@@ -17,8 +17,7 @@ const NewRecipe: NextPage = () => {
             ...doc.data(),
             id: doc.id,
         }));
-        setNewItems(newData);
-        console.log(newData);
+        setCurrentItems(newData);
     };
 
     useEffect(() => {
@@ -33,8 +32,8 @@ const NewRecipe: NextPage = () => {
                     타쿠의 식탁에서 HOT한 실패없는 요즘유행요리
                 </p>
             </div>
-            <div className="grid grid-cols-3 gap-3">
-                {newItems?.map((item) => {
+            <div className="grid grid-cols-3 gap-6">
+                {currentItems?.map((item) => {
                     return (
                         <div key={item.id}>
                             <div className="bg-slate-100 w-72 h-56 overflow-hidden mx-auto">

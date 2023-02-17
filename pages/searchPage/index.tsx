@@ -1,96 +1,24 @@
+import SearchRecipeBar from "@/components/search/SearchRecipeBar";
+import TotalRecipe from "@/components/search/TotalRecipe";
 import type { NextPage } from "next";
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
-import { dbService } from "@/config/firebase";
 
 const SearchPage: NextPage = () => {
-    const [text, setText] = useState("");
-    const [currentItems, setCurrentItems] = useState<RecipeProps[]>([]);
-
-    const searchTextHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setText(e.target.value);
-    };
-
-    const getList = async () => {
-        const items = query(
-            collection(dbService, "recipe"),
-            orderBy("createdAt", "desc"),
-            where("foodTitle" || "content", "==", text)
-        );
-        const querySnapshot = await getDocs(items);
-        const newData = querySnapshot.docs.map((doc) => ({
-            ...doc.data(),
-            id: doc.id,
-        }));
-        setCurrentItems(newData);
-        console.log(newData);
-    };
-
-    const submitHandler = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        getList();
-        setText("");
-    };
-
-    useEffect(() => {
-        getList();
-    }, []);
-
     return (
-        <div className="w-full h-screen flex justify-center">
-            <div>
-                {/* 검색바 */}
-                <div className="relative mt-4 mb-7 flex justify-center">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        className="w-6 h-6 text-slate-300 absolute top-2.5 -ml-[360px] pointer-events-none"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                        />
-                    </svg>
-                    <form onSubmit={submitHandler}>
-                        <input
-                            type="text"
-                            value={text}
-                            onChange={searchTextHandler}
-                            className="w-[300px] text-sm font-medium px-5 py-2.5 pl-11 focus:outline-none rounded-lg rounded-r-none border border-slate-300"
-                        ></input>
-                        <button
-                            type="submit"
-                            className="bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg rounded-l-none text-white text-sm px-5 py-[10.5px] text-center"
-                        >
-                            레시피검색
-                        </button>
-                    </form>
-                </div>
-                {/* 목록데이터 */}
-                <div className="grid grid-cols-3 gap-3">
-                    {currentItems?.map((item) => {
-                        return (
-                            <div key={item.id} className="mr-7 mb-16">
-                                <div className="bg-slate-100 w-72 h-56 overflow-hidden mx-auto">
-                                    <img
-                                        src={`${item.thumbnail}`}
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-                                <ul className="text-sm text-slate-500 space-x-2 flex">
-                                    <li>{item.foodCategory}</li>
-                                    <li>{item.ingredient}</li>
-                                </ul>
-                                <p className="text-lg text-slate-900 font-semibold">
-                                    {item.foodTitle}
-                                </p>
-                            </div>
-                        );
-                    })}
+        <div className="w-full h-screen flex flex-col justify-center items-center">
+            <SearchRecipeBar />
+            <ul className="w-3/4 flex justify-end mb-[20px]">
+                <li className="w-[87px] h-[35px] border border-border border-collapse hover:bg-main text-baseText hover:text-white flex justify-center items-center cursor-pointer">
+                    추천순
+                </li>
+                <li className="w-[87px] h-[35px] border border-border border-collapse hover:bg-main text-baseText hover:text-white flex justify-center items-center cursor-pointer">
+                    최신순
+                </li>
+            </ul>
+            <div className="w-3/4 border-b border-border mb-[30px]"></div>
+            <div className="w-3/4 flex justify-between">
+                <div className="bg-slate-100 w-[150px] h-full">카테고리</div>
+                <div className="grid grid-cols-3 gap-4">
+                    <TotalRecipe />
                 </div>
             </div>
         </div>
