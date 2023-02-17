@@ -9,6 +9,8 @@ export default function DetailReciptPage(props: any) {
   //레시피 데이터
   const [recipeData, getRecipeData] = useState<any>("");
   const [userData, setUserData] = useState<any>("");
+
+  //조회수
   let [views, setViews] = useState<number>(props.targetWholeData.viewCount);
   const userUid = props.targetWholeData.uid;
 
@@ -38,7 +40,6 @@ export default function DetailReciptPage(props: any) {
       <div>닉네임 : {userData.displayName}</div>
       <Bookmark postId={props.postId} recipeData={recipeData} />
       <div>조회수 : {views}</div>
-      <div>좋아요 : {recipeData.bookmarkCount}</div>
       <div>재료 : {recipeData.ingredient}</div>
       <div>영화 : {recipeData.animationTitle}</div>
       <div>카테고리 : {recipeData.foodCategory}</div>
@@ -47,12 +48,12 @@ export default function DetailReciptPage(props: any) {
     </>
   );
 }
-//export default DetailReciptPage;
 
 export const getServerSideProps: any = async (context: any) => {
   let targetWholeData;
   const { params } = context;
   const { id } = params;
+  //페이지 해당 id
   const postId = id;
 
   const snap = await getDoc(doc(dbService, "recipe", postId));

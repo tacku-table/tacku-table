@@ -13,11 +13,10 @@ import { authService, dbService } from "@/config/firebase";
 const Bookmark = (props: any) => {
   //북마크
   const [bookMark, setBookMark] = useState<any[]>([]);
-  let [postbookMark, setpostBookMark] = useState<number>(0);
+  let [markArr, setmarkArr] = useState<any[]>([]);
   const [toggleBookmark, setToggleBookmark] = useState<boolean>(false);
   //현재 로그인된 유저
   const currentUser: any = authService.currentUser?.uid;
-
   //유저 북마크 모아오기
   useEffect(() => {
     const bookmarkLoad = async () => {
@@ -32,6 +31,7 @@ const Bookmark = (props: any) => {
     };
     bookmarkLoad();
   }, []);
+
   //북마크 토글
   useEffect(
     () =>
@@ -42,18 +42,21 @@ const Bookmark = (props: any) => {
   );
   //북마크 db 추가 삭제
   const bookMarkPost = async () => {
+    const copy = [...markArr, currentUser];
+    const filter = markArr.filter((item: any) => {
+      return item !== currentUser.item;
+    });
     if (toggleBookmark) {
       console.log("북마크 삭제");
-      setpostBookMark(postbookMark - 1);
       await deleteDoc(
         doc(dbService, "user", currentUser, "bookmarkPost", props.postId)
       );
       updateDoc(doc(dbService, "recipe", props.postId), {
-        bookmarkCount: postbookMark,
+        bookmarkCount: filter,
       });
     } else {
       console.log("북마크 추가");
-      setpostBookMark(postbookMark + 1);
+
       await setDoc(
         doc(dbService, "user", currentUser, "bookmarkPost", props.postId),
         {
@@ -61,11 +64,17 @@ const Bookmark = (props: any) => {
         }
       );
       updateDoc(doc(dbService, "recipe", props.postId), {
-        bookmarkCount: postbookMark,
+        bookmarkCount: copy,
       });
     }
   };
-  return <button onClick={bookMarkPost}>북마크</button>;
+
+  return (
+    <>
+      <button onClick={bookMarkPost}>북마크</button>
+      <div>북마크갯수 : {markArr}</div>
+    </>
+  );
 };
 
 export default Bookmark;
