@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { onSnapshot, query, collection } from "firebase/firestore";
 import { dbService } from "@/config/firebase";
 import Link from "next/link";
-import { RecipePosts } from "@/config/type";
 
 const BestRecipe: NextPage = () => {
   const [recipePost, setRecipePost] = useState<any[]>([]);
@@ -22,7 +21,7 @@ const BestRecipe: NextPage = () => {
 
   return (
     <>
-      {recipePost?.map((post: RecipePosts) => (
+      {recipePost?.map((post) => (
         <div
           key={post.id}
           className="space-x-7 flex justify-center items-center"

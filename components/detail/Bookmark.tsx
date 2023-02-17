@@ -19,14 +19,19 @@ const Bookmark = (props: any) => {
   const currentUser: any = authService.currentUser?.uid;
 
   //유저 북마크 모아오기
-  useEffect(
-    () =>
-      onSnapshot(
-        collection(dbService, "user", currentUser, "bookmarkPost"),
-        (snapshot) => setBookMark(snapshot.docs)
-      ),
-    [dbService, props.postId]
-  );
+  useEffect(() => {
+    const bookmarkLoad = async () => {
+      try {
+        await onSnapshot(
+          collection(dbService, "user", currentUser, "bookmarkPost"),
+          (snapshot) => setBookMark(snapshot.docs)
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    bookmarkLoad();
+  }, []);
   //북마크 토글
   useEffect(
     () =>
@@ -35,12 +40,11 @@ const Bookmark = (props: any) => {
       ),
     [bookMark]
   );
-  console.log(postbookMark);
   //북마크 db 추가 삭제
   const bookMarkPost = async () => {
     if (toggleBookmark) {
       console.log("북마크 삭제");
-      setpostBookMark(postbookMark + 1);
+      setpostBookMark(postbookMark - 1);
       await deleteDoc(
         doc(dbService, "user", currentUser, "bookmarkPost", props.postId)
       );
@@ -49,7 +53,7 @@ const Bookmark = (props: any) => {
       });
     } else {
       console.log("북마크 추가");
-      setpostBookMark(postbookMark - 1);
+      setpostBookMark(postbookMark + 1);
       await setDoc(
         doc(dbService, "user", currentUser, "bookmarkPost", props.postId),
         {
