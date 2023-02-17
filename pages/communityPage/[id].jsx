@@ -14,110 +14,216 @@ import {
 } from "firebase/firestore";
 import { dbService, storage } from "@/config/firebase";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { async } from "@firebase/util";
-
+import EditorComponent from "../../components/write/textEditor";
 export default function DetailPage(props) {
   const [detailPageWholeData, setDetailPageWholeData] = useState({});
   const [comment, setComment] = useState("");
   const [boardComments, setBoardComments] = useState([]);
-  let convertBoardComments;
-  const [isEdit, setIsEdit] = useState(false);
+  const [isPostEdit, setIsPostEdit] = useState(false);
   const [editComment, setEditComment] = useState("");
+  const [uid, setUid] = useState("");
+  const [targetIndex, setTargetIndex] = useState("");
+  const [targetIsEdit, setTargetIsEdit] = useState("");
+  const router = useRouter();
+  //여기 게시글
+  const [editPostTitle, setEditPostTitle] = useState(
+    props.targetWholeData.title
+  );
+  const [editPostContent, setEditPostContent] = useState(
+    props.targetWholeData.editorText
+  );
 
-  //input을 입력할때마다 Detail페이지가 랜더링이 되는데??
-  console.log("props", props);
-  console.log("post", props.targetWholeData);
+  useEffect(() => {
+    const sessionStorageUser = sessionStorage.getItem("User") || "";
+    if (sessionStorageUser) {
+      const parsingUser = JSON.parse(sessionStorageUser);
+      setUid(parsingUser?.uid);
+    }
+    if (!sessionStorageUser) {
+      setUid("geust");
+    }
+  }, []);
   useEffect(() => {
     setDetailPageWholeData(props.targetWholeData);
     console.log(detailPageWholeData);
-    console.log(props.targetId);
-    //배열 벗기자 (...)기능
-    // convertBoardComments = { ...props.commentWholeData };
-    convertBoardComments = props.commentWholeData;
-    console.log("convertBoardComments:", convertBoardComments);
-    setBoardComments(convertBoardComments);
-    convertBoardComments.map((item) => {
-      console.log(item.comment);
-    });
+    console.log(props.targetId); // uid
+    getWholeComments();
   }, []);
 
-  useEffect(() => {
-    setBoardComments(convertBoardComments);
-  }, [convertBoardComments]);
-
-  const addComment = async (event) => {
-    event.preventDefault();
-    const newComment = {
-      comment,
-      boardId: props.targetId,
-    };
-    await addDoc(collection(dbService, "comments"), newComment);
-    alert("댓글 저장 성공!");
+  // 댓글 get
+  let commentWholeData = [];
+  const getWholeComments = async () => {
+    const q = query(
+      collection(dbService, "comments"),
+      where("boardId", "==", props.targetId)
+    );
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      const comments = {
+        id: doc.id,
+        ...doc.data(),
+      };
+      console.log(doc.id, " => ", doc.data());
+      commentWholeData.push(comments);
+    });
+    setBoardComments(commentWholeData);
+    setComment("");
+    setTargetIndex("reset");
+    setTargetIsEdit("reset");
+    setEditComment("");
   };
 
-  const deleteComment = async (commentId) => {
-    console.log("댓글 id?", commentId);
+  // 글 수정
+  const updatePost = async (postId) => {
+    // 수정이랑 완료랑 같이..관리중
+    // 버튼 클릭-> isPostEdit(true) -> 편집에서 완료
+    setIsPostEdit(!isPostEdit);
+    const docRef = doc(dbService, "communityPost", postId);
+    await updateDoc(docRef, {
+      title: editPostTitle,
+      editorText: editPostContent,
+      writtenDate: Timestamp.now(),
+    });
+    // 업데이트 된 후에...
+    // getDoc
+    getDoc(doc(dbService, "communityPost", postId)).then((doc) => {
+      const data = doc.data();
+      setDetailPageWholeData({
+        title: data.title,
+        editorText: data.editorText,
+        writtenDate: data.writtenDate,
+      });
+    });
+  };
+  // 글 삭제
+  const deletePost = async (postId) => {
+    const userConfirm = window.confirm("해당 글을 삭제하시겠습니까?");
+    if (userConfirm) {
+      try {
+        await deleteDoc(doc(dbService, "communityPost", postId));
+        router.back();
+      } catch (error) {
+        console.log("error: ", error);
+      }
+    }
+  };
+
+  // 댓글 추가, 삭제, 편집
+  const addComment = async (event) => {
+    event.preventDefault();
+    // uid : 댓글 작성자 id
+    // boardId : 게시물 id
+    // 게시물 id는 firebase에서 자동으로 들어간다.
+    const newComment = {
+      uid,
+      boardId: props.targetId,
+      comment,
+    };
+    await addDoc(collection(dbService, "comments"), newComment);
+    getWholeComments();
+    alert("댓글 저장 성공!");
+  };
+  const deleteComment = async (id) => {
+    console.log("댓글 id?", id);
     const userConfirm = window.confirm("해당 댓글을 정말 삭제하시겠습니까?");
     if (userConfirm) {
       try {
-        await deleteDoc(doc(dbService, "comments", commentId));
+        await deleteDoc(doc(dbService, "comments", id));
         alert("댓글 삭제 완료!");
+        getWholeComments();
       } catch (error) {
         alert(error);
       }
     }
   };
-
-  const commentEdit = async (id) => {
+  const commentEdit = async (id, index) => {
+    // id는 해당 게시물의 고유 id
     console.log(id);
-    setIsEdit(false);
+    console.log("index:", index);
+    setTargetIndex(index);
+    setTargetIsEdit(index);
     const postRef = doc(dbService, "comments", id);
-
     if (editComment) {
       await updateDoc(postRef, {
         comment: editComment,
       });
       alert("댓글 수정 완료!");
+      // setEditComment("");
+      setTargetIsEdit(!index);
+      setTargetIndex(!index);
+      getWholeComments();
     }
-    setIsEdit(true);
   };
 
   return (
     <div>
       <div style={{ border: "3px solid blue", width: 300 }}>
-        <div>글id:{props.targetId}</div>
-        <div>글제목:{detailPageWholeData.title}</div>
-        <h3>텍스트 에디터 내용</h3>
-        <div
-          dangerouslySetInnerHTML={{ __html: detailPageWholeData.editorText }}
-        />
+        {isPostEdit ? (
+          <>
+            <input
+              type="text"
+              value={editPostTitle}
+              onChange={(e) => {
+                setEditPostTitle(e.target.value);
+              }}
+            />
+            <EditorComponent
+              setEditorText={setEditPostContent}
+              editorText={editPostContent}
+            />
+          </>
+        ) : (
+          <>
+            <div>글제목:{detailPageWholeData.title}</div>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: detailPageWholeData.editorText,
+              }}
+            />
+          </>
+        )}
+        {uid === props.targetWholeData.uid && (
+          <div className="flex justify-between">
+            <button onClick={() => updatePost(props.targetId)}>
+              {isPostEdit ? "완료" : "편집"}
+            </button>
+            <button onClick={() => deletePost(props.targetId)}>삭제</button>
+          </div>
+        )}
       </div>
+      {uid === "geust" ? (
+        <div> 로그인 시 댓글을 작성할 수 있습니다. </div>
+      ) : (
+        <div>
+          <input
+            type="text"
+            style={{ border: "1px solid black" }}
+            value={comment}
+            onChange={(e) => {
+              setComment(e.target.value);
+            }}
+          />
+          <button
+            type="button"
+            style={{ border: "1px solid black" }}
+            onClick={addComment}
+          >
+            댓글 추가하기
+          </button>
+        </div>
+      )}
 
-      <div>
-        <input
-          type="text"
-          style={{ border: "1px solid black" }}
-          value={comment}
-          onChange={(e) => {
-            setComment(e.target.value);
-          }}
-        />
-        <button
-          type="button"
-          style={{ border: "1px solid black" }}
-          onClick={addComment}
-        >
-          댓글 추가하기
-        </button>
-      </div>
       <div style={{ border: "1px solid black" }}>
         <h3>댓글창</h3>
         <div>
-          {boardComments?.map((item) => {
+          {boardComments?.map((item, index) => {
             return (
               <>
-                {isEdit ? (
+                {targetIndex === index ? (
                   <input
+                    key={index}
                     type="text"
                     style={{ border: "1px solid black" }}
                     value={editComment}
@@ -128,25 +234,33 @@ export default function DetailPage(props) {
                 ) : (
                   <p>{item.comment}</p>
                 )}
-                <div>댓글id: {item.id}</div>
-                <button
-                  type="button"
-                  style={{ border: "1px solid black" }}
-                  onClick={() => {
-                    deleteComment(item.id);
-                  }}
-                >
-                  삭제
-                </button>
-                <button
-                  type="button"
-                  style={{ border: "1px solid black" }}
-                  onClick={() => {
-                    commentEdit(item.id);
-                  }}
-                >
-                  {isEdit ? "완료 " : "수정"}
-                </button>
+                <div>파이어베이스의 댓글 id: {item.id}</div>
+                {/* 댓글작성자 id와 currentUser가 일치할시 수정/삭제 버튼 보이도록 설정*/}
+                {uid === item.uid ? (
+                  <div>
+                    <button
+                      type="button"
+                      style={{ border: "1px solid black" }}
+                      onClick={() => {
+                        deleteComment(item.id);
+                      }}
+                    >
+                      삭제
+                    </button>
+                    <button
+                      type="button"
+                      style={{ border: "1px solid black" }}
+                      onClick={() => {
+                        // 댓글 id
+                        commentEdit(item.id, index);
+                      }}
+                    >
+                      {targetIsEdit === index ? "완료 " : "수정"}
+                    </button>
+                  </div>
+                ) : (
+                  ""
+                )}
               </>
             );
           })}
@@ -164,30 +278,7 @@ export async function getServerSideProps(context) {
   const targetId = id;
   let targetWholeData;
   let commentWholeData = [];
-
   const snap = await getDoc(doc(dbService, "communityPost", targetId));
-
-  //-----------------댓글---------------
-  const q = query(
-    collection(dbService, "comments"),
-    where("boardId", "==", targetId)
-  );
-
-  const querySnapshot = await getDocs(q);
-
-  querySnapshot.forEach((doc) => {
-    const comments = {
-      id: doc.id,
-      ...doc.data(),
-    };
-    console.log(doc.id, " => ", doc.data());
-    // commentWholeData = doc.data();
-    commentWholeData.push(comments);
-  });
-  console.log("commentWholeData:", commentWholeData);
-
-  //-----------------------------------
-
   if (snap.exists()) {
     console.log(snap.data());
     targetWholeData = snap.data();
@@ -195,18 +286,12 @@ export async function getServerSideProps(context) {
     console.log("No such document");
   }
   console.log("targetWholeData:", targetWholeData);
-
-  //해결한 코드
-  // 제이슨 전달할때 객체안의 객체 넣지말라고 오류났었음
   targetWholeData = JSON.parse(JSON.stringify(targetWholeData));
   console.log(targetWholeData);
-
   return {
     props: {
-      // response,
       targetWholeData,
       targetId,
-      commentWholeData,
     },
   };
 }
