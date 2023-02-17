@@ -39,9 +39,8 @@ const Header = () => {
                         로그아웃
                     </button>
                 ) : (
-                    <Link href="/loginPage">로그인</Link>
+                    <a href="/loginPage">로그인</a>
                 )}
-
                 <Link href="/myPage">마이페이지</Link>
             </div>
         </div>
