@@ -1,5 +1,6 @@
-import React, { useRef, useState } from "react";
-import { authService } from "@/config/firebase";
+import React, { useEffect, useRef, useState } from "react";
+import { dbService, authService } from "@/config/firebase";
+import { doc, setDoc } from "firebase/firestore";
 import {
   createUserWithEmailAndPassword,
   signOut,

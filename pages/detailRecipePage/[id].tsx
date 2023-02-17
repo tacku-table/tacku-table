@@ -1,14 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import {
-  onSnapshot,
-  doc,
-  getDocs,
-  updateDoc,
-  getDoc,
-  query,
-  collection,
-  where,
-} from "firebase/firestore";
+import { onSnapshot, doc, updateDoc, getDoc } from "firebase/firestore";
 import { dbService } from "@/config/firebase";
 import { useRouter } from "next/router";
 import Bookmark from "@/components/detail/Bookmark";
@@ -18,7 +9,7 @@ export default function DetailReciptPage(props: any) {
   //레시피 데이터
   const [recipeData, getRecipeData] = useState<any>("");
   const [userData, setUserData] = useState<any>("");
-  const [views, setViews] = useState<number>(props.targetWholeData.viewCount);
+  let [views, setViews] = useState<number>(props.targetWholeData.viewCount);
   const userUid = props.targetWholeData.uid;
 
   //레시피 데이터 불러오기
@@ -34,19 +25,19 @@ export default function DetailReciptPage(props: any) {
   }, []);
   //조회수
   useEffect(() => {
-    setViews((views) => views + 1);
-    console.log(views);
+    setViews((views += 1));
     updateDoc(doc(dbService, "recipe", props.postId), {
       viewCount: views,
     });
   }, []);
+
   return (
     <>
       <img src={recipeData.thumbnail} alt="thumbnail" />
       <div>음식제목 : {recipeData.foodTitle}</div>
       <div>닉네임 : {userData.displayName}</div>
       <Bookmark postId={props.postId} recipeData={recipeData} />
-      <div>조회수 : {recipeData.viewCount}</div>
+      <div>조회수 : {views}</div>
       <div>좋아요 : {recipeData.bookmarkCount}</div>
       <div>재료 : {recipeData.ingredient}</div>
       <div>영화 : {recipeData.animationTitle}</div>

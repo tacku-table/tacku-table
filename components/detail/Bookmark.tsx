@@ -6,13 +6,14 @@ import {
   onSnapshot,
   setDoc,
   updateDoc,
+  query,
 } from "@firebase/firestore";
 import { authService, dbService } from "@/config/firebase";
 
 const Bookmark = (props: any) => {
   //북마크
   const [bookMark, setBookMark] = useState<any[]>([]);
-  const [postbookMark, setpostBookMark] = useState<number>(0);
+  let [postbookMark, setpostBookMark] = useState<number>(0);
   const [toggleBookmark, setToggleBookmark] = useState<boolean>(false);
   //현재 로그인된 유저
   const currentUser: any = authService.currentUser?.uid;
@@ -34,6 +35,7 @@ const Bookmark = (props: any) => {
       ),
     [bookMark]
   );
+  console.log(postbookMark);
   //북마크 db 추가 삭제
   const bookMarkPost = async () => {
     if (toggleBookmark) {
