@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { authService, dbService } from "@/config/firebase";
 import {
   createUserWithEmailAndPassword,
@@ -6,7 +6,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { emailRegex, pwRegex } from "@/util";
-import { setDoc, doc, addDoc, collection } from "firebase/firestore";
+import { setDoc, doc } from "firebase/firestore";
 
 const RegisterPage = () => {
   // useRef로 취득하는 DOM은 최초 mount되기 전엔 null이다
@@ -19,6 +19,21 @@ const RegisterPage = () => {
   const [pw, setPw] = useState("");
   const [pwConfirm, setPwConfirm] = useState("");
   const [nickname, setNickname] = useState("");
+
+  // 브라우저 뒤로가기 버튼시 confirm창과 함께 "확인"클릭시 로그인 페이지로 이동하는 함수입니다.
+  useEffect(() => {
+    window.history.pushState(null, "null", document.URL);
+    console.log("document.URL:", document.URL);
+    window.addEventListener("popstate", function (event) {
+      const result = window.confirm("정말 나가시겠습니까?");
+      if (result) {
+        window.location.replace(`/loginPage`);
+      }
+      if (!result) {
+        return false;
+      }
+    });
+  }, []);
 
   // 유효성검사
   const validInputs = () => {
