@@ -4,7 +4,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { emailRegex, pwRegex } from "@/util";
 import { useRouter } from "next/router";
 
-const Login = () => {
+const Login = ({ setStatus, status }: { setStatus: any; status: string }) => {
   const emailRef = useRef<HTMLInputElement>(null);
   const pwRef = useRef<HTMLInputElement>(null);
   const [email, setEmail] = useState("");
@@ -101,6 +101,29 @@ const Login = () => {
       >
         로그인하기
       </button>
+      <br />
+      {status === "login" ? (
+        <div>
+          <button
+            type="button"
+            onClick={() => {
+              setStatus("signUp");
+            }}
+          >
+            회원가입하기
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setStatus("searchPW");
+            }}
+          >
+            비밀번호 찾기
+          </button>
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 };
