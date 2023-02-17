@@ -1,5 +1,70 @@
+import { useRef, FormEvent, useState } from "react";
+import { authService } from "@/config/firebase";
+import { useSearchParams } from "next/navigation";
+import { connectAuthEmulator, confirmPasswordReset } from "firebase/auth";
+
+const ResetPassword = () => {
+  //searchParams : URL 검색 매개변수를 읽다. url에 있는 oobcode를 읽는 것같다.
+  const searchParams = useSearchParams();
+  const [newPassword, setNewPassword] = useState("");
+  const [conirmPassword, setConirmPassword] = useState("");
+
+  const newPwRef = useRef<HTMLInputElement>(null);
+  const newPwConfirmRef = useRef<HTMLInputElement>(null);
+  //oobCode: 요청을 식별하고 확인하는 데 사용되는 일회성 코드
+  let oobCode: any = searchParams.get("oobCode");
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (newPassword !== conirmPassword) {
+      alert("비밀번호가 다릅니다.");
+      return;
+    }
+    confirmPasswordReset(authService, oobCode, newPassword)
+      .then((data) => {
+        alert("성공");
+      })
+      .catch((error) => {
+        if (error.code === "auth/invalid-action-code") {
+          alert("회원이 아님.");
+          return;
+        }
+        console.log(error.message);
+      });
+  };
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <input
+            id="pw"
+            type="password"
+            placeholder="비밀번호 설정"
+            ref={newPwRef}
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          ></input>
+        </div>
+        <div>
+          <input
+            id="pwConfirm"
+            type="password"
+            placeholder="비밀번호 확인"
+            ref={newPwConfirmRef}
+            value={conirmPassword}
+            onChange={(e) => setConirmPassword(e.target.value)}
+          ></input>
+        </div>
+        <button type="submit">비밀번호 변경</button>
+      </form>
+    </div>
+  );
+};
+
+export default ResetPassword;
+
 // import { ChangeEvent, FormEvent, useState } from "react";
-// import { authService } from "@/shared/firebase";
+// import { authService } from "@/config/firebase";
 // //import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 // import { useSearchParams } from "next/navigation";
 // import { connectAuthEmulator, confirmPasswordReset } from "firebase/auth";
@@ -91,11 +156,4 @@
 //   );
 // };
 
-// export default ResetPassword;
-import React from "react";
-
-function resetPassword() {
-  return <div>resetPassword</div>;
-}
-
-export default resetPassword;
+//export default ResetPassword;
