@@ -9,22 +9,14 @@ export default function DetailReciptPage(props: any) {
   //레시피 데이터
   const [recipeData, getRecipeData] = useState<any>("");
   const [userData, setUserData] = useState<any>("");
-
   //조회수
   let [views, setViews] = useState<number>(props.targetWholeData.viewCount);
-  const userUid = props.targetWholeData.uid;
 
   //레시피 데이터 불러오기
   useEffect(() => {
     getRecipeData(props.targetWholeData);
   }, []);
 
-  // 계정 정보 가져오기
-  useEffect(() => {
-    onSnapshot(doc(dbService, "user", userUid), (snapshot) => {
-      setUserData(snapshot.data());
-    });
-  }, []);
   //조회수
   useEffect(() => {
     setViews((views += 1));
@@ -33,12 +25,27 @@ export default function DetailReciptPage(props: any) {
     });
   }, []);
 
+  useEffect(() => {
+    const sessionStorageUser = sessionStorage.getItem("User") || "";
+    if (sessionStorageUser) {
+      const parsingUser = JSON.parse(sessionStorageUser);
+      setUserData(parsingUser?.uid);
+    }
+    if (!sessionStorageUser) {
+      setUserData("geust");
+    }
+  }, []);
+
   return (
     <>
       <img src={recipeData.thumbnail} alt="thumbnail" />
       <div>음식제목 : {recipeData.foodTitle}</div>
-      <div>닉네임 : {userData.displayName}</div>
-      <Bookmark postId={props.postId} recipeData={recipeData} />
+      <div>닉네임 : {recipeData.writeNickName}</div>
+      <Bookmark
+        postId={props.postId}
+        recipeData={recipeData}
+        userData={userData}
+      />
       <div>조회수 : {views}</div>
       <div>재료 : {recipeData.ingredient}</div>
       <div>영화 : {recipeData.animationTitle}</div>

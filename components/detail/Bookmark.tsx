@@ -31,7 +31,6 @@ const Bookmark = (props: any) => {
     };
     bookmarkLoad();
   }, [dbService, props.postId]);
-  console.log("countbookMark", countBookMark);
   useEffect(() => {
     onSnapshot(doc(dbService, "recipe", props.postId), (snapshot) => {
       setCountBookMark(snapshot.data());
@@ -43,10 +42,11 @@ const Bookmark = (props: any) => {
     setToggleBookmark(
       bookMark.findIndex((mark) => mark.id === props.postId) !== -1
     );
-  }, [bookMark]);
+  }, [bookMark, props.postId]);
   //북마크 db 추가 삭제
   const bookMarkPost = async () => {
     if (toggleBookmark) {
+      setToggleBookmark(!toggleBookmark);
       const copy = [...countBookMark.bookmarkCount];
       const filter = copy.filter((item: any) => {
         return item !== currentUser;
@@ -59,6 +59,7 @@ const Bookmark = (props: any) => {
         bookmarkCount: filter,
       });
     } else {
+      setToggleBookmark(!toggleBookmark);
       console.log("북마크 추가");
       const copy = [...countBookMark.bookmarkCount];
       copy.push(currentUser);
@@ -77,12 +78,20 @@ const Bookmark = (props: any) => {
         });
       }
     }
+    console.log(countBookMark.bookmarkCount);
+    console.log(toggleBookmark);
   };
 
   return (
     <>
-      <button onClick={bookMarkPost}>북마크</button>
-      <div>북마크 갯수:{countBookMark.bookmarkCount.length}</div>
+      {props.userData ===
+      "geust" ? null : countBookMark?.bookmarkCount?.includes(currentUser) ? (
+        <button onClick={bookMarkPost}>북마크삭제</button>
+      ) : (
+        <button onClick={bookMarkPost}>북마크추가</button>
+      )}
+
+      <div>북마크 갯수:{countBookMark?.bookmarkCount.length}</div>
     </>
   );
 };
