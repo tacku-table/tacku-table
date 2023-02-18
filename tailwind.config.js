@@ -21,17 +21,23 @@ module.exports = {
             },
             keyframes: {
                 slider: {
+                    // "0%": {
+                    //     transform: "translateY(0px)",
+                    // },
+                    // "100%": {
+                    //     transform: "translateY(-1400px)",
+                    // },
                     "0%": {
-                        transform: "translateY(0px)",
+                        transform: "opacity(0)",
                     },
                     "100%": {
-                        transform: "translateY(-1400px)",
+                        transform: "opacity(1)",
                     },
                 },
             },
-            animation: {
-                slider: "slider 15s linear infinite",
-            },
+            // animation: {
+            //     slider: "slider 15s linear infinite",
+            // },
         },
     },
     plugins: [],

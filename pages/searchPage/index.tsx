@@ -2,12 +2,15 @@ import { dbService } from "@/config/firebase";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import Fuse from "fuse.js";
 import type { NextPage } from "next";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
 const SearchData: NextPage = () => {
     const [text, setText] = useState("");
     const searchTextHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setText(e.target.value);
+    };
+    const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
     };
     // 전체목록불러오기
     const [currentItems, setCurrentItems] = useState<RecipeProps[]>([]);
@@ -23,7 +26,6 @@ const SearchData: NextPage = () => {
             id: doc.id,
         }));
         setCurrentItems(newData);
-        // console.log(newData);
     };
 
     // 검색
@@ -35,7 +37,6 @@ const SearchData: NextPage = () => {
     const dataResults = text
         ? results.map((recipe) => recipe.item)
         : currentItems;
-    // console.log(dataResults);
 
     useEffect(() => {
         getList();
@@ -47,7 +48,7 @@ const SearchData: NextPage = () => {
                 <div className="bg-main hover:bg-gradient-to-bl font-medium rounded-lg rounded-r-none text-white text-sm px-5 py-[10.5px] text-center">
                     레시피검색
                 </div>
-                <form /* onSubmit={submitHandler} */>
+                <form onSubmit={submitHandler}>
                     <input
                         type="text"
                         value={text}

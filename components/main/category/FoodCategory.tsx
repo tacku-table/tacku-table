@@ -7,7 +7,7 @@ export default function FoodCategory() {
         <div>
             <Menu as="div" className="relative inline-block text-left">
                 <div>
-                    <Menu.Button className="inline-flex justify-center items-center px-4 py-2 text-sm font-medium hover:bg-main hover:text-white focus:outline-none gap-1">
+                    <Menu.Button className="inline-flex justify-center items-center px-4 py-2 text-sm font-medium hover:bg-main hover:text-white hover:transition hover:ease-out hover:duration-300 focus:outline-none gap-1">
                         음식종류
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -30,7 +30,7 @@ export default function FoodCategory() {
                     enter="transition ease-out duration-100"
                     enterFrom="transform opacity-0 scale-95"
                     enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
+                    leave="transition ease-in duration-95"
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                 >

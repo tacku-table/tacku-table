@@ -1,16 +1,9 @@
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
-import {
-    onSnapshot,
-    query,
-    collection,
-    orderBy,
-    limit,
-    getDocs,
-} from "firebase/firestore";
+import { query, collection, orderBy, limit, getDocs } from "firebase/firestore";
 import { dbService } from "@/config/firebase";
 
-const NewRecipe: NextPage = () => {
+const BestRecipe: NextPage = () => {
     const [currentItems, setCurrentItems] = useState<RecipeProps[]>([]);
 
     const getList = async () => {
@@ -65,4 +58,4 @@ const NewRecipe: NextPage = () => {
     );
 };
 
-export default NewRecipe;
+export default BestRecipe;
