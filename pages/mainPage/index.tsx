@@ -1,13 +1,14 @@
 import BestRecipe from "@/components/main/BestRecipe";
 import GoToCommunity from "@/components/main/GoToCommunity";
 import NewRecipe from "@/components/main/NewRecipe";
+import Slider from "@/components/main/Slider";
 import Video from "@/components/main/video";
 
 const MainPage = () => {
     return (
-        <div className="w-full h-full">
+        <div className="w-full">
             <Video />
-            <div className="h-[50px] bg-teal-200">태그</div>
+            <div className="relative flex flex-col h-16 justify-center items-center bg-teal-200 overflow-hidden"></div>
             <div className="h-[1500px] py-20 flex flex-col items-center">
                 <div className="relative mt-4 mb-7">
                     <input
@@ -41,6 +42,7 @@ const MainPage = () => {
             </div>
             <GoToCommunity />
             <div className="h-[500px] bg-red-200">보너스</div>
+            <Slider />
         </div>
     );
 };

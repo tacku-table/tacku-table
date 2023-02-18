@@ -30,7 +30,7 @@ const TotalRecipe: NextPage = () => {
             {currentItems?.map((item) => {
                 return (
                     <div key={item.id}>
-                        <div className="bg-slate-100 w-[300px] h-[226px] overflow-hidden mx-auto">
+                        <div className="bg-slate-100 w-[316px] h-[188px] overflow-hidden mx-auto">
                             <img
                                 src={`${item.thumbnail}`}
                                 className="w-full h-full object-cover"

@@ -43,7 +43,7 @@ const ClassifiedRecipe: NextPage = () => {
     }, [router.query.cate]);
 
     return (
-        <div className="w-full h-screen flex flex-col justify-center items-center">
+        <div className="w-full flex flex-col justify-center items-center">
             <SearchRecipeBar />
             <ul className="w-3/4 flex justify-end mb-[20px]">
                 <li className="w-[87px] h-[35px] border border-border border-collapse hover:bg-main text-baseText hover:text-white flex justify-center items-center cursor-pointer">
@@ -53,29 +53,34 @@ const ClassifiedRecipe: NextPage = () => {
                     최신순
                 </li>
             </ul>
-            <div className="w-3/4 border-b border-border mb-[30px]"></div>
             <div className="w-3/4 flex justify-between">
-                <div className="bg-slate-100 w-[150px] h-full">카테고리</div>
+                <div className="bg-slate-100 px-2 py-3 w-[150px] h-[50px] mr-7 text-center">
+                    {router.query.cate?.toString().replaceAll("&", "/")}
+                </div>
                 <div className="grid grid-cols-3 gap-4">
-                    {currentItems?.map((item) => {
-                        return (
-                            <div key={item.id}>
-                                <div className="bg-slate-100 w-[300px] h-[226px] overflow-hidden mx-auto">
-                                    <img
-                                        src={`${item.thumbnail}`}
-                                        className="w-full h-full object-cover"
-                                    />
+                    {currentItems.length ? (
+                        currentItems.map((item) => {
+                            return (
+                                <div key={item.id}>
+                                    <div className="bg-slate-100 w-[316px] h-[188px] overflow-hidden mx-auto">
+                                        <img
+                                            src={`${item.thumbnail}`}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </div>
+                                    <ul className="text-sm text-slate-500 space-x-2 flex">
+                                        <li>{item.foodCategory}</li>
+                                        <li>{item.ingredient}</li>
+                                    </ul>
+                                    <p className="text-lg text-slate-900 font-semibold">
+                                        {item.foodTitle}
+                                    </p>
                                 </div>
-                                <ul className="text-sm text-slate-500 space-x-2 flex">
-                                    <li>{item.foodCategory}</li>
-                                    <li>{item.ingredient}</li>
-                                </ul>
-                                <p className="text-lg text-slate-900 font-semibold">
-                                    {item.foodTitle}
-                                </p>
-                            </div>
-                        );
-                    })}
+                            );
+                        })
+                    ) : (
+                        <div>게시물이 존재하지 않습니다</div>
+                    )}
                 </div>
             </div>
         </div>

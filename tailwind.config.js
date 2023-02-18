@@ -19,6 +19,19 @@ module.exports = {
                 baseText: "#777777",
                 hoverGray: "#f5f5f5",
             },
+            keyframes: {
+                slider: {
+                    "0%": {
+                        transform: "translateY(0px)",
+                    },
+                    "100%": {
+                        transform: "translateY(-1400px)",
+                    },
+                },
+            },
+            animation: {
+                slider: "slider 15s linear infinite",
+            },
         },
     },
     plugins: [],

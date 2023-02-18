@@ -35,13 +35,14 @@ export default function FoodCategory() {
                     leaveTo="transform opacity-0 scale-95"
                 >
                     <Menu.Items className="absolute left-0 mt-2 origin-top-right bg-white shadow-lg focus:outline-none z-50">
-                        <div className="flex flex-col">
+                        <div className="flex flex-col w-28">
                             <Menu.Item>
                                 <Link
                                     legacyBehavior
-                                    href={`/searchPage/15분이하`}
+                                    href="/searchPage/[cate]"
+                                    as={`/searchPage/15분이하`}
                                 >
-                                    <a className="w-full px-2 py-2 text-sm text-gray-900 hover:bg-hoverGray hover:text-main">
+                                    <a className="px-4 py-3 pt-4 text-sm text-gray-900 hover:bg-hoverGray hover:text-main">
                                         15분
                                     </a>
                                 </Link>
@@ -49,9 +50,10 @@ export default function FoodCategory() {
                             <Menu.Item>
                                 <Link
                                     legacyBehavior
-                                    href={`/searchPage/30분이하`}
+                                    href="/searchPage/[cate]"
+                                    as={`/searchPage/30분이하`}
                                 >
-                                    <a className="px-2 py-2 text-sm text-gray-900 hover:bg-hoverGray hover:text-main">
+                                    <a className="px-4 py-3 text-sm text-gray-900 hover:bg-hoverGray hover:text-main">
                                         30분
                                     </a>
                                 </Link>
@@ -59,9 +61,10 @@ export default function FoodCategory() {
                             <Menu.Item>
                                 <Link
                                     legacyBehavior
-                                    href={`/searchPage/1시간이하`}
+                                    href="/searchPage/[cate]"
+                                    as={`/searchPage/1시간이하`}
                                 >
-                                    <a className="px-2 py-2 text-sm text-gray-900 hover:bg-hoverGray hover:text-main">
+                                    <a className="px-4 py-3 text-sm text-gray-900 hover:bg-hoverGray hover:text-main">
                                         1시간
                                     </a>
                                 </Link>
@@ -69,9 +72,10 @@ export default function FoodCategory() {
                             <Menu.Item>
                                 <Link
                                     legacyBehavior
-                                    href={`/searchPage/1시간이상`}
+                                    href="/searchPage/[cate]"
+                                    as={`/searchPage/1시간이상`}
                                 >
-                                    <a className="px-2 py-2 text-sm text-gray-900 hover:bg-hoverGray hover:text-main">
+                                    <a className="px-4 py-3 pb-4 text-sm text-gray-900 hover:bg-hoverGray hover:text-main">
                                         1시간이상
                                     </a>
                                 </Link>
