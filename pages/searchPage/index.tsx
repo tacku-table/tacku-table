@@ -43,7 +43,7 @@ const SearchData: NextPage = () => {
     }, []);
 
     return (
-        <div className="w-full flex flex-col justify-center items-center">
+        <div className="w-full mt-20 flex flex-col justify-center items-center">
             <div className="relative flex justify-center">
                 <div className="bg-main hover:bg-gradient-to-bl font-medium rounded-lg rounded-r-none text-white text-sm px-5 py-[10.5px] text-center">
                     레시피검색
@@ -82,8 +82,8 @@ const SearchData: NextPage = () => {
                 </li>
             </ul>
             <div className="w-3/4 border-b border-border mb-[30px]"></div>
-            <div className="w-3/4 flex justify-center">
-                <div className="grid grid-cols-3 gap-4">
+            <div className="w-3/4 flex justify-center mb-20">
+                <div className="grid grid-cols-3 gap-5 gap-y-14">
                     {dataResults?.map((item) => {
                         return (
                             <div key={item.id}>

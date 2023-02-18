@@ -34,8 +34,6 @@ const ClassifiedRecipe: NextPage = () => {
             id: doc.id,
         }));
         setCurrentItems(newData);
-        console.log(newData);
-        console.log(router.query.cate);
     };
 
     useEffect(() => {
@@ -53,6 +51,7 @@ const ClassifiedRecipe: NextPage = () => {
                     최신순
                 </li>
             </ul>
+            <div className="w-3/4 border-b border-border mb-[30px]"></div>
             <div className="w-3/4 flex justify-between">
                 <div className="bg-slate-100 px-2 py-3 w-[150px] h-[50px] mr-7 text-center">
                     {router.query.cate?.toString().replaceAll("&", "/")}

@@ -7,7 +7,7 @@ export default function FoodCategory() {
         <div>
             <Menu as="div" className="relative inline-block text-left">
                 <div>
-                    <Menu.Button className="inline-flex justify-center items-center px-4 py-2 text-sm font-medium hover:bg-main hover:text-white hover:transition hover:ease-out hover:duration-300 focus:outline-none gap-1">
+                    <Menu.Button className="px-3 py-7 flex justify-center items-center font-medium hover:text-main hover:transition hover:ease-out hover:duration-300 focus:outline-none gap-1">
                         조리시간
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -35,52 +35,36 @@ export default function FoodCategory() {
                     leaveTo="transform opacity-0 scale-95"
                 >
                     <Menu.Items className="absolute left-0 mt-2 origin-top-right bg-white shadow-lg focus:outline-none z-50">
-                        <div className="flex flex-col w-28">
+                        <ul className="flex flex-col w-28">
                             <Menu.Item>
-                                <Link
-                                    legacyBehavior
-                                    href="/searchPage/[cate]"
-                                    as={`/searchPage/15분이하`}
-                                >
-                                    <a className="px-4 py-3 pt-4 text-sm text-gray-900 hover:bg-hoverGray hover:text-main">
+                                <li className="px-4 py-3 pt-4 text-sm text-gray-900 hover:bg-hoverGray hover:text-main">
+                                    <Link href={`/searchPage/15분이하`}>
                                         15분
-                                    </a>
-                                </Link>
+                                    </Link>
+                                </li>
                             </Menu.Item>
                             <Menu.Item>
-                                <Link
-                                    legacyBehavior
-                                    href="/searchPage/[cate]"
-                                    as={`/searchPage/30분이하`}
-                                >
-                                    <a className="px-4 py-3 text-sm text-gray-900 hover:bg-hoverGray hover:text-main">
+                                <li className="px-4 py-3 text-sm text-gray-900 hover:bg-hoverGray hover:text-main">
+                                    <Link href={`/searchPage/30분이하`}>
                                         30분
-                                    </a>
-                                </Link>
+                                    </Link>
+                                </li>
                             </Menu.Item>
                             <Menu.Item>
-                                <Link
-                                    legacyBehavior
-                                    href="/searchPage/[cate]"
-                                    as={`/searchPage/1시간이하`}
-                                >
-                                    <a className="px-4 py-3 text-sm text-gray-900 hover:bg-hoverGray hover:text-main">
+                                <li className="px-4 py-3 text-sm text-gray-900 hover:bg-hoverGray hover:text-main">
+                                    <Link href={`/searchPage/1시간이하`}>
                                         1시간
-                                    </a>
-                                </Link>
+                                    </Link>
+                                </li>
                             </Menu.Item>
                             <Menu.Item>
-                                <Link
-                                    legacyBehavior
-                                    href="/searchPage/[cate]"
-                                    as={`/searchPage/1시간이상`}
-                                >
-                                    <a className="px-4 py-3 pb-4 text-sm text-gray-900 hover:bg-hoverGray hover:text-main">
+                                <li className="px-4 py-3 pb-4 text-sm text-gray-900 hover:bg-hoverGray hover:text-main">
+                                    <Link href={`/searchPage/1시간이상`}>
                                         1시간이상
-                                    </a>
-                                </Link>
+                                    </Link>
+                                </li>
                             </Menu.Item>
-                        </div>
+                        </ul>
                     </Menu.Items>
                 </Transition>
             </Menu>

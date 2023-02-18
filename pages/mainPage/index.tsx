@@ -18,7 +18,7 @@ const MainPage = () => {
                     ></input>
                     <button
                         type="button"
-                        className="bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg rounded-l-none text-white text-sm px-5 py-[10.5px] text-center"
+                        className="bg-main hover:bg-gradient-to-bl hover:transition-all focus:ring-4 focus:outline-none focus:ring-orange-100 font-medium rounded-lg rounded-l-none text-white text-sm px-5 py-[10.5px] text-center"
                     >
                         레시피검색
                     </button>
