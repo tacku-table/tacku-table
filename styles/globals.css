@@ -16,8 +16,20 @@
     }
 }
 @layer components {
+    .header-title {
+        @apply px-7 py-7 hover:text-main hover:transition hover:ease-out hover:duration-300  font-medium text-baseText;
+    }
+    .header-cate-title {
+        @apply px-7 py-7 flex justify-center items-center hover:text-main hover:transition hover:ease-out hover:duration-300 focus:outline-none gap-1 text-sm font-medium text-baseText;
+    }
+    .menu-wh {
+        @apply absolute top-16 left-0 w-auto h-auto origin-top-right bg-white shadow-lg focus:outline-none z-50;
+    }
     .menu-items {
-        @apply px-4 py-3 text-sm text-gray-900 hover:bg-hoverGray hover:text-main;
+        @apply pl-7 pr-7 py-4 text-sm text-gray-900 hover:bg-hoverGray hover:text-main;
+    }
+    .register-input {
+        @apply h-[40px] border-[1.5px] border-border rounded-sm pl-3 focus:outline-none mt-2 text-xs;
     }
 }
 @keyframes messageFadeIn {

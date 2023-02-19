@@ -14,11 +14,13 @@ const RegisterPage = () => {
     const pwRef = useRef<HTMLInputElement>(null);
     const pwConfirmRef = useRef<HTMLInputElement>(null);
     const nicknameRef = useRef<HTMLInputElement>(null);
+    const termsRef = useRef<HTMLInputElement>(null);
 
     const [email, setEmail] = useState("");
     const [pw, setPw] = useState("");
     const [pwConfirm, setPwConfirm] = useState("");
     const [nickname, setNickname] = useState("");
+    const [terms, setTerms] = useState(false);
 
     // 브라우저 뒤로가기 버튼시 confirm창과 함께 "확인"클릭시 로그인 페이지로 이동하는 함수입니다.
     useEffect(() => {
@@ -66,7 +68,14 @@ const RegisterPage = () => {
             nicknameRef.current!.focus();
             return true;
         }
+        // if (!terms) {
+        //     alert(
+        //         "이용약관과 개인정보처리취급방침에 동의하셔야 가입이 진행됩니다"
+        //     );
+        //     return true;
+        // }
     };
+    // console.log(terms);
 
     // 회원가입
     const signUp = (e: React.FormEvent) => {
@@ -108,12 +117,12 @@ const RegisterPage = () => {
     };
 
     return (
-        <div className="w-full">
-            <form
-                onSubmit={signUp}
-                className="bg-slate-300 w-2/5 h-4/5 p-10 rounded-md shadow-md mx-auto flex flex-col"
-            >
-                <h2>회원가입</h2>
+        <div className="w-[420px] mx-auto text-baseText">
+            <form onSubmit={signUp} className="flex flex-col">
+                <h2 className="text-2xl font-bold self-center">회원가입</h2>
+                <label htmlFor="email" className="font-semibold mt-4">
+                    이메일
+                </label>
                 <input
                     id="email"
                     type="email"
@@ -121,8 +130,11 @@ const RegisterPage = () => {
                     ref={emailRef}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    className="register-input"
                 ></input>
-                <label htmlFor="email">이메일을 입력하세요</label>
+                <label htmlFor="pw" className="font-semibold mt-4">
+                    비밀번호
+                </label>
                 <input
                     id="pw"
                     type="password"
@@ -130,9 +142,13 @@ const RegisterPage = () => {
                     ref={pwRef}
                     value={pw}
                     onChange={(e) => setPw(e.target.value)}
+                    className="register-input"
                 ></input>
-                <label htmlFor="pw">
-                    비밀번호는 8~20자 이내로 영문, 숫자를 혼용하여 입력하세요
+                <p className="mt-[5px] text-grayText text-xs">
+                    영문, 숫자, 특수기호 포함 최소 8자 이상
+                </p>
+                <label htmlFor="pwConfirm" className="font-semibold mt-4">
+                    비밀번호 확인
                 </label>
                 <input
                     id="pwConfirm"
@@ -141,21 +157,38 @@ const RegisterPage = () => {
                     ref={pwConfirmRef}
                     value={pwConfirm}
                     onChange={(e) => setPwConfirm(e.target.value)}
+                    className="register-input"
                 ></input>
-                <label htmlFor="pwConfirm">
-                    비밀번호 입력란과 동일하게 입력하세요
+                <label htmlFor="nickname" className="font-semibold mt-4">
+                    닉네임
                 </label>
                 <input
                     id="nickname"
                     type="text"
-                    placeholder="닉네임"
+                    placeholder="닉네임 입력"
                     maxLength={10}
                     ref={nicknameRef}
                     value={nickname}
                     onChange={(e) => setNickname(e.target.value)}
+                    className="register-input"
                 ></input>
-                <label htmlFor="nickname">10자 이내</label>
-                <button type="submit" className="bg-black text-white">
+                <p className="mt-[5px] text-grayText text-xs">최대 10자 이내</p>
+                <div className="border border-border mt-7"></div>
+                <div className="flex text-grayText text-xs mt-2">
+                    <input id="terms" type="checkbox"></input>
+                    <label htmlFor="terms">
+                        <span className="ml-1 text-blue-500">이용약관</span>
+                        과&nbsp;
+                        <span className="ml-1 text-blue-500">
+                            개인정보취급방침
+                        </span>
+                        에&nbsp;동의합니다.
+                    </label>
+                </div>
+                <button
+                    type="submit"
+                    className="bg-main text-white h-[45px] mt-10"
+                >
                     회원가입
                 </button>
             </form>

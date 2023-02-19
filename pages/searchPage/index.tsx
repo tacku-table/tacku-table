@@ -59,7 +59,7 @@ const SearchData: NextPage = () => {
     return (
         <div className="w-full mt-20 flex flex-col justify-center items-center">
             <div className="relative flex justify-center">
-                <div className="bg-main hover:bg-gradient-to-bl font-medium rounded-lg rounded-r-none text-white text-sm px-5 py-[10.5px] text-center">
+                <div className="bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg rounded-r-none text-white text-sm px-5 py-[10.5px] text-center">
                     레시피검색
                 </div>
                 <form onSubmit={submitHandler}>
@@ -132,11 +132,11 @@ const SearchData: NextPage = () => {
                                 <ul className="text-sm text-slate-500 space-x-2 flex">
                                     <li>&#35;{item.animationTitle}</li>
                                     <li>&#35;{item.cookingTime}</li>
-                                    <li className="text-red-400">
-                                        {item.displayStatus === "회원 공개" &&
-                                            `#${item.displayStatus}`}
-                                    </li>
                                 </ul>
+                                <div className="text-sm text-red-400">
+                                    {item.displayStatus === "회원 공개" &&
+                                        `#${item.displayStatus}`}
+                                </div>
                                 <p className="text-lg text-slate-900 font-semibold">
                                     {item.foodTitle}
                                 </p>

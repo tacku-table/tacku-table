@@ -14,10 +14,10 @@ const CTItems: NextPage = () => {
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95"
         >
-            <Menu.Items className="absolute top-16 left-0 origin-top-right bg-white shadow-lg focus:outline-none z-50">
-                <ul className="flex flex-col w-28">
+            <Menu.Items className="menu-wh">
+                <ul className="flex flex-col">
                     <Menu.Item>
-                        <li className="menu-items pt-4">
+                        <li className="menu-items pt-5">
                             <Link href={`/searchPage/15분이하`}>15분</Link>
                         </li>
                     </Menu.Item>
@@ -32,7 +32,7 @@ const CTItems: NextPage = () => {
                         </li>
                     </Menu.Item>
                     <Menu.Item>
-                        <li className="menu-items pb-4">
+                        <li className="menu-items pb-5">
                             <Link href={`/searchPage/1시간이상`}>
                                 1시간이상
                             </Link>

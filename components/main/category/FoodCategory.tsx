@@ -6,7 +6,7 @@ export default function FoodCategory() {
         <div>
             <Menu as="div" className="relative inline-block text-left">
                 <div>
-                    <Menu.Button className="px-3 py-7 flex justify-center items-center font-medium hover:text-main hover:transition hover:ease-out hover:duration-300 focus:outline-none gap-1">
+                    <Menu.Button className="header-cate-title">
                         음식종류
                         <svg
                             xmlns="http://www.w3.org/2000/svg"

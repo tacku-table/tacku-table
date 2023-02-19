@@ -25,17 +25,17 @@ const Header = () => {
     };
 
     return (
-        <div className="fixed top-0 z-50 w-full h-24 px-24 py-7 bg-white border-b border-grayText flex justify-between items-center">
+        <div className="fixed top-0 z-50 w-full h-24 px-24 py-7 bg-white border-b-[1.5px] border-border flex justify-between items-center text-sm">
             <ul className="flex justify-center items-center">
-                <li className="px-3 py-7 hover:text-main hover:transition hover:ease-out hover:duration-300">
+                <li className="header-title">
                     <Link href="/mainPage">타쿠의 테이블</Link>
                 </li>
-                <li className="px-3 py-7 hover:text-main hover:transition hover:ease-out hover:duration-300">
+                <li className="header-title">
                     <Link href="/searchPage">전체 레시피</Link>
                 </li>
                 <FoodCategory />
                 <CookingTime />
-                <li className="px-3 py-7 hover:text-main hover:transition hover:ease-out hover:duration-300">
+                <li className="header-title">
                     <Link href="/communityPage">커뮤니티</Link>
                 </li>
             </ul>

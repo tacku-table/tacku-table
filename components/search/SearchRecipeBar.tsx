@@ -14,7 +14,7 @@ const SearchRecipeBar: NextPage = () => {
 
     return (
         <div className="relative flex justify-center">
-            <div className="bg-main hover:bg-gradient-to-bl font-medium rounded-lg rounded-r-none text-white text-sm px-5 py-[10.5px] text-center">
+            <div className="bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 rounded-lg rounded-r-none font-medium rounded-r-none text-white text-sm px-5 py-[10.5px] text-center">
                 레시피검색
             </div>
             <form onSubmit={submitHandler}>

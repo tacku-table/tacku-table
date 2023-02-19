@@ -15,6 +15,7 @@ module.exports = {
                 main: "#F16C34",
                 border: "#DFDFDF",
                 grayText: "#777777",
+                baseText: "#333333",
                 hoverGray: "#f5f5f5",
             },
             keyframes: {

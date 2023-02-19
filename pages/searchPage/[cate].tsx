@@ -91,12 +91,11 @@ const ClassifiedRecipe: NextPage = () => {
                                     <ul className="text-sm text-slate-500 space-x-2 flex">
                                         <li>&#35;{item.animationTitle}</li>
                                         <li>&#35;{item.cookingTime}</li>
-                                        <li className="text-red-400">
-                                            {item.displayStatus ===
-                                                "회원 공개" &&
-                                                `#${item.displayStatus}`}
-                                        </li>
                                     </ul>
+                                    <div className="text-sm text-red-400">
+                                        {item.displayStatus === "회원 공개" &&
+                                            `#${item.displayStatus}`}
+                                    </div>
                                     <p className="text-lg text-slate-900 font-semibold">
                                         {item.foodTitle}
                                     </p>

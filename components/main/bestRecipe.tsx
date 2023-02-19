@@ -26,7 +26,7 @@ const BestRecipe: NextPage = () => {
 
     return (
         <>
-            <div className="space-y-4 flex flex-col items-center mt-32 mb-14">
+            <div className="space-y-4 flex flex-col items-center mb-14">
                 <p className="text-3xl font-extrabold">인기레시피</p>
                 <p className="text-lg font-medium text-slate-500">
                     타쿠의 식탁에서 HOT한 요즘유행요리
@@ -35,8 +35,8 @@ const BestRecipe: NextPage = () => {
             <div className="grid grid-cols-3 gap-6">
                 {currentItems?.map((item) => {
                     return (
-                        <div key={item.id}>
-                            <div className="bg-slate-100 w-[316px] h-[188px] overflow-hidden mx-auto">
+                        <div key={item.id} className="w-[316px]">
+                            <div className="w-full h-[188px] overflow-hidden mx-auto">
                                 <picture>
                                     <img
                                         src={`${item.thumbnail}`}
@@ -47,10 +47,13 @@ const BestRecipe: NextPage = () => {
                                     />
                                 </picture>
                             </div>
-                            <div className="text-sm text-slate-500 space-x-2">
-                                <span>#천공의 성 라퓨타</span>
-                                <span>#15분이하</span>
-                                <span>#초간단</span>
+                            <ul className="text-sm text-slate-500 space-x-2 flex">
+                                <li>&#35;{item.animationTitle}</li>
+                                <li>&#35;{item.cookingTime}</li>
+                            </ul>
+                            <div className="text-sm text-red-400">
+                                {item.displayStatus === "회원 공개" &&
+                                    `#${item.displayStatus}`}
                             </div>
                             <p className="text-lg text-slate-900 font-semibold">
                                 {item.foodTitle}

@@ -14,10 +14,10 @@ const FCItems: NextPage = () => {
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95"
         >
-            <Menu.Items className="absolute top-16 left-0 origin-top-right bg-white shadow-lg focus:outline-none z-50">
-                <ul className="flex flex-col w-36">
+            <Menu.Items className="menu-wh">
+                <ul className="flex flex-col">
                     <Menu.Item>
-                        <li className="pt-4 menu-items">
+                        <li className="pt-5 menu-items">
                             <Link href={`/searchPage/밥&도시락&면`}>
                                 밥/도시락/면
                             </Link>
@@ -57,7 +57,7 @@ const FCItems: NextPage = () => {
                         </li>
                     </Menu.Item>
                     <Menu.Item>
-                        <li className="pb-4 menu-items">
+                        <li className="pb-5 menu-items">
                             <Link href={`/searchPage/식단&건강관리`}>
                                 식단/건강관리
                             </Link>
