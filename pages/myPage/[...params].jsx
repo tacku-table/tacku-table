@@ -1,6 +1,10 @@
 import { authService, dbService } from "../../config/firebase";
-// import { async } from "@firebase/util";
-import { updatePassword, updateProfile } from "firebase/auth";
+import {
+  updatePassword,
+  updateProfile,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+} from "firebase/auth";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, listAll, uploadBytes } from "firebase/storage";
 import Image from "next/image";
@@ -8,9 +12,9 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import profile from "../../public/images/profile.jpeg";
 import { storage } from "../../config/firebase";
+import { async } from "@firebase/util";
 const ProfileEdit = () => {
-  const [userInfo, setUserInfo] = useState({});
-  const [uid, setUid] = useState("");
+  const [userInfo, setUserInfo] = useState();
   // 프로필이미지 변경
   const [photoImgURL, setPhotoImgURL] = useState();
   const [imageUpload, setImageUpload] = useState(null);
@@ -21,27 +25,31 @@ const ProfileEdit = () => {
   // 비밀번호 확인
   const [confirmChangeUserPw, setConfirmChangeUserPw] = useState("");
   // 닉네임 변경
-  const [changeUserNickname, setChangeUserNickname] = useState("");
+  const [changeUserNickname, setChangeUserNickname] = useState([]);
 
   const router = useRouter();
+  const id = router.query.id;
 
-  const currentUser = authService?.currentUser;
-  // console.log(currentUser);
+  // const currentUser = JSON.parse(sessionStorage.getItem("User"));
+  // const id = router.query.id;
 
-  useEffect(() => {
-    // const uid = router.query.id;
-    const sessionStorageUser = sessionStorage.getItem("User");
-    const parsingUser = JSON.parse(sessionStorageUser);
-    setUid(parsingUser?.uid);
-    // console.log("uid", uid);
-    // getCurrentUserInfo(uid);
-    // getUserProfileImg();
-  }, []);
-  const getCurrentUserInfo = async (currentUserUid) => {
-    await getDoc(doc(dbService, "user", currentUserUid)).then((doc) => {
-      setUserInfo(doc.data());
+  const getCurrentUserInfo = async (uid) => {
+    const docId = uid;
+    await getDoc(doc(dbService, "user", docId)).then((doc) => {
+      const user = {
+        ...doc.data(),
+      };
+      setUserInfo(user);
     });
   };
+  // useEffect(() => {
+  //   getCurrentUserInfo();
+  // }, [userInfo]);
+  useEffect(() => {
+    const { uid } = JSON.parse(sessionStorage.getItem("User"));
+    console.log(uid);
+    getCurrentUserInfo(uid);
+  }, []);
 
   const handleImageFile = (event) => {
     const file = event.target.files?.[0];
@@ -53,9 +61,11 @@ const ProfileEdit = () => {
       const selectedImgUrl = reader.result;
       console.log("selectedImgUrl", selectedImgUrl);
       setImgPreview(selectedImgUrl);
+
+      // setImageUpload(event.target.files?.[0]);
     };
-    // setImageUpload(event.target.files?.[0]);
   };
+
   // 인풋값 관리 함수
   const inputChangeSetFunc = (event, setFunction) => {
     setFunction(event.target.value);
@@ -67,65 +77,87 @@ const ProfileEdit = () => {
   //   fileRef.current?.click();
   // };
 
+  const handleUpdateUserDocs = async (uid) => {
+    const docId = uid;
+    const docRef = doc(dbService, "user", docId);
+    const userProvidedPassword = userInfo.userPw;
+    const credential = EmailAuthProvider.credential(
+      authService.currentUser.email,
+      userProvidedPassword
+    );
+    // const userImg = url;
+    await updateDoc(docRef, {
+      userNickname: changeUserNickname,
+      userPw: changeUserPw,
+    }).then(() => console.log("컬렉션 업데이트 성공!"));
+    reauthenticateWithCredential(authService.currentUser, credential).then(
+      () => {
+        updatePassword(authService?.currentUser, changeUserPw)
+          .then(() => console.log("비밀번호 변경 완료!"))
+          .catch((error) => console.log("비밀번호 변경 에러: ", error));
+      }
+    );
+    await updateProfile(authService?.currentUser, {
+      displayName: changeUserNickname,
+    })
+      .then(() => console.log("닉네임 변경 완료!"))
+      .catch((error) => console.log("닉네임 변경 에러: ", error));
+    // getDoc(doc(dbService, "user", userInfo.userId)).then((doc) => {
+    //   const data = doc.data();
+    //   console.log(data);
+    //   // setUserInfo(data);
+    // });
+  };
   // 닉네임, 비밀번호, 이미지 같이 업로드
-  const handleUpdateProfile = async (uid) => {
-    const docRef = doc(dbService, "user", uid);
+  const handleUpdateProfile = async (id) => {
     // if (imageUpload === null) return;
-    const imageRef = ref(storage, `profileImage/${uid}`);
+    const imageRef = ref(storage, `profileImage/${id}`);
     await uploadBytes(imageRef, imageUpload).then((snapshot) => {
       getDownloadURL(snapshot.ref).then((url) => {
-        // updatePassword(currentUser, changeUserPw)
-        //   .then(() => console.log("비밀번호 변경 완료!"))
-        //   .catch((error) => console.log("비밀번호 변경 에러: ", error));
-        updateProfile(currentUser, {
-          displayName: changeUserNickname,
+        updateProfile(authService?.currentUser, {
           photoURL: url,
-        })
-          .then(() => console.log("닉네임 변경 완료!"))
-          .catch((error) => console.log("닉네임 변경 에러: ", error));
-        updateDoc(docRef, {
-          userImg: url,
-          userNickname: changeUserNickname,
-          userPw: changeUserPw,
-        }).then(() => {
-          alert("프로필이미지 업로드 성공");
-          console.log(url);
         });
         setImgPreview(url);
-        // setPhotoURL((prev) => [...prev, url]);
       });
     });
   };
 
-  const getUserProfileImg = async () => {
-    if (userInfo?.userImg === "null") return;
-    const imageListRef = ref(storage, "profileImage/");
-    await listAll(imageListRef).then((response) => {
-      response.items.forEach((item) => {
-        getDownloadURL(item).then((url) => {
-          if (url === userInfo?.userImg) {
-            setPhotoImgURL(url);
-          }
-        });
-      });
-    });
-  };
+  // const getUserProfileImg = async () => {
+  //   if (userInfo?.userImg === "null") return;
+  //   const imageListRef = ref(storage, "profileImage/");
+  //   await listAll(imageListRef).then((response) => {
+  //     response.items.forEach((item) => {
+  //       getDownloadURL(item).then((url) => {
+  //         if (url === userInfo?.userImg) {
+  //           setPhotoImgURL(url);
+  //         }
+  //       });
+  //     });
+  //   });
+  // };
 
   return (
     <>
       <div>
-        <form
-          className="flex flex-col"
-          onSubmit={() => handleUpdateProfile(uid)}
-        >
+        <div className="flex flex-col">
           <input
             id="picture"
             type="file"
             accept="image/*"
             onChange={handleImageFile}
           />
-          <img src={imgPreview} width={100} height={100} alt="프리뷰" />
-          {/* <label>
+          <Image
+            src={imgPreview}
+            loader={({ src }) => src}
+            priority={true}
+            width={100}
+            height={100}
+            alt="프리뷰"
+          />
+          <button onClick={() => handleUpdateProfile(userInfo.userId)}>
+            프로필이미지 업로드
+          </button>
+          <label>
             비밀번호 변경:
             <input
               type="text"
@@ -133,7 +165,7 @@ const ProfileEdit = () => {
               className="w-[256px] border border-black"
             />
           </label>
-          <label>
+          {/* <label>
             비밀번호 확인:
             <input
               type="text"
@@ -154,8 +186,10 @@ const ProfileEdit = () => {
             />
           </label>
 
-          <input type="submit" value="수정하기" />
-        </form>
+          <button onClick={() => handleUpdateUserDocs(userInfo.userId)}>
+            수정하기
+          </button>
+        </div>
         <div
           className="hover:opacity-60"
           // onClick={() => setIsEditImg(!isEditImg)}
