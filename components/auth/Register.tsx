@@ -83,6 +83,7 @@ const RegisterPage = () => {
           userNickname: nickname,
           userEmail: email,
           userPw: pw,
+          userImg: "null",
         });
         await updateProfile(data.user, {
           displayName: nickname,
