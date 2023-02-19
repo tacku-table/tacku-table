@@ -37,8 +37,8 @@ const ProfileEdit = () => {
   // 닉네임 변경
   const [changeUserNickname, setChangeUserNickname] = useState([]);
 
-  const router = useRouter();
-  const id = router.query.id;
+  // const router = useRouter();
+  // const id = router.query.id;
 
   // const currentUser = JSON.parse(sessionStorage.getItem("User"));
   // const id = router.query.id;
@@ -52,14 +52,12 @@ const ProfileEdit = () => {
       setUserInfo(user);
     });
   };
-  // useEffect(() => {
-  //   getCurrentUserInfo();
-  // }, [userInfo]);
+
   useEffect(() => {
     const { uid } = JSON.parse(sessionStorage.getItem("User"));
-    console.log(uid);
+    // console.log(uid);
     getCurrentUserInfo(uid);
-  }, []);
+  }, [userInfo]);
 
   const handleImageFile = (event) => {
     const file = event.target.files?.[0];
@@ -156,15 +154,15 @@ const ProfileEdit = () => {
     await updateProfile(authService?.currentUser, {
       displayName: changeUserNickname,
     })
-      .then(() => console.log("닉네임 변경 완료!"))
+      .then(() => {
+        console.log("닉네임 변경 완료!");
+        // 변경 완료 후 마이페이지 메인으로 보냅니다. (임시)
+        location.href = `/myPage`;
+      })
       .catch((error) => console.log("닉네임 변경 에러: ", error));
-    // getDoc(doc(dbService, "user", userInfo.userId)).then((doc) => {
-    //   const data = doc.data();
-    //   console.log(data);
-    //   // setUserInfo(data);
-    // });
   };
-  // 닉네임, 비밀번호, 이미지 같이 업로드
+
+  // 이미지 변경
   const handleUpdateProfile = async (id) => {
     if (imageUpload === null) return;
     const imageRef = ref(storage, `profileImage/${id}`);

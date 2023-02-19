@@ -9,19 +9,21 @@ import Image from "next/image";
 import MyTabs from "../../components/myTab/MyTabs";
 const MyPage = () => {
   const [userInfo, setUserInfo] = useState([]);
-  const { uid } = JSON.parse(sessionStorage.getItem("User"));
+  // const { uid } = JSON.parse(sessionStorage.getItem("User"));
   const [showUserImg, setShowUserImg] = useState(defaultImg);
   const [showUserUpdateImg, setShowUserUpdateImg] = useState("");
   const [isEdit, setIsEdit] = useState(false);
 
-  const currentUser = JSON.parse(sessionStorage.getItem("User"));
-  console.log(currentUser);
+  // useEffect(() => {
+  //   const currentUser = JSON.parse(sessionStorage.getItem("User"));
+  //   console.log(currentUser);
+  // }, []);
 
   // getCurrentUserInfo(uid);
   // getUserProfileImg();
 
-  const getCurrentUserInfo = async () => {
-    await getDoc(doc(dbService, "user", currentUser.uid)).then((doc) => {
+  const getCurrentUserInfo = async (id) => {
+    await getDoc(doc(dbService, "user", id)).then((doc) => {
       console.log("getCurrentUserInfo의 data: ", doc.data());
       const user = {
         ...doc.data(),
@@ -29,22 +31,17 @@ const MyPage = () => {
       setUserInfo(user);
     });
   };
-  // 이미지 loader 함수
-  // const src = userInfo.userImg;
 
   useEffect(() => {
-    getCurrentUserInfo();
+    const currentUser = JSON.parse(sessionStorage.getItem("User"));
+    console.log(currentUser);
+    getCurrentUserInfo(currentUser.uid);
   }, []);
-
-  // 프로필이미지가 ""면, 기본 지정이미지 보이게 해주자
-
-  // 프로필 변경 함수
-  const handleUpdateProfile = () => {};
 
   return (
     <>
       <div className="flex flex-col">
-        <div className="mb-10">
+        <div className="mb-4">
           <div>
             {userInfo.userImg === "null" ? (
               <Image
@@ -71,8 +68,6 @@ const MyPage = () => {
           </div>
         </div>
 
-        <MyTabs userInfo={userInfo} setUserInfo={setUserInfo} />
-
         <Link
           legacyBehavior
           href={{
@@ -82,8 +77,9 @@ const MyPage = () => {
             },
           }}
         >
-          <a>수정하러 가기</a>
+          <a className="mb-4">수정하러 가기</a>
         </Link>
+        <MyTabs userInfo={userInfo} setUserInfo={setUserInfo} />
       </div>
     </>
   );
