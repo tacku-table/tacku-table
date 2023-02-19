@@ -6,7 +6,7 @@ import defaultImg from "../../public/images/profile.jpeg";
 import Link from "next/link";
 import { getDownloadURL, listAll, ref } from "firebase/storage";
 import Image from "next/image";
-
+import MyTabs from "../../components/myTab/MyTabs";
 const MyPage = () => {
   const [userInfo, setUserInfo] = useState([]);
   const { uid } = JSON.parse(sessionStorage.getItem("User"));
@@ -43,8 +43,8 @@ const MyPage = () => {
 
   return (
     <>
-      <div className="flex justify-between">
-        <div>
+      <div className="flex flex-col">
+        <div className="mb-10">
           <div>
             {userInfo.userImg === "null" ? (
               <Image
@@ -70,6 +70,8 @@ const MyPage = () => {
             {/* <Image src={}/> */}
           </div>
         </div>
+
+        <MyTabs userInfo={userInfo} setUserInfo={setUserInfo} />
 
         <Link
           legacyBehavior
