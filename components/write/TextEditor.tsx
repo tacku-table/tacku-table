@@ -38,6 +38,7 @@ interface EditorProps {
 
 const EditorComponent = ({ editorText, setEditorText }: EditorProps) => {
   const quillRef: any = useRef();
+  const [imgLoading, setImgLoading] = useState("default");
 
   const imageHandler = () => {
     console.log("이미지 핸들러 실행!");
@@ -68,7 +69,9 @@ const EditorComponent = ({ editorText, setEditorText }: EditorProps) => {
     const imgDataUrl = localStorage.getItem("imgDataUrl");
     let downloadUrl;
     if (imgDataUrl) {
+      setImgLoading("loading");
       const response = await uploadString(imgRef, imgDataUrl, "data_url");
+      setImgLoading("completed");
       downloadUrl = await getDownloadURL(response.ref);
       // 현재 텍스트 에디터 커서 위치를 불러오고, image태그 생성후
       // 파이어베이스에서 다운로드한 downloadUrl을 image태그의 src에 넣어준 후 태그를 생성하는 함수입니다.
@@ -107,6 +110,25 @@ const EditorComponent = ({ editorText, setEditorText }: EditorProps) => {
 
   return (
     <>
+      {imgLoading == "loading" && (
+        <div
+          style={{
+            position: "absolute",
+            width: "300px",
+            height: "300px",
+            backgroundColor: "white",
+            border: "3px solid black",
+            zIndex: "3",
+            textAlign: "center",
+          }}
+        >
+          🥹 사진을 열심히 로딩중이에요 🥹 <br />
+          🥹 기다려주셔서 감사합니다 🥹
+        </div>
+      )}
+      {/* {imgLoading == "default" && <div>백수상태</div>}
+      {imgLoading == "completed" && <div>로딩완료</div>} */}
+
       <QuillWrapper
         forwardedRef={quillRef}
         value={editorText}
