@@ -12,7 +12,7 @@ const GoToCommunity: NextPage = () => {
             <Link legacyBehavior href="/communityPage">
                 <button
                     type="button"
-                    className="w-56 rounded-3xl border-slate-50 border-[1px] border-opacity-40 font-medium text-sm px-5 py-4 text-center flex justify-center items-center mt-11 hover:scale-105 hover:border-opacity-90"
+                    className="w-56 rounded-3xl border-slate-50 border-[1px] border-opacity-40 font-medium text-sm px-5 py-4 text-center flex justify-center items-center mt-11 hover:scale-105 hover:border-opacity-90 transition-transform"
                 >
                     커뮤니티 보러가기&nbsp;&nbsp;
                     <svg

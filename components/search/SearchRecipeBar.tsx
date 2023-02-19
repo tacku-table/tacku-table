@@ -4,47 +4,24 @@ import { NextPage } from "next";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
 const SearchRecipeBar: NextPage = () => {
-    // const [text, setText] = useState("");
-    // const [currentItems, setCurrentItems] = useState<RecipeProps[]>([]);
-
-    // const searchTextHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    //     setText(e.target.value);
-    // };
-
-    // const getList = async () => {
-    //     const items = query(
-    //         collection(dbService, "recipe"),
-    //         orderBy("createdAt", "desc"),
-    //         where("foodTitle", "==", text)
-    //     );
-    //     const querySnapshot = await getDocs(items);
-    //     const newData = querySnapshot.docs.map((doc) => ({
-    //         ...doc.data(),
-    //         id: doc.id,
-    //     }));
-    //     setCurrentItems(newData);
-    // };
-
-    // const submitHandler = (e: FormEvent<HTMLFormElement>) => {
-    //     e.preventDefault();
-    //     getList();
-    //     setText("");
-    // };
-
-    // useEffect(() => {
-    //     getList();
-    // }, []);
+    const [text, setText] = useState("");
+    const searchTextHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setText(e.target.value);
+    };
+    const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+    };
 
     return (
         <div className="relative flex justify-center">
             <div className="bg-main hover:bg-gradient-to-bl font-medium rounded-lg rounded-r-none text-white text-sm px-5 py-[10.5px] text-center">
                 레시피검색
             </div>
-            <form /* onSubmit={submitHandler} */>
+            <form onSubmit={submitHandler}>
                 <input
                     type="text"
-                    // value={text}
-                    // onChange={searchTextHandler}
+                    value={text}
+                    onChange={searchTextHandler}
                     className="w-[300px] text-sm font-medium px-5 py-2.5 pl-4 focus:outline-none rounded-lg rounded-l-none border border-slate-300"
                 ></input>
                 <button type="submit">

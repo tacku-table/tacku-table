@@ -37,10 +37,15 @@ const BestRecipe: NextPage = () => {
                     return (
                         <div key={item.id}>
                             <div className="bg-slate-100 w-[316px] h-[188px] overflow-hidden mx-auto">
-                                <img
-                                    src={`${item.thumbnail}`}
-                                    className="w-full h-full object-cover"
-                                />
+                                <picture>
+                                    <img
+                                        src={`${item.thumbnail}`}
+                                        className="w-full h-full object-cover"
+                                        alt="recipe picture"
+                                        width={800}
+                                        height={500}
+                                    />
+                                </picture>
                             </div>
                             <div className="text-sm text-slate-500 space-x-2">
                                 <span>#천공의 성 라퓨타</span>

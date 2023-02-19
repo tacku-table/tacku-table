@@ -2,8 +2,6 @@
 
 /** @type {import('tailwindcss').Config} */
 
-// const colors = require("tailwindcss/colors");
-
 module.exports = {
     content: [
         "./app/**/*.{js,ts,jsx,tsx}",
@@ -16,29 +14,41 @@ module.exports = {
                 // Colors you want to add go here
                 main: "#F16C34",
                 border: "#DFDFDF",
-                baseText: "#777777",
+                grayText: "#777777",
                 hoverGray: "#f5f5f5",
             },
             keyframes: {
-                slider: {
-                    // "0%": {
-                    //     transform: "translateY(0px)",
-                    // },
-                    // "100%": {
-                    //     transform: "translateY(-1400px)",
-                    // },
+                "up-down": {
                     "0%": {
-                        transform: "opacity(0)",
+                        opacity: "0",
+                        transform: "translateY(-50px)",
                     },
                     "100%": {
-                        transform: "opacity(1)",
+                        opacity: "1",
+                        transform: "translateY(0px)",
+                    },
+                },
+                "fade-in": {
+                    "0%": {
+                        opacity: "0",
+                        transform: "translateX(-100px)",
+                    },
+                    "30%": {
+                        opacity: "0.5",
+                    },
+                    "100%": {
+                        opacity: "1",
+                        transform: "translateX(0px)",
                     },
                 },
             },
-            // animation: {
-            //     slider: "slider 15s linear infinite",
-            // },
+            animation: {
+                "up-down": "up-down 2s ease-out linear",
+                "fade-in": "fade-in 2s ease-out infinite",
+            },
         },
     },
+    // plugins: [],
+    variants: {},
     plugins: [],
 };

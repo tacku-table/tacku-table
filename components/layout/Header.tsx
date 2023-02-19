@@ -25,7 +25,7 @@ const Header = () => {
     };
 
     return (
-        <div className="fixed top-0 z-50 w-full h-24 px-24 py-7 bg-white border-b border-baseText flex justify-between items-center">
+        <div className="fixed top-0 z-50 w-full h-24 px-24 py-7 bg-white border-b border-grayText flex justify-between items-center">
             <ul className="flex justify-center items-center">
                 <li className="px-3 py-7 hover:text-main hover:transition hover:ease-out hover:duration-300">
                     <Link href="/mainPage">타쿠의 테이블</Link>

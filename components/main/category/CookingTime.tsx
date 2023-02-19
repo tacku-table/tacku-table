@@ -1,6 +1,5 @@
-import { Menu, Transition } from "@headlessui/react";
-import Link from "next/link";
-import { Fragment } from "react";
+import { Menu } from "@headlessui/react";
+import CTItems from "./CTItems";
 
 export default function FoodCategory() {
     return (
@@ -25,48 +24,7 @@ export default function FoodCategory() {
                         </svg>
                     </Menu.Button>
                 </div>
-                <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-out duration-100"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                >
-                    <Menu.Items className="absolute left-0 mt-2 origin-top-right bg-white shadow-lg focus:outline-none z-50">
-                        <ul className="flex flex-col w-28">
-                            <Menu.Item>
-                                <li className="px-4 py-3 pt-4 text-sm text-gray-900 hover:bg-hoverGray hover:text-main">
-                                    <Link href={`/searchPage/15분이하`}>
-                                        15분
-                                    </Link>
-                                </li>
-                            </Menu.Item>
-                            <Menu.Item>
-                                <li className="px-4 py-3 text-sm text-gray-900 hover:bg-hoverGray hover:text-main">
-                                    <Link href={`/searchPage/30분이하`}>
-                                        30분
-                                    </Link>
-                                </li>
-                            </Menu.Item>
-                            <Menu.Item>
-                                <li className="px-4 py-3 text-sm text-gray-900 hover:bg-hoverGray hover:text-main">
-                                    <Link href={`/searchPage/1시간이하`}>
-                                        1시간
-                                    </Link>
-                                </li>
-                            </Menu.Item>
-                            <Menu.Item>
-                                <li className="px-4 py-3 pb-4 text-sm text-gray-900 hover:bg-hoverGray hover:text-main">
-                                    <Link href={`/searchPage/1시간이상`}>
-                                        1시간이상
-                                    </Link>
-                                </li>
-                            </Menu.Item>
-                        </ul>
-                    </Menu.Items>
-                </Transition>
+                <CTItems />
             </Menu>
         </div>
     );

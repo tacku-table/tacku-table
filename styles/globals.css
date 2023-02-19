@@ -7,7 +7,37 @@
         list-style: none;
         text-decoration: none;
     }
+    html,
     body {
         margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
     }
+}
+@layer components {
+    .menu-items {
+        @apply px-4 py-3 text-sm text-gray-900 hover:bg-hoverGray hover:text-main;
+    }
+}
+@keyframes messageFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    5% {
+        opacity: 0.5;
+        transform: translateY(-30px);
+    }
+    95% {
+        opacity: 1;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(0);
+    }
+}
+.message {
+    animation: messageFadeIn 2s ease-out;
 }

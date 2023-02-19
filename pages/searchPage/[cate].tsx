@@ -1,12 +1,18 @@
 import SearchRecipeBar from "@/components/search/SearchRecipeBar";
 import { dbService } from "@/config/firebase";
+import { cls } from "@/util";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import Fuse from "fuse.js";
 
 // 카테고리별 불러오기
 const ClassifiedRecipe: NextPage = () => {
+    const [isBest, setIsBest] = useState(false);
+    const changeBestBtn = () => {
+        setIsBest(!isBest);
+    };
     const [currentItems, setCurrentItems] = useState<RecipeProps[]>([]);
 
     const router = useRouter();
@@ -41,18 +47,28 @@ const ClassifiedRecipe: NextPage = () => {
     }, [router.query.cate]);
 
     return (
-        <div className="w-full flex flex-col justify-center items-center">
+        <div className="w-full mt-20 flex flex-col justify-center items-center">
             <SearchRecipeBar />
             <ul className="w-3/4 flex justify-end mb-[20px]">
-                <li className="w-[87px] h-[35px] border border-border border-collapse hover:bg-main text-baseText hover:text-white flex justify-center items-center cursor-pointer">
+                <li
+                    className={cls(
+                        "w-[87px] h-[35px] border border-border border-collapse hover:bg-main hover:text-white flex justify-center items-center cursor-pointer",
+                        isBest ? "bg-main text-white" : "text-grayText"
+                    )}
+                >
                     추천순
                 </li>
-                <li className="w-[87px] h-[35px] border border-border border-collapse hover:bg-main text-baseText hover:text-white flex justify-center items-center cursor-pointer">
+                <li
+                    className={cls(
+                        "w-[87px] h-[35px] border border-border border-collapse hover:bg-main hover:text-white flex justify-center items-center cursor-pointer",
+                        !isBest ? "bg-main text-white" : "text-grayText"
+                    )}
+                >
                     최신순
                 </li>
             </ul>
             <div className="w-3/4 border-b border-border mb-[30px]"></div>
-            <div className="w-3/4 flex justify-between">
+            <div className="w-3/4 flex justify-between mb-20">
                 <div className="bg-slate-100 px-2 py-3 w-[150px] h-[50px] mr-7 text-center">
                     {router.query.cate?.toString().replaceAll("&", "/")}
                 </div>
@@ -62,14 +78,24 @@ const ClassifiedRecipe: NextPage = () => {
                             return (
                                 <div key={item.id}>
                                     <div className="bg-slate-100 w-[316px] h-[188px] overflow-hidden mx-auto">
-                                        <img
-                                            src={`${item.thumbnail}`}
-                                            className="w-full h-full object-cover"
-                                        />
+                                        <picture>
+                                            <img
+                                                src={`${item.thumbnail}`}
+                                                className="w-full h-full object-cover"
+                                                alt="recipe picture"
+                                                width={800}
+                                                height={500}
+                                            />
+                                        </picture>
                                     </div>
                                     <ul className="text-sm text-slate-500 space-x-2 flex">
-                                        <li>{item.foodCategory}</li>
-                                        <li>{item.ingredient}</li>
+                                        <li>&#35;{item.animationTitle}</li>
+                                        <li>&#35;{item.cookingTime}</li>
+                                        <li className="text-red-400">
+                                            {item.displayStatus ===
+                                                "회원 공개" &&
+                                                `#${item.displayStatus}`}
+                                        </li>
                                     </ul>
                                     <p className="text-lg text-slate-900 font-semibold">
                                         {item.foodTitle}

@@ -1,10 +1,23 @@
+import SearchRecipeBar from "@/components/search/SearchRecipeBar";
 import { dbService } from "@/config/firebase";
+import { cls } from "@/util";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import Fuse from "fuse.js";
 import type { NextPage } from "next";
+import Image from "next/image";
+import { useRouter } from "next/router";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
 const SearchData: NextPage = () => {
+    // const router = useRouter();
+    // console.log("잘오고있냐:", router.query.keyword);
+    // const deliverKeyword = router.query.keyword;
+
+    const [isBest, setIsBest] = useState(false);
+    const changeBestBtn = () => {
+        setIsBest(!isBest);
+    };
+
     const [text, setText] = useState("");
     const searchTextHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setText(e.target.value);
@@ -12,6 +25,7 @@ const SearchData: NextPage = () => {
     const submitHandler = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
     };
+
     // 전체목록불러오기
     const [currentItems, setCurrentItems] = useState<RecipeProps[]>([]);
 
@@ -74,28 +88,54 @@ const SearchData: NextPage = () => {
                 </form>
             </div>
             <ul className="w-3/4 flex justify-end mb-[20px]">
-                <li className="w-[87px] h-[35px] border border-border border-collapse hover:bg-main text-baseText hover:text-white flex justify-center items-center cursor-pointer">
+                <li
+                    className={cls(
+                        "w-[87px] h-[35px] border border-border border-collapse hover:bg-main hover:text-white flex justify-center items-center cursor-pointer",
+                        isBest ? "bg-main text-white" : "text-grayText"
+                    )}
+                >
                     추천순
                 </li>
-                <li className="w-[87px] h-[35px] border border-border border-collapse hover:bg-main text-baseText hover:text-white flex justify-center items-center cursor-pointer">
+                <li
+                    className={cls(
+                        "w-[87px] h-[35px] border border-border border-collapse hover:bg-main hover:text-white flex justify-center items-center cursor-pointer",
+                        !isBest ? "bg-main text-white" : "text-grayText"
+                    )}
+                >
                     최신순
                 </li>
             </ul>
+            {dataResults ? (
+                <p className="w-3/4 mb-4 text-gray-400">
+                    총{" "}
+                    <span className="text-red-400">{dataResults.length}</span>
+                    건의 레시피가 기다리고 있어요!
+                </p>
+            ) : null}
             <div className="w-3/4 border-b border-border mb-[30px]"></div>
             <div className="w-3/4 flex justify-center mb-20">
                 <div className="grid grid-cols-3 gap-5 gap-y-14">
                     {dataResults?.map((item) => {
                         return (
-                            <div key={item.id}>
-                                <div className="bg-slate-100 w-[316px] h-[188px] overflow-hidden mx-auto">
-                                    <img
-                                        src={`${item.thumbnail}`}
-                                        className="w-full h-full object-cover"
-                                    />
+                            <div key={item.id} className="w-[316px]">
+                                <div className="w-full h-[188px] overflow-hidden mx-auto">
+                                    <picture>
+                                        <img
+                                            src={`${item.thumbnail}`}
+                                            className="w-full h-full object-cover"
+                                            alt="recipe picture"
+                                            width={800}
+                                            height={500}
+                                        />
+                                    </picture>
                                 </div>
                                 <ul className="text-sm text-slate-500 space-x-2 flex">
-                                    <li>{item.foodCategory}</li>
-                                    <li>{item.ingredient}</li>
+                                    <li>&#35;{item.animationTitle}</li>
+                                    <li>&#35;{item.cookingTime}</li>
+                                    <li className="text-red-400">
+                                        {item.displayStatus === "회원 공개" &&
+                                            `#${item.displayStatus}`}
+                                    </li>
                                 </ul>
                                 <p className="text-lg text-slate-900 font-semibold">
                                     {item.foodTitle}
