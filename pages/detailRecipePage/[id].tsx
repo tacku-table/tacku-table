@@ -35,7 +35,7 @@ export default function DetailReciptPage(props: any) {
     <>
       <img src={recipeData.thumbnail} alt="thumbnail" />
       <div>음식제목 : {recipeData.foodTitle}</div>
-      <div>닉네임 : {userData.displayName}</div>
+      <div>닉네임 : {userData?.displayName}</div>
       <Bookmark postId={props.postId} recipeData={recipeData} />
       <div>조회수 : {views}</div>
       <div>좋아요 : {recipeData.bookmarkCount}</div>
