@@ -4,21 +4,20 @@ import { cls } from "@/util";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import Fuse from "fuse.js";
 import type { NextPage } from "next";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
 const SearchData: NextPage = () => {
-    // const router = useRouter();
-    // console.log("잘오고있냐:", router.query.keyword);
-    // const deliverKeyword = router.query.keyword;
+    const router = useRouter();
+    console.log("잘오고있냐:", typeof router.query.keyword);
+    const deliverKeyword = router.query.keyword;
 
     const [isBest, setIsBest] = useState(false);
     const changeBestBtn = () => {
         setIsBest(!isBest);
     };
 
-    const [text, setText] = useState("");
+    const [text, setText] = useState(deliverKeyword || "");
     const searchTextHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setText(e.target.value);
     };
@@ -47,6 +46,7 @@ const SearchData: NextPage = () => {
         keys: ["animationTitle", "foodTitle", "content"],
         includeScore: true,
     });
+    // @ts-ignore
     const results = fuse.search(text);
     const dataResults = text
         ? results.map((recipe) => recipe.item)

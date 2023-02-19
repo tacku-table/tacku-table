@@ -1,6 +1,6 @@
-import BestRecipe from "@/components/main/BestRecipe";
-import GoToCommunity from "@/components/main/GoToCommunity";
-import NewRecipe from "@/components/main/NewRecipe";
+import BestRecipe from "@/components/main/bestRecipe";
+import GoToCommunity from "@/components/main/goToCommunity";
+import NewRecipe from "@/components/main/newRecipe";
 import Slider from "@/components/main/Slider";
 import Video from "@/components/main/video";
 import { useRouter } from "next/router";
