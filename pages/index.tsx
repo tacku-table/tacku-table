@@ -1,10 +1,10 @@
-import LandingPage from "@/components/Landing";
 import { NextPage } from "next";
+import MainPage from "./mainPage";
 
 const index: NextPage = () => {
     return (
         <div>
-            <LandingPage />
+            <MainPage />
         </div>
     );
 };
