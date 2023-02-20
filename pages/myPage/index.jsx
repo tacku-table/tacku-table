@@ -24,7 +24,7 @@ const MyPage = () => {
 
   const getCurrentUserInfo = async (id) => {
     await getDoc(doc(dbService, "user", id)).then((doc) => {
-      console.log("getCurrentUserInfo의 data: ", doc.data());
+      // console.log("getCurrentUserInfo의 data: ", doc.data());
       const user = {
         ...doc.data(),
       };
@@ -34,7 +34,6 @@ const MyPage = () => {
 
   useEffect(() => {
     const currentUser = JSON.parse(sessionStorage.getItem("User"));
-    console.log(currentUser);
     getCurrentUserInfo(currentUser.uid);
   }, []);
 
@@ -46,6 +45,7 @@ const MyPage = () => {
             {userInfo.userImg === "null" ? (
               <Image
                 src={defaultImg}
+                loader={({ src }) => src}
                 width={100}
                 height={100}
                 alt="default_img"
