@@ -21,7 +21,7 @@ const RegisterPage = () => {
   const [pwConfirm, setPwConfirm] = useState("");
   const [nickname, setNickname] = useState("");
   const [terms, setTerms] = useState(false);
-  const [agree, setAgree] = useState(true);
+  const [agree, setAgree] = useState(false);
 
   // 브라우저 뒤로가기 버튼시 confirm창과 함께 "확인"클릭시 로그인 페이지로 이동하는 함수입니다.
   useEffect(() => {
@@ -62,7 +62,7 @@ const RegisterPage = () => {
       alert("비밀번호 확인이 일치하지 않습니다");
       pwConfirmRef.current!.focus();
       return true;
-    } else if (agree == true) {
+    } else if (agree == false) {
       alert("개인정보취급 방침에 동의해주세요!");
       return true;
     }
