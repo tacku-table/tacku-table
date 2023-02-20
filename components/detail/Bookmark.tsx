@@ -31,11 +31,12 @@ const Bookmark = (props: any) => {
     };
     bookmarkLoad();
   }, [dbService, props.postId]);
-  useEffect(() => {
-    onSnapshot(doc(dbService, "recipe", props.postId), (snapshot) => {
-      setCountBookMark(snapshot.data());
-    });
-  }, [dbService, props.postId]);
+  //recipe에 유저 id 추가
+  // useEffect(() => {
+  //   onSnapshot(doc(dbService, "recipe", props.postId), (snapshot) => {
+  //     setCountBookMark(snapshot.data());
+  //   });
+  // }, [dbService, props.postId]);
 
   //북마크 토글
   useEffect(() => {
@@ -47,51 +48,53 @@ const Bookmark = (props: any) => {
   const bookMarkPost = async () => {
     if (toggleBookmark) {
       setToggleBookmark(!toggleBookmark);
-      const copy = [...countBookMark.bookmarkCount];
-      const filter = copy.filter((item: any) => {
-        return item !== currentUser;
-      });
+      //const copy = [...countBookMark.bookmarkCount];
+      // const filter = copy.filter((item: any) => {
+      //   return item !== currentUser;
+      // });
       console.log("북마크 삭제");
       await deleteDoc(
         doc(dbService, "user", currentUser, "bookmarkPost", props.postId)
       );
-      updateDoc(doc(dbService, "recipe", props.postId), {
-        bookmarkCount: filter,
-      });
+      // updateDoc(doc(dbService, "user", currentUser), {
+      //   bookmarkCount: filter,
+      // });
     } else {
       setToggleBookmark(!toggleBookmark);
       console.log("북마크 추가");
-      const copy = [...countBookMark.bookmarkCount];
-      copy.push(currentUser);
+      // const copy = [...countBookMark.bookmarkCount];
+      // copy.push(currentUser);
+      // await setDoc(doc(dbService, "user", currentUser, "bookmarkPost"), {
+      //   recipeData: props.postId,
+      // });
       await setDoc(
         doc(dbService, "user", currentUser, "bookmarkPost", props.postId),
         {
-          recipeData: props.recipeData,
+          postId: props.postId,
         }
       );
       //if 배열에 uid가 있으면 추가x,없으면 추가.
-      if (countBookMark.bookmarkCount?.includes(currentUser)) {
-        copy;
-      } else {
-        updateDoc(doc(dbService, "recipe", props.postId), {
-          bookmarkCount: copy,
-        });
-      }
+      // if (countBookMark.bookmarkCount?.includes(currentUser)) {
+      //   copy;
+      // } else {
+      //   await updateDoc(doc(dbService, "user", currentUser), {
+      //     bookmarkCount: props.postId,
+      //   });
+      //}
     }
-    console.log(countBookMark.bookmarkCount);
-    console.log(toggleBookmark);
   };
 
   return (
     <>
-      {props.userData ===
-      "geust" ? null : countBookMark?.bookmarkCount?.includes(currentUser) ? (
+      {props.userData === "geust" ? null : bookMark.findIndex(
+          (mark) => mark.id === props.postId
+        ) ? (
         <button onClick={bookMarkPost}>북마크삭제</button>
       ) : (
         <button onClick={bookMarkPost}>북마크추가</button>
       )}
 
-      <div>북마크 갯수:{countBookMark?.bookmarkCount.length}</div>
+      {/* <div>북마크 갯수:{countBookMark?.bookmarkCount.length}</div> */}
     </>
   );
 };

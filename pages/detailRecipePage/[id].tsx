@@ -37,22 +37,34 @@ export default function DetailReciptPage(props: any) {
   }, []);
 
   return (
-    <>
-      <img src={recipeData.thumbnail} alt="thumbnail" />
-      <div>음식제목 : {recipeData.foodTitle}</div>
-      <div>닉네임 : {recipeData.writeNickName}</div>
-      <Bookmark
-        postId={props.postId}
-        recipeData={recipeData}
-        userData={userData}
-      />
-      <div>조회수 : {views}</div>
+    <div className="w-full h-full flex flex-col items-center">
+      <div className="border-2 border-rose-600 w-[1180px] h-[447px] flex justify-center items-center my-12">
+        <div className="bg-slate-100 w-1/2 h-96 overflow-hidden ml-8 float-left">
+          <img
+            src={recipeData.thumbnail}
+            alt="thumbnail"
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="w-1/2 h-96 float-right  mx-11 ">
+          <div>카테고리 : {recipeData.foodCategory}</div>
+          <div className="text-4xl font-bold">
+            음식제목 : {recipeData.foodTitle}
+          </div>
+          <div className="text-base">영화 : {recipeData.animationTitle}</div>
+          <div>요리시간 : {recipeData.cookingTime}</div>
+          <div>닉네임 : {recipeData.writeNickName}</div>
+          <Bookmark
+            postId={props.postId}
+            recipeData={recipeData}
+            userData={userData}
+          />
+          <div>조회수 : {views}</div>
+        </div>
+      </div>
       <div>재료 : {recipeData.ingredient}</div>
-      <div>영화 : {recipeData.animationTitle}</div>
-      <div>카테고리 : {recipeData.foodCategory}</div>
-      <div>요리시간 : {recipeData.cookingTime}</div>
       <div dangerouslySetInnerHTML={{ __html: recipeData.content }} />
-    </>
+    </div>
   );
 }
 
