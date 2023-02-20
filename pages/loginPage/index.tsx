@@ -7,8 +7,7 @@ import React, { useState } from "react";
 const LoginPage = () => {
   const [status, setStatus] = useState("login");
   return (
-    <div>
-      Login Page입니다.
+    <div className="grid items-center mx-auto h-screen w-screen">
       {status === "login" && <Login setStatus={setStatus} status={status} />}
       {status === "signUp" && <Register />}
       {status === "searchPW" && <FindPassword />}
