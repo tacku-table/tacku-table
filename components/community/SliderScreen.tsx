@@ -1,16 +1,20 @@
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { setTimeout } from "timers";
+import aniImg01 from "../../public/images/lemi.jpg";
+import aniImg02 from "../../public/images/lemi2.jpg";
+import aniImg03 from "../../public/images/lemi3.jpg";
+import Image from "next/image";
 
-const Slider: NextPage = () => {
+const SliderScreen: NextPage = () => {
     const [index, setIndex] = useState(0);
     const cards = [
         {
             id: "1",
-            text: "#하울의 움직이는 성 #센과 치히로의 행방불명 #마루 밑의 아리에티",
+            image: aniImg01,
         },
-        { id: "2", text: "#시간을 달리는 소녀 #늑대아이 #썸머 워즈" },
-        { id: "3", text: "#언어의 정원 #너의 이름은 #날씨의 아이" },
+        { id: "2", image: aniImg02 },
+        { id: "3", image: aniImg03 },
     ];
     // @ts-ignore
     const mod = (n, m) => {
@@ -21,11 +25,11 @@ const Slider: NextPage = () => {
     useEffect(() => {
         setTimeout(() => {
             setIndex((index + 1) % cards.length);
-        }, 4000);
+        }, 5000);
     }, [index]);
 
     return (
-        <div className="w-full h-14 relative overflow-hidden">
+        <div className="w-[860px] h-[412px] relative overflow-hidden mt-4">
             {cards.map((item, i) => {
                 const indexLeft = mod(index - 1, cards.length);
                 const indexRight = mod(index + 1, cards.length);
@@ -33,23 +37,29 @@ const Slider: NextPage = () => {
                 let classN = "";
                 switch (i) {
                     case index:
-                        classN = "card";
+                        classN = "ani-card";
                         break;
                     case indexLeft:
-                        classN = "card transform translate-y-14 transition-all";
+                        classN =
+                            "ani-card transform translate-x-[860px] opacity-20";
                         break;
                     case indexRight:
                         classN =
-                            "card transform -translate-y-14 transition-all";
+                            "ani-card transform -translate-x-[860px] opacity-20";
                 }
                 return (
-                    <div key={item.id} className={classN}>
-                        {item.text}
-                    </div>
+                    <Image
+                        key={item.id}
+                        className={classN}
+                        width={800}
+                        height={500}
+                        src={item.image}
+                        alt="ani_image"
+                    />
                 );
             })}
         </div>
     );
 };
 
-export default Slider;
+export default SliderScreen;

@@ -37,6 +37,9 @@
     .card {
         @apply w-full h-14 absolute transition-all duration-500 flex items-center pl-48;
     }
+    .ani-card {
+        @apply w-[860px] h-full absolute transition-all duration-300 flex items-center;
+    }
 }
 @keyframes messageFadeIn {
     0% {

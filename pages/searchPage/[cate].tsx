@@ -51,6 +51,11 @@ const ClassifiedRecipe: NextPage = () => {
         setCurrentItems(newData);
     };
 
+    // 상세페이지이동
+    const goToDetail = (id: any) => {
+        router.push(`/detailRecipePage/${id}`);
+    };
+
     // 검색
     const fuse = new Fuse(currentItems, {
         keys: ["animationTitle", "foodTitle", "content"],
@@ -123,8 +128,15 @@ const ClassifiedRecipe: NextPage = () => {
                     {dataResults.length ? (
                         dataResults.map((item) => {
                             return (
-                                <div key={item.id}>
-                                    <div className="bg-slate-100 w-[316px] h-[188px] overflow-hidden mx-auto">
+                                <div
+                                    key={item.id}
+                                    className="w-[316px] cursor-pointer"
+                                    onClick={() => goToDetail(item.id)}
+                                >
+                                    <div className="w-full h-[188px] overflow-hidden mx-auto relative">
+                                        {item.displayStatus === "회원 공개" && (
+                                            <div className="w-full h-full bg-slate-50 opacity-60 absolute top-0 left-0"></div>
+                                        )}
                                         <picture>
                                             <img
                                                 src={`${item.thumbnail}`}

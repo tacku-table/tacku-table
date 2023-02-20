@@ -1,7 +1,8 @@
 import SearchRecipeBar from "@/components/search/SearchRecipeBar";
+import SideCategory from "@/components/search/SideCategory";
 import { dbService } from "@/config/firebase";
 import { cls } from "@/util";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import Fuse from "fuse.js";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -11,9 +12,19 @@ const SearchData: NextPage = () => {
     const router = useRouter();
     const deliverKeyword = router.query.keyword;
 
+    // 상세페이지이동
+    const goToDetail = (id: any) => {
+        router.push(`/detailRecipePage/${id}`);
+    };
+
     const [isBest, setIsBest] = useState(false);
-    const changeBestBtn = () => {
-        setIsBest(!isBest);
+    const activeBestBtn = () => {
+        setIsBest(true);
+        console.log(isBest);
+    };
+    const inactiveBestBtn = () => {
+        setIsBest(false);
+        console.log(isBest);
     };
 
     const [text, setText] = useState(deliverKeyword || "");
@@ -30,7 +41,8 @@ const SearchData: NextPage = () => {
     const getList = async () => {
         const items = query(
             collection(dbService, "recipe"),
-            orderBy("createdAt", "desc")
+            orderBy(isBest ? "viewCount" : "createdAt", "desc")
+            // where("foodCategory", "==", "desc")
         );
         const querySnapshot = await getDocs(items);
         const newData = querySnapshot.docs.map((doc) => ({
@@ -53,7 +65,7 @@ const SearchData: NextPage = () => {
 
     useEffect(() => {
         getList();
-    }, []);
+    }, [isBest]);
 
     return (
         <div className="w-full mt-20 flex flex-col justify-center items-center">
@@ -92,6 +104,7 @@ const SearchData: NextPage = () => {
                         "sorted-btn",
                         isBest ? "bg-main text-white" : "text-grayText"
                     )}
+                    onClick={activeBestBtn}
                 >
                     추천순
                 </li>
@@ -100,6 +113,7 @@ const SearchData: NextPage = () => {
                         "sorted-btn",
                         !isBest ? "bg-main text-white" : "text-grayText"
                     )}
+                    onClick={inactiveBestBtn}
                 >
                     최신순
                 </li>
@@ -113,11 +127,19 @@ const SearchData: NextPage = () => {
             ) : null}
             <div className="w-3/4 border-b border-border mb-[30px]"></div>
             <div className="w-3/4 flex justify-center mb-20">
+                <SideCategory />
                 <div className="grid grid-cols-3 gap-5 gap-y-14">
                     {dataResults?.map((item) => {
                         return (
-                            <div key={item.id} className="w-[316px]">
-                                <div className="w-full h-[188px] overflow-hidden mx-auto">
+                            <div
+                                key={item.id}
+                                className="w-[316px] cursor-pointer"
+                                onClick={() => goToDetail(item.id)}
+                            >
+                                <div className="w-full h-[188px] overflow-hidden mx-auto relative">
+                                    {item.displayStatus === "회원 공개" && (
+                                        <div className="w-full h-full bg-slate-50 opacity-60 absolute top-0 left-0"></div>
+                                    )}
                                     <picture>
                                         <img
                                             src={`${item.thumbnail}`}
