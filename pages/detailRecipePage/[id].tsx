@@ -53,7 +53,7 @@ export default function DetailReciptPage(props: any) {
           </div>
           <div className="text-base">영화 : {recipeData.animationTitle}</div>
           <div>요리시간 : {recipeData.cookingTime}</div>
-          <div>닉네임 : {recipeData.writeNickName}</div>
+          <div>닉네임 : {recipeData.writerNickName}</div>
           <Bookmark
             postId={props.postId}
             recipeData={recipeData}

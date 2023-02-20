@@ -17,7 +17,7 @@ const Bookmark = (props: any) => {
     props.targetWholeData
   );
   const [toggleBookmark, setToggleBookmark] = useState<boolean>(false);
-
+  console.log(countBookMark);
   //현재 로그인된 유저
   const currentUser: any = authService.currentUser?.uid;
   //유저 북마크 모아오기
