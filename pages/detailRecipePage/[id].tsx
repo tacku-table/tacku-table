@@ -4,9 +4,9 @@ import { dbService } from "@/config/firebase";
 import Bookmark from "@/components/detail/Bookmark";
 import styled from "styled-components";
 import defaultImg from "../../public/images/profile.jpeg";
+import "react-quill/dist/quill.core.css";
 import Image from "next/image";
 //react아이콘
-import { BsClock } from "react-icons/bs";
 
 //자식한테 props로 타입 넘겨줬는데 왜 오류가 날까...
 export default function DetailReciptPage(props: any) {
@@ -46,8 +46,8 @@ export default function DetailReciptPage(props: any) {
   }, []);
 
   return (
-    <div className="w-full h-full flex flex-col items-center">
-      <div className=" w-[780px] h-[606px]  my-16">
+    <div className="w-full h-full flex flex-col items-center ">
+      <div className=" w-[780px] my-16">
         <ImageContainer className="bg-slate-100 w-full h-[440px] overflow-hidden">
           <Image
             layout="fill"
@@ -59,46 +59,78 @@ export default function DetailReciptPage(props: any) {
             className="image-detail"
           />
         </ImageContainer>
-        <div>
-          <div className="text-4xl font-bold">
-            음식제목 : {recipeData.foodTitle}
+        <div className="flex-col my-5">
+          <div className="flex justify-between">
+            <p className="text-2xl font-semibold">{recipeData.foodTitle}</p>
+            <p className="w-6 h-6">
+              <Bookmark
+                postId={props.postId}
+                recipeData={recipeData}
+                userData={userData}
+              />
+            </p>
           </div>
-          <Bookmark
-            postId={props.postId}
-            recipeData={recipeData}
-            userData={userData}
-          />
-          <div>
-            <BsClock />
-            {recipeData.cookingTime}
+          <div className="flex items-center">
+            <span className="float-left">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="3"
+                stroke="currentColor"
+                className="w-4 h-4 text-red100"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </span>
+            <p>{recipeData.cookingTime}</p>
           </div>
-          <div className="text-base">영화 : {recipeData.animationTitle}</div>
-          <div>카테고리 : {recipeData.foodCategory}</div>
+          <div className="flex justify-between border-b-2 border-border-500 pb-8">
+            <p> {recipeData.animationTitle}</p>
+            <p>{recipeData.foodCategory}</p>
+            <div>조회수 : {views}</div>
+          </div>
         </div>
         <div>
-          {userFireData.userImg === "null" ? (
-            <Image
-              src={defaultImg}
-              width={100}
-              height={100}
-              alt="default_img"
-            />
-          ) : (
-            <Image
-              src={userFireData.userImg}
-              priority={true}
-              loader={({ src }) => src}
-              width={100}
-              height={100}
-              alt="user_img"
-            />
-          )}
-          <p>{userFireData.userNickname}</p>
+          <div className="flex items-center">
+            {userFireData.userImg === "null" ? (
+              <Image
+                src={defaultImg}
+                width={50}
+                height={50}
+                alt="default_img"
+                className="rounded-md"
+              />
+            ) : (
+              <Image
+                src={userFireData.userImg}
+                priority={true}
+                loader={({ src }) => src}
+                width={50}
+                height={50}
+                alt="user_img"
+                className="rounded-md"
+              />
+            )}
+            <p>{userFireData.userNickname}</p>
+          </div>
         </div>
-        <div>조회수 : {views}</div>
+        <div>
+          <p className=" border-b-2 border-border-500 pb-8">재료</p>
+          <p> {recipeData.ingredient}</p>
+        </div>
+        <div className=" border-b-2 border-border-500 pb-8">
+          <p>레시피</p>
+        </div>
+        <ContentContainer
+          className="view ql-editor"
+          dangerouslySetInnerHTML={{ __html: recipeData.content }}
+        />
       </div>
-      <div>재료 : {recipeData.ingredient}</div>
-      <Content dangerouslySetInnerHTML={{ __html: recipeData.content }} />
     </div>
   );
 }
@@ -130,12 +162,9 @@ const ImageContainer = styled.div`
   height: 440px;
 `;
 
-const Content = styled.div`
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 1rem;
-  line-height: 1.5;
-  border: 1px solid lightgray;
-  color: gray;
-  background: white;
+const ContentContainer = styled.div`
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+  background-color: aliceblue;
 `;
