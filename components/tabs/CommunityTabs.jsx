@@ -36,11 +36,11 @@ const CommunityTabs = () => {
   };
 
   useEffect(() => {
-    const communityRef = collection(dbService, "communityPost");
-    getCommunityList(communityRef);
-  }, []);
+    getCommunityList();
+  }, [communityList]);
 
-  const getCommunityList = async (communityRef) => {
+  const getCommunityList = () => {
+    const communityRef = collection(dbService, "communityPost");
     const q = query(communityRef, orderBy("writtenDate", "desc"));
     onSnapshot(q, (snapshot) => {
       const newPosts = snapshot.docs.map((doc) => {
@@ -54,7 +54,7 @@ const CommunityTabs = () => {
         return newPost;
       });
       setCommunityList(newPosts);
-      console.log(communityList);
+      //   console.log(communityList);
     });
     getFoodCommunityPost(communityList, categories);
     getAnimeCommunityPost(communityList, categories);
@@ -64,15 +64,12 @@ const CommunityTabs = () => {
   const getFoodCommunityPost = async (communityList, categories) => {
     let foodArr = communityList;
     const newArr = foodArr.filter((item) => item.category == categories[1]);
-    // console.log(newArr);
     setFoodPost(newArr);
-    // console.log(foodPost);
   };
   //   애니
   const getAnimeCommunityPost = async (communityList, categories) => {
     let animeArr = communityList;
     const newArr = animeArr.filter((item) => item.category == categories[2]);
-    // console.log(newArr);
     setAnimePost(newArr);
   };
   // 잡담
@@ -81,13 +78,11 @@ const CommunityTabs = () => {
     const newArr = communityList.filter(
       (item) => item.category == categories[3]
     );
-    console.log(newArr);
     setGassipPost(newArr);
     // setTimeout(() => console.log(gossipPost), 1000);
   };
   return (
     <Tab.Group>
-      {/* <Tab.List className="flex space-x-1 rounded-xl  bg-orange-400"> */}
       <Tab.List>
         {categories.map((category) => (
           <Tab
