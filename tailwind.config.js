@@ -11,13 +11,24 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                // Colors you want to add go here
+                brand100: "#F16C34",
+                red100: "#FB4646",
+                blue100: "#0066FF",
+                mono100: "#333333",
+                mono80: "#777777",
+                mono70: "#AFAFAF",
+                mono60: "#C1C1C1",
+                mono50: "#DFDFDF",
+                mono40: "#F6F6F6",
+                mono30: "#F5F5F5",
+                // 채하꺼
                 main: "#F16C34",
                 border: "#DFDFDF",
                 grayText: "#777777",
                 baseText: "#333333",
                 hoverGray: "#f5f5f5",
             },
+            // 채하꺼
             keyframes: {
                 "up-down": {
                     "0%": {
@@ -49,7 +60,6 @@ module.exports = {
             },
         },
     },
-    // plugins: [],
     variants: {},
     plugins: [],
 };

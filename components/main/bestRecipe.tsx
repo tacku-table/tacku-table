@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { query, collection, orderBy, limit, getDocs } from "firebase/firestore";
 import { dbService } from "@/config/firebase";
+import Link from "next/link";
 
 const BestRecipe: NextPage = () => {
     const [currentItems, setCurrentItems] = useState<RecipeProps[]>([]);
@@ -9,7 +10,7 @@ const BestRecipe: NextPage = () => {
     const getList = async () => {
         const items = query(
             collection(dbService, "recipe"),
-            orderBy("createdAt", "desc"),
+            orderBy("viewCount", "desc"),
             limit(3)
         );
         const querySnapshot = await getDocs(items);
@@ -56,7 +57,9 @@ const BestRecipe: NextPage = () => {
                                     `#${item.displayStatus}`}
                             </div>
                             <p className="text-lg text-slate-900 font-semibold">
-                                {item.foodTitle}
+                                <Link href={`/detailRecipePage/${item.id}`}>
+                                    {item.foodTitle}
+                                </Link>
                             </p>
                         </div>
                     );

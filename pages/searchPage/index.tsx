@@ -9,7 +9,6 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
 const SearchData: NextPage = () => {
     const router = useRouter();
-    console.log("잘오고있냐:", typeof router.query.keyword);
     const deliverKeyword = router.query.keyword;
 
     const [isBest, setIsBest] = useState(false);
@@ -90,7 +89,7 @@ const SearchData: NextPage = () => {
             <ul className="w-3/4 flex justify-end mb-[20px]">
                 <li
                     className={cls(
-                        "w-[87px] h-[35px] border border-border border-collapse hover:bg-main hover:text-white flex justify-center items-center cursor-pointer",
+                        "sorted-btn",
                         isBest ? "bg-main text-white" : "text-grayText"
                     )}
                 >
@@ -98,7 +97,7 @@ const SearchData: NextPage = () => {
                 </li>
                 <li
                     className={cls(
-                        "w-[87px] h-[35px] border border-border border-collapse hover:bg-main hover:text-white flex justify-center items-center cursor-pointer",
+                        "sorted-btn",
                         !isBest ? "bg-main text-white" : "text-grayText"
                     )}
                 >

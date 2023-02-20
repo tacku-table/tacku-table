@@ -1,6 +1,7 @@
 import { dbService } from "@/config/firebase";
 import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
 import type { NextPage } from "next";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const NewRecipe: NextPage = () => {
@@ -56,7 +57,9 @@ const NewRecipe: NextPage = () => {
                                     `#${item.displayStatus}`}
                             </div>
                             <p className="text-lg text-slate-900 font-semibold">
-                                {item.foodTitle}
+                                <Link href={`/detailPage/${item.id}`}>
+                                    {item.foodTitle}
+                                </Link>
                             </p>
                         </div>
                     );

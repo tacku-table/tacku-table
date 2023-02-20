@@ -13,6 +13,15 @@ const ClassifiedRecipe: NextPage = () => {
     const changeBestBtn = () => {
         setIsBest(!isBest);
     };
+    const [text, setText] = useState("");
+    const searchTextHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setText(e.target.value);
+    };
+    const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+    };
+
+    // 목록불러오기
     const [currentItems, setCurrentItems] = useState<RecipeProps[]>([]);
 
     const router = useRouter();
@@ -42,17 +51,55 @@ const ClassifiedRecipe: NextPage = () => {
         setCurrentItems(newData);
     };
 
+    // 검색
+    const fuse = new Fuse(currentItems, {
+        keys: ["animationTitle", "foodTitle", "content"],
+        includeScore: true,
+    });
+    const results = fuse.search(text);
+    const dataResults = text
+        ? results.map((recipe) => recipe.item)
+        : currentItems;
+
     useEffect(() => {
         getList();
     }, [router.query.cate]);
 
     return (
         <div className="w-full mt-20 flex flex-col justify-center items-center">
-            <SearchRecipeBar />
+            <div className="relative flex justify-center">
+                <div className="bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg rounded-r-none text-white text-sm px-5 py-[10.5px] text-center">
+                    레시피검색
+                </div>
+                <form onSubmit={submitHandler}>
+                    <input
+                        type="text"
+                        value={text}
+                        onChange={searchTextHandler}
+                        className="w-[300px] text-sm font-medium px-5 py-2.5 pl-4 focus:outline-none rounded-lg rounded-l-none border border-slate-300"
+                    ></input>
+                    <button type="submit">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="1.5"
+                            stroke="currentColor"
+                            className="w-6 h-6 text-slate-300 absolute top-2.5 -ml-[40px]"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                            />
+                        </svg>
+                    </button>
+                </form>
+            </div>
             <ul className="w-3/4 flex justify-end mb-[20px]">
                 <li
                     className={cls(
-                        "w-[87px] h-[35px] border border-border border-collapse hover:bg-main hover:text-white flex justify-center items-center cursor-pointer",
+                        "sorted-btn",
                         isBest ? "bg-main text-white" : "text-grayText"
                     )}
                 >
@@ -60,7 +107,7 @@ const ClassifiedRecipe: NextPage = () => {
                 </li>
                 <li
                     className={cls(
-                        "w-[87px] h-[35px] border border-border border-collapse hover:bg-main hover:text-white flex justify-center items-center cursor-pointer",
+                        "sorted-btn",
                         !isBest ? "bg-main text-white" : "text-grayText"
                     )}
                 >
@@ -73,8 +120,8 @@ const ClassifiedRecipe: NextPage = () => {
                     {router.query.cate?.toString().replaceAll("&", "/")}
                 </div>
                 <div className="grid grid-cols-3 gap-4">
-                    {currentItems.length ? (
-                        currentItems.map((item) => {
+                    {dataResults.length ? (
+                        dataResults.map((item) => {
                             return (
                                 <div key={item.id}>
                                     <div className="bg-slate-100 w-[316px] h-[188px] overflow-hidden mx-auto">

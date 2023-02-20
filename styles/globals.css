@@ -31,6 +31,9 @@
     .register-input {
         @apply h-[40px] border-[1.5px] border-border rounded-sm pl-3 focus:outline-none mt-2 text-xs;
     }
+    .sorted-btn {
+        @apply w-[87px] h-[35px] border border-border border-collapse hover:bg-main hover:text-white hover:transition hover:ease-out hover:duration-300 flex justify-center items-center cursor-pointer rounded-sm text-sm;
+    }
 }
 @keyframes messageFadeIn {
     0% {
