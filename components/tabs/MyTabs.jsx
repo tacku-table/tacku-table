@@ -3,10 +3,11 @@ import { authService, dbService } from "@/config/firebase";
 
 import {
   collection,
-  docs,
+  doc,
   getDoc,
   getDocs,
   onSnapshot,
+  orderBy,
   query,
   where,
 } from "firebase/firestore";
@@ -39,10 +40,26 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
     getMyCommunityPost(userId);
     getMyRecipePost(userId);
     getCommunityComment(userId);
+    getMyBookmark(userId);
   });
   // 즐겨찾기
-  //
-  const getMyBookmark = async () => {};
+  // user 컬렉션 -> userInfo.id 일치 doc ->
+  // bookmarkPost 컬렉션 통째로 가져오기
+  // 하위문서로 접근 recipeid
+  const getMyBookmark = async (userId) => {
+    // const userRef = collection(dbService, `user/${userId}/bookmarkPost`);
+    const q = query(collection(dbService, `user/${userId}/bookmarkPost`));
+    onSnapshot(q, (snapshot) => {
+      const myposts = snapshot.docs.map((doc) => {
+        const mypost = {
+          postId: doc.id,
+          ...doc.data(),
+        };
+        return mypost;
+      });
+      setBookmarkPost(myposts);
+    });
+  };
 
   // 내가 쓴 레시피
   const getMyRecipePost = async (userId) => {
@@ -117,7 +134,15 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
         ))}
       </Tab.List>
       <Tab.Panels>
-        <Tab.Panel>즐겨찾기 컨텐츠</Tab.Panel>
+        <Tab.Panel>
+          {bookmarkPost?.map((p) => (
+            <div key={p.postId}>
+              <Link legacyBehavior href={`/detailRecipePage/${p.postId}`}>
+                <a>{p.foodTitle}</a>
+              </Link>
+            </div>
+          ))}
+        </Tab.Panel>
         <Tab.Panel>
           {recipePost?.map((p) => (
             <div key={p.postId}>
