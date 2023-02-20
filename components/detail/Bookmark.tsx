@@ -9,6 +9,7 @@ import {
   query,
 } from "@firebase/firestore";
 import { authService, dbService } from "@/config/firebase";
+import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 
 const Bookmark = (props: any) => {
   //북마크
@@ -17,11 +18,9 @@ const Bookmark = (props: any) => {
     props.targetWholeData
   );
   const [toggleBookmark, setToggleBookmark] = useState<boolean>(false);
-  console.log(countBookMark);
   //현재 로그인된 유저
   const currentUser: any = authService.currentUser?.uid;
   //유저 북마크 모아오기
-  console.log("toggleBookmark", toggleBookmark);
   useEffect(() => {
     const bookmarkLoad = async () => {
       try {
@@ -34,11 +33,6 @@ const Bookmark = (props: any) => {
       }
     };
     bookmarkLoad();
-  }, [dbService, props.postId]);
-  useEffect(() => {
-    onSnapshot(doc(dbService, "recipe", props.postId), (snapshot) => {
-      setCountBookMark(snapshot.data());
-    });
   }, [dbService, props.postId]);
 
   // localStorage불러오기
@@ -78,7 +72,11 @@ const Bookmark = (props: any) => {
       await setDoc(
         doc(dbService, "user", currentUser, "bookmarkPost", props.postId),
         {
-          recipeData: props.postId,
+          thumbnail: props.recipeData.thumbnail,
+          foodTitle: props.recipeData.foodTitle,
+          writerNickName: props.recipeData.writerNickName,
+          viewCount: props.recipeData.viewCount,
+          cookingTime: props.recipeData.cookingTime,
         }
       );
     }
@@ -87,9 +85,13 @@ const Bookmark = (props: any) => {
   return (
     <>
       {props.userData === "geust" ? null : toggleBookmark ? (
-        <button onClick={bookMarkPost}>북마크삭제</button>
+        <button onClick={bookMarkPost}>
+          <BsBookmarkFill />
+        </button>
       ) : (
-        <button onClick={bookMarkPost}>북마크추가</button>
+        <button onClick={bookMarkPost}>
+          <BsBookmark />
+        </button>
       )}
     </>
   );
