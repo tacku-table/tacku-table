@@ -3,11 +3,10 @@ import { authService, dbService } from "@/config/firebase";
 
 import {
   collection,
-  doc,
+  docs,
   getDoc,
   getDocs,
   onSnapshot,
-  orderBy,
   query,
   where,
 } from "firebase/firestore";
@@ -22,7 +21,6 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
   const [communityPost, setCommunityPost] = useState([]);
   const [commentPost, setCommentPost] = useState([]);
   const [bookmarkPost, setBookmarkPost] = useState([]);
-
   const userId = userInfo.userId;
   // const currentUser = JSON.parse(sessionStorage.getItem("User")) || "";
 
@@ -60,7 +58,6 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
       setBookmarkPost(myposts);
     });
   };
-
   // 내가 쓴 레시피
   const getMyRecipePost = async (userId) => {
     const recipeRef = collection(dbService, "recipe");
@@ -135,6 +132,7 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
       </Tab.List>
       <Tab.Panels>
         <Tab.Panel>
+          {" "}
           {bookmarkPost?.map((p) => (
             <div key={p.postId}>
               <Link legacyBehavior href={`/detailRecipePage/${p.postId}`}>
