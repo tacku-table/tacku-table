@@ -16,7 +16,7 @@ const Bookmark = (props: any) => {
   const [countBookMark, setCountBookMark] = useState<any>(
     props.targetWholeData
   );
-  const [toggleBookmark, setToggleBookmark] = useState<boolean>(true);
+  const [toggleBookmark, setToggleBookmark] = useState<boolean>(false);
 
   //현재 로그인된 유저
   const currentUser: any = authService.currentUser?.uid;
