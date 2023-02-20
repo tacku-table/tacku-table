@@ -1,10 +1,6 @@
 import React, { useRef, useState } from "react";
 import { authService } from "@/config/firebase";
-import {
-  signInWithEmailAndPassword,
-  setPersistence,
-  browserSessionPersistence,
-} from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { emailRegex, pwRegex } from "@/util";
 import { useRouter } from "next/router";
 
