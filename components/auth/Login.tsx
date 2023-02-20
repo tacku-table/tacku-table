@@ -2,18 +2,13 @@ import React, { useRef, useState } from "react";
 import { authService } from "@/config/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { emailRegex, pwRegex } from "@/util";
-import { useRouter } from "next/router";
 
 const Login = ({ setStatus, status }: { setStatus: any; status: string }) => {
   const emailRef = useRef<HTMLInputElement>(null);
   const pwRef = useRef<HTMLInputElement>(null);
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
-
-  //   const router = useRouter();
-  //   const goToMain = () => {
-  //     router.push("/mainPage");
-  //   };
+  const [errorMessage, setErrorMessage] = useState(false);
 
   // 유효성 검사
   const validateInputs = () => {
@@ -64,55 +59,53 @@ const Login = ({ setStatus, status }: { setStatus: any; status: string }) => {
           alert("회원이 아닙니다. 회원가입을 먼저 진행해 주세요.");
         }
         if (err.message.includes("wrong-password")) {
-          alert("비밀번호가 틀렸습니다.");
+          setErrorMessage(true);
+          // alert("비밀번호가 틀렸습니다.");
         }
       });
   };
   return (
-    <div className="bg-slate-300 w-2/5 h-4/5 p-10 rounded-md shadow-md mx-auto flex flex-col bd-3">
-      <h3 className="text-center">😍 로그인 페이지(컴포넌트)입니다😍 </h3>
-      <h6>이메일</h6>
-      <input
-        id="email"
-        type="email"
-        placeholder="이메일을 입력하세요"
-        ref={emailRef}
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-150 p-2.5"
-      ></input>
-      <br />
-      <h6>비밀번호</h6>
-      <input
-        id="pw"
-        type="password"
-        placeholder="비밀번호 설정"
-        ref={pwRef}
-        value={pw}
-        onChange={(e) => setPw(e.target.value)}
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-150 p-2.5"
-      ></input>
-      <br />
-      <button
-        type="button"
-        style={{ border: "1px solid black" }}
-        onClick={handleLogin}
-        className="text-gray-900 bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-      >
-        로그인하기
-      </button>
-      <br />
-      {status === "login" ? (
-        <div>
+    <div className="w-[440px] m-auto">
+      <h3 className="text-4xl font-bold text-center">로그인</h3>
+      <div className="mt-[40px]">
+        <div className="text-center">
+          <h6 className="font-semibold text-base float-left ml-4">이메일</h6>
+          <input
+            id="email"
+            type="email"
+            placeholder="이메일을 입력하세요"
+            ref={emailRef}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="register-input w-[420px] h-[40px] mt-[10px]"
+          />
+          <h6 className="font-semibold mt-[20px] text-base float-left ml-4">
+            비밀번호
+          </h6>
+          <input
+            id="pw"
+            type="password"
+            placeholder="비밀번호 설정"
+            ref={pwRef}
+            value={pw}
+            onChange={(e) => setPw(e.target.value)}
+            className="register-input w-[420px] h-[40px] mt-[10px]"
+          />
+        </div>
+
+        <div className="w-full text-center mt-10">
           <button
             type="button"
-            onClick={() => {
-              setStatus("signUp");
-            }}
+            onClick={handleLogin}
+            className="bg-brand100 text-white h-[40px]  w-[420px]"
           >
-            회원가입하기
+            로그인
           </button>
+        </div>
+
+        <div>
           <button
+            className="float-right mr-[10px] mt-[5px]"
             type="button"
             onClick={() => {
               setStatus("searchPW");
@@ -121,8 +114,32 @@ const Login = ({ setStatus, status }: { setStatus: any; status: string }) => {
             비밀번호 찾기
           </button>
         </div>
+      </div>
+      {errorMessage ? (
+        <div className="text-brand100 mt-[32px] text-center">
+          이메일 또는 비밀번호를 잘못 입력하셨습니다.
+        </div>
       ) : (
-        ""
+        <div className="mt-[32px] h-[24px]"></div>
+      )}
+
+      {status === "login" ? (
+        <div className="mt-10 m-auto text-center">
+          <span className="text-[16px]">
+            아직 <b className="text-blue100">타쿠의 식탁</b> 계정이 없으신가요?
+          </span>
+          <button
+            className="ml-2 text-[18px] text-blue100 relative font-light"
+            type="button"
+            onClick={() => {
+              setStatus("signUp");
+            }}
+          >
+            지금 가입하기
+          </button>
+        </div>
+      ) : (
+        <div></div>
       )}
     </div>
   );

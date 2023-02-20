@@ -98,7 +98,6 @@ const RecipeWritePage = () => {
       createdAt: Date.now(),
       content: editorText,
       viewCount: 0,
-      bookmarkCount: [],
     };
 
     if (
