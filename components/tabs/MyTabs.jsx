@@ -20,6 +20,8 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
   const [recipePost, setRecipePost] = useState([]);
   const [communityPost, setCommunityPost] = useState([]);
   const [commentPost, setCommentPost] = useState([]);
+  const [bookmarkPost, setBookmarkPost] = useState([]);
+
   const userId = userInfo.userId;
   // const currentUser = JSON.parse(sessionStorage.getItem("User")) || "";
 
@@ -39,6 +41,8 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
     getCommunityComment(userId);
   });
   // 즐겨찾기
+  //
+  const getMyBookmark = async () => {};
 
   // 내가 쓴 레시피
   const getMyRecipePost = async (userId) => {
