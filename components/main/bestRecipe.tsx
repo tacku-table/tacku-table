@@ -57,9 +57,7 @@ const BestRecipe: NextPage = () => {
                                     `#${item.displayStatus}`}
                             </div>
                             <p className="text-lg text-slate-900 font-semibold">
-                                <Link href={`/detailRecipePage/${item.id}`}>
-                                    {item.foodTitle}
-                                </Link>
+                                {item.foodTitle}
                             </p>
                         </div>
                     );

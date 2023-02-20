@@ -22,7 +22,7 @@ const MainPage = () => {
     return (
         <div className="w-full">
             <Video />
-            <div className="relative flex flex-col h-16 justify-center items-center bg-teal-200 overflow-hidden"></div>
+            <Slider />
             <div className="py-20 pb-[115px] flex flex-col items-center">
                 <div className="relative mt-4 mb-20">
                     <input
@@ -58,7 +58,6 @@ const MainPage = () => {
                 <NewRecipe />
             </div>
             <GoToCommunity />
-            <Slider />
         </div>
     );
 };
