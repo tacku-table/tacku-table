@@ -1,23 +1,41 @@
-import BestRecipe from "@/components/main/BestRecipe";
-import GoToCommunity from "@/components/main/GoToCommunity";
-import NewRecipe from "@/components/main/NewRecipe";
+import BestRecipe from "@/components/main/bestRecipe";
+import GoToCommunity from "@/components/main/goToCommunity";
+import NewRecipe from "@/components/main/newRecipe";
+import Slider from "@/components/main/Slider";
 import Video from "@/components/main/video";
+import { useRouter } from "next/router";
+import { ChangeEvent, FormEvent, useState } from "react";
 
 const MainPage = () => {
+    const [text, setText] = useState("");
+    const searchTextHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setText(e.target.value);
+    };
+    const router = useRouter();
+    const deliverKeyword = () => {
+        router.push({
+            pathname: "/searchPage",
+            query: { keyword: text },
+        });
+    };
+
     return (
-        <div className="w-full h-full">
+        <div className="w-full">
             <Video />
-            <div className="h-[50px] bg-teal-200">태그</div>
-            <div className="h-[1500px] py-20 flex flex-col items-center">
-                <div className="relative mt-4 mb-7">
+            <div className="relative flex flex-col h-16 justify-center items-center bg-teal-200 overflow-hidden"></div>
+            <div className="py-20 pb-[115px] flex flex-col items-center">
+                <div className="relative mt-4 mb-20">
                     <input
                         type="text"
+                        value={text}
+                        onChange={searchTextHandler}
                         className="w-[300px] text-sm font-medium px-5 py-2.5 pl-11 focus:outline-none rounded-lg rounded-r-none border border-slate-300"
                         placeholder="하울 정식"
                     ></input>
                     <button
                         type="button"
-                        className="bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg rounded-l-none text-white text-sm px-5 py-[10.5px] text-center"
+                        onClick={deliverKeyword}
+                        className="text-white bg-gradient-to-r from-orange-200 via-orange-300 to-green-200 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium rounded-lg rounded-l-none hover:transition-all  text-sm px-5 py-[10.5px] text-center"
                     >
                         레시피검색
                     </button>
@@ -40,7 +58,7 @@ const MainPage = () => {
                 <NewRecipe />
             </div>
             <GoToCommunity />
-            <div className="h-[500px] bg-red-200">보너스</div>
+            <Slider />
         </div>
     );
 };
