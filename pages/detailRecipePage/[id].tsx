@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { onSnapshot, doc, updateDoc, getDoc } from "firebase/firestore";
 import { dbService } from "@/config/firebase";
 import Bookmark from "@/components/detail/Bookmark";
@@ -6,13 +6,12 @@ import styled from "styled-components";
 import defaultImg from "../../public/images/profile.jpeg";
 import Image from "next/image";
 import { BsClock } from "react-icons/bs";
-import ScrollTop from "@/components/detail/ScrollTop";
 
 //자식한테 props로 타입 넘겨줬는데 왜 오류가 날까...
 export default function DetailReciptPage(props: any) {
   //레시피 데이터
   const [recipeData, getRecipeData] = useState<any>("");
-  //회원 uid
+  //회원 데이터
   const [userData, setUserData] = useState<any>("");
   const [userFireData, setUserFireData] = useState<any>("");
   //조회수
@@ -48,7 +47,7 @@ export default function DetailReciptPage(props: any) {
   return (
     <div className="w-full h-full flex flex-col items-center">
       <div className=" w-[780px] h-[606px]  my-16">
-        <div className="bg-slate-100 w-full h-[440px] overflow-hidden">
+        <ImageContainer className="bg-slate-100 w-full h-[440px] overflow-hidden">
           <Image
             layout="fill"
             objectFit="contain"
@@ -56,9 +55,9 @@ export default function DetailReciptPage(props: any) {
             src={recipeData.thumbnail}
             loader={({ src }) => src}
             alt="thumbnail"
-            className={"image-detail"}
+            className="image-detail"
           />
-        </div>
+        </ImageContainer>
         <div>
           <div className="text-4xl font-bold">
             음식제목 : {recipeData.foodTitle}
@@ -99,7 +98,6 @@ export default function DetailReciptPage(props: any) {
       </div>
       <div>재료 : {recipeData.ingredient}</div>
       <Content dangerouslySetInnerHTML={{ __html: recipeData.content }} />
-      <ScrollTop />
     </div>
   );
 }
@@ -124,6 +122,12 @@ export const getServerSideProps: any = async (context: any) => {
   //pageProps로 넘길 데이터
   return { props: { targetWholeData, postId } };
 };
+
+const ImageContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 440px;
+`;
 
 const Content = styled.div`
   padding: 6px 12px;
