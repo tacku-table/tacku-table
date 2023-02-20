@@ -5,6 +5,7 @@ import Bookmark from "@/components/detail/Bookmark";
 import styled from "styled-components";
 import defaultImg from "../../public/images/profile.jpeg";
 import Image from "next/image";
+//react아이콘
 import { BsClock } from "react-icons/bs";
 
 //자식한테 props로 타입 넘겨줬는데 왜 오류가 날까...
