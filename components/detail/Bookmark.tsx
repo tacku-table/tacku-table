@@ -13,12 +13,15 @@ import { authService, dbService } from "@/config/firebase";
 const Bookmark = (props: any) => {
   //북마크
   const [bookMark, setBookMark] = useState<any[]>([]);
-  const [countBookMark, setCountBookMark] = useState<any>("");
-  const [toggleBookmark, setToggleBookmark] = useState<boolean>(false);
+  // const [countBookMark, setCountBookMark] = useState<any>(
+  //   props.targetWholeData
+  // );
+  const [toggleBookmark, setToggleBookmark] = useState<boolean>(true);
+
   //현재 로그인된 유저
   const currentUser: any = authService.currentUser?.uid;
   //유저 북마크 모아오기
-
+  console.log("toggleBookmark", toggleBookmark);
   useEffect(() => {
     const bookmarkLoad = async () => {
       try {
@@ -32,18 +35,19 @@ const Bookmark = (props: any) => {
     };
     bookmarkLoad();
   }, [dbService, props.postId]);
-  useEffect(() => {
-    onSnapshot(doc(dbService, "recipe", props.postId), (snapshot) => {
-      setCountBookMark(snapshot.data());
-    });
-  }, [dbService, props.postId]);
+  // useEffect(() => {
+  //   onSnapshot(doc(dbService, "recipe", props.postId), (snapshot) => {
+  //     setCountBookMark(snapshot.data());
+  //   });
+  // }, [dbService, props.postId]);
 
   // localStorage불러오기
   useEffect(() => {
     let storedVisits = window.localStorage.getItem("toggleBookmark");
     if (storedVisits !== null) {
       const parsingtoggle = JSON.parse(storedVisits);
-      setToggleBookmark(!parsingtoggle);
+      setToggleBookmark(parsingtoggle);
+      console.log("parsingtoggle,", parsingtoggle);
     }
   }, []);
 
@@ -59,7 +63,7 @@ const Bookmark = (props: any) => {
     //localStorage에 저장
     window.localStorage.setItem(
       "toggleBookmark",
-      JSON.stringify(toggleBookmark)
+      JSON.stringify(!toggleBookmark)
     );
 
     if (toggleBookmark) {
