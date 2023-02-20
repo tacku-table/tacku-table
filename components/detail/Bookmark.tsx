@@ -13,9 +13,9 @@ import { authService, dbService } from "@/config/firebase";
 const Bookmark = (props: any) => {
   //북마크
   const [bookMark, setBookMark] = useState<any[]>([]);
-  // const [countBookMark, setCountBookMark] = useState<any>(
-  //   props.targetWholeData
-  // );
+  const [countBookMark, setCountBookMark] = useState<any>(
+    props.targetWholeData
+  );
   const [toggleBookmark, setToggleBookmark] = useState<boolean>(true);
 
   //현재 로그인된 유저
@@ -35,11 +35,11 @@ const Bookmark = (props: any) => {
     };
     bookmarkLoad();
   }, [dbService, props.postId]);
-  // useEffect(() => {
-  //   onSnapshot(doc(dbService, "recipe", props.postId), (snapshot) => {
-  //     setCountBookMark(snapshot.data());
-  //   });
-  // }, [dbService, props.postId]);
+  useEffect(() => {
+    onSnapshot(doc(dbService, "recipe", props.postId), (snapshot) => {
+      setCountBookMark(snapshot.data());
+    });
+  }, [dbService, props.postId]);
 
   // localStorage불러오기
   useEffect(() => {
