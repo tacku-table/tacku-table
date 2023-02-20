@@ -4,6 +4,7 @@ import {
   updateProfile,
   reauthenticateWithCredential,
   EmailAuthProvider,
+  onAuthStateChanged,
 } from "firebase/auth";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, listAll, uploadBytes } from "firebase/storage";
@@ -12,7 +13,6 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { storage } from "../../config/firebase";
 import { pwRegex, nickRegex } from "../../util";
-import { async } from "@firebase/util";
 
 const ProfileEdit = () => {
   const [userInfo, setUserInfo] = useState();
@@ -55,7 +55,6 @@ const ProfileEdit = () => {
 
   useEffect(() => {
     const { uid } = JSON.parse(sessionStorage.getItem("User"));
-    // console.log(uid);
     getCurrentUserInfo(uid);
   }, [userInfo]);
 
@@ -98,6 +97,10 @@ const ProfileEdit = () => {
       } else {
         setPasswordMessage("안전한 비밀번호로 입력하셨습니다.");
         setIsPassword(true);
+        // let newPw = userInfo;
+        // newPw = { ...newPw, userPw: changedPw };
+
+        // setUserInfo(newPw);
       }
     },
     [changeUserPw]
@@ -110,7 +113,6 @@ const ProfileEdit = () => {
       // console.log(confirmChangeUserPw);
       if (changeUserPw === confirmedPW) {
         setPasswordConfirmMessage("비밀번호가 일치합니다.");
-        console.log(confirmChangeUserPw);
         setIsPasswordConfirm(true);
       } else {
         setPasswordConfirmMessage("비밀번호가 다릅니다. 다시 입력해주세요.");
@@ -134,9 +136,10 @@ const ProfileEdit = () => {
   const handleUpdateUserDocs = async (uid) => {
     const docId = uid;
     const docRef = doc(dbService, "user", docId);
+    console.log("userInfo.userPw", userInfo.userPw);
     const userProvidedPassword = userInfo.userPw;
     const credential = EmailAuthProvider.credential(
-      authService.currentUser.email,
+      authService?.currentUser.email,
       userProvidedPassword
     );
     // const userImg = url;
@@ -144,22 +147,25 @@ const ProfileEdit = () => {
       userNickname: changeUserNickname,
       userPw: changeUserPw,
     }).then(() => console.log("컬렉션 업데이트 성공!"));
-    reauthenticateWithCredential(authService.currentUser, credential).then(
-      () => {
-        updatePassword(authService?.currentUser, changeUserPw)
-          .then(() => console.log("비밀번호 변경 완료!"))
-          .catch((error) => console.log("비밀번호 변경 에러: ", error));
-      }
-    );
-    await updateProfile(authService?.currentUser, {
-      displayName: changeUserNickname,
-    })
-      .then(() => {
-        console.log("닉네임 변경 완료!");
-        // 변경 완료 후 마이페이지 메인으로 보냅니다. (임시)
-        location.href = `/myPage`;
+    await reauthenticateWithCredential(
+      authService.currentUser,
+      credential
+    ).then(async () => {
+      await updatePassword(authService?.currentUser, changeUserPw)
+        .then(() => console.log("비밀번호 변경 완료!"))
+        .catch((error) => console.log("비밀번호 변경 에러: ", error));
+      await updateProfile(authService?.currentUser, {
+        displayName: changeUserNickname,
       })
-      .catch((error) => console.log("닉네임 변경 에러: ", error));
+        .then(() => {
+          console.log("닉네임 변경 완료!");
+          // sessionStorage.clear();
+          // sessionStorage.setItem("User", JSON.stringify(authService.currentUser));
+          // 변경 완료 후 마이페이지 메인으로 보냅니다. (임시)
+          location.href = `/myPage`;
+        })
+        .catch((error) => console.log("닉네임 변경 에러: ", error));
+    });
   };
 
   // 이미지 변경
@@ -167,8 +173,8 @@ const ProfileEdit = () => {
     if (imageUpload === null) return;
     const imageRef = ref(storage, `profileImage/${id}`);
     await uploadBytes(imageRef, imageUpload).then((snapshot) => {
-      getDownloadURL(snapshot.ref).then((url) => {
-        updateProfile(authService?.currentUser, {
+      getDownloadURL(snapshot.ref).then(async (url) => {
+        await updateProfile(authService?.currentUser, {
           photoURL: url,
         });
         const docRef = doc(dbService, "user", id);
