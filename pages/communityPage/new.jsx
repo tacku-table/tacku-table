@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   onSnapshot,
   query,
@@ -18,14 +18,18 @@ import EditorComponent from "../../components/write/textEditor";
 const NewCommunityPost = () => {
   const [editorText, setEditorText] = useState("");
   const [title, setTitle] = useState("");
+
   // 카테고리 추가
   const [selectCategory, setSelectCategory] = useState("");
   const categoryRef = useRef(null);
 
   const user = authService?.currentUser;
   const uid = user?.uid;
+  const nickname = user?.displayName;
+
   const newPost = {
     uid,
+    nickname,
     title,
     editorText,
     writtenDate: Timestamp.now(),
