@@ -3,6 +3,7 @@ import { authService, dbService } from "@/config/firebase";
 
 import {
   collection,
+  doc,
   docs,
   getDoc,
   getDocs,
@@ -40,25 +41,55 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
     getMyRecipePost(userId);
     getCommunityComment(userId);
     getMyBookmark(userId);
+    // getWriterProfileImg();
   });
   // 즐겨찾기
   // user 컬렉션 -> userInfo.id 일치 doc ->
   // bookmarkPost 컬렉션 통째로 가져오기
   // 하위문서로 접근 recipeid
+  // 레시피 uid === user 컬렉션 doc.id
   const getMyBookmark = async (userId) => {
-    // const userRef = collection(dbService, `user/${userId}/bookmarkPost`);
     const q = query(collection(dbService, `user/${userId}/bookmarkPost`));
     onSnapshot(q, (snapshot) => {
       const myposts = snapshot.docs.map((doc) => {
         const mypost = {
           postId: doc.id,
+          writerUid: doc.data().uid,
           ...doc.data(),
         };
         return mypost;
       });
       setBookmarkPost(myposts);
     });
+    // setTimeout(
+    //   bookmarkPost.map((i) => {
+    //     const userRef = doc(dbService, "user", `${i.writerUid}`);
+    //     getDoc(userRef).then((doc) => {
+    //       const writerImg = doc.data().userImg;
+    //       // console.log(writerImg);
+    //       setBookmarkPost({
+    //         ...i,
+    //         writerImg,
+    //       });
+    //     });
+    //   }),
+    //   500
+    // );
   };
+  const getWriterProfileImg = async () => {
+    bookmarkPost.map((i) => {
+      const userRef = doc(dbService, "user", `${i.writerUid}`);
+      getDoc(userRef).then((doc) => {
+        const writerImg = doc.data().userImg;
+        // console.log(writerImg);
+        setBookmarkPost({
+          ...i,
+          writerImg,
+        });
+      });
+    });
+  };
+
   // 내가 쓴 레시피
   const getMyRecipePost = async (userId) => {
     const recipeRef = collection(dbService, "recipe");
@@ -113,16 +144,16 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
 
   return (
     <Tab.Group>
-      <Tab.List className="flex space-x-1  bg-white">
+      <Tab.List className="flex space-x-16 ml-[370px] bg-white">
         {categories.map((category) => (
           <Tab
             key={category}
             className={({ selected }) =>
               classNames(
-                "w-full  py-2.5 text-[18px] font-medium leading-5 text-mono100 border-2 border-white",
+                "w-fit pt-7 pb-[15px] text-[18px] font-medium leading-5 text-mono100 border-[3px] border-x-0  border-white",
                 "ring-white ring-opacity-60 focus:outline-none focus:ring-2",
                 selected
-                  ? "bg-white  border-b-brand100 border-b-2 font-bold"
+                  ? "bg-white  border-b-brand100  border-b-[3px] font-bold"
                   : " hover:bg-white/[0.12]"
               )
             }
@@ -131,11 +162,12 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
           </Tab>
         ))}
       </Tab.List>
-      <Tab.Panels className="w-[880px] h-[501px] mt-8 bg-purple-200 m-auto">
-        <Tab.Panel>
+      <Tab.Panels className="w-[880px] h-full min-h-[501px] mt-8 mb-[100px] shadow-xl m-auto ">
+        <Tab.Panel className="pt-[91px] pb-6">
           {bookmarkPost?.map((p) => (
-            <div key={p.postId}>
-              <div className="pl-8 pt-[91px] flex space-x-[20px] items-center">
+            <div key={p.postId} className="px-6 mb-5">
+              <hr className="border-border mx-8 mb-6 border-[1px]" />
+              <div className="pl-8 space-x-[20px] items-center flex">
                 <Image
                   className="object-cover aspect-[4/3]" //aspect-ratio 수정
                   src={p.thumbnail}
@@ -145,12 +177,20 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
                   height={105}
                   alt="bookmark-thumbnail"
                 />
-                <Link legacyBehavior href={`/detailRecipePage/${p.postId}`}>
-                  <a className="text-[24px]">{p.foodTitle}</a>
-                </Link>
-                <p>{p.viewCount}</p>
+                <div className="flex flex-col">
+                  <div className="flex space-x-1">
+                    <span>#{p.animationTitle}</span>
+                    <span>#{p.cookingTime}</span>
+                  </div>
+                  <Link legacyBehavior href={`/detailRecipePage/${p.postId}`}>
+                    <a className="text-[24px]">{p.foodTitle}</a>
+                  </Link>
+                </div>
               </div>
-              <p className="text-[16px]">{p.writerNickName}</p>
+              <div className="flex mt-9 ml-8 space-x-3">
+                <div className="w-7 h-7 bg-slate-500 aspect-square" />
+                <p className="text-[16px]">{p.writerNickName}</p>
+              </div>
             </div>
           ))}
         </Tab.Panel>
