@@ -11,6 +11,7 @@ import {
   where,
 } from "firebase/firestore";
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 // interface MyTabsProps {
 //   userInfo: any;
@@ -112,17 +113,17 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
 
   return (
     <Tab.Group>
-      <Tab.List className="flex space-x-1 rounded-xl  bg-orange-400">
+      <Tab.List className="flex space-x-1  bg-white">
         {categories.map((category) => (
           <Tab
             key={category}
             className={({ selected }) =>
               classNames(
-                "w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-white",
-                "ring-white ring-opacity-60 ring-offset-2 ring-offset-orange-400 focus:outline-none focus:ring-2",
+                "w-full  py-2.5 text-[18px] font-medium leading-5 text-mono100 border-2 border-white",
+                "ring-white ring-opacity-60 focus:outline-none focus:ring-2",
                 selected
-                  ? "bg-white shadow text-orange-400"
-                  : "text-slate-200 hover:bg-white/[0.12] hover:text-white"
+                  ? "bg-white  border-b-brand100 border-b-2 font-bold"
+                  : " hover:bg-white/[0.12]"
               )
             }
           >
@@ -130,14 +131,26 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
           </Tab>
         ))}
       </Tab.List>
-      <Tab.Panels>
+      <Tab.Panels className="w-[880px] h-[501px] mt-8 bg-purple-200 m-auto">
         <Tab.Panel>
-          {" "}
           {bookmarkPost?.map((p) => (
             <div key={p.postId}>
-              <Link legacyBehavior href={`/detailRecipePage/${p.postId}`}>
-                <a>{p.foodTitle}</a>
-              </Link>
+              <div className="pl-8 pt-[91px] flex space-x-[20px] items-center">
+                <Image
+                  className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                  src={p.thumbnail}
+                  priority={true}
+                  loader={({ src }) => src}
+                  width={180}
+                  height={105}
+                  alt="bookmark-thumbnail"
+                />
+                <Link legacyBehavior href={`/detailRecipePage/${p.postId}`}>
+                  <a className="text-[24px]">{p.foodTitle}</a>
+                </Link>
+                <p>{p.viewCount}</p>
+              </div>
+              <p className="text-[16px]">{p.writerNickName}</p>
             </div>
           ))}
         </Tab.Panel>

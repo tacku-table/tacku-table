@@ -41,7 +41,7 @@ const MyPage = () => {
     <>
       <div>
         <div className="bg-black w-full h-[280px] relative">
-          <div className="flex space-x-[24px] absolute left-[370px] top-[151px] text-white">
+          <div className="flex justify-center items-center space-x-[24px] absolute left-[370px] top-[151px] text-white">
             {userInfo.userImg === "null" ? (
               <Image
                 className="rounded-md"
