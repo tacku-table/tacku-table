@@ -82,7 +82,7 @@ const NewCommunityPost = () => {
 
     if (
       !selectCategory ||
-      !thumbnail ||
+      !imageUpload ||
       !editorText ||
       editorText === "<p><br></p>"
     ) {
@@ -90,7 +90,7 @@ const NewCommunityPost = () => {
         categoryRef.current?.focus();
         return false;
       }
-      if (!thumbnail) {
+      if (!imageUpload) {
         alert("대표 사진을 선택해주세요!");
         thumbnailRef.current?.focus();
         return false;
@@ -98,11 +98,10 @@ const NewCommunityPost = () => {
       alert("본문 입력은 필수입니다");
       return false;
     }
-    // console.log("여기?");
     await addDoc(collection(dbService, "communityPost"), newPost);
 
     alert("커뮤니티 글 업로드!");
-    // location.href = "/communityPage";
+    location.href = "/communityPage";
   };
   return (
     <div className="px-4 py-8 bg-slate-400">
