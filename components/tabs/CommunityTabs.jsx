@@ -11,19 +11,25 @@ import {
 import Link from "next/link";
 import { authService, dbService } from "../../config/firebase";
 import { convertTimestamp } from "../../util";
+import Image from "next/image";
 const CommunityTabs = () => {
   // 전체글 state
   const [communityList, setCommunityList] = useState([]);
   const [foodPost, setFoodPost] = useState([]);
   const [animePost, setAnimePost] = useState([]);
-  const [gossipPost, setGassipPost] = useState([]);
+  const [gossipPost, setGossipPost] = useState([]);
 
   //   class css 함수
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
   //   탭바 변경 state
-  let [categories] = useState(["전체 글목록", "요리", "애니", "잡담"]);
+  let [categories] = useState([
+    "전체 글목록",
+    "요리게시판",
+    "애니게시판",
+    "잡담게시판",
+  ]);
 
   useEffect(() => {
     getCommunityList();
@@ -40,6 +46,7 @@ const CommunityTabs = () => {
           title: doc.data().title,
           editorText: doc.data().editorText,
           writtenDate: convertTimestamp(doc.data().writtenDate),
+          thumbnail: doc.data().thumbnail,
         };
         return newPost;
       });
@@ -53,22 +60,27 @@ const CommunityTabs = () => {
   // 요리 cate
   const getFoodCommunityPost = async (communityList, categories) => {
     let foodArr = communityList;
-    const newArr = foodArr.filter((item) => item.category == categories[1]);
+    const newArr = foodArr.filter((item) =>
+      item.category.includes(categories[1].slice(0, 2))
+    );
     setFoodPost(newArr);
   };
-  //   애니
+  // 애니
   const getAnimeCommunityPost = async (communityList, categories) => {
     let animeArr = communityList;
-    const newArr = animeArr.filter((item) => item.category == categories[2]);
+    // slice??
+    const newArr = animeArr.filter((item) =>
+      item.category.includes(categories[2].slice(0, 2))
+    );
     setAnimePost(newArr);
   };
   // 잡담
   const getGossipCommunityPost = async (communityList, categories) => {
     // let gossipArr = communityList;
-    const newArr = communityList.filter(
-      (item) => item.category == categories[3]
+    const newArr = communityList.filter((item) =>
+      item.category.includes(categories[3].slice(0, 2))
     );
-    setGassipPost(newArr);
+    setGossipPost(newArr);
     // setTimeout(() => console.log(gossipPost), 1000);
   };
   return (
@@ -96,7 +108,15 @@ const CommunityTabs = () => {
           {communityList?.map((p) => (
             <div key={p.id}>
               <div>글 제목: {p.title}</div>
-              {/* <div>글아이디:{post.id}</div> */}
+              <Image
+                // className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                src={p.thumbnail}
+                priority={true}
+                loader={({ src }) => src}
+                width={70}
+                height={41}
+                alt="community-thumbnail"
+              />
               <Link legacyBehavior href={`/communityPage/${p.id}`}>
                 <a className="bg-orange-300">{p.title}</a>
               </Link>
@@ -108,6 +128,15 @@ const CommunityTabs = () => {
           {foodPost.map((p) => (
             <div key={p.id}>
               <div>글 제목: {p.title}</div>
+              <Image
+                className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                src={p.thumbnail}
+                priority={true}
+                loader={({ src }) => src}
+                width={70}
+                height={41}
+                alt="community-thumbnail"
+              />
               <div>카테고리: {p.category}</div>
               <Link legacyBehavior href={`/communityPage/${p.id}`}>
                 <a className="bg-orange-300">{p.title}</a>
@@ -120,6 +149,15 @@ const CommunityTabs = () => {
           {animePost.map((p) => (
             <div key={p.id}>
               <div>글 제목: {p.title}</div>
+              <Image
+                className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                src={p.thumbnail}
+                priority={true}
+                loader={({ src }) => src}
+                width={70}
+                height={41}
+                alt="community-thumbnail"
+              />
               <div>카테고리: {p.category}</div>
               <Link legacyBehavior href={`/communityPage/${p.id}`}>
                 <a className="bg-orange-300">{p.title}</a>
@@ -132,6 +170,15 @@ const CommunityTabs = () => {
           {gossipPost.map((p) => (
             <div key={p.id}>
               <div>글 제목: {p.title}</div>
+              <Image
+                className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                src={p.thumbnail}
+                priority={true}
+                loader={({ src }) => src}
+                width={70}
+                height={41}
+                alt="community-thumbnail"
+              />
               <div>카테고리: {p.category}</div>
               <Link legacyBehavior href={`/communityPage/${p.id}`}>
                 <a className="bg-orange-300">{p.title}</a>
