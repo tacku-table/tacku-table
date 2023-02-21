@@ -1,19 +1,26 @@
-import SearchRecipeBar from "@/components/search/SearchRecipeBar";
+import SideCategory from "@/components/search/SideCategory";
 import { dbService } from "@/config/firebase";
 import { cls } from "@/util";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import Fuse from "fuse.js";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import RecipeData from "@/components/search/RecipeData";
 
 const SearchData: NextPage = () => {
     const router = useRouter();
     const deliverKeyword = router.query.keyword;
 
+    // 인기순,최신순
     const [isBest, setIsBest] = useState(false);
-    const changeBestBtn = () => {
-        setIsBest(!isBest);
+    const activeBestBtn = () => {
+        setIsBest(true);
+        console.log(isBest);
+    };
+    const inactiveBestBtn = () => {
+        setIsBest(false);
+        console.log(isBest);
     };
 
     const [text, setText] = useState(deliverKeyword || "");
@@ -30,7 +37,8 @@ const SearchData: NextPage = () => {
     const getList = async () => {
         const items = query(
             collection(dbService, "recipe"),
-            orderBy("createdAt", "desc")
+            orderBy(isBest ? "viewCount" : "createdAt", "desc")
+            // where("foodCategory", "==", "desc")
         );
         const querySnapshot = await getDocs(items);
         const newData = querySnapshot.docs.map((doc) => ({
@@ -53,7 +61,7 @@ const SearchData: NextPage = () => {
 
     useEffect(() => {
         getList();
-    }, []);
+    }, [isBest]);
 
     return (
         <div className="w-full mt-20 flex flex-col justify-center items-center">
@@ -92,14 +100,16 @@ const SearchData: NextPage = () => {
                         "sorted-btn",
                         isBest ? "bg-main text-white" : "text-grayText"
                     )}
+                    onClick={activeBestBtn}
                 >
-                    추천순
+                    인기순
                 </li>
                 <li
                     className={cls(
                         "sorted-btn",
                         !isBest ? "bg-main text-white" : "text-grayText"
                     )}
+                    onClick={inactiveBestBtn}
                 >
                     최신순
                 </li>
@@ -112,37 +122,9 @@ const SearchData: NextPage = () => {
                 </p>
             ) : null}
             <div className="w-3/4 border-b border-border mb-[30px]"></div>
-            <div className="w-3/4 flex justify-center mb-20">
-                <div className="grid grid-cols-3 gap-5 gap-y-14">
-                    {dataResults?.map((item) => {
-                        return (
-                            <div key={item.id} className="w-[316px]">
-                                <div className="w-full h-[188px] overflow-hidden mx-auto">
-                                    <picture>
-                                        <img
-                                            src={`${item.thumbnail}`}
-                                            className="w-full h-full object-cover"
-                                            alt="recipe picture"
-                                            width={800}
-                                            height={500}
-                                        />
-                                    </picture>
-                                </div>
-                                <ul className="text-sm text-slate-500 space-x-2 flex">
-                                    <li>&#35;{item.animationTitle}</li>
-                                    <li>&#35;{item.cookingTime}</li>
-                                </ul>
-                                <div className="text-sm text-red-400">
-                                    {item.displayStatus === "회원 공개" &&
-                                        `#${item.displayStatus}`}
-                                </div>
-                                <p className="text-lg text-slate-900 font-semibold">
-                                    {item.foodTitle}
-                                </p>
-                            </div>
-                        );
-                    })}
-                </div>
+            <div className="w-3/4 flex justify-start gap-7 mb-20">
+                <SideCategory />
+                <RecipeData dataResults={dataResults} />
             </div>
         </div>
     );
