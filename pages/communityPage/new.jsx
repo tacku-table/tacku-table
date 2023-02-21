@@ -12,13 +12,16 @@ import {
   deleteDoc,
   Timestamp,
 } from "firebase/firestore";
-import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import {
+  getDownloadURL,
+  ref,
+  uploadBytes,
+  uploadString,
+} from "firebase/storage";
 import { authService, dbService } from "../../config/firebase";
 import EditorComponent from "../../components/write/textEditor";
 import Image from "next/image";
 import { storage } from "../../config/firebase";
-
-import baseImg from "/public/images/test1.png";
 
 const NewCommunityPost = () => {
   const [editorText, setEditorText] = useState("");
@@ -37,18 +40,46 @@ const NewCommunityPost = () => {
   const uid = user?.uid;
   const nickname = user?.displayName;
 
-  const newPost = {
-    uid,
-    nickname,
-    title,
-    thumbnail,
-    editorText,
-    writtenDate: Timestamp.now(),
-    category: selectCategory,
+  const handleChangeTitle = (event) => {
+    setTitle(event.target.value);
+  };
+  const onFileChange = (event) => {
+    const file = event.target.files?.[0];
+    setImageUpload(file);
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = async () => {
+      const imgDataUrl = reader.result;
+      // localStorage.setItem("imgDataUrl", imgDataUrl);
+      // console.log("imgDataUrl", imgDataUrl);
+      setImagePreview(imgDataUrl);
+      await addImageFirebase(uid);
+    };
+  };
+  const addImageFirebase = async (uid) => {
+    // if (imageUpload === null) return;
+    const imageRef = ref(storage, `communityThumbnail/${uid}`);
+    await uploadBytes(imageRef, imageUpload).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((url) => {
+        setThumbnail(url);
+      });
+    });
   };
 
   const handleOnSubmit = async (event) => {
     event.preventDefault();
+    console.log("대표사진 url", thumbnail);
+
+    const newPost = {
+      uid,
+      nickname,
+      title,
+      thumbnail,
+      editorText,
+      writtenDate: Timestamp.now(),
+      category: selectCategory,
+    };
+
     if (
       !selectCategory ||
       !imageUpload ||
@@ -64,53 +95,14 @@ const NewCommunityPost = () => {
         thumbnailRef.current?.focus();
         return false;
       }
-      alert("본문 입력은 필수입니다 :)");
+      alert("본문 입력은 필수입니다");
       return false;
     }
     await addDoc(collection(dbService, "communityPost"), newPost);
-    // setTitle("");
-    // setEditorText("");
-    // setSelectCategory("");
+
     alert("커뮤니티 글 업로드!");
     location.href = "/communityPage";
   };
-
-  const handleChangeTitle = (event) => {
-    setTitle(event.target.value);
-  };
-  const onFileChange = (event) => {
-    const file = event.target.files?.[0];
-    setImageUpload(file);
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      const imgDataUrl = reader.result;
-      localStorage.setItem("imgDataUrl", imgDataUrl);
-      console.log("imgDataUrl", imgDataUrl);
-      setImagePreview(imgDataUrl);
-      addImageFirebase(uid);
-    };
-  };
-
-  const addImageFirebase = async (uid) => {
-    if (imageUpload === null) return;
-    // let randomID = Date.now();
-    const imgRef = ref(storage, `communityThumbnail/${uid}`);
-    const imgDataUrl = localStorage.getItem("imgDataUrl");
-    let downloadUrl;
-
-    if (imgDataUrl) {
-      console.log("imgDataUrl", imgDataUrl);
-      setImgLoading("loading");
-      const response = await uploadString(imgRef, imgDataUrl, "data_url");
-      alert("썸네일 업로드 완료!");
-      setImgLoading("default");
-      downloadUrl = await getDownloadURL(response.ref);
-      console.log(downloadUrl);
-      setThumbnail(downloadUrl);
-    }
-  };
-
   return (
     <div className="px-4 py-8 bg-slate-400">
       <span>글쓰기</span>
