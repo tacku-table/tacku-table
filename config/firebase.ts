@@ -12,7 +12,6 @@ import { getStorage } from "firebase/storage";
 //   messagingSenderId: "713080381754",
 //   appId: "1:713080381754:web:3719f1abfc305e5b08b003",
 // };
-
 // 채하님꺼
 // const firebaseConfig = {
 //     apiKey: "AIzaSyANw6jE7NE7yF6F8TYYJalVwD2FuOLTqJ0",
@@ -24,14 +23,14 @@ import { getStorage } from "firebase/storage";
 // };
 
 // 다경님꺼
-const firebaseConfig = {
-  apiKey: "AIzaSyC1Z5Sl0P_WuafG-4Fgx08TeKD1KzSAjFU",
-  authDomain: "tacku-table.firebaseapp.com",
-  projectId: "tacku-table",
-  storageBucket: "tacku-table.appspot.com",
-  messagingSenderId: "470777376989",
-  appId: "1:470777376989:web:ed93c811f68a6dd2ee2b34",
-};
+// const firebaseConfig = {
+//   apiKey: "AIzaSyC1Z5Sl0P_WuafG-4Fgx08TeKD1KzSAjFU",
+//   authDomain: "tacku-table.firebaseapp.com",
+//   projectId: "tacku-table",
+//   storageBucket: "tacku-table.appspot.com",
+//   messagingSenderId: "470777376989",
+//   appId: "1:470777376989:web:ed93c811f68a6dd2ee2b34",
+// };
 
 // 희진
 // const firebaseConfig = {
