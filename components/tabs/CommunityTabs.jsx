@@ -10,7 +10,7 @@ import {
 } from "firebase/firestore";
 import Link from "next/link";
 import { authService, dbService } from "../../config/firebase";
-
+import { convertTimestamp } from "../../util";
 const CommunityTabs = () => {
   // 전체글 state
   const [communityList, setCommunityList] = useState([]);
@@ -24,16 +24,6 @@ const CommunityTabs = () => {
   }
   //   탭바 변경 state
   let [categories] = useState(["전체 글목록", "요리", "애니", "잡담"]);
-  const convertTimestamp = (writtenDate) => {
-    let date = writtenDate.toDate();
-    let hours = date.getHours();
-    let minutes = date.getMinutes() < 10 ? "0" : "";
-    minutes = minutes + date.getMinutes();
-    let mm = date.getMonth() + 1;
-    let dd = date.getDate();
-    let yyyy = date.getFullYear();
-    return (date = `${yyyy}-${mm}-${dd} ${hours}:${minutes}`);
-  };
 
   useEffect(() => {
     getCommunityList();
