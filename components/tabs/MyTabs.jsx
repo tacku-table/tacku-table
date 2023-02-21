@@ -156,15 +156,18 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
             <div key={p.postId} className="px-6 mb-5">
               <hr className="border-border mx-8 mb-6 border-[1px]" />
               <div className="pl-8 space-x-[20px] items-center flex">
-                <Image
-                  className="object-cover aspect-[4/3]" //aspect-ratio 수정
-                  src={p.thumbnail}
-                  priority={true}
-                  loader={({ src }) => src}
-                  width={180}
-                  height={105}
-                  alt="bookmark-thumbnail"
-                />
+                {p.thumbnail && (
+                  <Image
+                    className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                    unoptimized
+                    src={p?.thumbnail}
+                    priority={true}
+                    loader={({ src }) => src}
+                    width={180}
+                    height={105}
+                    alt="bookmark-thumbnail"
+                  />
+                )}
                 <div className="flex flex-col">
                   <div className="flex space-x-1">
                     <span>#{p.animationTitle}</span>
