@@ -51,7 +51,7 @@ const NewCommunityPost = () => {
     event.preventDefault();
     if (
       !selectCategory ||
-      !thumbnail ||
+      !imageUpload ||
       !editorText ||
       editorText === "<p><br></p>"
     ) {
@@ -59,7 +59,7 @@ const NewCommunityPost = () => {
         categoryRef.current?.focus();
         return false;
       }
-      if (!thumbnail) {
+      if (!imageUpload) {
         alert("대표 사진을 선택해주세요!");
         thumbnailRef.current?.focus();
         return false;
@@ -83,7 +83,7 @@ const NewCommunityPost = () => {
     setImageUpload(file);
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onload = () => {
+    reader.onloadend = () => {
       const imgDataUrl = reader.result;
       localStorage.setItem("imgDataUrl", imgDataUrl);
       console.log("imgDataUrl", imgDataUrl);
