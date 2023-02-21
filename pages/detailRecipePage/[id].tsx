@@ -1,11 +1,19 @@
 import { useEffect, useState } from "react";
-import { onSnapshot, doc, updateDoc, getDoc } from "firebase/firestore";
+import {
+  onSnapshot,
+  doc,
+  updateDoc,
+  getDoc,
+  deleteDoc,
+} from "firebase/firestore";
 import { dbService } from "@/config/firebase";
 import Bookmark from "@/components/detail/Bookmark";
+// 얘는 왜 자꾸 빨간줄 떠있는건가용? (다경)
 import styled from "styled-components";
 import defaultImg from "../../public/images/profile.jpeg";
 import "react-quill/dist/quill.core.css";
 import Image from "next/image";
+import Link from "next/link";
 //react아이콘
 
 //자식한테 props로 타입 넘겨줬는데 왜 오류가 날까...
@@ -25,6 +33,16 @@ export default function DetailReciptPage(props: any) {
       setUserFireData(snapshot.data());
     });
   }, []);
+  //----------다경 추가---------------(시작)
+  const [storageCurrentUser, setStorageCurrentUser]: any = useState({});
+  useEffect(() => {
+    const user = sessionStorage.getItem("User") || "";
+    if (user) {
+      const parseUser = JSON.parse(user);
+      setStorageCurrentUser(parseUser);
+    }
+  }, []);
+  //----------다경 추가---------------(끝)
 
   //조회수
   useEffect(() => {
@@ -44,6 +62,22 @@ export default function DetailReciptPage(props: any) {
       setUserData("geust");
     }
   }, []);
+  //----------------다경 추가한 부분(시작)--------------------
+  const deleteTargetRecipe = async () => {
+    const userConfirm = window.confirm("해당 글을 삭제하시겠습니까?");
+    console.log("props.postId", props.postId);
+    const targetBoardId = props.postId;
+    if (userConfirm) {
+      try {
+        await deleteDoc(doc(dbService, "recipe", targetBoardId));
+        alert("게시물이 삭제되었습니다.");
+        location.href = "/mainPage";
+      } catch (error) {
+        console.log("error: ", error);
+      }
+    }
+  };
+  //----------------다경 추가한 부분(끝)--------------------
 
   return (
     <div className="w-full h-full flex flex-col items-center ">
@@ -130,6 +164,18 @@ export default function DetailReciptPage(props: any) {
           className="view ql-editor"
           dangerouslySetInnerHTML={{ __html: recipeData.content }}
         />
+        {/* 다경 추가한 부분(시작) */}
+        {props.targetWholeData.uid == storageCurrentUser.uid ? (
+          <div style={{ backgroundColor: "lightgreen" }}>
+            <Link href={`/recipeEditPage/${props.postId}`}>수정하기</Link>
+            <button type="button" onClick={deleteTargetRecipe}>
+              삭제하기
+            </button>
+          </div>
+        ) : (
+          <div></div>
+        )}
+        {/* 다경 추가한 부분(끝) */}
       </div>
     </div>
   );
