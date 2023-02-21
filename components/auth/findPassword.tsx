@@ -44,7 +44,7 @@ const FindPassword = () => {
     }
     sendPasswordResetEmail(authService, email)
       .then((data) => {
-        alert("보내기 성공");
+        alert("이메일을 발송했습니다.");
       })
       .catch((error) => {
         if (error.message.includes("auth/user-not-found")) {
@@ -60,7 +60,13 @@ const FindPassword = () => {
   };
 
   return (
-    <div className="bg-slate-300 w-2/5 h-4/5 p-10 rounded-md shadow-md mx-auto flex flex-col bd-3">
+    <div className="w-[420px] m-auto py-60">
+      <div className="text-center mb-10">
+        <h3 className="text-4xl font-bold text-center mb-4">비밀번호 찾기</h3>
+        <p>비밀번호를 찾고자 하는 이메일을 입력해주세요.</p>
+        <p>비밀번호 재설정을 위한 이메일을 보내드리겠습니다.</p>
+      </div>
+      <h6 className="font-semibold text-base float-left">이메일</h6>
       <input
         id="email"
         type="email"
@@ -68,22 +74,38 @@ const FindPassword = () => {
         ref={emailRef}
         value={email}
         onChange={onChangeEmail}
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-150 p-2.5"
+        className="register-input w-full h-10 border-1 border-mono60  text-input mb-10"
       />
-      {emailError || (
-        <div>
-          {email === ""
-            ? "이메일을 입력하세요"
-            : "이메일형식에 맞게 입력해주세요"}
-        </div>
-      )}
       <button
         type="submit"
         onClick={handleResetPassword}
-        className="text-gray-900 bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+        className="bg-brand100 text-white h-[40px] w-full mb-3"
       >
-        이메일 인증
+        이메일 발송
       </button>
+      {emailError || (
+        <div className="text-red100 flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            className="w-5 h-5 mr-1"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
+            />
+          </svg>
+          <p>
+            {email === ""
+              ? "이메일을 입력하세요"
+              : "이메일형식에 맞게 입력해주세요"}
+          </p>
+        </div>
+      )}
     </div>
   );
 };
