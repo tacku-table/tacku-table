@@ -12,11 +12,13 @@ import {
   deleteDoc,
   updateDoc,
 } from "firebase/firestore";
-import { dbService, storage } from "@/config/firebase";
+import { dbService } from "@/config/firebase";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { async } from "@firebase/util";
 import EditorComponent from "../../components/write/textEditor";
+import baseImg from "/public/images/test1.png";
+import Image from "next/image";
+
 export default function DetailPage(props) {
   const [detailPageWholeData, setDetailPageWholeData] = useState({});
   const [comment, setComment] = useState("");
@@ -26,6 +28,7 @@ export default function DetailPage(props) {
   const [uid, setUid] = useState("");
   const [targetIndex, setTargetIndex] = useState("");
   const [targetIsEdit, setTargetIsEdit] = useState("");
+  const [commentWriterNickName, setCommentWriterNickName] = useState("");
   const router = useRouter();
   //여기 게시글
   const [editPostTitle, setEditPostTitle] = useState(
@@ -40,6 +43,8 @@ export default function DetailPage(props) {
     if (sessionStorageUser) {
       const parsingUser = JSON.parse(sessionStorageUser);
       setUid(parsingUser?.uid);
+      // console.log(parsingUser?.displayName);
+      setCommentWriterNickName(parsingUser?.displayName);
     }
     if (!sessionStorageUser) {
       setUid("geust");
@@ -73,6 +78,7 @@ export default function DetailPage(props) {
     setTargetIndex("reset");
     setTargetIsEdit("reset");
     setEditComment("");
+    boardComments.map((item) => console.log("나다", item));
   };
 
   // 글 수정
@@ -116,10 +122,20 @@ export default function DetailPage(props) {
     // uid : 댓글 작성자 id
     // boardId : 게시물 id
     // 게시물 id는 firebase에서 자동으로 들어간다.
+
+    let today = new Date();
+    let year = today.getFullYear();
+    let month = ("0" + (today.getMonth() + 1)).slice(-2);
+    let day = ("0" + today.getDate()).slice(-2);
+    let dateString = year + "-" + month + "-" + day;
+    console.log("현재날짜:", dateString);
+
     const newComment = {
       uid,
       boardId: props.targetId,
       comment,
+      writterNickName: commentWriterNickName,
+      writtenDate: dateString,
     };
     await addDoc(collection(dbService, "comments"), newComment);
     getWholeComments();
@@ -158,112 +174,202 @@ export default function DetailPage(props) {
   };
 
   return (
-    <div>
-      <div style={{ border: "3px solid blue", width: 300 }}>
-        {isPostEdit ? (
-          <>
-            <input
-              type="text"
-              value={editPostTitle}
-              onChange={(e) => {
-                setEditPostTitle(e.target.value);
-              }}
-            />
-            <EditorComponent
-              setEditorText={setEditPostContent}
-              editorText={editPostContent}
-            />
-          </>
-        ) : (
-          <>
-            <div>글제목:{detailPageWholeData.title}</div>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: detailPageWholeData.editorText,
-              }}
-            />
-          </>
-        )}
-        {uid === props.targetWholeData.uid && (
-          <div className="flex justify-between">
-            <button onClick={() => updatePost(props.targetId)}>
-              {isPostEdit ? "완료" : "편집"}
-            </button>
-            <button onClick={() => deletePost(props.targetId)}>삭제</button>
-          </div>
-        )}
-      </div>
-      {uid === "geust" ? (
-        <div> 로그인 시 댓글을 작성할 수 있습니다. </div>
-      ) : (
-        <div>
-          <input
-            type="text"
-            style={{ border: "1px solid black" }}
-            value={comment}
-            onChange={(e) => {
-              setComment(e.target.value);
-            }}
-          />
+    <div className="bg-[#FFF5F5] p-10">
+      <div className="rounded-md p-7 container w-[780px] mx-auto flex justify-center flex-col bg-white">
+        <h3 className="text-4xl">잡담게시판</h3>
+        <div className=" flex justify-end">
           <button
             type="button"
-            style={{ border: "1px solid black" }}
-            onClick={addComment}
+            className="bg-brand100 text-white h-[35px]  w-[100px]"
           >
-            댓글 추가하기
+            목록보기
           </button>
         </div>
-      )}
 
-      <div style={{ border: "1px solid black" }}>
-        <h3>댓글창</h3>
+        <hr class="h-px my-2 bg-brand100 border-[2px] border-brand100"></hr>
         <div>
-          {boardComments?.map((item, index) => {
-            return (
-              <>
-                {targetIndex === index ? (
-                  <input
-                    key={index}
-                    type="text"
-                    style={{ border: "1px solid black" }}
-                    value={editComment}
-                    onChange={(e) => {
-                      setEditComment(e.target.value);
-                    }}
-                  />
-                ) : (
-                  <p>{item.comment}</p>
-                )}
-                <div>파이어베이스의 댓글 id: {item.id}</div>
-                {/* 댓글작성자 id와 currentUser가 일치할시 수정/삭제 버튼 보이도록 설정*/}
-                {uid === item.uid ? (
-                  <div>
-                    <button
-                      type="button"
-                      style={{ border: "1px solid black" }}
-                      onClick={() => {
-                        deleteComment(item.id);
-                      }}
-                    >
-                      삭제
-                    </button>
-                    <button
-                      type="button"
-                      style={{ border: "1px solid black" }}
-                      onClick={() => {
-                        // 댓글 id
-                        commentEdit(item.id, index);
-                      }}
-                    >
-                      {targetIsEdit === index ? "완료 " : "수정"}
-                    </button>
-                  </div>
-                ) : (
-                  ""
-                )}
-              </>
-            );
-          })}
+          {isPostEdit ? (
+            <>
+              <input
+                type="text"
+                value={editPostTitle}
+                onChange={(e) => {
+                  setEditPostTitle(e.target.value);
+                }}
+              />
+              <EditorComponent
+                setEditorText={setEditPostContent}
+                editorText={editPostContent}
+              />
+            </>
+          ) : (
+            <>
+              <div className="text-[24px] text-mono100 font-medium">
+                {detailPageWholeData.title}
+              </div>
+              <div className="flex justify-end">
+                <div className="text-[16px] text-mono80">작성자 이름</div>
+                <div className="text-[16px] text-mono80"> 작성일</div>
+              </div>
+
+              <div className="block h-[60px]">
+                <Image
+                  className="w-[40px] h-[40px] object-cover object-center float-left m-2"
+                  src={baseImg}
+                  width={780}
+                  height={270}
+                  alt="대표 이미지가 없습니다."
+                />
+                <h3 className="relative top-[15px]">제목 밑에 작성자이름</h3>
+                <hr class="h-px my-10 bg-mono50 border-[1px] border-mono50"></hr>
+              </div>
+              <div className="mt-10 text-center">
+                {/* 대표사진 */}
+                <Image
+                  className="w-[780px] h-[270px] lg:w-5/6 md:w-5/6 w-5/6 mb-10 m-auto"
+                  src={baseImg}
+                  width={780}
+                  height={270}
+                  alt="대표 이미지가 없습니다."
+                />
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: detailPageWholeData.editorText,
+                  }}
+                />
+              </div>
+            </>
+          )}
+          {uid === props.targetWholeData.uid && (
+            <div className="flex float-right mt-2">
+              <button
+                className="text-mono80 bg-mono50 text-[16px] w-[80px] h-[30px]"
+                onClick={() => updatePost(props.targetId)}
+              >
+                {isPostEdit ? "완료" : "수정"}
+              </button>
+              <button
+                className="text-mono80 bg-mono50 text-[16px] w-[80px] h-[30px] ml-2"
+                onClick={() => deletePost(props.targetId)}
+              >
+                삭제
+              </button>
+            </div>
+          )}
+        </div>
+        <hr class="h-px my-8 bg-brand100 border-[1px] border-brand100"></hr>
+        <div>
+          <div>
+            <h3 className="text-[21px]">
+              댓글 <b className="text-[#FF0000]">{boardComments.length}</b>
+            </h3>
+
+            <div>
+              <div>
+                {boardComments?.map((item, index) => {
+                  return (
+                    <>
+                      {targetIndex === index ? (
+                        <input
+                          key={index}
+                          type="text"
+                          value={editComment}
+                          onChange={(e) => {
+                            setEditComment(e.target.value);
+                          }}
+                        />
+                      ) : (
+                        <div>
+                          <Image
+                            className="w-[40px] h-[40px] object-cover object-center float-left m-2"
+                            src={baseImg}
+                            width={780}
+                            height={270}
+                            alt="대표 이미지가 없습니다."
+                          />
+
+                          <div>
+                            <span className="text-[12px]">
+                              {item.writterNickName}
+                            </span>
+                            <span className="ml-2 text-mono80 text-[12px]">
+                              {item.writtenDate}
+                            </span>
+                            <p className="ml-2 text-mono80 text-[12px]">
+                              {item.comment}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                      {uid === item.uid ? (
+                        <div className="flex justify-end mb-1">
+                          <button
+                            className="text-[12px] text-mono80"
+                            type="button"
+                            onClick={() => {
+                              deleteComment(item.id);
+                            }}
+                          >
+                            삭제
+                          </button>
+                          <button
+                            className="text-[12px] ml-1 mr-1 text-mono80"
+                            type="button"
+                            onClick={() => {
+                              // 댓글 id
+                              commentEdit(item.id, index);
+                            }}
+                          >
+                            {targetIsEdit === index ? "완료 " : "수정"}
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex justify-end mb-1 h-5"></div>
+                      )}
+                    </>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+          {uid === "geust" ? (
+            <div className="w-full text-center mt-5">
+              <input
+                disabled
+                className="h-[90px] w-5/6 border-[2px] border-brand100"
+                type="text"
+                placeholder=" 로그인 후 댓글 작성해주세요."
+              />
+              <button
+                className="ml-2 text-white border-none bg-brand100 w-[80px] h-[90px] lg:w-1/8 md:w-1/8 sm:1/8"
+                type="button"
+                style={{ border: "1px solid black" }}
+              >
+                로그인
+              </button>
+            </div>
+          ) : (
+            <div className="w-full text-center mt-5">
+              <input
+                className="h-[90px] w-5/6 border-[2px] border-brand100 p-3"
+                placeholder=" 타쿠의식탁 커뮤니티가 훈훈해지는 댓글을 남겨주세요."
+                type="text"
+                style={{ border: "1px solid black" }}
+                value={comment}
+                onChange={(e) => {
+                  setComment(e.target.value);
+                }}
+              />
+              <button
+                className="ml-2 text-white border-none bg-brand100 w-[80px] h-[90px] lg:w-1/8 md:w-1/8 sm:1/8"
+                type="button"
+                style={{ border: "1px solid black" }}
+                onClick={addComment}
+              >
+                등록
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -271,10 +377,8 @@ export default function DetailPage(props) {
 }
 
 export async function getServerSideProps(context) {
-  console.log("context는?", context);
   const { params } = context;
   const { id } = params;
-  console.log("id는?", id);
   const targetId = id;
   let targetWholeData;
   let commentWholeData = [];
