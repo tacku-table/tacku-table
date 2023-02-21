@@ -17,7 +17,7 @@ import { authService, dbService } from "../../config/firebase";
 import EditorComponent from "../../components/write/textEditor";
 import Image from "next/image";
 import { storage } from "../../config/firebase";
-
+import { Listbox } from "@headlessui/react";
 import baseImg from "/public/images/test1.png";
 
 const NewCommunityPost = () => {
@@ -131,6 +131,7 @@ const NewCommunityPost = () => {
             <option value="잡담">잡담</option>
           </select>
         </div>
+
         <input
           className="w-full h-12 rounded-sm border border-mono60 p-3 my-6 text-input"
           type="text"
