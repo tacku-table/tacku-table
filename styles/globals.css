@@ -37,7 +37,15 @@
   .text-input {
     @apply focus:outline-none border-transparent focus:border-brand100 focus:ring-0;
   }
-
+  .recipepage-edit-button {
+    @apply w-[100px] h-[35px] bg-brand100 text-white font-medium text-center rounded;
+  }
+  .recipepage-del-button {
+    @apply w-[100px] h-[35px] border-2 border-mono60 font-medium text-center rounded;
+  }
+  .textEditor {
+    @apply h-full;
+  }
   @keyframes messageFadeIn {
     0% {
       opacity: 0;

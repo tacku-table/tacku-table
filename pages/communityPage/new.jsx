@@ -185,7 +185,7 @@ const NewCommunityPost = () => {
         </div>
         <div className="flex justify-end">
           <button
-            className="w-44 h-11 mt-24 text-white bg-brand100 font-medium"
+            className="w-44 h-11 mt-24 text-white bg-brand100 "
             type="submit"
           >
             등록
