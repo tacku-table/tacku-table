@@ -5,13 +5,13 @@ import chihiro from "../../public/images/chihiro.jpg";
 
 const GoToCommunity: NextPage = () => {
     return (
-        <div className="relative h-[384px] bg-gray-900 text-white flex flex-col justify-center 2xl:pl-64">
+        <div className="relative h-[384px] text-white flex flex-col justify-center 2xl:pl-64">
             <Image
                 src={chihiro}
                 alt="animation_image"
-                width={800}
-                height={500}
-                className="absolute w-[682px] h-full my-auto right-44"
+                width={1920}
+                height={384}
+                className="absolute w-full h-full top-0 left-0"
             />
             <p className="text-xl font-semibold mt-[105px] mb-4 z-50">
                 커뮤니티

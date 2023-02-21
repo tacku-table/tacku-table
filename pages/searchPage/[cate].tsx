@@ -1,4 +1,3 @@
-import SearchRecipeBar from "@/components/search/SearchRecipeBar";
 import { dbService } from "@/config/firebase";
 import { cls } from "@/util";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
@@ -6,6 +5,7 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Fuse from "fuse.js";
+import RecipeData from "@/components/search/RecipeData";
 
 // 카테고리별 불러오기
 const ClassifiedRecipe: NextPage = () => {
@@ -49,11 +49,6 @@ const ClassifiedRecipe: NextPage = () => {
             id: doc.id,
         }));
         setCurrentItems(newData);
-    };
-
-    // 상세페이지이동
-    const goToDetail = (id: any) => {
-        router.push(`/detailRecipePage/${id}`);
     };
 
     // 검색
@@ -108,7 +103,7 @@ const ClassifiedRecipe: NextPage = () => {
                         isBest ? "bg-main text-white" : "text-grayText"
                     )}
                 >
-                    추천순
+                    인기순
                 </li>
                 <li
                     className={cls(
@@ -124,47 +119,7 @@ const ClassifiedRecipe: NextPage = () => {
                 <div className="bg-slate-100 px-2 py-3 w-[150px] h-[50px] mr-7 text-center">
                     {router.query.cate?.toString().replaceAll("&", "/")}
                 </div>
-                <div className="grid grid-cols-3 gap-4">
-                    {dataResults.length ? (
-                        dataResults.map((item) => {
-                            return (
-                                <div
-                                    key={item.id}
-                                    className="w-[316px] cursor-pointer"
-                                    onClick={() => goToDetail(item.id)}
-                                >
-                                    <div className="w-full h-[188px] overflow-hidden mx-auto relative">
-                                        {item.displayStatus === "회원 공개" && (
-                                            <div className="w-full h-full bg-slate-50 opacity-60 absolute top-0 left-0"></div>
-                                        )}
-                                        <picture>
-                                            <img
-                                                src={`${item.thumbnail}`}
-                                                className="w-full h-full object-cover"
-                                                alt="recipe picture"
-                                                width={800}
-                                                height={500}
-                                            />
-                                        </picture>
-                                    </div>
-                                    <ul className="text-sm text-slate-500 space-x-2 flex">
-                                        <li>&#35;{item.animationTitle}</li>
-                                        <li>&#35;{item.cookingTime}</li>
-                                    </ul>
-                                    <div className="text-sm text-red-400">
-                                        {item.displayStatus === "회원 공개" &&
-                                            `#${item.displayStatus}`}
-                                    </div>
-                                    <p className="text-lg text-slate-900 font-semibold">
-                                        {item.foodTitle}
-                                    </p>
-                                </div>
-                            );
-                        })
-                    ) : (
-                        <div>게시물이 존재하지 않습니다</div>
-                    )}
-                </div>
+                <RecipeData dataResults={dataResults} />
             </div>
         </div>
     );

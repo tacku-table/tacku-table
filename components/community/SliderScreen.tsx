@@ -29,7 +29,7 @@ const SliderScreen: NextPage = () => {
     }, [index]);
 
     return (
-        <div className="w-[860px] h-[412px] relative overflow-hidden mt-4">
+        <div className="w-[860px] h-[412px] relative overflow-hidden mt-4 rounded-lg">
             {cards.map((item, i) => {
                 const indexLeft = mod(index - 1, cards.length);
                 const indexRight = mod(index + 1, cards.length);
