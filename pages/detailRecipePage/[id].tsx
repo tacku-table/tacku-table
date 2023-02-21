@@ -80,13 +80,12 @@ export default function DetailReciptPage(props: any) {
       <div className=" w-[1180px] my-4 bg-white pb-[131px] pt-[52px] px-[200px]">
         <div className="bg-slate-100 w-full h-[440px] overflow-hidden relative">
           <Image
-            layout="fill"
-            objectFit="cover"
-            objectPosition="center"
-            src={recipeData.thumbnail}
-            loader={({ src }) => src}
+            src={`${recipeData.thumbnail}`}
             alt="thumbnail"
             className="image-detail"
+            fill
+            unoptimized
+            style={{ objectFit: "cover", objectPosition: "center" }}
           />
         </div>
         <div className="flex-col my-5">
@@ -106,13 +105,13 @@ export default function DetailReciptPage(props: any) {
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke-width="3"
+                strokeWidth="3"
                 stroke="currentColor"
                 className="w-4 h-4 text-red100"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
@@ -134,16 +133,17 @@ export default function DetailReciptPage(props: any) {
                   height={50}
                   alt="default_img"
                   className="rounded-md"
+                  unoptimized
                 />
               ) : (
                 <Image
-                  src={userFireData.userImg}
+                  src={`${userFireData.userImg}`}
                   priority={true}
-                  loader={({ src }) => src}
                   width={50}
                   height={50}
                   alt="user_img"
                   className="rounded-md"
+                  unoptimized
                 />
               )}
               <p className="pl-5 font-semibold">{userFireData.userNickname}</p>
