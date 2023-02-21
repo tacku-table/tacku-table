@@ -47,9 +47,11 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="bg-slate-300 w-2/5 h-4/5 p-10 rounded-md shadow-md mx-auto flex flex-col bd-3">
+    <div className="w-[420px] h-full mx-auto text-center py-60">
+      <h3 className="text-4xl font-bold text-center mb-10">비밀번호 변경</h3>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="mb-10">
+          <h6 className="font-semibold float-left">새로운 비밀번호</h6>
           <input
             id="pw"
             type="password"
@@ -57,13 +59,17 @@ const ResetPassword = () => {
             ref={newPwRef}
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-150 p-2.5"
-          ></input>
+            className="register-input w-full h-10 border-1 border-mono60  text-input"
+          />
+          <label
+            htmlFor="newPassword"
+            className="text-xs text-mono80 float-left"
+          >
+            비밀번호는 8~20자 이내로 영문, 숫자를 혼용하여 입력하세요
+          </label>
         </div>
-        <label htmlFor="pw">
-          비밀번호는 8~20자 이내로 영문, 숫자를 혼용하여 입력하세요
-        </label>
         <div>
+          <h6 className="font-semibold text-base float-left">비밀번호 확인</h6>
           <input
             id="pwConfirm"
             type="password"
@@ -71,22 +77,38 @@ const ResetPassword = () => {
             ref={newPwConfirmRef}
             value={conirmPassword}
             onChange={(e) => setConirmPassword(e.target.value)}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-150 p-2.5"
-          ></input>
+            className="register-input w-full h-10 border-1 border-mono60  text-input mb-10"
+          />
         </div>
-        {passwordError || (
-          <div>
-            {newPassword === "" || conirmPassword === ""
-              ? "비밀번호 또는 비밀번호확인란이 비어있습니다"
-              : "비밀번호는 8자리 이상, 영어 대, 소문자, 1개 이상의 숫자와 특수문자(!@#$%^&*) 조합이어야 합니다."}
-          </div>
-        )}
         <button
           type="submit"
-          className="text-gray-900 bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+          className="bg-brand100 text-white h-[40px] w-full mb-3"
         >
           비밀번호 변경
         </button>
+        {passwordError || (
+          <div className="text-red100 flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              className="w-5 h-5 mr-1"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
+              />
+            </svg>
+            <p>
+              {newPassword === "" || conirmPassword === ""
+                ? "비밀번호 또는 비밀번호확인란이 비어있습니다"
+                : "비밀번호는 8자리 이상, 영어 대, 소문자, 1개 이상의 숫자와 특수문자(!@#$%^&*) 조합이어야 합니다."}
+            </p>
+          </div>
+        )}
       </form>
     </div>
   );
