@@ -130,6 +130,7 @@ const EditorComponent = ({ editorText, setEditorText }: EditorProps) => {
       {imgLoading == "completed" && <div>로딩완료</div>} */}
 
       <QuillWrapper
+        className="textEditor"
         forwardedRef={quillRef}
         value={editorText}
         onChange={setEditorText}

@@ -34,7 +34,7 @@
   .sorted-btn {
     @apply w-[87px] h-[35px] border border-border border-collapse hover:bg-main hover:text-white hover:transition hover:ease-out hover:duration-300 flex justify-center items-center cursor-pointer rounded-sm text-sm;
   }
-  .hello {
+  .textEditor {
     @apply h-full;
   }
 }
