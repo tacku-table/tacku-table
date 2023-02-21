@@ -76,6 +76,8 @@ const Bookmark = (props: any) => {
           writerNickName: props.recipeData.writerNickName,
           viewCount: props.recipeData.viewCount,
           cookingTime: props.recipeData.cookingTime,
+          animationTitle: props.recipeData.animationTitle,
+          uid: props.recipeData.uid,
         }
       );
     }
