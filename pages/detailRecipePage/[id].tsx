@@ -49,7 +49,7 @@ export default function DetailReciptPage(props: any) {
         <div className="bg-slate-100 w-full h-[440px] overflow-hidden relative">
           <Image
             layout="fill"
-            objectFit="contain"
+            objectFit="cover"
             objectPosition="center"
             src={recipeData.thumbnail}
             loader={({ src }) => src}

@@ -17,7 +17,6 @@ import { authService, dbService } from "../../config/firebase";
 import EditorComponent from "../../components/write/textEditor";
 import Image from "next/image";
 import { storage } from "../../config/firebase";
-import { Listbox } from "@headlessui/react";
 import baseImg from "/public/images/test1.png";
 
 const NewCommunityPost = () => {
@@ -171,15 +170,18 @@ const NewCommunityPost = () => {
             onChange={onFileChange}
             className="float-right w-[90px]"
           />
-          <Image
-            src={imagePreview}
-            loader={({ src }) => src}
-            priority={true}
-            width={120}
-            height={100}
-            alt="프리뷰"
-            className="border border-mono60 mt-5 "
-          />
+
+          <div className=" w-[140px] h-[97px] overflow-hidden relative border border-mono60 mt-5 ">
+            <Image
+              src={imagePreview}
+              loader={({ src }) => src}
+              priority={true}
+              layout="fill"
+              objectFit="cover"
+              objectPosition="center"
+              alt="프리뷰"
+            />
+          </div>
         </div>
         <div className="flex justify-end">
           <button
