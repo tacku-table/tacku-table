@@ -14,6 +14,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { getDownloadURL, listAll, ref } from "firebase/storage";
 // interface MyTabsProps {
 //   userInfo: any;
 //   setUserInfo: any;
@@ -61,30 +62,17 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
       });
       setBookmarkPost(myposts);
     });
-    // setTimeout(
-    //   bookmarkPost.map((i) => {
-    //     const userRef = doc(dbService, "user", `${i.writerUid}`);
-    //     getDoc(userRef).then((doc) => {
-    //       const writerImg = doc.data().userImg;
-    //       // console.log(writerImg);
-    //       setBookmarkPost({
-    //         ...i,
-    //         writerImg,
-    //       });
-    //     });
-    //   }),
-    //   500
-    // );
   };
   const getWriterProfileImg = async () => {
-    bookmarkPost.map((i) => {
-      const userRef = doc(dbService, "user", `${i.writerUid}`);
-      getDoc(userRef).then((doc) => {
-        const writerImg = doc.data().userImg;
-        // console.log(writerImg);
-        setBookmarkPost({
-          ...i,
-          writerImg,
+    // if (userInfo?.userImg === "null") return;
+    const imageListRef = ref(storage, "profileImage/");
+    await listAll(imageListRef).then((response) => {
+      response.items.forEach((item) => {
+        getDownloadURL(item).then((url) => {
+          // url === writeruid
+          if (url === userInfo?.userImg) {
+            setShowUserUpdateImg(url);
+          }
         });
       });
     });
