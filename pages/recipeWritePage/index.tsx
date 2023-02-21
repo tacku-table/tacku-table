@@ -31,9 +31,9 @@ const RecipeWritePage = () => {
   const cookTimeRef = useRef<HTMLSelectElement>(null);
   const foodCategoryRef = useRef<HTMLSelectElement>(null);
   const thumbnailRef = useRef<HTMLInputElement>(null);
-  const displayStatusRef = useRef<HTMLSelectElement>(null);
   const [storageCurrentUser, setStorageCurrentUser]: any = useState({});
   const [imgLoading, setImgLoading] = useState("");
+
   useEffect(() => {
     const user = sessionStorage.getItem("User") || "";
     const parseUser = JSON.parse(user);
@@ -109,6 +109,7 @@ const RecipeWritePage = () => {
       !displayStatus ||
       !thumbnail ||
       !editorText ||
+      !displayStatus ||
       editorText === "<p><br></p>"
     ) {
       if (!targetTitle) {
@@ -143,10 +144,10 @@ const RecipeWritePage = () => {
         return false;
       }
       if (!displayStatus) {
-        alert("게시물 공개여부를 선택해주세요!");
-        displayStatusRef.current?.focus();
+        alert("게시글 공개여부를 체크해주세요!");
         return false;
       }
+
       alert("게시글 본문이 채워지지 않았어요 😥");
       return false;
     }
@@ -160,7 +161,9 @@ const RecipeWritePage = () => {
   const onFileChange = (event: any) => {
     const theFile = event.target.files[0];
     const reader = new FileReader();
-    reader.readAsDataURL(theFile);
+    if (theFile && theFile.type.match("image.*")) {
+      reader.readAsDataURL(theFile);
+    }
     reader.onloadend = (finishedEvent: any) => {
       const imgDataUrl: any = finishedEvent.currentTarget.result;
       localStorage.setItem("imgDataUrl", imgDataUrl);
@@ -189,192 +192,243 @@ const RecipeWritePage = () => {
   };
 
   return (
-    <div>
-      <div style={{ border: "1px solid blue" }}>
-        <h3>레시피 글쓰기 페이지</h3>
-        <br />
-        <h2>📢 페이지 입력창을 모두 작성해주세요 📢</h2>
-        <br />
-        <br />
+    <div className="bg-white p-10">
+      <div className="mt-[75px] rounded-md p-7 container w-[1180px] mx-auto flex justify-center flex-col bg-white">
+        <h3 className="text-4xl font-bold">레시피 글쓰기 </h3>
+        <hr className="mt-[24px] h-px border-[1.5px] border-brand100"></hr>
 
-        <form onSubmit={postNewRecipe}>
-          <b> 영화 제목검색 : </b>
-          <input
-            ref={movieTitleRef}
-            name="targetTitle"
-            type="text"
-            onChange={(event) => inputChangeSetFunc(event, setSeachTitle)}
-            placeholder=" 원하는 제목을 검색해주세요!"
-            style={{ border: "1px solid black", width: "210px" }}
-          />
-          <br />
+        <form onSubmit={postNewRecipe} className="mt-[40px]">
+          <div className="pb-7">
+            <b className="text-[21px] font-semibold"> 애니메이션 제목 검색 </b>
+            <input
+              className="p-2 ml-[15px] w-[280px] h-[45px] border border-mono60 rounded-[2px] "
+              ref={movieTitleRef}
+              name="targetTitle"
+              type="text"
+              onChange={(event) => inputChangeSetFunc(event, setSeachTitle)}
+              placeholder=" 원하는 제목을 검색해주세요!"
+            />
 
-          {searchTitle ? (
-            <div className="bg-orange-300">
-              <h3>
-                <span style={{ fontSize: "20px", color: "red" }}>
-                  {searchTitle}
-                </span>
-                키워드로 검색한 결과입니다.
-              </h3>
-              <b>
-                <b style={{ color: "blue", fontSize: "20px" }}>아래</b>를
-                <b style={{ fontSize: "20px" }}>클릭</b>하여 제목을 선택해주세요
-              </b>
-              <br />
+            {searchTitle ? (
+              <div className="ml-[5px] rounded-lg w-[450px]  text-center mt-1">
+                {/* <h3 className="mt-4">
+                  <b className="text-brand100 text-[21px]">{searchTitle} </b>
+                  키워드로 검색된 결과입니다.
+                </h3>
+                <h6>
+                  아래에서 <b>영화를 선택</b>해주세요
+                </h6> */}
+
+                <select
+                  className="ml-[185px] w-[280px] h-[40px] mt-[16px] border border-mono60 rounded-[2px] text-center"
+                  onChange={(event) => {
+                    selectChangeSetFunc(event, setTargetTitle);
+                  }}
+                >
+                  <option
+                    value="defaultValue"
+                    selected
+                    style={{ display: "none" }}
+                  >
+                    🎬 {searchTitle} 로 검색된 영화 선택 🎬
+                  </option>
+                  {titleArr?.map((item, index) => (
+                    <option value={item.title} key={index}>
+                      {item.title}
+                    </option>
+                  ))}
+                </select>
+                {/* <div className="flex items-stretch ml-10">dfdf</div> */}
+              </div>
+            ) : (
+              <div></div>
+            )}
+          </div>
+          <div className="space-y-3 mt-[20px]">
+            <div className="pb-7">
+              <div className="text-[21px] float-left font-semibold">
+                레시피 제목
+              </div>
+              <input
+                placeholder="제목을 입력해주세요"
+                className="p-2 lg:w-[580px] sm:w-[280px] md:w-[280px] ml-[97px] text-mono70 h-[45px] border border-mono60 rounded-[2px]"
+                ref={foodTitleRef}
+                name="footTitle"
+                type="text"
+                onChange={(event) => inputChangeSetFunc(event, setFoodTitle)}
+              />
+            </div>
+            <div className="pb-[40px]">
+              <div className="text-[21px] float-left font-semibold">
+                음식 종류
+              </div>
               <select
-                style={{ border: "1px solid black" }}
+                className="p-2 ml-[115px] text-mono70 w-[280px] h-[40px] border border-mono60 rounded-[2px]"
+                ref={foodCategoryRef}
                 onChange={(event) => {
-                  selectChangeSetFunc(event, setTargetTitle);
+                  selectChangeSetFunc(event, setFoodCategory);
                 }}
               >
-                <option
-                  value="defaultValue"
-                  selected
-                  style={{ display: "none" }}
-                >
-                  🎬 {searchTitle}로 검색된 영화 선택 🎬
-                </option>
-                {titleArr?.map((item, index) => (
-                  <option value={item.title} key={index}>
-                    {item.title}
-                  </option>
-                ))}
+                <option value="none"> 음식 종류 선택 </option>
+                <option value="국&탕&찌개">국/탕/찌개</option>
+                <option value="구이&볶음&찜">구이/볶음/찜</option>
+                <option value="튀김류">튀김류</option>
+                <option value="베이커리&디저트">베이커리/디저트</option>
+                <option value="음료&주류">음료/주류</option>
+                <option value="밥&도시락&면">밥/도시락/면</option>
+                <option value="식단&건강관리">식단/건강관리</option>
               </select>
             </div>
-          ) : (
-            <div></div>
-          )}
-
-          <div>
-            <b> 선택한 영화제목 👉 </b>
-            {targetTitle}
-          </div>
-          <b> 음식명 : </b>
-          <input
-            ref={foodTitleRef}
-            name="footTitle"
-            type="text"
-            style={{ border: "1px solid black" }}
-            onChange={(event) => inputChangeSetFunc(event, setFoodTitle)}
-          />
-          <br />
-          <b> 재료 :</b>
-          <input
-            type="text"
-            ref={ingredientRef}
-            name="ingredient"
-            style={{ border: "1px solid black" }}
-            onChange={(event) => inputChangeSetFunc(event, setIngredient)}
-          />
-          <br />
-          <b> 소요시간 </b>
-          <select
-            ref={cookTimeRef}
-            onChange={(event) => {
-              selectChangeSetFunc(event, setSelectCookTime);
-            }}
-            style={{ border: "1px solid black" }}
-          >
-            <option value="none"> === 소요시간 선택 === </option>
-            <option value="15분이하">15분이하</option>
-            <option value="30분이하">30분이하</option>
-            <option value="1시간이하">1시간이하</option>
-            <option value="1시간이상">1시간이상</option>
-          </select>
-          <br />
-          <b>클릭한 요리시간 👉 {selectCookTime}</b>
-          <br />
-          <b> 음식 종류 : </b>
-          <select
-            ref={foodCategoryRef}
-            onChange={(event) => {
-              selectChangeSetFunc(event, setFoodCategory);
-            }}
-            style={{ border: "1px solid black" }}
-          >
-            <option value="none"> === 음식 종류 선택 === </option>
-            <option value="국&탕&찌개">국/탕/찌개</option>
-            <option value="구이&볶음&찜">구이/볶음/찜</option>
-            <option value="튀김류">튀김류</option>
-            <option value="베이커리&디저트">베이커리/디저트</option>
-            <option value="음료&주류">음료/주류</option>
-            <option value="밥&도시락&면">밥/도시락/면</option>
-            <option value="식단&건강관리">식단/건강관리</option>
-          </select>
-          <br />
-          <b>클릭한 음식 종류 : {foodCategory}</b>
-          <br />
-          {imgLoading == "loading" && (
-            <div
-              style={{
-                position: "absolute",
-                width: "300px",
-                height: "300px",
-                backgroundColor: "white",
-                border: "3px solid black",
-                zIndex: "3",
-                textAlign: "center",
-                paddingLeft: "100px",
-              }}
-            >
-              사진을 서버에 열심히 로딩하고 있어요 🥺 <br />
-              잠시만 기다려주세요 !!!!
+            <div className="pb-[40px]">
+              <b className="text-[21px] font-semibold "> 소요시간 </b>
+              <select
+                className="p-2 ml-[115px] text-mono70 w-[280px] h-[40px] border border-mono60 rounded-[2px]"
+                ref={cookTimeRef}
+                onChange={(event) => {
+                  selectChangeSetFunc(event, setSelectCookTime);
+                }}
+              >
+                <option value="none"> 요리 소요 시간 선택 </option>
+                <option value="15분이하">15분이하</option>
+                <option value="30분이하">30분이하</option>
+                <option value="1시간이하">1시간이하</option>
+                <option value="1시간이상">1시간이상</option>
+              </select>
             </div>
-          )}
-          <b>📸 대표 사진을 선택해주세요! </b>
-          <input
-            ref={thumbnailRef}
-            name="thumbnail"
-            onChange={(event) => {
-              onFileChange(event);
-            }}
-            type="file"
-            accept="images/*"
-          />
-          {imagePreview ? (
-            <Image
-              src={imagePreview}
-              width={100}
-              height={100}
-              alt="대표 이미지가 없습니다."
-            />
-          ) : (
-            <Image
-              src={baseImg}
-              width={100}
-              height={100}
-              alt="대표 이미지가 없습니다."
-            />
-          )}
-          <b>게시물 공개여부 </b>
-          <select
-            ref={displayStatusRef}
-            style={{ border: "1px solid black" }}
-            onChange={(event) => {
-              selectChangeSetFunc(event, setDisplayStatus);
-            }}
-          >
-            <option value="none"> === 공개 여부 === </option>
-            <option value="전체 공개">전체 공개</option>
-            <option value="회원 공개">회원 공개</option>
-          </select>
-          <div>공개여부 👉 {displayStatus}</div>
-          <b>게시글 본문</b>
-          <EditorComponent
-            editorText={editorText}
-            setEditorText={setEditorText}
-          />
-          <button
-            type="submit"
-            style={{
-              border: "1px solid black",
-              background: "grey",
-              color: "white",
-            }}
-          >
-            글 등록하기
-          </button>
+            <hr className="h-px my-7 border-[1px] border-mono60"></hr>
+            <div className="flex items-stretch pt-7">
+              <div className="text-[21px] font-semibold">주재료</div>
+              <input
+                placeholder="레시피에서 메인이 되는 재료를 작성해주세요."
+                className="pb-[80px] p-2 ml-[135px] w-[580px] h-[117px] border border-mono60 rounded-[2px]"
+                type="text"
+                ref={ingredientRef}
+                name="ingredient"
+                onChange={(event) => inputChangeSetFunc(event, setIngredient)}
+              />
+            </div>
+          </div>
+          <hr className="mt-[40px] border-[1px] border-mono60"></hr>
+          <div className="pt-[40px]">
+            <div className="text-[21px] pb-[40px] font-semibold">
+              레시피 작성
+            </div>
+            <div className="w-full h-[538px]">
+              <EditorComponent
+                editorText={editorText}
+                setEditorText={setEditorText}
+              />
+            </div>
+            {imgLoading == "loading" && (
+              <div
+                style={{
+                  position: "absolute",
+                  width: "300px",
+                  height: "300px",
+                  backgroundColor: "white",
+                  border: "3px solid black",
+                  zIndex: "3",
+                  textAlign: "center",
+                  paddingLeft: "100px",
+                }}
+              >
+                사진을 서버에 열심히 로딩하고 있어요 🥺 <br />
+                잠시만 기다려주세요 !!!!
+              </div>
+            )}
+            <div className="bg-mono40 h-[210px] mt-[40px]">
+              <div className="mt-[12px] float-right flex items-stretch">
+                <div className="mt-2 text-mono80 text-[16px]">
+                  대표 이미지 별도 등록
+                </div>
+                <label htmlFor="ex_file">
+                  <div className="rounded-[2px] border border-mono60 ml-[20px] text-[16px] text-center pt-1 hover:cursor-pointer w-[100px] h-[35px] bg-mono40 text-mono100">
+                    이미지 선택
+                  </div>
+                </label>
+                <input
+                  className="hidden"
+                  id="ex_file"
+                  ref={thumbnailRef}
+                  name="thumbnail"
+                  onChange={(event) => {
+                    onFileChange(event);
+                  }}
+                  type="file"
+                  accept="images/*"
+                />
+              </div>
+              <div className="ml-[16px] pt-[20px] text-mono100 text-[16px]">
+                등록된 대표 이미지
+              </div>
+              {imagePreview ? (
+                <Image
+                  className="ml-[16px] w-[82px] h-[49px]"
+                  src={imagePreview}
+                  width={100}
+                  height={100}
+                  alt="대표 이미지가 없습니다."
+                />
+              ) : (
+                <Image
+                  className="ml-[16px] w-[82px] h-[49px] pt-[16px]"
+                  src={baseImg}
+                  width={100}
+                  height={100}
+                  alt="대표 이미지가 없습니다."
+                />
+              )}
+              <div className="ml-[16px] pt-[28px] text-[16px] text-mono100">
+                공개 설정
+              </div>
+
+              <div className="ml-[16px] flex items-stretch mt-[16px]">
+                <div className="flex items-stretch">
+                  <input
+                    className="accent-brand100"
+                    name="samename"
+                    type="radio"
+                    value="전체 공개"
+                    onClick={(event) => {
+                      const target = event.target as HTMLInputElement;
+                      console.log("target.value", target.value);
+                      setDisplayStatus(target.value);
+                    }}
+                  />
+
+                  <h3 className="ml-2">전체 공개</h3>
+                </div>
+                <div className="flex items-stretch ml-[32px]">
+                  <input
+                    className="accent-brand100"
+                    name="samename"
+                    type="radio"
+                    value="회원 공개"
+                    onClick={(event) => {
+                      const target = event.target as HTMLInputElement;
+                      console.log("target.value", target.value);
+                      setDisplayStatus(target.value);
+                    }}
+                  />
+                  <h3 className="ml-2">멤버 공개</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-[40px] float-right">
+            <button
+              className="w-[180px] h-[48px] bg-brand100 border border-mono60"
+              type="submit"
+            >
+              등록
+            </button>
+            <button
+              type="button"
+              className="ml-[12px] w-[180px] h-[48px] border border-mono60"
+            >
+              취소
+            </button>
+          </div>
         </form>
       </div>
     </div>
