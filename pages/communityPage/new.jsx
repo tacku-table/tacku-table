@@ -53,37 +53,46 @@ const NewCommunityPost = () => {
   };
 
   return (
-    <div className="px-4 py-8 bg-slate-400">
-      <span>글쓰기</span>
-      <form
-        onSubmit={handleOnSubmit}
-        className="flex flex-col w-full items-center justify-center"
-      >
-        <input
-          className="w-96 h-10 mb-4"
-          type="text"
-          onChange={handleChangeTitle}
-          value={title}
-          required
-        />
-        <select
-          onChange={(event) => {
-            setSelectCategory(event.target.value);
-          }}
-          ref={categoryRef}
-          className="focus:ring-2 focus:outline-none ring-offset-2 ring-white  ring-offset-orange-400"
-        >
-          <option value="none">=== 카테고리 선택 ===</option>
-          <option value="요리">요리</option>
-          <option value="애니">애니</option>
-          <option value="잡담">잡담</option>
-        </select>
-        <EditorComponent
-          editorText={editorText}
-          setEditorText={setEditorText}
-        />
-        <button type="submit">등록</button>
-      </form>
+    <div className="w-full h-full mt-[74px] flex flex-col items-center">
+      <div className="w-[1180px]  ">
+        <p className="text-4xl font-bold pb-6 border-b-2 border-brand100  ">
+          커뮤니티 글쓰기
+        </p>
+        <div className="w-52 h-11 flex mt-5">
+          <select
+            onChange={(event) => {
+              setSelectCategory(event.target.value);
+            }}
+            ref={categoryRef}
+            className="rounded-sm p-3 h-12 border-2 border-mono60 text-mono80 text-input "
+          >
+            <option value="none">카테고리 선택를 선택하세요.</option>
+            <option value="요리">요리게시판</option>
+            <option value="애니">애니게시판</option>
+            <option value="잡담">잡담게시판</option>
+          </select>
+        </div>
+        <form onSubmit={handleOnSubmit}>
+          <input
+            className="w-full h-12 rounded-sm border-2 border-mono60 p-3 my-6 text-input"
+            type="text"
+            onChange={handleChangeTitle}
+            value={title}
+            required
+            placeholder="제목을 입력해주세요."
+          />
+          <EditorComponent
+            editorText={editorText}
+            setEditorText={setEditorText}
+          />
+          <button
+            className="w-44 h-11 mt-11 float-right text-white bg-brand100 font-medium"
+            type="submit"
+          >
+            등록
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

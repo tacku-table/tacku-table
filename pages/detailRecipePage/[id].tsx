@@ -127,10 +127,7 @@ export default function DetailReciptPage(props: any) {
           <p>레시피</p>
         </div>
         <div className="w-4/5 m-auto text-center items-center">
-          <div
-            style={{ text-align:  }}
-            dangerouslySetInnerHTML={{ __html: recipeData.content }}
-          />
+          <div dangerouslySetInnerHTML={{ __html: recipeData.content }} />
         </div>
       </div>
     </div>

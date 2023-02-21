@@ -2,57 +2,60 @@
 @tailwind components;
 @tailwind utilities;
 @layer base {
-    * {
-        box-sizing: border-box;
-        list-style: none;
-        text-decoration: none;
-    }
-    html,
-    body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-    }
+  * {
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+  }
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+  }
 }
 @layer components {
-    .header-title {
-        @apply px-7 py-7 hover:text-main hover:transition hover:ease-out hover:duration-300  font-medium text-baseText;
-    }
-    .header-cate-title {
-        @apply px-7 py-7 flex justify-center items-center hover:text-main hover:transition hover:ease-out hover:duration-300 focus:outline-none gap-1 text-sm font-medium text-baseText;
-    }
-    .menu-wh {
-        @apply absolute top-16 left-0 w-auto h-auto origin-top-right bg-white shadow-lg focus:outline-none z-50;
-    }
-    .menu-items {
-        @apply pl-7 pr-7 py-4 text-sm text-gray-900 hover:bg-hoverGray hover:text-main;
-    }
-    .register-input {
-        @apply h-[40px] border-[1.5px] border-border rounded-sm pl-3 focus:outline-none mt-2 text-xs;
-    }
-    .sorted-btn {
-        @apply w-[87px] h-[35px] border border-border border-collapse hover:bg-main hover:text-white hover:transition hover:ease-out hover:duration-300 flex justify-center items-center cursor-pointer rounded-sm text-sm;
-    }
+  .header-title {
+    @apply px-7 py-7 hover:text-main hover:transition hover:ease-out hover:duration-300  font-medium text-baseText;
+  }
+  .header-cate-title {
+    @apply px-7 py-7 flex justify-center items-center hover:text-main hover:transition hover:ease-out hover:duration-300 focus:outline-none gap-1 text-sm font-medium text-baseText;
+  }
+  .menu-wh {
+    @apply absolute top-16 left-0 w-auto h-auto origin-top-right bg-white shadow-lg focus:outline-none z-50;
+  }
+  .menu-items {
+    @apply pl-7 pr-7 py-4 text-sm text-gray-900 hover:bg-hoverGray hover:text-main;
+  }
+  .register-input {
+    @apply h-[40px] border-[1.5px] border-border rounded-sm pl-3 focus:outline-none mt-2 text-xs;
+  }
+  .sorted-btn {
+    @apply w-[87px] h-[35px] border border-border border-collapse hover:bg-main hover:text-white hover:transition hover:ease-out hover:duration-300 flex justify-center items-center cursor-pointer rounded-sm text-sm;
+  }
+  .text-input {
+    @apply focus:outline-none border-transparent focus:border-brand100 focus:ring-0;
+  }
 }
 @keyframes messageFadeIn {
-    0% {
-        opacity: 0;
-        transform: translateY(-50px);
-    }
-    5% {
-        opacity: 0.5;
-        transform: translateY(-30px);
-    }
-    95% {
-        opacity: 1;
-        transform: translateY(-10px);
-    }
-    100% {
-        opacity: 0;
-        transform: translateY(0);
-    }
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  5% {
+    opacity: 0.5;
+    transform: translateY(-30px);
+  }
+  95% {
+    opacity: 1;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
 }
 .message {
-    animation: messageFadeIn 2s ease-out;
+  animation: messageFadeIn 2s ease-out;
 }
