@@ -24,7 +24,7 @@ const MainPage = () => {
             <Video />
             <Slider />
             <div className="py-20 pb-[115px] flex flex-col items-center">
-                <div className="relative mt-4 mb-20">
+                <div className="relative mt-4 mb-24">
                     <input
                         type="text"
                         value={text}

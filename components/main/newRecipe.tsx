@@ -28,13 +28,18 @@ const NewRecipe: NextPage = () => {
 
     return (
         <>
-            <div className="space-y-4 flex flex-col items-center mt-32 mb-14">
+            <div className="space-y-4 flex flex-col items-center mt-32 mb-10">
                 <p className="text-3xl font-extrabold">최신레시피</p>
                 <p className="text-lg font-medium text-slate-500">
                     타쿠의 식탁에서 HOT한 실패없는 요즘유행요리
                 </p>
             </div>
-            <RecipeData dataResults={dataResults} />
+            <div className="flex flex-col items-end">
+                <button className="text-main border border-main w-[86px] h-[35px] mb-4 rounded-sm hover:bg-main hover:text-white transition-all duration-200">
+                    <Link href="/searchPage">더보기</Link>
+                </button>
+                <RecipeData dataResults={dataResults} />
+            </div>
         </>
     );
 };

@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { signOut } from "firebase/auth";
 import FoodCategory from "../main/category/FoodCategory";
 import CookingTime from "../main/category/CookingTime";
+import logo2 from "../../public/images/logo2.png";
+import Image from "next/image";
 
 const Header = () => {
     const [storageCurrentUser, setStorageCurrentUser] = useState("");
@@ -32,7 +34,14 @@ const Header = () => {
         <div className="fixed top-0 z-50 w-full h-20 px-24 py-7 bg-white border-b-[1.5px] border-border flex justify-between items-center text-sm">
             <ul className="flex justify-center items-center">
                 <li className="header-title">
-                    <Link href="/mainPage">타쿠의 테이블</Link>
+                    <Link href="/mainPage">
+                        <Image
+                            src={logo2}
+                            alt="logo_web"
+                            width={155}
+                            height={38}
+                        />
+                    </Link>
                 </li>
                 <li className="header-title">
                     <Link href="/searchPage">전체 레시피</Link>

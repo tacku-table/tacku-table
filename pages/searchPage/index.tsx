@@ -116,7 +116,7 @@ const SearchData: NextPage = () => {
             </ul>
             {dataResults ? (
                 <p className="w-3/4 mb-4 text-gray-400">
-                    총{" "}
+                    총&nbsp;
                     <span className="text-red-400">{dataResults.length}</span>
                     건의 레시피가 기다리고 있어요!
                 </p>
