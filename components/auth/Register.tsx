@@ -60,7 +60,7 @@ const RegisterPage = () => {
             alert("비밀번호 확인이 일치하지 않습니다");
             pwConfirmRef.current!.focus();
             return true;
-        } else if (agree == true) {
+        } else if (agree == false) {
             alert("개인정보취급 방침에 동의해주세요!");
             return true;
         }

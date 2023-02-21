@@ -43,7 +43,8 @@ const Header = () => {
                     <Link href="/communityPage">커뮤니티</Link>
                 </li>
             </ul>
-            <div className="flex justify-center items-center">
+            <div className="flex justify-center items-center gap-4">
+                <Link href="/recipeWritePage">레시피글쓰기</Link>
                 {storageCurrentUser ? (
                     <button type="button" onClick={logoutAction}>
                         로그아웃

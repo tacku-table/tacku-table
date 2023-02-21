@@ -40,6 +40,9 @@
     .ani-card {
         @apply w-[860px] h-full absolute transition-all duration-300 flex items-center;
     }
+    .textEditor {
+        @apply h-full;
+    }
 }
 @keyframes messageFadeIn {
     0% {
