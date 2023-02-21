@@ -53,7 +53,6 @@ const MyPage = () => {
               />
             ) : (
               <Image
-                // onMouseEnter={() => console.log("마우스")}
                 className="rounded-md"
                 src={userInfo.userImg}
                 priority={true}
@@ -63,7 +62,7 @@ const MyPage = () => {
                 alt="user_img"
               />
             )}
-            <p>{userInfo.userNickname}</p>
+            <p className="text-4xl">{userInfo.userNickname}</p>
 
             <Link
               legacyBehavior

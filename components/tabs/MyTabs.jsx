@@ -1,6 +1,6 @@
 import { Tab } from "@headlessui/react";
 import { authService, dbService } from "@/config/firebase";
-
+import { convertTimestamp } from "../../util";
 import {
   collection,
   doc,
@@ -88,7 +88,6 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
           postId: doc.id,
           ...doc.data(),
         };
-        // console.log(doc.id, " => ", doc.data());
         return mypost;
       });
       setRecipePost(myposts);
@@ -101,11 +100,13 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
     const q = query(communityRef, where("uid", "==", `${userId}`));
     onSnapshot(q, (snapshot) => {
       const myposts = snapshot.docs.map((doc) => {
+        // console.log(doc.data().writtenDate);
         const mypost = {
           postId: doc.id,
-          ...doc.data(),
+          writtenDate: convertTimestamp(doc.data().writtenDate),
+          category: doc.data().category,
+          title: doc.data().title,
         };
-        // console.log(doc.id, " => ", doc.data());
         return mypost;
       });
       setCommunityPost(myposts);
@@ -123,7 +124,6 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
           boardId: doc.data().boardId,
           comment: doc.data().comment,
         };
-        // console.log(doc.id, " => ", doc.data());
         return mypost;
       });
       setCommentPost(myposts);
@@ -184,19 +184,50 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
         </Tab.Panel>
         <Tab.Panel>
           {recipePost?.map((p) => (
-            <div key={p.postId}>
-              <Link legacyBehavior href={`/detailRecipePage/${p.postId}`}>
-                <a>{p.foodTitle}</a>
-              </Link>
+            <div key={p.postId} className="px-6 mb-5">
+              <hr className="border-border mx-8 mb-6 border-[1px]" />
+              <div className="pl-8 space-x-[20px] items-center flex">
+                <Image
+                  className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                  src={p.thumbnail}
+                  priority={true}
+                  loader={({ src }) => src}
+                  width={180}
+                  height={105}
+                  alt="bookmark-thumbnail"
+                />
+                <div className="flex flex-col">
+                  <div className="flex space-x-1">
+                    <span>#{p.animationTitle}</span>
+                    <span>#{p.cookingTime}</span>
+                  </div>
+                  <Link legacyBehavior href={`/detailRecipePage/${p.postId}`}>
+                    <a className="text-[24px]">{p.foodTitle}</a>
+                  </Link>
+                </div>
+              </div>
+              {/* <div className="flex mt-9 ml-8 space-x-3">
+                <div className="w-7 h-7 bg-slate-500 aspect-square" />
+                <p className="text-[16px]">{p.writerNickName}</p>
+              </div> */}
             </div>
           ))}
         </Tab.Panel>
         <Tab.Panel>
           {communityPost?.map((p) => (
-            <div key={p.postId}>
-              <Link legacyBehavior href={`/communityPage/${p.postId}`}>
-                <a>{p.title}</a>
-              </Link>
+            <div key={p.postId} className="px-6 mb-5">
+              <hr className="border-border mx-8 mb-6 border-[1px]" />
+              <div className="pl-8 space-x-[20px] items-center flex">
+                <div className="flex flex-col">
+                  <span>{p.writtenDate}</span>
+                  <Link legacyBehavior href={`/communityPage/${p.postId}`}>
+                    <a>{p.title}</a>
+                  </Link>
+                </div>
+              </div>
+              <div className="flex mt-9 ml-8 space-x-3">
+                <p className="text-[16px]">{p.writerNickName}</p>
+              </div>
             </div>
           ))}
         </Tab.Panel>
