@@ -11,6 +11,7 @@ import {
   where,
 } from "firebase/firestore";
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 // interface MyTabsProps {
 //   userInfo: any;
@@ -20,6 +21,7 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
   const [recipePost, setRecipePost] = useState([]);
   const [communityPost, setCommunityPost] = useState([]);
   const [commentPost, setCommentPost] = useState([]);
+  const [bookmarkPost, setBookmarkPost] = useState([]);
   const userId = userInfo.userId;
   // const currentUser = JSON.parse(sessionStorage.getItem("User")) || "";
 
@@ -37,9 +39,26 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
     getMyCommunityPost(userId);
     getMyRecipePost(userId);
     getCommunityComment(userId);
+    getMyBookmark(userId);
   });
   // 즐겨찾기
-
+  // user 컬렉션 -> userInfo.id 일치 doc ->
+  // bookmarkPost 컬렉션 통째로 가져오기
+  // 하위문서로 접근 recipeid
+  const getMyBookmark = async (userId) => {
+    // const userRef = collection(dbService, `user/${userId}/bookmarkPost`);
+    const q = query(collection(dbService, `user/${userId}/bookmarkPost`));
+    onSnapshot(q, (snapshot) => {
+      const myposts = snapshot.docs.map((doc) => {
+        const mypost = {
+          postId: doc.id,
+          ...doc.data(),
+        };
+        return mypost;
+      });
+      setBookmarkPost(myposts);
+    });
+  };
   // 내가 쓴 레시피
   const getMyRecipePost = async (userId) => {
     const recipeRef = collection(dbService, "recipe");
@@ -94,17 +113,17 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
 
   return (
     <Tab.Group>
-      <Tab.List className="flex space-x-1 rounded-xl  bg-orange-400">
+      <Tab.List className="flex space-x-1  bg-white">
         {categories.map((category) => (
           <Tab
             key={category}
             className={({ selected }) =>
               classNames(
-                "w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-white",
-                "ring-white ring-opacity-60 ring-offset-2 ring-offset-orange-400 focus:outline-none focus:ring-2",
+                "w-full  py-2.5 text-[18px] font-medium leading-5 text-mono100 border-2 border-white",
+                "ring-white ring-opacity-60 focus:outline-none focus:ring-2",
                 selected
-                  ? "bg-white shadow text-orange-400"
-                  : "text-slate-200 hover:bg-white/[0.12] hover:text-white"
+                  ? "bg-white  border-b-brand100 border-b-2 font-bold"
+                  : " hover:bg-white/[0.12]"
               )
             }
           >
@@ -112,8 +131,29 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
           </Tab>
         ))}
       </Tab.List>
-      <Tab.Panels>
-        <Tab.Panel>즐겨찾기 컨텐츠</Tab.Panel>
+      <Tab.Panels className="w-[880px] h-[501px] mt-8 bg-purple-200 m-auto">
+        <Tab.Panel>
+          {bookmarkPost?.map((p) => (
+            <div key={p.postId}>
+              <div className="pl-8 pt-[91px] flex space-x-[20px] items-center">
+                <Image
+                  className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                  src={p.thumbnail}
+                  priority={true}
+                  loader={({ src }) => src}
+                  width={180}
+                  height={105}
+                  alt="bookmark-thumbnail"
+                />
+                <Link legacyBehavior href={`/detailRecipePage/${p.postId}`}>
+                  <a className="text-[24px]">{p.foodTitle}</a>
+                </Link>
+                <p>{p.viewCount}</p>
+              </div>
+              <p className="text-[16px]">{p.writerNickName}</p>
+            </div>
+          ))}
+        </Tab.Panel>
         <Tab.Panel>
           {recipePost?.map((p) => (
             <div key={p.postId}>
