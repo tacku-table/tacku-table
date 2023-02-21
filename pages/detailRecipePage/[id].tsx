@@ -1,20 +1,29 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { onSnapshot, doc, updateDoc, getDoc } from "firebase/firestore";
 import { dbService } from "@/config/firebase";
-import { useRouter } from "next/router";
 import Bookmark from "@/components/detail/Bookmark";
+import styled from "styled-components";
+import defaultImg from "../../public/images/profile.jpeg";
+import "react-quill/dist/quill.core.css";
+import Image from "next/image";
+//react아이콘
 
 //자식한테 props로 타입 넘겨줬는데 왜 오류가 날까...
 export default function DetailReciptPage(props: any) {
   //레시피 데이터
   const [recipeData, getRecipeData] = useState<any>("");
+  //회원 데이터
   const [userData, setUserData] = useState<any>("");
+  const [userFireData, setUserFireData] = useState<any>("");
   //조회수
   let [views, setViews] = useState<number>(props.targetWholeData.viewCount);
-
+  const userUid = props.targetWholeData.uid;
   //레시피 데이터 불러오기
   useEffect(() => {
     getRecipeData(props.targetWholeData);
+    onSnapshot(doc(dbService, "user", userUid), (snapshot) => {
+      setUserFireData(snapshot.data());
+    });
   }, []);
 
   //조회수
@@ -37,33 +46,91 @@ export default function DetailReciptPage(props: any) {
   }, []);
 
   return (
-    <div className="w-full h-full flex flex-col items-center">
-      <div className="border-2 border-rose-600 w-[1180px] h-[447px] flex justify-center items-center my-12">
-        <div className="bg-slate-100 w-1/2 h-96 overflow-hidden ml-8 float-left">
-          <img
+    <div className="w-full h-full flex flex-col items-center ">
+      <div className=" w-[780px] my-16">
+        <ImageContainer className="bg-slate-100 w-full h-[440px] overflow-hidden">
+          <Image
+            layout="fill"
+            objectFit="contain"
+            objectPosition="center"
             src={recipeData.thumbnail}
+            loader={({ src }) => src}
             alt="thumbnail"
-            className="w-full h-full object-cover"
+            className="image-detail"
           />
-        </div>
-        <div className="w-1/2 h-96 float-right  mx-11 ">
-          <div>카테고리 : {recipeData.foodCategory}</div>
-          <div className="text-4xl font-bold">
-            음식제목 : {recipeData.foodTitle}
+        </ImageContainer>
+        <div className="flex-col my-5">
+          <div className="flex justify-between">
+            <p className="text-2xl font-semibold">{recipeData.foodTitle}</p>
+            <p className="w-6 h-6">
+              <Bookmark
+                postId={props.postId}
+                recipeData={recipeData}
+                userData={userData}
+              />
+            </p>
           </div>
-          <div className="text-base">영화 : {recipeData.animationTitle}</div>
-          <div>요리시간 : {recipeData.cookingTime}</div>
-          <div>닉네임 : {recipeData.writerNickName}</div>
-          <Bookmark
-            postId={props.postId}
-            recipeData={recipeData}
-            userData={userData}
-          />
-          <div>조회수 : {views}</div>
+          <div className="flex items-center">
+            <span className="float-left">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="3"
+                stroke="currentColor"
+                className="w-4 h-4 text-red100"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </span>
+            <p>{recipeData.cookingTime}</p>
+          </div>
+          <div className="flex justify-between border-b-2 border-border-500 pb-8">
+            <p> {recipeData.animationTitle}</p>
+            <p>{recipeData.foodCategory}</p>
+            <div>조회수 : {views}</div>
+          </div>
         </div>
+        <div>
+          <div className="flex items-center">
+            {userFireData.userImg === "null" ? (
+              <Image
+                src={defaultImg}
+                width={50}
+                height={50}
+                alt="default_img"
+                className="rounded-md"
+              />
+            ) : (
+              <Image
+                src={userFireData.userImg}
+                priority={true}
+                loader={({ src }) => src}
+                width={50}
+                height={50}
+                alt="user_img"
+                className="rounded-md"
+              />
+            )}
+            <p>{userFireData.userNickname}</p>
+          </div>
+        </div>
+        <div>
+          <p className=" border-b-2 border-border-500 pb-8">재료</p>
+          <p> {recipeData.ingredient}</p>
+        </div>
+        <div className=" border-b-2 border-border-500 pb-8">
+          <p>레시피</p>
+        </div>
+        <ContentContainer
+          className="view ql-editor"
+          dangerouslySetInnerHTML={{ __html: recipeData.content }}
+        />
       </div>
-      <div>재료 : {recipeData.ingredient}</div>
-      <div dangerouslySetInnerHTML={{ __html: recipeData.content }} />
     </div>
   );
 }
@@ -74,9 +141,7 @@ export const getServerSideProps: any = async (context: any) => {
   const { id } = params;
   //페이지 해당 id
   const postId = id;
-
   const snap = await getDoc(doc(dbService, "recipe", postId));
-
   if (snap.exists()) {
     targetWholeData = snap.data();
   } else {
@@ -90,3 +155,16 @@ export const getServerSideProps: any = async (context: any) => {
   //pageProps로 넘길 데이터
   return { props: { targetWholeData, postId } };
 };
+
+const ImageContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 440px;
+`;
+
+const ContentContainer = styled.div`
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+  background-color: aliceblue;
+`;
