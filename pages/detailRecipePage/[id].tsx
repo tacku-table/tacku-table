@@ -2,9 +2,7 @@ import { useEffect, useState } from "react";
 import { onSnapshot, doc, updateDoc, getDoc } from "firebase/firestore";
 import { dbService } from "@/config/firebase";
 import Bookmark from "@/components/detail/Bookmark";
-import styled from "styled-components";
 import defaultImg from "../../public/images/profile.jpeg";
-import "react-quill/dist/quill.core.css";
 import Image from "next/image";
 //react아이콘
 
@@ -46,9 +44,9 @@ export default function DetailReciptPage(props: any) {
   }, []);
 
   return (
-    <div className="w-full h-full flex flex-col items-center ">
-      <div className=" w-[780px] my-16">
-        <ImageContainer className="bg-slate-100 w-full h-[440px] overflow-hidden">
+    <div className="w-full h-full flex flex-col items-center bg-mono50 ">
+      <div className=" w-[780px] my-16 bg-white p-7">
+        <div className="bg-slate-100 w-full h-[440px] overflow-hidden relative">
           <Image
             layout="fill"
             objectFit="contain"
@@ -58,9 +56,9 @@ export default function DetailReciptPage(props: any) {
             alt="thumbnail"
             className="image-detail"
           />
-        </ImageContainer>
+        </div>
         <div className="flex-col my-5">
-          <div className="flex justify-between">
+          <div className="flex justify-between my-5">
             <p className="text-2xl font-semibold">{recipeData.foodTitle}</p>
             <p className="w-6 h-6">
               <Bookmark
@@ -71,7 +69,7 @@ export default function DetailReciptPage(props: any) {
             </p>
           </div>
           <div className="flex items-center">
-            <span className="float-left">
+            <span className="float-left mr-2 ">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -89,7 +87,7 @@ export default function DetailReciptPage(props: any) {
             </span>
             <p>{recipeData.cookingTime}</p>
           </div>
-          <div className="flex justify-between border-b-2 border-border-500 pb-8">
+          <div className="flex justify-between border-b-2 border-border-500 pb-8 my-5">
             <p> {recipeData.animationTitle}</p>
             <p>{recipeData.foodCategory}</p>
             <div>조회수 : {views}</div>
@@ -116,20 +114,24 @@ export default function DetailReciptPage(props: any) {
                 className="rounded-md"
               />
             )}
-            <p>{userFireData.userNickname}</p>
+            <p className="pl-5 font-semibold">{userFireData.userNickname}</p>
           </div>
         </div>
         <div>
-          <p className=" border-b-2 border-border-500 pb-8">재료</p>
-          <p> {recipeData.ingredient}</p>
+          <p className=" border-b-2 border-border-500 pb-3 mt-12 font-semibold">
+            재료
+          </p>
+          <p className="mt-8"> {recipeData.ingredient}</p>
         </div>
-        <div className=" border-b-2 border-border-500 pb-8">
+        <div className=" border-b-2 border-border-500 pb-3 mt-16 mb-8 font-semibold">
           <p>레시피</p>
         </div>
-        <ContentContainer
-          className="view ql-editor"
-          dangerouslySetInnerHTML={{ __html: recipeData.content }}
-        />
+        <div className="w-4/5 m-auto text-center items-center">
+          <div
+            style={{ text-align:  }}
+            dangerouslySetInnerHTML={{ __html: recipeData.content }}
+          />
+        </div>
       </div>
     </div>
   );
@@ -155,16 +157,3 @@ export const getServerSideProps: any = async (context: any) => {
   //pageProps로 넘길 데이터
   return { props: { targetWholeData, postId } };
 };
-
-const ImageContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: 440px;
-`;
-
-const ContentContainer = styled.div`
-  width: 80%;
-  margin: 0 auto;
-  text-align: center;
-  background-color: aliceblue;
-`;

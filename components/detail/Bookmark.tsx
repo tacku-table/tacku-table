@@ -89,7 +89,7 @@ const Bookmark = (props: any) => {
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="currentColor"
-            className="w-6 h-6"
+            className="w-6 h-6 text-brand100"
           >
             <path
               fill-rule="evenodd"
@@ -106,7 +106,7 @@ const Bookmark = (props: any) => {
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            className="w-6 h-6"
+            className="w-6 h-6 text-mono60"
           >
             <path
               stroke-linecap="round"
