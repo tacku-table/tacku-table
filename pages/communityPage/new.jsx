@@ -1,25 +1,10 @@
 import { useState, useRef, useEffect } from "react";
-import {
-  onSnapshot,
-  query,
-  collection,
-  doc,
-  orderBy,
-  addDoc,
-  getDoc,
-  getDocs,
-  updateDoc,
-  deleteDoc,
-  Timestamp,
-} from "firebase/firestore";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { authService, dbService } from "../../config/firebase";
 import EditorComponent from "../../components/write/textEditor";
 import Image from "next/image";
 import { storage } from "../../config/firebase";
-
-import baseImg from "/public/images/test1.png";
-
 const NewCommunityPost = () => {
   const [editorText, setEditorText] = useState("");
   const [title, setTitle] = useState("");
@@ -47,11 +32,10 @@ const NewCommunityPost = () => {
     category: selectCategory,
   };
 
-  const handleOnSubmit = async (event) => {
-    event.preventDefault();
+  const handleOnSubmit = async () => {
     if (
       !selectCategory ||
-      !imageUpload ||
+      !thumbnail ||
       !editorText ||
       editorText === "<p><br></p>"
     ) {
@@ -59,27 +43,26 @@ const NewCommunityPost = () => {
         categoryRef.current?.focus();
         return false;
       }
-      if (!imageUpload) {
+      if (!thumbnail) {
         alert("대표 사진을 선택해주세요!");
         thumbnailRef.current?.focus();
         return false;
       }
-      alert("본문 입력은 필수입니다 :)");
+      alert("본문 입력은 필수입니다.");
       return false;
     }
+    // console.log("여기?");
     await addDoc(collection(dbService, "communityPost"), newPost);
-    // setTitle("");
-    // setEditorText("");
-    // setSelectCategory("");
+    console.log("여기?");
     alert("커뮤니티 글 업로드!");
-    location.href = "/communityPage";
+    // location.href = "/communityPage";
   };
 
   const handleChangeTitle = (event) => {
     setTitle(event.target.value);
   };
   const onFileChange = (event) => {
-    const file = event.target.files?.[0];
+    const file = event.target.files[0];
     setImageUpload(file);
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -88,13 +71,13 @@ const NewCommunityPost = () => {
       localStorage.setItem("imgDataUrl", imgDataUrl);
       console.log("imgDataUrl", imgDataUrl);
       setImagePreview(imgDataUrl);
-      addImageFirebase(uid);
+      console.log(imagePreview);
+      addImageFirebase();
     };
   };
 
-  const addImageFirebase = async (uid) => {
-    if (imageUpload === null) return;
-    // let randomID = Date.now();
+  const addImageFirebase = async () => {
+    console.log(uid);
     const imgRef = ref(storage, `communityThumbnail/${uid}`);
     const imgDataUrl = localStorage.getItem("imgDataUrl");
     let downloadUrl;
@@ -103,13 +86,24 @@ const NewCommunityPost = () => {
       console.log("imgDataUrl", imgDataUrl);
       setImgLoading("loading");
       const response = await uploadString(imgRef, imgDataUrl, "data_url");
-      alert("썸네일 업로드 완료!");
+      // alert("대표사진 업로드 완료!");
       setImgLoading("default");
       downloadUrl = await getDownloadURL(response.ref);
       console.log(downloadUrl);
       setThumbnail(downloadUrl);
+      console.log("여기");
     }
   };
+  // if (imgDataUrl) {
+  //   console.log("imgDataUrl", imgDataUrl);
+  //   setImgLoading("loading");
+  //   const response = await uploadString(imgRef, imgDataUrl, "data_url");
+  //   alert("썸네일 업로드 완료!");
+  //   setImgLoading("default");
+  //   downloadUrl = await getDownloadURL(response.ref);
+  //   console.log(downloadUrl);
+  //   setThumbnail(downloadUrl);
+  // }
 
   return (
     <div className="px-4 py-8 bg-slate-400">
