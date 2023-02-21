@@ -45,7 +45,7 @@ export default function DetailReciptPage(props: any) {
 
   return (
     <div className="w-full h-full flex flex-col items-center bg-mono50 ">
-      <div className=" w-[780px] my-16 bg-white p-7">
+      <div className=" w-[1180px] my-16 bg-white pb-[131px] pt-[52px] px-[200px]">
         <div className="bg-slate-100 w-full h-[440px] overflow-hidden relative">
           <Image
             layout="fill"
