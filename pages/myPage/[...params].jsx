@@ -4,7 +4,8 @@ import {
   updateProfile,
   reauthenticateWithCredential,
   EmailAuthProvider,
-  onAuthStateChanged,
+  deleteUser,
+  signOut,
 } from "firebase/auth";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, listAll, uploadBytes } from "firebase/storage";
@@ -13,7 +14,6 @@ import profile from "../../public/images/profile.jpeg";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { storage } from "../../config/firebase";
 import { pwRegex, nickRegex } from "../../util";
-import { useRouter } from "next/router";
 
 export default function ProfileEdit(props) {
   const [userInfo, setUserInfo] = useState();
@@ -37,13 +37,42 @@ export default function ProfileEdit(props) {
 
   // 닉네임 변경
   const [changeUserNickname, setChangeUserNickname] = useState([]);
-
   console.log(props);
 
   useEffect(() => {
     setUserInfo(props.userData);
     getUserProfileImg();
   }, [userInfo]);
+
+  //----------------다경 로직 추가-------(시작)------------
+
+  const deleteCurrentUser = () => {
+    const currentUser = authService.currentUser;
+
+    if (currentUser) {
+      const result = confirm("정말 회원탈퇴를 하실건가요?🥹");
+      console.log("result:", result);
+      console.log("currentUser:", currentUser);
+
+      if (result) {
+        signOut(authService).then(() => {
+          sessionStorage.clear();
+          deleteUser(currentUser)
+            .then(() => {
+              alert("회원탈퇴가 완료되었습니다.");
+              location.href = "/mainPage";
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        });
+      } else {
+        return false;
+      }
+    }
+  };
+
+  //------------------- 다경 로직 추가----(끝)-----------
 
   // useEffect(() => {
   //   getUserProfileImg();
@@ -322,6 +351,7 @@ export default function ProfileEdit(props) {
         >
           수정하기
         </button>
+        <button onClick={deleteCurrentUser}>회원탈퇴</button>
       </div>
       <div
         className="hover:opacity-60"
