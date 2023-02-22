@@ -11,7 +11,7 @@ const GoToCommunity: NextPage = () => {
                 alt="animation_image"
                 width={1920}
                 height={384}
-                className="absolute w-auto h-auto top-0 left-0"
+                className="absolute top-0 left-0"
             />
             <p className="text-xl font-semibold mt-[105px] mb-4 z-50">
                 커뮤니티

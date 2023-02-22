@@ -1,3 +1,4 @@
+import TopButton from "@/components/button/TopButton";
 import BestRecipe from "@/components/main/bestRecipe";
 import GoToCommunity from "@/components/main/goToCommunity";
 import NewRecipe from "@/components/main/newRecipe";
@@ -18,6 +19,7 @@ const MainPage = () => {
             </div>
             <GoToCommunity />
             <Special />
+            <TopButton />
         </div>
     );
 };
