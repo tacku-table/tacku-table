@@ -9,7 +9,7 @@ import {
 import { dbService } from "@/config/firebase";
 import Bookmark from "@/components/detail/Bookmark";
 import TopButton from "@/components/button/TopButton";
-import defaultImg from "../../public/images/profile.jpeg";
+import defaultImg from "../../public/images/test1.png";
 import Image from "next/image";
 import Link from "next/link";
 
