@@ -10,10 +10,10 @@ import {
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, listAll, uploadBytes } from "firebase/storage";
 import Image from "next/image";
-import profile from "../../public/images/profile.jpeg";
+import defaultImg from "../../public/images/test1.png";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { storage } from "../../config/firebase";
-import { pwRegex, nickRegex } from "../../util";
+import { pwRegex, nickRegex, cls } from "../../util";
 
 export default function ProfileEdit(props) {
   const [userInfo, setUserInfo] = useState();
@@ -21,7 +21,7 @@ export default function ProfileEdit(props) {
   // const [photoImgURL, setPhotoImgURL] = useState();
   const [imageUpload, setImageUpload] = useState(null);
   const [showUserUpdateImg, setShowUserUpdateImg] = useState();
-  const [imgPreview, setImgPreview] = useState();
+  const [imgPreview, setImgPreview] = useState("default");
   // 오류메세지
   const [passwordMessage, setPasswordMessage] = useState("");
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
@@ -37,7 +37,7 @@ export default function ProfileEdit(props) {
 
   // 닉네임 변경
   const [changeUserNickname, setChangeUserNickname] = useState([]);
-  console.log(props);
+  // console.log(props);
 
   useEffect(() => {
     setUserInfo(props.userData);
@@ -110,7 +110,7 @@ export default function ProfileEdit(props) {
       // console.log("파일 정상적으로 불러옴");
       const selectedImgUrl = reader.result;
       console.log("selectedImgUrl", selectedImgUrl);
-      setImgPreview(selectedImgUrl);
+      setShowUserUpdateImg(selectedImgUrl);
 
       // setImageUpload(event.target.files?.[0]);
     };
@@ -204,6 +204,8 @@ export default function ProfileEdit(props) {
   const handleUpdateProfile = async (id) => {
     if (imageUpload === null) return;
     const imageRef = ref(storage, `profileImage/${id}`);
+    // setImgPreview("uploading");
+
     await uploadBytes(imageRef, imageUpload).then((snapshot) => {
       getDownloadURL(snapshot.ref).then(async (url) => {
         await updateProfile(authService?.currentUser, {
@@ -212,9 +214,12 @@ export default function ProfileEdit(props) {
         const docRef = doc(dbService, "user", id);
         updateDoc(docRef, {
           userImg: url,
-        }).then(() => console.log("컬렉션 업데이트 성공!"));
-
-        setImgPreview(url);
+        }).then(() => {
+          setImgPreview("uploading"); //ㅇㅣ게 먼저뜸
+          console.log("컬렉션 업데이트 성공!");
+        });
+        // setImgPreview(url);
+        setShowUserUpdateImg(url);
       });
     });
   };
@@ -226,34 +231,26 @@ export default function ProfileEdit(props) {
         <div className="flex flex-col py-10">
           <div className="flex gap-14 items-center">
             <span className="text-base">프로필 이미지</span>
-            {userInfo?.userImg === "null" ? (
-              <Image
-                src={profile}
-                loader={({ src }) => src}
-                priority={true}
-                width={100}
-                height={100}
-                alt="기본이미지"
-              />
-            ) : (
-              <Image
-                src={showUserUpdateImg}
-                loader={({ src }) => src}
-                priority={true}
-                width={100}
-                height={100}
-                alt="프리뷰|업데이트이미지"
-              />
-            )}
             <label>
-              <Image
-                src={imgPreview}
-                loader={({ src }) => src}
-                priority={true}
-                width={100}
-                height={100}
-                alt="프리뷰|업데이트이미지"
-              />
+              {userInfo?.userImg === "null" ? (
+                <Image
+                  src={defaultImg}
+                  // loader={({ src }) => src}
+                  priority={true}
+                  width={100}
+                  height={100}
+                  alt="기본이미지"
+                />
+              ) : (
+                <Image
+                  src={showUserUpdateImg}
+                  loader={({ src }) => src}
+                  priority={true}
+                  width={100}
+                  height={100}
+                  alt="프리뷰|업데이트이미지"
+                />
+              )}
               <input
                 id="picture"
                 type="file"
@@ -262,15 +259,23 @@ export default function ProfileEdit(props) {
                 onChange={handleImageFile}
               />
             </label>
-            <button
-              onClick={() => handleUpdateProfile(userInfo.userId)}
-              type="button"
-              disabled={!imgPreview}
-              className="text-white disabled:bg-slate-400 bg-brand100 hover:bg-brand100/80 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mr-2 mb-2"
-            >
-              프로필이미지 변경
-            </button>
+            <div className="flex flex-col">
+              <button
+                onClick={() => handleUpdateProfile(userInfo.userId)}
+                type="button"
+                disabled={!imageUpload}
+                className="text-white disabled:bg-slate-400 bg-brand100 hover:bg-brand100/80 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mr-2 mb-2"
+              >
+                프로필이미지 변경
+              </button>
+              {imgPreview === "uploading" && (
+                <span className="text-sm text-blue100">
+                  프로필이미지 변경 완료!
+                </span>
+              )}
+            </div>
           </div>
+
           <div className="space-y-7">
             <div className="flex gap-14 items-center">
               <span className="text-base min-w-[120px]">이메일</span>
@@ -293,7 +298,10 @@ export default function ProfileEdit(props) {
 
               {changeUserPw.length > 0 && (
                 <span
-                  className={`${isPassword ? "text-blue100" : "text-brand100"}`}
+                  className={cls(
+                    "text-xs",
+                    `${isPassword ? "text-xs text-blue100" : "text-brand100"}`
+                  )}
                 >
                   {passwordMessage}
                 </span>
@@ -314,9 +322,10 @@ export default function ProfileEdit(props) {
             </div>
             {confirmChangeUserPw.length > 0 && (
               <span
-                className={`${
-                  isPasswordConfirm ? "text-blue-600" : "text-orange-500"
-                }`}
+                className={cls(
+                  "text-xs",
+                  `${isPasswordConfirm ? "text-blue-600" : "text-orange-500"}`
+                )}
               >
                 {passwordConfirmMessage}
               </span>
@@ -353,30 +362,7 @@ export default function ProfileEdit(props) {
         </button>
         <button onClick={deleteCurrentUser}>회원탈퇴</button>
       </div>
-      <div
-        className="hover:opacity-60"
-        // onClick={() => setIsEditImg(!isEditImg)}
-      >
-        {/* <label>
-            {isEditImg ? (
-              <input
-                id="picture"
-                type="file"
-                accept="image/*"
-                onChange={handleImageFile}
-              />
-            ) : userInfo?.userImg === "null" ? (
-              <Image src={profile} width={100} height={100} alt="기본이미지" />
-            ) : (
-              <img
-                src={photoImgURL}
-                width={100}
-                height={100}
-                alt="변경된 이미지"
-              />
-            )} */}
-        {/* </label> */}
-      </div>
+      <div className="hover:opacity-60"></div>
     </>
   );
 }
