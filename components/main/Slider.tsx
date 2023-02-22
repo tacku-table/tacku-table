@@ -25,7 +25,7 @@ const Slider: NextPage = () => {
     }, [index]);
 
     return (
-        <div className="w-full h-14 relative overflow-hidden">
+        <div className="w-full h-14 relative overflow-hidden mt-5">
             {cards.map((item, i) => {
                 const indexLeft = mod(index - 1, cards.length);
                 const indexRight = mod(index + 1, cards.length);

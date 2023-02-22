@@ -15,30 +15,48 @@ const CTItems: NextPage = () => {
             leaveTo="transform opacity-0 scale-95"
         >
             <Menu.Items className="menu-wh">
-                <ul className="flex flex-col">
+                <ol className="flex flex-col">
                     <Menu.Item>
-                        <li className="menu-items pt-5">
-                            <Link href={`/searchPage/15분이하`}>15분</Link>
+                        <li>
+                            <Link
+                                href={`/searchPage/15분이하`}
+                                className="menu-items"
+                            >
+                                15분
+                            </Link>
                         </li>
                     </Menu.Item>
                     <Menu.Item>
-                        <li className="menu-items">
-                            <Link href={`/searchPage/30분이하`}>30분</Link>
+                        <li>
+                            <Link
+                                href={`/searchPage/30분이하`}
+                                className="menu-items"
+                            >
+                                30분
+                            </Link>
                         </li>
                     </Menu.Item>
                     <Menu.Item>
-                        <li className="menu-items">
-                            <Link href={`/searchPage/1시간이하`}>1시간</Link>
+                        <li>
+                            <Link
+                                href={`/searchPage/1시간이하`}
+                                className="menu-items"
+                            >
+                                1시간
+                            </Link>
                         </li>
                     </Menu.Item>
                     <Menu.Item>
-                        <li className="menu-items pb-5">
-                            <Link href={`/searchPage/1시간이상`}>
+                        <li>
+                            <Link
+                                href={`/searchPage/1시간이상`}
+                                className="menu-items pb-5"
+                            >
                                 1시간이상
                             </Link>
                         </li>
                     </Menu.Item>
-                </ul>
+                </ol>
             </Menu.Items>
         </Transition>
     );
