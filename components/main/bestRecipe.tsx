@@ -3,9 +3,14 @@ import { useEffect, useState } from "react";
 import { query, collection, orderBy, limit, getDocs } from "firebase/firestore";
 import { dbService } from "@/config/firebase";
 import RecipeData from "../search/RecipeData";
+import { useRouter } from "next/router";
 
 const BestRecipe: NextPage = () => {
     const [dataResults, setDataResults] = useState<RecipeProps[]>([]);
+    const router = useRouter();
+    const sortedBest = () => {
+        router.push({ pathname: "/searchPage", query: { sortedBest: "true" } });
+    };
 
     const getList = async () => {
         const items = query(
@@ -34,7 +39,10 @@ const BestRecipe: NextPage = () => {
                 </p>
             </div>
             <div className="flex flex-col items-end">
-                <button className="text-main border border-main w-[86px] h-[35px] mb-4 rounded-sm hover:bg-main hover:text-white transition-all duration-200">
+                <button
+                    onClick={sortedBest}
+                    className="text-main border border-main w-[86px] h-[35px] mb-4 rounded-sm hover:bg-main hover:text-white transition-all duration-200"
+                >
                     더보기
                 </button>
                 <RecipeData dataResults={dataResults} />

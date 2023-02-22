@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer = () => {
     return (
-        <div className="bg-[#FFF5F5] px-48 flex flex-col justify-start text-baseText">
+        <div className="bg-[#FFF5F5] px-64 flex flex-col justify-start text-baseText">
             <ul className="border-b border-white pt-6">
                 <li className="mb-4">
                     <span className="mr-7 w-[52px] h-[18px] text-xs">
@@ -12,7 +12,7 @@ const Footer = () => {
                         takus@email.com
                     </span>
                 </li>
-                <li className="mb-4 w-[303px] h-[19px] text-sm">
+                <li className="mb-4 w-[303px] h-[19px] text-xs">
                     copyright © 타쿠의 식당. All rights reserved.
                 </li>
             </ul>

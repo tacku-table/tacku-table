@@ -14,51 +14,74 @@ const FCItems: NextPage = () => {
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95"
         >
-            <Menu.Items className="menu-wh">
+            <Menu.Items className="menu-wh w-[170px]">
                 <ul className="flex flex-col">
                     <Menu.Item>
-                        <li className="pt-5 menu-items">
-                            <Link href={`/searchPage/밥&도시락&면`}>
+                        <li>
+                            <Link
+                                href={`/searchPage/밥&도시락&면`}
+                                className="menu-items"
+                            >
                                 밥/도시락/면
                             </Link>
                         </li>
                     </Menu.Item>
                     <Menu.Item>
-                        <li className="menu-items">
-                            <Link href={`/searchPage/국&탕&찌개`}>
+                        <li>
+                            <Link
+                                href={`/searchPage/국&탕&찌개`}
+                                className="menu-items"
+                            >
                                 국/탕/찌개
                             </Link>
                         </li>
                     </Menu.Item>
                     <Menu.Item>
-                        <li className="menu-items">
-                            <Link href={`/searchPage/구이&볶음&찜`}>
+                        <li>
+                            <Link
+                                href={`/searchPage/구이&볶음&찜`}
+                                className="menu-items"
+                            >
                                 구이/볶음/찜
                             </Link>
                         </li>
                     </Menu.Item>
                     <Menu.Item>
-                        <li className="menu-items">
-                            <Link href={`/searchPage/튀김류`}>튀김류</Link>
+                        <li>
+                            <Link
+                                href={`/searchPage/튀김류`}
+                                className="menu-items"
+                            >
+                                튀김류
+                            </Link>
                         </li>
                     </Menu.Item>
                     <Menu.Item>
-                        <li className="menu-items">
-                            <Link href={`/searchPage/베이커리&디저트`}>
+                        <li>
+                            <Link
+                                href={`/searchPage/베이커리&디저트`}
+                                className="menu-items"
+                            >
                                 베이커리/디저트
                             </Link>
                         </li>
                     </Menu.Item>
                     <Menu.Item>
-                        <li className="menu-items">
-                            <Link href={`/searchPage/음료&주류`}>
+                        <li>
+                            <Link
+                                href={`/searchPage/음료&주류`}
+                                className="menu-items"
+                            >
                                 음료/주류
                             </Link>
                         </li>
                     </Menu.Item>
                     <Menu.Item>
-                        <li className="pb-5 menu-items">
-                            <Link href={`/searchPage/식단&건강관리`}>
+                        <li>
+                            <Link
+                                href={`/searchPage/식단&건강관리`}
+                                className="menu-items pb-6"
+                            >
                                 식단/건강관리
                             </Link>
                         </li>

@@ -26,7 +26,7 @@
         @apply absolute top-16 left-0 w-auto h-auto origin-top-right bg-white shadow-lg focus:outline-none z-50;
     }
     .menu-items {
-        @apply pl-7 pr-7 py-4 text-sm text-gray-900 hover:bg-hoverGray hover:text-main;
+        @apply block px-7 py-4 text-sm text-gray-900 hover:bg-hoverGray hover:text-main;
     }
     .register-input {
         @apply h-[40px] border-[1.5px] border-border rounded-sm pl-3 focus:outline-none mt-2 text-xs;
@@ -35,13 +35,23 @@
         @apply w-[87px] h-[35px] border border-border border-collapse hover:bg-main hover:text-white hover:transition hover:ease-out hover:duration-300 flex justify-center items-center cursor-pointer rounded-sm text-sm;
     }
     .card {
-        @apply w-full h-14 absolute transition-all duration-500 flex items-center pl-48;
+        @apply w-full h-14 absolute transition-all duration-500 items-center pl-48 bg-gradient-to-r from-orange-500 via-yellow-400 to-pink-400 text-transparent bg-clip-text font-medium;
     }
     .ani-card {
         @apply w-[860px] h-full absolute transition-all duration-300 flex items-center;
     }
     .textEditor {
         @apply h-full;
+    }
+
+    .text-input {
+        @apply focus:outline-none border-transparent focus:border-brand100 focus:ring-0;
+    }
+    .recipepage-edit-button {
+        @apply w-[100px] h-[35px] bg-brand100 text-white font-medium text-center rounded;
+    }
+    .recipepage-del-button {
+        @apply w-[100px] h-[35px] border-2 border-mono60 font-medium text-center rounded;
     }
 }
 @keyframes messageFadeIn {
