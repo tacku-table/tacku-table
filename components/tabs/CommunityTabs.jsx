@@ -147,7 +147,7 @@ const CommunityTabs = () => {
                 className="border-b border-mono60 py-4 px-5 flex text-sm"
               >
                 <Image
-                  // className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                  className="object-cover aspect-[4/3]" //aspect-ratio 수정
                   src={p.thumbnail}
                   priority={true}
                   loader={({ src }) => src}
@@ -180,7 +180,7 @@ const CommunityTabs = () => {
                 className="border-b border-mono60 py-4 px-5 flex text-sm"
               >
                 <Image
-                  // className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                  className="object-cover aspect-[4/3]" //aspect-ratio 수정
                   src={p.thumbnail}
                   priority={true}
                   loader={({ src }) => src}
@@ -213,7 +213,7 @@ const CommunityTabs = () => {
                 className="border-b border-mono60 py-4 px-5 flex text-sm"
               >
                 <Image
-                  // className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                  className="object-cover aspect-[4/3]" //aspect-ratio 수정
                   src={p.thumbnail}
                   priority={true}
                   loader={({ src }) => src}
