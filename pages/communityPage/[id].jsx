@@ -98,7 +98,7 @@ export default function DetailPage(props) {
       setDetailPageWholeData({
         title: data.title,
         editorText: data.editorText,
-        writtenDate: data.writtenDate,
+        writtenDate: convertTimestamp(data.writtenDate),
       });
     });
   };
