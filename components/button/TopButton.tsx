@@ -1,6 +1,6 @@
 import React from "react";
 
-const TopButton = () => {
+const TopButton = ({ className }: any) => {
   const scrollToTop = () => {
     window.scroll({
       top: 0,
@@ -9,7 +9,7 @@ const TopButton = () => {
   };
   return (
     <>
-      <button type="button" onClick={scrollToTop}>
+      <button type="button" onClick={scrollToTop} className={className}>
         탑으로
       </button>
     </>

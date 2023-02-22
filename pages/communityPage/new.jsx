@@ -122,10 +122,12 @@ const NewCommunityPost = () => {
           required
           placeholder="제목을 입력해주세요."
         />
-        <EditorComponent
-          editorText={editorText}
-          setEditorText={setEditorText}
-        />
+        <div className="w-full h-[512px] mb-11">
+          <EditorComponent
+            editorText={editorText}
+            setEditorText={setEditorText}
+          />
+        </div>
         <div className="w-full h-[215px] bg-mono40 border-x border-b border-mono60 pt-7 px-4">
           {imgLoading == "loading" && (
             <div
