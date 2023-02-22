@@ -36,10 +36,44 @@ const RecipeWritePage = () => {
 
   useEffect(() => {
     const user = sessionStorage.getItem("User") || "";
-    const parseUser = JSON.parse(user);
-    setStorageCurrentUser(parseUser);
+    if (user) {
+      const parseUser = JSON.parse(user);
+      setStorageCurrentUser(parseUser);
+    } else {
+      setStorageCurrentUser("logout");
+    }
   }, []);
 
+  // 브라우저 뒤로가기 버튼시 confirm창과 함께 "확인"클릭시 로그인 페이지로 이동하는 함수입니다.
+  useEffect(() => {
+    window.history.pushState(null, "null", document.URL);
+    console.log("document.URL:", document.URL);
+    window.addEventListener("popstate", function (event) {
+      const result = window.confirm(
+        "레시피 글쓰기 정보를 모두 잃을수 있습니다 \n 그래도 나가시겠습니까?"
+      );
+      if (result) {
+        window.location.replace(`/mainPage`);
+      }
+      if (!result) {
+        return false;
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    if (storageCurrentUser == "logout") {
+      moveLoginPage();
+    }
+  }, [storageCurrentUser]);
+
+  const moveLoginPage = () => {
+    alert(
+      "해당 페이지는 로그인 유저만 작성할 수 있습니다.\n 로그인 페이지로 돌아갑니다."
+    );
+    location.href = "/loginPage";
+  };
+  //----------------
   const { data, refetch } = useQuery(["tmdb"], () => {
     return searchMovieTitle(searchTitle);
   });
@@ -410,7 +444,7 @@ const RecipeWritePage = () => {
           </div>
           <div className="mt-[40px] float-right">
             <button
-              className="w-[180px] h-[48px] bg-brand100 border border-mono60"
+              className="text-white w-[180px] h-[48px] bg-brand100 border border-mono60"
               type="submit"
             >
               등록
