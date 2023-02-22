@@ -25,7 +25,7 @@ const SliderScreen: NextPage = () => {
     useEffect(() => {
         setTimeout(() => {
             setIndex((index + 1) % cards.length);
-        }, 5000);
+        }, 4000);
     }, [index]);
 
     return (
