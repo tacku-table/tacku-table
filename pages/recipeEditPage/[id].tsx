@@ -201,7 +201,7 @@ const RecipeEditPage = ({
 
     //---------------------------------------
     console.log("newEditRecipe", newEditRecipe);
-    alert("게시물 수정이 완료되었습니다. 메인홈으로 돌아갑니다.");
+    alert("게시물 수정이 완료되었습니다. 메인 홈으로 돌아갑니다.");
     location.href = "/mainPage";
   };
 
@@ -348,14 +348,13 @@ const RecipeEditPage = ({
                 type="text"
                 ref={ingredientRef}
                 name="ingredient"
-                style={{ border: "1px solid black" }}
                 onChange={(event) => inputChangeSetFunc(event, setIngredient)}
                 className="pb-[80px] p-2 ml-[135px] w-[580px] h-[117px] border border-mono60 rounded-[2px]"
               />
             </div>
           </div>
           <hr className="mt-[40px] border-[1px] border-mono60"></hr>
-          <div className="pt-[40px]">
+          <div className="pt-[40px] relative">
             <div className="text-[21px] pb-[40px] font-semibold">
               레시피 작성
             </div>
@@ -366,20 +365,13 @@ const RecipeEditPage = ({
               />
             </div>
             {imgLoading == "loading" && (
-              <div
-                style={{
-                  position: "absolute",
-                  width: "300px",
-                  height: "300px",
-                  backgroundColor: "white",
-                  border: "3px solid black",
-                  zIndex: "3",
-                  textAlign: "center",
-                  paddingLeft: "100px",
-                }}
-              >
-                사진을 서버에 열심히 로딩하고 있어요 🥺 <br />
-                잠시만 기다려주세요 !!!!
+              <div className="flex items-center justify-center">
+                <div className="text-center absolute rounded-lg flex bg-brand100 w-[500px] h-[200px]">
+                  <div className="text-xl text-white m-auto">
+                    사진을 서버에 열심히 로딩하고 있어요 <br />
+                    잠시만 기다려주세요 !!!!
+                  </div>
+                </div>
               </div>
             )}
             <div className="bg-mono40 h-[210px] mt-[40px]">
@@ -391,6 +383,7 @@ const RecipeEditPage = ({
                   </div>
                 </label>
                 <input
+                  id="ex_file"
                   className="hidden"
                   ref={thumbnailRef}
                   name="thumbnail"

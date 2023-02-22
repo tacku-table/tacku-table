@@ -111,24 +111,15 @@ const EditorComponent = ({ editorText, setEditorText }: EditorProps) => {
   return (
     <>
       {imgLoading == "loading" && (
-        <div
-          style={{
-            position: "absolute",
-            width: "300px",
-            height: "300px",
-            backgroundColor: "white",
-            border: "3px solid black",
-            zIndex: "3",
-            textAlign: "center",
-          }}
-        >
-          🥹 사진을 열심히 로딩중이에요 🥹 <br />
-          🥹 기다려주셔서 감사합니다 🥹
+        <div className="flex items-center justify-center">
+          <div className="mt-[30px] text-center absolute rounded-lg flex bg-brand100 w-[500px] h-[200px]">
+            <div className="text-xl text-white m-auto">
+              사진을 서버에 열심히 로딩하고 있어요 <br />
+              잠시만 기다려주세요 !!!!
+            </div>
+          </div>
         </div>
       )}
-      {/* {imgLoading == "default" && <div>백수상태</div>}
-      {imgLoading == "completed" && <div>로딩완료</div>} */}
-
       <QuillWrapper
         className="textEditor"
         forwardedRef={quillRef}

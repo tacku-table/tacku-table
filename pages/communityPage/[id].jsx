@@ -173,12 +173,17 @@ export default function DetailPage(props) {
     }
   };
 
+  const moveMainPage = () => {
+    location.href = "/communityPage";
+  };
+
   return (
-    <div className="bg-[#FFF5F5] p-10">
-      <div className="rounded-md p-7 container w-[780px] mx-auto flex justify-center flex-col bg-white">
-        <h3 className="text-4xl">잡담게시판</h3>
+    <div className="bg-[#FFF5F5] ">
+      <div className="pt-[75px] rounded-md p-7 container w-[780px] mx-auto flex justify-center flex-col bg-white">
+        <h3 className="text-4xl pt-[24px]">잡담게시판</h3>
         <div className=" flex justify-end">
           <button
+            onClick={moveMainPage}
             type="button"
             className="bg-brand100 text-white h-[35px]  w-[100px]"
           >
@@ -186,25 +191,31 @@ export default function DetailPage(props) {
           </button>
         </div>
 
-        <hr class="h-px my-2 bg-brand100 border-[2px] border-brand100"></hr>
+        <hr class="mt-[15px] h-px my-2 bg-brand100 border-[2px] border-brand100"></hr>
         <div>
           {isPostEdit ? (
             <>
-              <input
-                type="text"
-                value={editPostTitle}
-                onChange={(e) => {
-                  setEditPostTitle(e.target.value);
-                }}
-              />
-              <EditorComponent
-                setEditorText={setEditPostContent}
-                editorText={editPostContent}
-              />
+              <div className="p-3">
+                <div className="text-mono100 pb-2 ml-1"> 글제목</div>
+                <input
+                  className="border w-[320px] mb-3 text-[14px] p-3 rounded-[2px] border-mono60 text-mono80"
+                  type="text"
+                  value={editPostTitle}
+                  onChange={(e) => {
+                    setEditPostTitle(e.target.value);
+                  }}
+                />
+                <div className="text-mono100 pb-2 ml-1"> 글내용 </div>
+
+                <EditorComponent
+                  setEditorText={setEditPostContent}
+                  editorText={editPostContent}
+                />
+              </div>
             </>
           ) : (
             <>
-              <div className="text-[24px] text-mono100 font-medium">
+              <div className="text-[24px] text-mono100 font-medium pt-[30px]">
                 {detailPageWholeData.title}
               </div>
               <div className="flex justify-end">
@@ -226,7 +237,7 @@ export default function DetailPage(props) {
               <div className="mt-10 text-center">
                 {/* 대표사진 */}
                 <Image
-                  className="w-[780px] h-[270px] lg:w-5/6 md:w-5/6 w-5/6 mb-10 m-auto"
+                  className="w-[780px] h-[270px] lg:w-5/6 md:w-5/6 mb-10 m-auto"
                   src={baseImg}
                   width={780}
                   height={270}
@@ -270,14 +281,28 @@ export default function DetailPage(props) {
                   return (
                     <>
                       {targetIndex === index ? (
-                        <input
-                          key={index}
-                          type="text"
-                          value={editComment}
-                          onChange={(e) => {
-                            setEditComment(e.target.value);
-                          }}
-                        />
+                        <div>
+                          <Image
+                            className="w-[40px] h-[40px] object-cover object-center float-left m-2"
+                            src={baseImg}
+                            width={780}
+                            height={270}
+                            alt="대표 이미지가 없습니다."
+                          />
+                          <h3 className="text-[12px] pt-1">
+                            {item.writterNickName}
+                          </h3>
+                          <input
+                            placeholder="수정할 댓글을 작성해주세요"
+                            className="text-[12px] border border-mono80 w-[320px] rounded-[2px]"
+                            key={index}
+                            type="text"
+                            value={editComment}
+                            onChange={(e) => {
+                              setEditComment(e.target.value);
+                            }}
+                          />
+                        </div>
                       ) : (
                         <div>
                           <Image
@@ -351,19 +376,17 @@ export default function DetailPage(props) {
           ) : (
             <div className="w-full text-center mt-5">
               <input
-                className="h-[90px] w-5/6 border-[2px] border-brand100 p-3"
+                className="border-mono80 border rounded-[2px] h-[90px] w-5/6 p3"
                 placeholder=" 타쿠의식탁 커뮤니티가 훈훈해지는 댓글을 남겨주세요."
                 type="text"
-                style={{ border: "1px solid black" }}
                 value={comment}
                 onChange={(e) => {
                   setComment(e.target.value);
                 }}
               />
               <button
-                className="ml-2 text-white border-none bg-brand100 w-[80px] h-[90px] lg:w-1/8 md:w-1/8 sm:1/8"
+                className="rounded-[2px] ml-2 text-white border-none bg-brand100 w-[80px] h-[90px] lg:w-1/8 md:w-1/8 sm:1/8"
                 type="button"
-                style={{ border: "1px solid black" }}
                 onClick={addComment}
               >
                 등록

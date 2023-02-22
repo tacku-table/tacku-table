@@ -320,20 +320,13 @@ const RecipeWritePage = () => {
               />
             </div>
             {imgLoading == "loading" && (
-              <div
-                style={{
-                  position: "absolute",
-                  width: "300px",
-                  height: "300px",
-                  backgroundColor: "white",
-                  border: "3px solid black",
-                  zIndex: "3",
-                  textAlign: "center",
-                  paddingLeft: "100px",
-                }}
-              >
-                사진을 서버에 열심히 로딩하고 있어요 🥺 <br />
-                잠시만 기다려주세요 !!!!
+              <div className="flex items-center justify-center">
+                <div className="text-center absolute rounded-lg flex bg-brand100 w-[500px] h-[200px]">
+                  <div className="text-xl text-white m-auto">
+                    사진을 서버에 열심히 로딩하고 있어요 <br />
+                    잠시만 기다려주세요 !!!!
+                  </div>
+                </div>
               </div>
             )}
             <div className="bg-mono40 h-[210px] mt-[40px]">

@@ -19,8 +19,8 @@ export default function DetailReciptPage(props: any) {
   const [userData, setUserData] = useState<any>("");
   const [userFireData, setUserFireData] = useState<any>("");
   //조회수
-  let [views, setViews] = useState<number>(props.targetWholeData.viewCount);
-  const userUid = props.targetWholeData.uid;
+  let [views, setViews] = useState<number>(props.targetWholeData?.viewCount);
+  const userUid = props.targetWholeData?.uid;
   //레시피 데이터 불러오기
   useEffect(() => {
     getRecipeData(props.targetWholeData);
@@ -149,7 +149,7 @@ export default function DetailReciptPage(props: any) {
               <p className="pl-5 font-semibold">{userFireData.userNickname}</p>
             </div>
             {/* 수정/ 삭제 */}
-            {props.targetWholeData.uid == storageCurrentUser.uid ? (
+            {props.targetWholeData?.uid == storageCurrentUser.uid ? (
               <div className="flex">
                 <div className="recipepage-edit-button pt-1">
                   <Link href={`/recipeEditPage/${props.postId}`}>수정하기</Link>
@@ -198,13 +198,25 @@ export const getServerSideProps: any = async (context: any) => {
   if (snap.exists()) {
     targetWholeData = snap.data();
   } else {
-    console.log("No such document");
+    console.log("가져올 문서가 없습니다.");
   }
 
-  //해결한 코드
+  // 해결한 코드
   // 제이슨 전달할때 객체안의 객체 넣지말라고 오류났었음
-  targetWholeData = JSON.parse(JSON.stringify(targetWholeData));
+  // targetWholeData = JSON.parse(JSON.stringify(targetWholeData));
 
-  //pageProps로 넘길 데이터
-  return { props: { targetWholeData, postId } };
+  //--------------에러 2.22 ------
+  // SyntaxError: Unexpected token u in JSON at position 0 at JSON.parse
+  // 해결 : if문 안으로 넣음
+
+  if (targetWholeData) {
+    targetWholeData = JSON.parse(JSON.stringify(targetWholeData));
+  }
+
+  //--------------에러 2.22 ------
+  //`undefined` cannot be serialized as JSON. Please use `null` or omit this value
+  // 해결 : or연산자로 null 을 달아줌
+  return {
+    props: { targetWholeData: targetWholeData || null, postId: postId || null },
+  };
 };
