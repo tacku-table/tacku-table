@@ -4,6 +4,7 @@ import {
   getDownloadURL,
   ref,
   uploadBytes,
+  uploadBytesResumable,
   uploadString,
 } from "firebase/storage";
 import { authService, dbService } from "../../config/firebase";
@@ -34,39 +35,41 @@ const NewCommunityPost = () => {
   const handleChangeTitle = (event) => {
     setTitle(event.target.value);
   };
+
   const handleImageFile = (event) => {
     const file = event.target.files?.[0];
     setImageUpload(file);
     const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = async () => {
+    if (file && file.type.match("image.*")) {
+      reader.readAsDataURL(file);
+    }
+    reader.onload = () => {
       const selectedImgUrl = reader.result;
-      console.log("selectedImgUrl", selectedImgUrl);
       setImgPreview(selectedImgUrl);
-
+      localStorage.setItem("selectedImgUrl", selectedImgUrl);
+      console.log("selectedImgUrl", selectedImgUrl);
       // const imgDataUrl = reader.result;
       // localStorage.setItem("imgDataUrl", imgDataUrl);
       // console.log("imgDataUrl", imgDataUrl);
       // setImagePreview(imgDataUrl);
       // await addImageFirebase(uid);
+      handleUpdateProfile(uid);
     };
   };
 
   const handleUpdateProfile = async (id) => {
-    // if (imageUpload === null) return;
+    const selectedImgUrl = localStorage.getItem("selectedImgUrl");
+
+    if (selectedImgUrl === null) return;
     let randomID = Date.now();
     const imageRef = ref(storage, `communityThumbnail/${id}/${randomID}`);
-    await uploadBytes(imageRef, imageUpload).then((snapshot) => {
-      getDownloadURL(snapshot.ref).then(async (url) => {
-        // const docRef = doc(dbService, "communityPost", id);
-        // updateDoc(docRef, {
-        //   thumbnail: url,
-        // }).then(() => console.log("컬렉션 업데이트 성공!"));
-
+    await uploadBytesResumable(imageRef, selectedImgUrl).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((url) => {
         setThumbnail(url);
       });
     });
   };
+  console.log("thumbnail", thumbnail);
 
   // const addImageFirebase = async (uid) => {
   //   // if (imageUpload === null) return;
@@ -81,14 +84,12 @@ const NewCommunityPost = () => {
 
   const handleOnSubmit = async (event) => {
     event.preventDefault();
-    await handleUpdateProfile(uid);
-    console.log("대표사진 url", thumbnail);
 
     const newPost = {
       uid,
       nickname,
       title,
-      thumbnail,
+      thumbnail: thumbnail,
       editorText,
       writtenDate: Timestamp.now(),
       category: selectCategory,
@@ -104,16 +105,11 @@ const NewCommunityPost = () => {
         categoryRef.current?.focus();
         return false;
       }
-      // if (!imageUpload) {
-      //   alert("대표 사진을 선택해주세요!");
-      //   thumbnailRef.current?.focus();
-      //   return false;
-      // }
       alert("본문 입력은 필수입니다");
       return false;
     }
-    await addDoc(collection(dbService, "communityPost"), newPost);
 
+    await addDoc(collection(dbService, "communityPost"), newPost);
     alert("커뮤니티 글 업로드!");
     location.href = "/communityPage";
   };
