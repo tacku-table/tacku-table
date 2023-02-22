@@ -11,7 +11,7 @@ const Community = () => {
       <SliderScreen />
       <CommunityTabs />
       <div className="flex w-full justify-end ">
-        <div className="flex w-[100px] h-[35px] text-white bg-brand100 my-10 items-center justify-center rounded-sm">
+        <div className="flex w-[100px] h-[35px] text-white bg-brand100 px-4 my-10 items-center justify-center rounded-sm">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

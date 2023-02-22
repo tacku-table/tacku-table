@@ -34,12 +34,12 @@ const ResetPassword = () => {
     }
     confirmPasswordReset(authService, oobCode, newPassword)
       .then((data) => {
-        alert("성공");
+        alert("비밀번호를 변경했습니다. 다시 로그인해주세요.");
         window.location.href = "/loginPage";
       })
       .catch((error) => {
         if (error.code === "auth/invalid-action-code") {
-          alert("회원이 아님.");
+          alert("회원이 아닙니다.");
           return;
         }
         console.log(error.message);
