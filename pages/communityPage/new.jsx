@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { collection, addDoc, Timestamp, doc, getDoc } from "firebase/firestore";
 import {
   getDownloadURL,
   ref,
@@ -60,6 +60,23 @@ const NewCommunityPost = () => {
     event.preventDefault();
     console.log("대표사진 url", thumbnail);
 
+    //-----------------------------------
+    const docRef = doc(dbService, "user", uid);
+    const docSnap = await getDoc(docRef);
+    let writterProfileImg;
+    console.log("user", docSnap);
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+      const writterData = docSnap.data();
+      if (writterData) {
+        writterProfileImg = writterData.userImg;
+        console.log("writterProfileImg:", writterProfileImg);
+      }
+    } else {
+      console.log("No such document!");
+    }
+    //-----------------------------------
+
     const newPost = {
       uid,
       nickname,
@@ -68,6 +85,7 @@ const NewCommunityPost = () => {
       editorText,
       writtenDate: Timestamp.now(),
       category: selectCategory,
+      writterProfileImg,
     };
 
     if (

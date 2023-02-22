@@ -17,6 +17,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import EditorComponent from "../../components/write/textEditor";
 import baseImg from "/public/images/test1.png";
+import profileLoading from "/public/images/loadingImg.png";
+
 import Image from "next/image";
 import { convertTimestamp } from "../../util";
 
@@ -54,8 +56,11 @@ export default function DetailPage(props) {
   useEffect(() => {
     setDetailPageWholeData(props.targetWholeData);
     getWholeComments();
+    // setWritterProfileImg(detailPageWholeData.writterProfileImg);
   }, []);
 
+  console.log("detail데이터:", detailPageWholeData);
+  console.log("url잘나와뭐냐", detailPageWholeData.writterProfileImg);
   // 댓글 get
   let commentWholeData = [];
   const getWholeComments = async () => {
@@ -77,7 +82,6 @@ export default function DetailPage(props) {
     setTargetIndex("reset");
     setTargetIsEdit("reset");
     setEditComment("");
-    boardComments.map((item) => console.log("나다", item));
   };
 
   // 글 수정
@@ -228,13 +232,25 @@ export default function DetailPage(props) {
               </div>
 
               <div className="block h-[60px]">
-                <Image
-                  className="w-[40px] h-[40px] object-cover object-center float-left m-2"
-                  src={baseImg}
-                  width={780}
-                  height={270}
-                  alt="대표 이미지가 없습니다."
-                />
+                {detailPageWholeData.writterProfileImg ? (
+                  <Image
+                    src={detailPageWholeData.writterProfileImg}
+                    loader={({ src }) => src}
+                    width={100}
+                    height={100}
+                    alt="writterProfile"
+                    className="w-[40px] h-[40px] object-cover object-center float-left m-2"
+                  />
+                ) : (
+                  <Image
+                    className="w-[40px] h-[40px] object-cover object-center float-left m-2"
+                    src={profileLoading}
+                    width={780}
+                    height={270}
+                    alt="대표 이미지가 없습니다."
+                  />
+                )}
+
                 <h3 className="relative top-[15px]">
                   {detailPageWholeData.nickname}
                 </h3>
