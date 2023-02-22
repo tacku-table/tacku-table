@@ -61,33 +61,24 @@ const NewCommunityPost = () => {
   const handleUpdateProfile = async (file) => {
     const imgFile = file;
     const selectedImgUrl = localStorage.getItem("selectedImgUrl");
-    if (selectedImgUrl === null) return;
+    // if (selectedImgUrl === null) return;
+    if (selectedImgUrl) {
+      setImgLoading("loading");
+      let randomID = Date.now();
+      const imageRef = ref(storage, `communityThumbnail/${uid}/${randomID}`);
+      await uploadBytesResumable(imageRef, imgFile, imgFile.type).then(
+        (snapshot) => {
+          getDownloadURL(snapshot.ref).then((url) => {
+            setThumbnail(url);
+          });
+          setImgLoading("default");
+        }
+      );
+    }
     // const metaData = {
     //   contentType: imageUpload.type,
     // };
-    let randomID = Date.now();
-    const imageRef = ref(storage, `communityThumbnail/${uid}/${randomID}`);
-    await uploadBytesResumable(imageRef, imgFile, imgFile.type).then(
-      (snapshot) => {
-        getDownloadURL(snapshot.ref).then((url) => {
-          setThumbnail(url);
-        });
-      }
-    );
   };
-  console.log("imageUpload", imageUpload);
-  console.log("thumbnail", thumbnail);
-
-  // const addImageFirebase = async (uid) => {
-  //   // if (imageUpload === null) return;
-  //   let randomID = Date.now();
-  //   const imageRef = ref(storage, `communityThumbnail/${uid}/${randomID}`);
-  //   await uploadBytes(imageRef, imageUpload).then((snapshot) => {
-  //     getDownloadURL(snapshot.ref).then((url) => {
-  //       setThumbnail(url);
-  //     });
-  //   });
-  // };
 
   const handleOnSubmit = async (event) => {
     event.preventDefault();
