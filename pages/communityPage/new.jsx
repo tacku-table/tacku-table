@@ -16,7 +16,9 @@ const NewCommunityPost = () => {
   const [editorText, setEditorText] = useState("");
   const [title, setTitle] = useState("");
   const [thumbnail, setThumbnail] = useState("");
-  const [imagePreview, setImagePreview] = useState("");
+  // const [imagePreview, setImagePreview] = useState("");
+  const [imgPreview, setImgPreview] = useState();
+
   const [imageUpload, setImageUpload] = useState(null);
   const [imgLoading, setImgLoading] = useState("");
 
@@ -32,32 +34,54 @@ const NewCommunityPost = () => {
   const handleChangeTitle = (event) => {
     setTitle(event.target.value);
   };
-  const onFileChange = (event) => {
+  const handleImageFile = (event) => {
     const file = event.target.files?.[0];
     setImageUpload(file);
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onloadend = async () => {
-      const imgDataUrl = reader.result;
+    reader.onload = async () => {
+      const selectedImgUrl = reader.result;
+      console.log("selectedImgUrl", selectedImgUrl);
+      setImgPreview(selectedImgUrl);
+
+      // const imgDataUrl = reader.result;
       // localStorage.setItem("imgDataUrl", imgDataUrl);
       // console.log("imgDataUrl", imgDataUrl);
-      setImagePreview(imgDataUrl);
-      await addImageFirebase(uid);
+      // setImagePreview(imgDataUrl);
+      // await addImageFirebase(uid);
     };
   };
-  const addImageFirebase = async (uid) => {
+
+  const handleUpdateProfile = async (id) => {
     // if (imageUpload === null) return;
     let randomID = Date.now();
-    const imageRef = ref(storage, `communityThumbnail/${uid}/${randomID}`);
+    const imageRef = ref(storage, `communityThumbnail/${id}/${randomID}`);
     await uploadBytes(imageRef, imageUpload).then((snapshot) => {
-      getDownloadURL(snapshot.ref).then((url) => {
+      getDownloadURL(snapshot.ref).then(async (url) => {
+        // const docRef = doc(dbService, "communityPost", id);
+        // updateDoc(docRef, {
+        //   thumbnail: url,
+        // }).then(() => console.log("컬렉션 업데이트 성공!"));
+
         setThumbnail(url);
       });
     });
   };
 
+  // const addImageFirebase = async (uid) => {
+  //   // if (imageUpload === null) return;
+  //   let randomID = Date.now();
+  //   const imageRef = ref(storage, `communityThumbnail/${uid}/${randomID}`);
+  //   await uploadBytes(imageRef, imageUpload).then((snapshot) => {
+  //     getDownloadURL(snapshot.ref).then((url) => {
+  //       setThumbnail(url);
+  //     });
+  //   });
+  // };
+
   const handleOnSubmit = async (event) => {
     event.preventDefault();
+    handleUpdateProfile(uid);
     console.log("대표사진 url", thumbnail);
 
     const newPost = {
@@ -72,7 +96,7 @@ const NewCommunityPost = () => {
 
     if (
       !selectCategory ||
-      !imageUpload ||
+      // !imageUpload ||
       !editorText ||
       editorText === "<p><br></p>"
     ) {
@@ -80,11 +104,11 @@ const NewCommunityPost = () => {
         categoryRef.current?.focus();
         return false;
       }
-      if (!imageUpload) {
-        alert("대표 사진을 선택해주세요!");
-        thumbnailRef.current?.focus();
-        return false;
-      }
+      // if (!imageUpload) {
+      //   alert("대표 사진을 선택해주세요!");
+      //   thumbnailRef.current?.focus();
+      //   return false;
+      // }
       alert("본문 입력은 필수입니다");
       return false;
     }
@@ -150,14 +174,14 @@ const NewCommunityPost = () => {
             id="picture"
             type="file"
             accept="image/*"
-            onChange={onFileChange}
+            onChange={handleImageFile}
             className="float-right w-[90px]"
           />
 
           <div className=" w-[140px] h-[97px] overflow-hidden relative border border-mono60 mt-5 ">
-            {imagePreview ? (
+            {imgPreview ? (
               <Image
-                src={imagePreview}
+                src={imgPreview}
                 loader={({ src }) => src}
                 priority={true}
                 fill
