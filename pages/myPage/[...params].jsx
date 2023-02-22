@@ -18,6 +18,8 @@ import { useRouter } from "next/router";
 
 export default function ProfileEdit(props) {
   const [userInfo, setUserInfo] = useState();
+  const [storageCurrentUser, setStorageCurrentUser] = useState({});
+
   // 프로필이미지 변경
   // const [photoImgURL, setPhotoImgURL] = useState();
   const [imageUpload, setImageUpload] = useState(null);
@@ -47,6 +49,21 @@ export default function ProfileEdit(props) {
     setUserInfo(props.userData);
     getUserProfileImg();
   }, [userInfo]);
+
+  useEffect(() => {
+    const currentUser = JSON.parse(sessionStorage.getItem("User"));
+    if (currentUser) {
+      setStorageCurrentUser(currentUser);
+    } else {
+      setStorageCurrentUser("logout");
+    }
+  }, []);
+  useEffect(() => {
+    if (storageCurrentUser == "logout") {
+      // alert("로그아웃\n 메인 화면으로 이동합니다.");
+      location.href = "/loginPage";
+    }
+  }, [storageCurrentUser]);
 
   //----------------다경 로직 추가-------(시작)------------
 
