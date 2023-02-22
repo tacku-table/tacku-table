@@ -63,13 +63,13 @@ const MyPage = () => {
               />
             )}
             <p className="text-4xl">{userInfo.userNickname}</p>
-
             <Link
               legacyBehavior
               href={{
-                pathname: `/myPage/editProfile/`,
+                pathname: `/myPage/editProfile`,
                 query: {
                   id: userInfo.userId,
+                  userImg: userInfo.userImg,
                 },
               }}
             >
