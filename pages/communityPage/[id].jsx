@@ -173,12 +173,17 @@ export default function DetailPage(props) {
     }
   };
 
+  const moveMainPage = () => {
+    location.href = "/communityPage";
+  };
+
   return (
     <div className="bg-[#FFF5F5] ">
       <div className="pt-[75px] rounded-md p-7 container w-[780px] mx-auto flex justify-center flex-col bg-white">
         <h3 className="text-4xl pt-[24px]">잡담게시판</h3>
         <div className=" flex justify-end">
           <button
+            onClick={moveMainPage}
             type="button"
             className="bg-brand100 text-white h-[35px]  w-[100px]"
           >
