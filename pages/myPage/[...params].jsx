@@ -150,10 +150,6 @@ export default function ProfileEdit(props) {
       } else {
         setPasswordMessage("안전한 비밀번호로 입력하셨습니다.");
         setIsPassword(true);
-        // let newPw = userInfo;
-        // newPw = { ...newPw, userPw: changedPw };
-
-        // setUserInfo(newPw);
       }
     },
     [changeUserPw]
@@ -253,7 +249,7 @@ export default function ProfileEdit(props) {
           <div className="flex gap-14 items-start">
             <span className="text-base  min-w-[120px]">프로필 이미지</span>
             <div className="flex items-end space-x-5">
-              <label>
+              <label className="cursor-pointer hover:opacity-40">
                 {userInfo?.userImg === "null" ? (
                   <Image
                     src={defaultImg}
@@ -267,7 +263,7 @@ export default function ProfileEdit(props) {
                 ) : (
                   <Image
                     src={showUserUpdateImg}
-                    className="rounded-md  aspect-square"
+                    className="rounded-md aspect-square"
                     loader={({ src }) => src}
                     priority={true}
                     width={100}
