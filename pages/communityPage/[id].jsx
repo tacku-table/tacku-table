@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import EditorComponent from "../../components/write/textEditor";
 import baseImg from "/public/images/test1.png";
 import Image from "next/image";
+import { convertTimestamp } from "../../util";
 
 export default function DetailPage(props) {
   const [detailPageWholeData, setDetailPageWholeData] = useState({});
@@ -52,8 +53,6 @@ export default function DetailPage(props) {
   }, []);
   useEffect(() => {
     setDetailPageWholeData(props.targetWholeData);
-    console.log(detailPageWholeData);
-    console.log(props.targetId); // uid
     getWholeComments();
   }, []);
 
@@ -219,8 +218,13 @@ export default function DetailPage(props) {
                 {detailPageWholeData.title}
               </div>
               <div className="flex justify-end">
-                <div className="text-[16px] text-mono80">작성자 이름</div>
-                <div className="text-[16px] text-mono80"> 작성일</div>
+                <div className="text-[16px] text-mono80">
+                  {detailPageWholeData.nickname}
+                </div>
+                <div className="ml-2 text-[16px] text-mono80">
+                  {detailPageWholeData.writtenDate}
+                </div>
+                {/* <span>{detailPageWholeData.writtenDate}</span> */}
               </div>
 
               <div className="block h-[60px]">
@@ -231,7 +235,9 @@ export default function DetailPage(props) {
                   height={270}
                   alt="대표 이미지가 없습니다."
                 />
-                <h3 className="relative top-[15px]">제목 밑에 작성자이름</h3>
+                <h3 className="relative top-[15px]">
+                  {detailPageWholeData.nickname}
+                </h3>
                 <hr class="h-px my-10 bg-mono50 border-[1px] border-mono50"></hr>
               </div>
               <div className="mt-10 text-center">
@@ -404,17 +410,18 @@ export async function getServerSideProps(context) {
   const { id } = params;
   const targetId = id;
   let targetWholeData;
-  let commentWholeData = [];
   const snap = await getDoc(doc(dbService, "communityPost", targetId));
   if (snap.exists()) {
-    console.log(snap.data());
-    targetWholeData = snap.data();
+    targetWholeData = {
+      ...snap.data(),
+      writtenDate: convertTimestamp(snap.data().writtenDate),
+    };
   } else {
     console.log("No such document");
   }
-  console.log("targetWholeData:", targetWholeData);
-  targetWholeData = JSON.parse(JSON.stringify(targetWholeData));
-  console.log(targetWholeData);
+  if (targetWholeData) {
+    targetWholeData = JSON.parse(JSON.stringify(targetWholeData));
+  }
   return {
     props: {
       targetWholeData,

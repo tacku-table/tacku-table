@@ -1,17 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import {
-  onSnapshot,
-  query,
-  collection,
-  doc,
-  orderBy,
-  addDoc,
-  getDoc,
-  getDocs,
-  updateDoc,
-  deleteDoc,
-  Timestamp,
-} from "firebase/firestore";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
 import {
   getDownloadURL,
   ref,
@@ -59,7 +47,8 @@ const NewCommunityPost = () => {
   };
   const addImageFirebase = async (uid) => {
     // if (imageUpload === null) return;
-    const imageRef = ref(storage, `communityThumbnail/${uid}`);
+    let randomID = Date.now();
+    const imageRef = ref(storage, `communityThumbnail/${uid}/${randomID}`);
     await uploadBytes(imageRef, imageUpload).then((snapshot) => {
       getDownloadURL(snapshot.ref).then((url) => {
         setThumbnail(url);

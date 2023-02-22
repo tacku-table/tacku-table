@@ -59,37 +59,26 @@ const Bookmark = (props: any) => {
             JSON.stringify(!toggleBookmark)
         );
 
-        if (toggleBookmark) {
-            setToggleBookmark(!toggleBookmark);
-            console.log("북마크 삭제");
-            await deleteDoc(
-                doc(
-                    dbService,
-                    "user",
-                    currentUser,
-                    "bookmarkPost",
-                    props.postId
-                )
-            );
-        } else {
-            setToggleBookmark(!toggleBookmark);
-            console.log("북마크 추가");
-            await setDoc(
-                doc(
-                    dbService,
-                    "user",
-                    currentUser,
-                    "bookmarkPost",
-                    props.postId
-                ),
-                {
-                    thumbnail: props.recipeData.thumbnail,
-                    foodTitle: props.recipeData.foodTitle,
-                    writerNickName: props.recipeData.writerNickName,
-                    viewCount: props.recipeData.viewCount,
-                    cookingTime: props.recipeData.cookingTime,
-                }
-            );
+
+    if (toggleBookmark) {
+      setToggleBookmark(!toggleBookmark);
+      console.log("북마크 삭제");
+      await deleteDoc(
+        doc(dbService, "user", currentUser, "bookmarkPost", props.postId)
+      );
+    } else {
+      setToggleBookmark(!toggleBookmark);
+      console.log("북마크 추가");
+      await setDoc(
+        doc(dbService, "user", currentUser, "bookmarkPost", props.postId),
+        {
+          thumbnail: props.recipeData.thumbnail,
+          foodTitle: props.recipeData.foodTitle,
+          writerNickName: props.recipeData.writerNickName,
+          viewCount: props.recipeData.viewCount,
+          cookingTime: props.recipeData.cookingTime,
+          animationTitle: props.recipeData.animationTitle,
+          uid: props.recipeData.uid,
         }
     };
 
