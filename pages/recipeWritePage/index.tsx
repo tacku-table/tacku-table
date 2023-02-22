@@ -36,10 +36,44 @@ const RecipeWritePage = () => {
 
   useEffect(() => {
     const user = sessionStorage.getItem("User") || "";
-    const parseUser = JSON.parse(user);
-    setStorageCurrentUser(parseUser);
+    if (user) {
+      const parseUser = JSON.parse(user);
+      setStorageCurrentUser(parseUser);
+    } else {
+      setStorageCurrentUser("logout");
+    }
   }, []);
 
+  // 브라우저 뒤로가기 버튼시 confirm창과 함께 "확인"클릭시 로그인 페이지로 이동하는 함수입니다.
+  useEffect(() => {
+    window.history.pushState(null, "null", document.URL);
+    console.log("document.URL:", document.URL);
+    window.addEventListener("popstate", function (event) {
+      const result = window.confirm(
+        "레시피 글쓰기 정보를 모두 잃을수 있습니다 \n 그래도 나가시겠습니까?"
+      );
+      if (result) {
+        window.location.replace(`/mainPage`);
+      }
+      if (!result) {
+        return false;
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    if (storageCurrentUser == "logout") {
+      moveLoginPage();
+    }
+  }, [storageCurrentUser]);
+
+  const moveLoginPage = () => {
+    alert(
+      "해당 페이지는 로그인 유저만 작성할 수 있습니다.\n 로그인 페이지로 돌아갑니다."
+    );
+    location.href = "/loginPage";
+  };
+  //----------------
   const { data, refetch } = useQuery(["tmdb"], () => {
     return searchMovieTitle(searchTitle);
   });
@@ -270,13 +304,13 @@ const RecipeWritePage = () => {
                 }}
               >
                 <option value="none"> 음식 종류 선택 </option>
-                <option value="국&탕&찌개">국/탕/찌개</option>
-                <option value="구이&볶음&찜">구이/볶음/찜</option>
+                <option value="국/탕/찌개">국/탕/찌개</option>
+                <option value="구이/볶음/찜">구이/볶음/찜</option>
                 <option value="튀김류">튀김류</option>
-                <option value="베이커리&디저트">베이커리/디저트</option>
-                <option value="음료&주류">음료/주류</option>
-                <option value="밥&도시락&면">밥/도시락/면</option>
-                <option value="식단&건강관리">식단/건강관리</option>
+                <option value="베이커리/디저트">베이커리/디저트</option>
+                <option value="음료/주류">음료/주류</option>
+                <option value="밥/도시락/면">밥/도시락/면</option>
+                <option value="식단/건강관리">식단/건강관리</option>
               </select>
             </div>
             <div className="pb-[40px]">
@@ -410,7 +444,7 @@ const RecipeWritePage = () => {
           </div>
           <div className="mt-[40px] float-right">
             <button
-              className="w-[180px] h-[48px] bg-brand100 border border-mono60"
+              className="text-white w-[180px] h-[48px] bg-brand100 border border-mono60"
               type="submit"
             >
               등록
