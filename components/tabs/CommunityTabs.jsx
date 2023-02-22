@@ -47,6 +47,7 @@ const CommunityTabs = () => {
           editorText: doc.data().editorText,
           writtenDate: convertTimestamp(doc.data().writtenDate),
           thumbnail: doc.data().thumbnail,
+          nickname: doc.data().nickname,
         };
         return newPost;
       });
@@ -84,111 +85,163 @@ const CommunityTabs = () => {
     // setTimeout(() => console.log(gossipPost), 1000);
   };
   return (
-    <Tab.Group>
-      <Tab.List>
-        {categories.map((category) => (
-          <Tab
-            key={category}
-            className={({ selected }) =>
-              classNames(
-                "w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-white",
-                "ring-white ring-opacity-60 ring-offset-2 ring-offset-orange-400 focus:outline-none focus:ring-2",
-                selected
-                  ? "bg-white shadow text-orange-400"
-                  : "text-slate-200 hover:bg-white/[0.12] hover:text-white"
-              )
-            }
-          >
-            {category}
-          </Tab>
-        ))}
-      </Tab.List>
-      <Tab.Panels>
-        <Tab.Panel>
-          {communityList?.map((p) => (
-            <div key={p.id}>
-              <div>글 제목: {p.title}</div>
-              <Image
-                // className="object-cover aspect-[4/3]" //aspect-ratio 수정
-                src={p.thumbnail}
-                priority={true}
-                loader={({ src }) => src}
-                width={70}
-                height={41}
-                alt="community-thumbnail"
-              />
-              <Link legacyBehavior href={`/communityPage/${p.id}`}>
-                <a className="bg-orange-300">{p.title}</a>
-              </Link>
-              <div>작성일: {p.writtenDate}</div>
-            </div>
+    <div className="w-[860px]">
+      <Tab.Group>
+        <Tab.List className="flex w-[780px] rounded-sm p-1 mx-auto my-6">
+          {categories.map((category) => (
+            <Tab
+              key={category}
+              className={({ selected }) =>
+                classNames(
+                  " w-full h-[55px] py-2.5 text-sm font-medium leading-5 text-white border border-mono50",
+                  "ring-white focus:outline-none",
+                  selected ? " text-brand100" : "text-mono100"
+                )
+              }
+            >
+              {category}
+            </Tab>
           ))}
-        </Tab.Panel>
-        <Tab.Panel>
-          {foodPost.map((p) => (
-            <div key={p.id}>
-              <div>글 제목: {p.title}</div>
-              <Image
-                className="object-cover aspect-[4/3]" //aspect-ratio 수정
-                src={p.thumbnail}
-                priority={true}
-                loader={({ src }) => src}
-                width={70}
-                height={41}
-                alt="community-thumbnail"
-              />
-              <div>카테고리: {p.category}</div>
-              <Link legacyBehavior href={`/communityPage/${p.id}`}>
-                <a className="bg-orange-300">{p.title}</a>
-              </Link>
-              <div>작성일: {p.writtenDate}</div>
-            </div>
-          ))}
-        </Tab.Panel>
-        <Tab.Panel>
-          {animePost.map((p) => (
-            <div key={p.id}>
-              <div>글 제목: {p.title}</div>
-              <Image
-                className="object-cover aspect-[4/3]" //aspect-ratio 수정
-                src={p.thumbnail}
-                priority={true}
-                loader={({ src }) => src}
-                width={70}
-                height={41}
-                alt="community-thumbnail"
-              />
-              <div>카테고리: {p.category}</div>
-              <Link legacyBehavior href={`/communityPage/${p.id}`}>
-                <a className="bg-orange-300">{p.title}</a>
-              </Link>
-              <div>작성일: {p.writtenDate}</div>
-            </div>
-          ))}
-        </Tab.Panel>
-        <Tab.Panel>
-          {gossipPost.map((p) => (
-            <div key={p.id}>
-              <div>글 제목: {p.title}</div>
-              <Image
-                className="object-cover aspect-[4/3]" //aspect-ratio 수정
-                src={p.thumbnail}
-                priority={true}
-                loader={({ src }) => src}
-                width={70}
-                height={41}
-                alt="community-thumbnail"
-              />
-              <div>카테고리: {p.category}</div>
-              <Link legacyBehavior href={`/communityPage/${p.id}`}>
-                <a className="bg-orange-300">{p.title}</a>
-              </Link>
-              <div>작성일: {p.writtenDate}</div>
-            </div>
-          ))}
-        </Tab.Panel>
-      </Tab.Panels>
-    </Tab.Group>
+        </Tab.List>
+        <h4 className="w-full text-2xl font-bold pb-4 border-b-2 border-brand100">
+          커뮤니티 글쓰기
+        </h4>
+        <Tab.Panels>
+          <Tab.Panel>
+            {communityList?.map((p) => (
+              <div
+                key={p.id}
+                className="border-b border-mono60 py-4 px-5 flex text-sm"
+              >
+                <Image
+                  // className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                  src={p.thumbnail}
+                  priority={true}
+                  loader={({ src }) => src}
+                  width={70}
+                  height={41}
+                  alt="community-thumbnail"
+                />
+                {/* <div>글아이디:{post.id}</div> */}
+                <div className="pl-5">
+                  <Link legacyBehavior href={`/communityPage/${p.id}`}>
+                    <a>{p.title}</a>
+                  </Link>
+                  <div className="flex mt-3 text-mono70">
+                    <div className="border-r border-mono60 pr-3">
+                      {p.category}
+                    </div>
+                    <div className="border-r border-mono60 px-3">
+                      {p.writtenDate}
+                    </div>
+                    <div className="pl-3">{p.nickname}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </Tab.Panel>
+          <Tab.Panel>
+            {foodPost.map((p) => (
+              <div
+                key={p.id}
+                className="border-b border-mono60 py-4 px-5 flex text-sm"
+              >
+                <Image
+                  className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                  src={p.thumbnail}
+                  priority={true}
+                  loader={({ src }) => src}
+                  width={70}
+                  height={41}
+                  alt="community-thumbnail"
+                />
+                {/* <div>글아이디:{post.id}</div> */}
+                <div className="pl-5">
+                  <Link legacyBehavior href={`/communityPage/${p.id}`}>
+                    <a>{p.title}</a>
+                  </Link>
+                  <div className="flex mt-3 text-mono70">
+                    <div className="border-r border-mono60 pr-3">
+                      {p.category}
+                    </div>
+                    <div className="border-r border-mono60 px-3">
+                      {p.writtenDate}
+                    </div>
+                    <div className="pl-3">{p.nickname}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </Tab.Panel>
+          <Tab.Panel>
+            {animePost.map((p) => (
+              <div
+                key={p.id}
+                className="border-b border-mono60 py-4 px-5 flex text-sm"
+              >
+                <Image
+                  className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                  src={p.thumbnail}
+                  priority={true}
+                  loader={({ src }) => src}
+                  width={70}
+                  height={41}
+                  alt="community-thumbnail"
+                />
+                {/* <div>글아이디:{post.id}</div> */}
+                <div className="pl-5">
+                  <Link legacyBehavior href={`/communityPage/${p.id}`}>
+                    <a>{p.title}</a>
+                  </Link>
+                  <div className="flex mt-3 text-mono70">
+                    <div className="border-r border-mono60 pr-3">
+                      {p.category}
+                    </div>
+                    <div className="border-r border-mono60 px-3">
+                      {p.writtenDate}
+                    </div>
+                    <div className="pl-3">{p.nickname}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </Tab.Panel>
+          <Tab.Panel>
+            {gossipPost.map((p) => (
+              <div
+                key={p.id}
+                className="border-b border-mono60 py-4 px-5 flex text-sm"
+              >
+                <Image
+                  className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                  src={p.thumbnail}
+                  priority={true}
+                  loader={({ src }) => src}
+                  width={70}
+                  height={41}
+                  alt="community-thumbnail"
+                />
+                {/* <div>글아이디:{post.id}</div> */}
+                <div className="pl-5">
+                  <Link legacyBehavior href={`/communityPage/${p.id}`}>
+                    <a>{p.title}</a>
+                  </Link>
+                  <div className="flex mt-3 text-mono70">
+                    <div className="border-r border-mono60 pr-3">
+                      {p.category}
+                    </div>
+                    <div className="border-r border-mono60 px-3">
+                      {p.writtenDate}
+                    </div>
+                    <div className="pl-3">{p.nickname}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </Tab.Panel>
+        </Tab.Panels>
+      </Tab.Group>
+    </div>
   );
 };
 

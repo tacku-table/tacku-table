@@ -9,6 +9,7 @@ import {
   query,
 } from "@firebase/firestore";
 import { authService, dbService } from "@/config/firebase";
+
 const Bookmark = (props: any) => {
   //북마크
   const [bookMark, setBookMark] = useState<any[]>([]);
@@ -32,21 +33,23 @@ const Bookmark = (props: any) => {
     };
     bookmarkLoad();
   }, [dbService, props.postId]);
+
   // localStorage불러오기
   useEffect(() => {
     let storedVisits = window.localStorage.getItem("toggleBookmark");
     if (storedVisits !== null) {
       const parsingtoggle = JSON.parse(storedVisits);
       setToggleBookmark(parsingtoggle);
-      console.log("parsingtoggle,", parsingtoggle);
     }
   }, []);
+
   //북마크 토글
   useEffect(() => {
     setToggleBookmark(
       bookMark.findIndex((mark) => mark.id === props.postId) !== -1
     );
   }, [bookMark, props.postId]);
+
   //북마크 db 추가 삭제
   const bookMarkPost = async () => {
     //localStorage에 저장
@@ -54,6 +57,7 @@ const Bookmark = (props: any) => {
       "toggleBookmark",
       JSON.stringify(!toggleBookmark)
     );
+
     if (toggleBookmark) {
       setToggleBookmark(!toggleBookmark);
       console.log("북마크 삭제");
@@ -77,9 +81,10 @@ const Bookmark = (props: any) => {
       );
     }
   };
+
   return (
     <>
-      {props.userData === "geust" ? null : toggleBookmark ? (
+      {toggleBookmark ? (
         <button onClick={bookMarkPost}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -115,4 +120,5 @@ const Bookmark = (props: any) => {
     </>
   );
 };
+
 export default Bookmark;
