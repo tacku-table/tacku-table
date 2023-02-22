@@ -9,17 +9,18 @@ import {
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, listAll, uploadBytes } from "firebase/storage";
 import Image from "next/image";
-import { useRouter } from "next/router";
+import profile from "../../public/images/profile.jpeg";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { storage } from "../../config/firebase";
 import { pwRegex, nickRegex } from "../../util";
+import { useRouter } from "next/router";
 
-const ProfileEdit = () => {
+export default function ProfileEdit(props) {
   const [userInfo, setUserInfo] = useState();
   // 프로필이미지 변경
-  const [photoImgURL, setPhotoImgURL] = useState();
+  // const [photoImgURL, setPhotoImgURL] = useState();
   const [imageUpload, setImageUpload] = useState(null);
-  const [isEditImg, setIsEditImg] = useState(false);
+  const [showUserUpdateImg, setShowUserUpdateImg] = useState();
   const [imgPreview, setImgPreview] = useState();
   // 오류메세지
   const [passwordMessage, setPasswordMessage] = useState("");
@@ -37,27 +38,40 @@ const ProfileEdit = () => {
   // 닉네임 변경
   const [changeUserNickname, setChangeUserNickname] = useState([]);
 
-  // const router = useRouter();
-  // const id = router.query.id;
+  console.log(props);
 
-  // const currentUser = JSON.parse(sessionStorage.getItem("User"));
-  // const id = router.query.id;
+  useEffect(() => {
+    setUserInfo(props.userData);
+    getUserProfileImg();
+  }, [userInfo]);
 
-  const getCurrentUserInfo = async (uid) => {
-    const docId = uid;
-    await getDoc(doc(dbService, "user", docId)).then((doc) => {
-      const user = {
-        ...doc.data(),
-      };
-      setUserInfo(user);
+  // useEffect(() => {
+  //   getUserProfileImg();
+  // }, [userInfo]);
+
+  // 인풋값 관리 함수
+  const inputChangeSetFunc = (event, setFunction) => {
+    setFunction(event.target.value);
+  };
+  const getUserProfileImg = async () => {
+    if (userInfo?.userImg === "null") return;
+    const imageListRef = ref(storage, "profileImage/");
+    await listAll(imageListRef).then((response) => {
+      response.items.forEach((item) => {
+        getDownloadURL(item).then((url) => {
+          if (url === userInfo?.userImg) {
+            setShowUserUpdateImg(url);
+          }
+        });
+      });
     });
   };
 
-  useEffect(() => {
-    const { uid } = JSON.parse(sessionStorage.getItem("User"));
-    getCurrentUserInfo(uid);
-  }, [userInfo]);
-
+  // div를 클릭해도 input이 클릭되도록 하기
+  // const fileRef = useRef(null);
+  // const onClickUpload = () => {
+  //   fileRef.current?.click();
+  // };
   const handleImageFile = (event) => {
     const file = event.target.files?.[0];
     setImageUpload(file);
@@ -72,17 +86,6 @@ const ProfileEdit = () => {
       // setImageUpload(event.target.files?.[0]);
     };
   };
-
-  // 인풋값 관리 함수
-  const inputChangeSetFunc = (event, setFunction) => {
-    setFunction(event.target.value);
-  };
-
-  // div를 클릭해도 input이 클릭되도록 하기
-  // const fileRef = useRef(null);
-  // const onClickUpload = () => {
-  //   fileRef.current?.click();
-  // };
 
   const handleChangePassword = useCallback(
     (event) => {
@@ -136,7 +139,7 @@ const ProfileEdit = () => {
   const handleUpdateUserDocs = async (uid) => {
     const docId = uid;
     const docRef = doc(dbService, "user", docId);
-    console.log("userInfo.userPw", userInfo.userPw);
+    // console.log("userInfo.userPw", userInfo.userPw);
     const userProvidedPassword = userInfo.userPw;
     const credential = EmailAuthProvider.credential(
       authService?.currentUser.email,
@@ -189,91 +192,142 @@ const ProfileEdit = () => {
 
   return (
     <>
-      <div>
-        <div className="flex flex-col">
-          <input
-            id="picture"
-            type="file"
-            accept="image/*"
-            onChange={handleImageFile}
-          />
-          <Image
-            src={imgPreview}
-            loader={({ src }) => src}
-            priority={true}
-            width={100}
-            height={100}
-            alt="프리뷰"
-          />
-          <button onClick={() => handleUpdateProfile(userInfo.userId)}>
-            프로필이미지 업로드
-          </button>
-          <label>
-            비밀번호 변경:
-            <input
-              type="text" //password로 수정 예정
-              placeholder="변경할 비밀번호를 입력해주세요."
-              onChange={handleChangePassword}
-              className="w-[256px] border border-black"
-            />
-          </label>
-          {changeUserPw.length > 0 && (
-            <span
-              className={`${isPassword ? "text-blue-600" : "text-orange-500"}`}
+      <div className="flex flex-col justify-center items-center mt-[86px]">
+        <span className="text-4xl font-bold">회원정보 수정</span>
+        <div className="flex flex-col py-10">
+          <div className="flex gap-14 items-center">
+            <span className="text-base">프로필 이미지</span>
+            {userInfo?.userImg === "null" ? (
+              <Image
+                src={profile}
+                loader={({ src }) => src}
+                priority={true}
+                width={100}
+                height={100}
+                alt="기본이미지"
+              />
+            ) : (
+              <Image
+                src={showUserUpdateImg}
+                loader={({ src }) => src}
+                priority={true}
+                width={100}
+                height={100}
+                alt="프리뷰|업데이트이미지"
+              />
+            )}
+            <label>
+              <Image
+                src={imgPreview}
+                loader={({ src }) => src}
+                priority={true}
+                width={100}
+                height={100}
+                alt="프리뷰|업데이트이미지"
+              />
+              <input
+                id="picture"
+                type="file"
+                accept="image/*"
+                hidden
+                onChange={handleImageFile}
+              />
+            </label>
+            <button
+              onClick={() => handleUpdateProfile(userInfo.userId)}
+              type="button"
+              disabled={!imgPreview}
+              className="text-white disabled:bg-slate-400 bg-brand100 hover:bg-brand100/80 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mr-2 mb-2"
             >
-              {passwordMessage}
-            </span>
-          )}
-          <label>
-            비밀번호 재확인:
-            <input
-              type="text" //password로 수정 예정
-              placeholder="확인을 위해 비밀번호를 재입력해주세요."
-              onChange={handleChangePasswordConfirm}
-              className="w-[256px] border border-black"
-            />
-          </label>
-          {confirmChangeUserPw.length > 0 && (
-            <span
-              className={`${
-                isPasswordConfirm ? "text-blue-600" : "text-orange-500"
-              }`}
-            >
-              {passwordConfirmMessage}
-            </span>
-          )}
-          <label>
-            닉네임 변경:
-            <input
-              type="text"
-              onChange={(event) =>
-                handleChangeNickname(event, setChangeUserNickname)
-              }
-              className="w-[256px] border border-black"
-            />
-          </label>
-          {changeUserNickname.length > 0 && (
-            <span
-              className={`${
-                isPasswordConfirm ? "text-blue-600" : "text-orange-500"
-              }`}
-            >
-              {nicknameMessage}
-            </span>
-          )}
-          <button
-            className="w-16 valid:bg-orange-400 disabled:bg-slate-400"
-            onClick={() => handleUpdateUserDocs(userInfo.userId)}
-            disabled={!(isPassword && isPasswordConfirm && isNickname)}
-          >
-            수정하기
-          </button>
+              프로필이미지 변경
+            </button>
+          </div>
+          <div className="space-y-7">
+            <div className="flex gap-14 items-center">
+              <span className="text-base min-w-[120px]">이메일</span>
+              <input
+                disabled
+                placeholder={`${userInfo?.userEmail}`}
+                className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="flex gap-14 items-center">
+                <span className="text-base min-w-[120px]">비밀번호 변경</span>
+                <input
+                  type="text" //password로 수정 예정
+                  placeholder="변경할 비밀번호를 입력해주세요."
+                  onChange={handleChangePassword}
+                  className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10 focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
+                />
+              </label>
+
+              {changeUserPw.length > 0 && (
+                <span
+                  className={`${isPassword ? "text-blue100" : "text-brand100"}`}
+                >
+                  {passwordMessage}
+                </span>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <label className="flex gap-14 items-center">
+                <span className="text-base min-w-[120px]">
+                  비밀번호 변경 확인
+                </span>
+                <input
+                  type="text" //password로 수정 예정
+                  placeholder="확인을 위해 비밀번호를 재입력해주세요."
+                  onChange={handleChangePasswordConfirm}
+                  className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10  focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
+                />
+              </label>
+            </div>
+            {confirmChangeUserPw.length > 0 && (
+              <span
+                className={`${
+                  isPasswordConfirm ? "text-blue-600" : "text-orange-500"
+                }`}
+              >
+                {passwordConfirmMessage}
+              </span>
+            )}
+            <div className="flex flex-col">
+              <label className="flex gap-14 items-center">
+                <span className="text-base min-w-[120px]">닉네임 변경</span>
+                <input
+                  type="text"
+                  onChange={(event) =>
+                    handleChangeNickname(event, setChangeUserNickname)
+                  }
+                  className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10  focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
+                />
+              </label>
+              {changeUserNickname.length > 0 && (
+                <span
+                  className={`${
+                    isPasswordConfirm ? "text-blue-600" : "text-orange-500"
+                  }`}
+                >
+                  {nicknameMessage}
+                </span>
+              )}
+            </div>
+          </div>
         </div>
-        <div
-          className="hover:opacity-60"
-          // onClick={() => setIsEditImg(!isEditImg)}
+        <button
+          className="text-white disabled:bg-slate-400 valid:bg-brand100 hover:bg-brand100/80 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mr-2 mb-2"
+          onClick={() => handleUpdateUserDocs(userInfo.userId)}
+          disabled={!(isPassword && isPasswordConfirm && isNickname)}
         >
-          {/* <label>
+          수정하기
+        </button>
+      </div>
+      <div
+        className="hover:opacity-60"
+        // onClick={() => setIsEditImg(!isEditImg)}
+      >
+        {/* <label>
             {isEditImg ? (
               <input
                 id="picture"
@@ -291,11 +345,34 @@ const ProfileEdit = () => {
                 alt="변경된 이미지"
               />
             )} */}
-          {/* </label> */}
-        </div>
+        {/* </label> */}
       </div>
     </>
   );
-};
+}
 
-export default ProfileEdit;
+export const getServerSideProps = async (context) => {
+  console.log(context);
+  const { query } = context;
+  const { id, userImg } = query;
+  console.log(id);
+  console.log(userImg);
+
+  const docId = id;
+  let userData;
+  const snapshot = await getDoc(doc(dbService, "user", docId));
+  if (snapshot.exists()) {
+    console.log(snapshot.data());
+    userData = snapshot.data();
+  } else {
+    console.log("회원 정보가 없습니다.");
+  }
+  console.log("userData:", userData);
+
+  return {
+    props: {
+      id,
+      userData,
+    },
+  };
+};
