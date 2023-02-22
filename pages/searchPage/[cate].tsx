@@ -1,22 +1,25 @@
 import { dbService } from "@/config/firebase";
-import { cls } from "@/util";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Fuse from "fuse.js";
 import RecipeData from "@/components/search/RecipeData";
+import ChangeSortedBtn from "@/components/search/ChangeSortedBtn";
 
 // 카테고리별 불러오기
 const ClassifiedRecipe: NextPage = () => {
-    const [isBest, setIsBest] = useState(false);
+    const [isBest, setIsBest] = useState("");
+    // 인기순
     const activeBestBtn = () => {
-        setIsBest(true);
-        console.log(isBest);
+        sessionStorage.setItem("userWatching", "viewCount");
+        setIsBest("viewCount");
     };
+
+    // 최신순
     const inactiveBestBtn = () => {
-        setIsBest(false);
-        console.log(isBest);
+        sessionStorage.setItem("userWatching", "createdAt");
+        setIsBest("createdAt");
     };
 
     const [text, setText] = useState("");
@@ -35,7 +38,7 @@ const ClassifiedRecipe: NextPage = () => {
     const getList = async () => {
         const items = query(
             collection(dbService, "recipe"),
-            orderBy("createdAt", "desc"),
+            orderBy(isBest === "viewCount" ? "viewCount" : "createdAt", "desc"),
             where(
                 `${
                     router.query.cate === "15분이하" ||
@@ -68,8 +71,14 @@ const ClassifiedRecipe: NextPage = () => {
         : currentItems;
 
     useEffect(() => {
+        const result = sessionStorage.getItem("userWatching");
+        if (result) {
+            setIsBest(result);
+        } else {
+            setIsBest("createdAt");
+        }
         getList();
-    }, [router.query.cate]);
+    }, [router.query.cate, isBest]);
 
     return (
         <div className="w-full mt-20 flex flex-col justify-center items-center">
@@ -101,40 +110,15 @@ const ClassifiedRecipe: NextPage = () => {
                     </svg>
                 </button>
             </form>
-            <div className="w-3/4 flex justify-end items-center mb-[20px]">
-                {dataResults ? (
-                    <p className=" text-mono100 mr-[280px]">
-                        총&nbsp;
-                        <span className="text-red100">
-                            {dataResults.length}
-                        </span>
-                        건의 레시피가 기다리고 있어요!
-                    </p>
-                ) : null}{" "}
-                <ul className="flex justify-end">
-                    <li
-                        className={cls(
-                            "sorted-btn",
-                            isBest ? "bg-main text-white" : "text-grayText"
-                        )}
-                        onClick={activeBestBtn}
-                    >
-                        인기순
-                    </li>
-                    <li
-                        className={cls(
-                            "sorted-btn",
-                            !isBest ? "bg-main text-white" : "text-grayText"
-                        )}
-                        onClick={inactiveBestBtn}
-                    >
-                        최신순
-                    </li>
-                </ul>
-            </div>
-            <div className="w-3/4 border-b border-border mb-[30px]"></div>
-            <div className="w-3/4 flex justify-between mb-20">
-                <div className="bg-slate-100 px-2 py-3 w-[150px] h-[50px] mr-7 text-center">
+            <ChangeSortedBtn
+                dataResults={dataResults}
+                isBest={isBest}
+                activeBestBtn={activeBestBtn}
+                inactiveBestBtn={inactiveBestBtn}
+            />
+            <div className="w-4/5 border-b border-border mb-[30px]"></div>
+            <div className="w-4/5 flex justify-between mb-20">
+                <div className="bg-mono30 rounded-[3px] w-auto h-9 px-6 mr-7 text-sm flex items-center text-brand100">
                     {router.query.cate?.toString().replaceAll("&", "/")}
                 </div>
                 <RecipeData dataResults={dataResults} />

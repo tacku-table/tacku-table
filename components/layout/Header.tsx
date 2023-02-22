@@ -43,29 +43,57 @@ const Header = () => {
                         />
                     </Link>
                 </li>
-                <li className="header-title">
-                    <Link href="/searchPage">전체 레시피</Link>
+                <li>
+                    <Link href="/searchPage" className="header-title">
+                        전체 레시피
+                    </Link>
                 </li>
                 <FoodCategory />
                 <CookingTime />
-                <li className="header-title">
-                    <Link href="/communityPage">커뮤니티</Link>
+                <li>
+                    <Link href="/communityPage" className="header-title">
+                        커뮤니티
+                    </Link>
                 </li>
             </ul>
-            <div className="flex justify-center items-center gap-7">
+            <div className="flex justify-center items-center">
                 {storageCurrentUser ? (
-                    <Link href="/recipeWritePage">레시피글쓰기</Link>
+                    <Link
+                        href="/recipeWritePage"
+                        className="mr-6 hover:text-mono80 hover:transition hover:ease-out hover:duration-300"
+                    >
+                        레시피글쓰기
+                    </Link>
                 ) : null}
                 {storageCurrentUser ? (
-                    <button type="button" onClick={logoutAction}>
+                    <button
+                        type="button"
+                        onClick={logoutAction}
+                        className="mr-6 hover:text-mono80 hover:transition hover:ease-out hover:duration-300"
+                    >
                         로그아웃
                     </button>
                 ) : (
-                    <button type="button" onClick={moveLoginPage}>
+                    <button
+                        type="button"
+                        onClick={moveLoginPage}
+                        className="sorted-btn mr-2"
+                    >
                         로그인
                     </button>
                 )}
-                <Link href="/myPage">마이페이지</Link>
+                {storageCurrentUser ? (
+                    <Link
+                        href="/myPage"
+                        className="hover:text-mono80 hover:transition hover:ease-out hover:duration-300"
+                    >
+                        마이페이지
+                    </Link>
+                ) : (
+                    <Link href="/loginPage" className="sorted-btn">
+                        회원가입
+                    </Link>
+                )}
             </div>
         </div>
     );

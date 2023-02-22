@@ -41,22 +41,22 @@ const RecipeData = ({ dataResults }: any) => {
                                 <picture>
                                     <img
                                         src={`${item.thumbnail}`}
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-cover rounded-sm"
                                         alt="recipe picture"
                                         width={316}
                                         height={188}
                                     />
                                 </picture>
                             </div>
-                            <ul className="text-sm text-slate-500 space-x-2 flex">
-                                <li className="text-ellipsis overflow-hidden whitespace-nowrap">
+                            <ul className="text-sm text-slate-500 space-x-4 mt-1 flex">
+                                <li className="text-ellipsis overflow-hidden whitespace-nowrap text-blue100">
                                     &#35;{item.animationTitle}
                                 </li>
                                 <li className="whitespace-nowrap">
                                     &#35;{item.cookingTime}
                                 </li>
                             </ul>
-                            <p className="text-lg text-slate-900 font-semibold">
+                            <p className="text-lg text-slate-900 font-semibold mt-1">
                                 {item.foodTitle}
                             </p>
                         </div>

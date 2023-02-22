@@ -1,39 +1,17 @@
 import SideCategory from "@/components/search/SideCategory";
 import { dbService } from "@/config/firebase";
-import { cls } from "@/util";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import Fuse from "fuse.js";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import RecipeData from "@/components/search/RecipeData";
+import ChangeSortedBtn from "@/components/search/ChangeSortedBtn";
 
 const SearchData: NextPage = () => {
     const router = useRouter();
     const deliverKeyword = router.query.keyword;
 
-    //---------------------다경 추가(시작)--------------------------
-    useEffect(() => {
-        console.log("맨 처음에 isBest?", isBest);
-        if (sessionStorage.getItem("userWatching")) {
-            console.log("유저가 보고있던게 있어요");
-            const result = sessionStorage.getItem("userWatching");
-            console.log("result:", result);
-            console.log("result의 타입", typeof result);
-
-            if (result) {
-                setIsBest(result);
-            }
-        } else {
-            setIsBest("createdAt");
-        }
-    }, []);
-
-    //---------------------다경 추가(끝)--------------------------
-
-    // 인기순,최신순
-    // const [isBest, setIsBest] = useState(false);
-    // 다경: useState를 "" 로 처음 초기세팅
     const [isBest, setIsBest] = useState("");
 
     // 인기순
@@ -44,7 +22,6 @@ const SearchData: NextPage = () => {
         // state도 똑같은 값으로 업데이트---------------------
         setIsBest("viewCount");
         // state도 똑같은 값으로 업데이트---------------------
-        // setIsBest(true);
         console.log("isBest:", isBest);
     };
 
@@ -52,13 +29,11 @@ const SearchData: NextPage = () => {
     const inactiveBestBtn = () => {
         // 최신순 버튼을 클릭하면 sessionStorge에 "createdAt"라는 이름으로 데이터 저장
         // key : userWatching , value : "createdAt"
-
         // setIsBest(false);
         sessionStorage.setItem("userWatching", "createdAt");
         // state도 똑같은 값으로 업데이트---------------------
         setIsBest("createdAt");
         // state도 똑같은 값으로 업데이트---------------------
-
         console.log("isBest:", isBest);
     };
 
@@ -76,11 +51,7 @@ const SearchData: NextPage = () => {
     const getList = async () => {
         const items = query(
             collection(dbService, "recipe"),
-            // isBest가 true이면 viewCount 아니면 createdAt
-            // 다경 : isBest가 viewCount면 viewCount, createdAt이면 createdAt----------------(시작)
             orderBy(isBest === "viewCount" ? "viewCount" : "createdAt", "desc")
-            // 다경 : isBest가 viewCount면 viewCount, createdAt이면 createdAt----------------(끝)
-            //   orderBy(isBest ? "viewCount" : "createdAt", "desc")
             // where("foodCategory", "==", "desc")
         );
         const querySnapshot = await getDocs(items);
@@ -103,6 +74,12 @@ const SearchData: NextPage = () => {
         : currentItems;
 
     useEffect(() => {
+        const result = sessionStorage.getItem("userWatching");
+        if (result) {
+            setIsBest(result);
+        } else {
+            setIsBest("createdAt");
+        }
         getList();
     }, [isBest]);
 
@@ -136,43 +113,14 @@ const SearchData: NextPage = () => {
                     </svg>
                 </button>
             </form>
-            <div className="w-3/4 flex justify-end items-center mb-[20px]">
-                {dataResults ? (
-                    <p className=" text-mono100 mr-[280px]">
-                        총&nbsp;
-                        <span className="text-red100">
-                            {dataResults.length}
-                        </span>
-                        건의 레시피가 기다리고 있어요!
-                    </p>
-                ) : null}{" "}
-                <ul className="flex justify-end">
-                    <li
-                        className={cls(
-                            "sorted-btn",
-                            isBest === "viewCount"
-                                ? "bg-main text-white"
-                                : "text-grayText"
-                        )}
-                        onClick={activeBestBtn}
-                    >
-                        인기순
-                    </li>
-                    <li
-                        className={cls(
-                            "sorted-btn",
-                            isBest === "createdAt"
-                                ? "bg-main text-white"
-                                : "text-grayText"
-                        )}
-                        onClick={inactiveBestBtn}
-                    >
-                        최신순
-                    </li>
-                </ul>
-            </div>
-            <div className="w-3/4 border-b border-border mb-[30px]"></div>
-            <div className="w-3/4 flex justify-start gap-7 mb-20">
+            <ChangeSortedBtn
+                dataResults={dataResults}
+                isBest={isBest}
+                activeBestBtn={activeBestBtn}
+                inactiveBestBtn={inactiveBestBtn}
+            />
+            <div className="w-4/5 border-b border-border mb-[30px]"></div>
+            <div className="w-4/5 flex justify-between gap-7 mb-20">
                 <SideCategory />
                 <RecipeData dataResults={dataResults} />
             </div>

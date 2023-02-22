@@ -9,7 +9,8 @@ const BestRecipe: NextPage = () => {
     const [dataResults, setDataResults] = useState<RecipeProps[]>([]);
     const router = useRouter();
     const sortedBest = () => {
-        router.push({ pathname: "/searchPage", query: { sortedBest: "true" } });
+        router.push("/searchPage");
+        sessionStorage.setItem("userWatching", "viewCount");
     };
 
     const getList = async () => {
@@ -32,7 +33,7 @@ const BestRecipe: NextPage = () => {
 
     return (
         <>
-            <div className="space-y-4 flex flex-col items-center mb-10">
+            <div className="space-y-4 flex flex-col items-center mb-7">
                 <p className="text-3xl font-extrabold">인기레시피</p>
                 <p className="text-lg font-medium text-slate-500">
                     타쿠의 식탁에서 HOT한 요즘유행요리
