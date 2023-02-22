@@ -18,9 +18,9 @@ const NewCommunityPost = () => {
   const [title, setTitle] = useState("");
   const [thumbnail, setThumbnail] = useState("");
   // const [imagePreview, setImagePreview] = useState("");
-  const [imgPreview, setImgPreview] = useState();
+  const [imgPreview, setImgPreview] = useState("");
 
-  const [imageUpload, setImageUpload] = useState(null);
+  const [imageUpload, setImageUpload] = useState("");
   const [imgLoading, setImgLoading] = useState("");
 
   // 카테고리 추가
@@ -36,39 +36,46 @@ const NewCommunityPost = () => {
     setTitle(event.target.value);
   };
 
+  // const imgDataUrl = reader.result;
+  // localStorage.setItem("imgDataUrl", imgDataUrl);
+  // console.log("imgDataUrl", imgDataUrl);
+  // setImagePreview(imgDataUrl);
+  // await addImageFirebase(uid);
   const handleImageFile = (event) => {
     const file = event.target.files?.[0];
-    setImageUpload(file);
+    console.log(file);
     const reader = new FileReader();
-    if (file && file.type.match("image.*")) {
-      reader.readAsDataURL(file);
-    }
+
+    reader.readAsDataURL(file);
     reader.onload = () => {
       const selectedImgUrl = reader.result;
-      setImgPreview(selectedImgUrl);
+      setImageUpload(file);
       localStorage.setItem("selectedImgUrl", selectedImgUrl);
+      setImgPreview(selectedImgUrl);
       console.log("selectedImgUrl", selectedImgUrl);
-      // const imgDataUrl = reader.result;
-      // localStorage.setItem("imgDataUrl", imgDataUrl);
-      // console.log("imgDataUrl", imgDataUrl);
-      // setImagePreview(imgDataUrl);
-      // await addImageFirebase(uid);
-      handleUpdateProfile(uid);
+      console.log(imageUpload);
+
+      handleUpdateProfile();
     };
   };
 
-  const handleUpdateProfile = async (id) => {
+  const handleUpdateProfile = async () => {
     const selectedImgUrl = localStorage.getItem("selectedImgUrl");
-
     if (selectedImgUrl === null) return;
+    // const metaData = {
+    //   contentType: imageUpload.type,
+    // };
     let randomID = Date.now();
-    const imageRef = ref(storage, `communityThumbnail/${id}/${randomID}`);
-    await uploadBytesResumable(imageRef, selectedImgUrl).then((snapshot) => {
-      getDownloadURL(snapshot.ref).then((url) => {
-        setThumbnail(url);
-      });
-    });
+    const imageRef = ref(storage, `communityThumbnail/${uid}/${randomID}`);
+    await uploadBytesResumable(imageRef, imageUpload, imageUpload?.type).then(
+      (snapshot) => {
+        getDownloadURL(snapshot.ref).then((url) => {
+          setThumbnail(url);
+        });
+      }
+    );
   };
+  console.log("imageUpload", imageUpload);
   console.log("thumbnail", thumbnail);
 
   // const addImageFirebase = async (uid) => {
@@ -170,7 +177,9 @@ const NewCommunityPost = () => {
             id="picture"
             type="file"
             accept="image/*"
-            onChange={handleImageFile}
+            onChange={(event) => {
+              handleImageFile(event);
+            }}
             className="float-right w-[90px]"
           />
 
