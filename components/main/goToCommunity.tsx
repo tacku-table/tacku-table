@@ -13,7 +13,7 @@ const GoToCommunity: NextPage = () => {
         className="absolute w-[1920px] h-[384px] top-0 left-0 "
         style={{ objectFit: "cover", objectPosition: "center" }}
       /> */}
-      <div className="w-[1440px] mx-auto">
+      <div className="w-[1150px] mx-auto">
         <p className="text-xl font-semibold mt-[105px] mb-4 ">커뮤니티</p>
         <p className="text-sm z-50">
           애니메이션과 애니에 나오는 요리 등 다양한 주제로<br></br>
