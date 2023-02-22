@@ -10,6 +10,8 @@ import {
 } from "firebase/firestore";
 import Link from "next/link";
 import { authService, dbService } from "../../config/firebase";
+import defaultImg from "../../public/images/profile.jpeg";
+import Image from "next/image";
 
 const CommunityTabs = () => {
   // 전체글 state
@@ -32,7 +34,8 @@ const CommunityTabs = () => {
     let mm = date.getMonth() + 1;
     let dd = date.getDate();
     let yyyy = date.getFullYear();
-    return (date = `${yyyy}-${mm}-${dd} ${hours}:${minutes}`);
+    // return (date = `${yyyy}-${mm}-${dd} ${hours}:${minutes}`);
+    return (date = `${yyyy}.${mm}.${dd} ${hours}:${minutes}`);
   };
 
   useEffect(() => {
@@ -48,7 +51,9 @@ const CommunityTabs = () => {
           id: doc.id,
           category: doc.data().category,
           title: doc.data().title,
+          nickname: doc.data().nickname,
           editorText: doc.data().editorText,
+          thumbnail: doc.data().thumbnail,
           writtenDate: convertTimestamp(doc.data().writtenDate),
         };
         return newPost;
@@ -82,76 +87,88 @@ const CommunityTabs = () => {
     // setTimeout(() => console.log(gossipPost), 1000);
   };
   return (
-    <Tab.Group>
-      <Tab.List>
-        {categories.map((category) => (
-          <Tab
-            key={category}
-            className={({ selected }) =>
-              classNames(
-                "w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-white",
-                "ring-white ring-opacity-60 ring-offset-2 ring-offset-orange-400 focus:outline-none focus:ring-2",
-                selected
-                  ? "bg-white shadow text-orange-400"
-                  : "text-slate-200 hover:bg-white/[0.12] hover:text-white"
-              )
-            }
-          >
-            {category}
-          </Tab>
-        ))}
-      </Tab.List>
-      <Tab.Panels>
-        <Tab.Panel>
-          {communityList?.map((p) => (
-            <div key={p.id}>
-              <div>글 제목: {p.title}</div>
-              {/* <div>글아이디:{post.id}</div> */}
-              <Link legacyBehavior href={`/communityPage/${p.id}`}>
-                <a className="bg-orange-300">{p.title}</a>
-              </Link>
-              <div>작성일: {p.writtenDate}</div>
-            </div>
+    <div>
+      <Tab.Group>
+        <Tab.List className="flex w-[860px] rounded-sm p-1">
+          {categories.map((category) => (
+            <Tab
+              key={category}
+              className={({ selected }) =>
+                classNames(
+                  " w-full py-2.5 text-sm font-medium leading-5 text-white border border-mono60",
+                  "ring-white focus:outline-none",
+                  selected ? " text-orange-400" : "text-slate-200"
+                )
+              }
+            >
+              {category}
+            </Tab>
           ))}
-        </Tab.Panel>
-        <Tab.Panel>
-          {foodPost.map((p) => (
-            <div key={p.id}>
-              <div>글 제목: {p.title}</div>
-              <div>카테고리: {p.category}</div>
-              <Link legacyBehavior href={`/communityPage/${p.id}`}>
-                <a className="bg-orange-300">{p.title}</a>
-              </Link>
-              <div>작성일: {p.writtenDate}</div>
-            </div>
-          ))}
-        </Tab.Panel>
-        <Tab.Panel>
-          {animePost.map((p) => (
-            <div key={p.id}>
-              <div>글 제목: {p.title}</div>
-              <div>카테고리: {p.category}</div>
-              <Link legacyBehavior href={`/communityPage/${p.id}`}>
-                <a className="bg-orange-300">{p.title}</a>
-              </Link>
-              <div>작성일: {p.writtenDate}</div>
-            </div>
-          ))}
-        </Tab.Panel>
-        <Tab.Panel>
-          {gossipPost.map((p) => (
-            <div key={p.id}>
-              <div>글 제목: {p.title}</div>
-              <div>카테고리: {p.category}</div>
-              <Link legacyBehavior href={`/communityPage/${p.id}`}>
-                <a className="bg-orange-300">{p.title}</a>
-              </Link>
-              <div>작성일: {p.writtenDate}</div>
-            </div>
-          ))}
-        </Tab.Panel>
-      </Tab.Panels>
-    </Tab.Group>
+        </Tab.List>
+        <h4 className="w-full text-4xl font-bold pb-6 border-b-2 border-brand100">
+          커뮤니티 글쓰기
+        </h4>
+        <Tab.Panels>
+          <Tab.Panel>
+            {communityList?.map((p) => (
+              <div key={p.id} className="border-b border-mono60">
+                {/* <div>글아이디:{post.id}</div> */}
+                <Link legacyBehavior href={`/communityPage/${p.id}`}>
+                  <a className="bg-orange-300">{p.title}</a>
+                </Link>
+                <div className="flex">
+                  <div className="border-r border-mono60"> {p.category}</div>
+                  <div className="border-r border-mono60">{p.writtenDate}</div>
+                  <div className="border-r border-mono60">{p.nickname}</div>
+                </div>
+              </div>
+            ))}
+          </Tab.Panel>
+          <Tab.Panel>
+            {foodPost.map((p) => (
+              <div key={p.id} className="border-b border-mono60">
+                <Link legacyBehavior href={`/communityPage/${p.id}`}>
+                  <a className="bg-orange-300">{p.title}</a>
+                </Link>
+                <div className="flex">
+                  <div className="border-r border-mono60"> {p.category}</div>
+                  <div className="border-r border-mono60">{p.writtenDate}</div>
+                  <div className="border-r border-mono60">{p.nickname}</div>
+                </div>
+              </div>
+            ))}
+          </Tab.Panel>
+          <Tab.Panel>
+            {animePost.map((p) => (
+              <div key={p.id} className="border-b border-mono60">
+                <Link legacyBehavior href={`/communityPage/${p.id}`}>
+                  <a className="bg-orange-300">{p.title}</a>
+                </Link>
+                <div className="flex">
+                  <div className="border-r border-mono60"> {p.category}</div>
+                  <div className="border-r border-mono60">{p.writtenDate}</div>
+                  <div className="border-r border-mono60">{p.nickname}</div>
+                </div>
+              </div>
+            ))}
+          </Tab.Panel>
+          <Tab.Panel>
+            {gossipPost.map((p) => (
+              <div key={p.id} className="border-b border-mono60">
+                <Link legacyBehavior href={`/communityPage/${p.id}`}>
+                  <a className="bg-orange-300">{p.title}</a>
+                </Link>
+                <div className="flex">
+                  <div className="border-r border-mono60"> {p.category}</div>
+                  <div className="border-r border-mono60">{p.writtenDate}</div>
+                  <div className="border-r border-mono60">{p.nickname}</div>
+                </div>
+              </div>
+            ))}
+          </Tab.Panel>
+        </Tab.Panels>
+      </Tab.Group>
+    </div>
   );
 };
 

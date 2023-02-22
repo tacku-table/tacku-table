@@ -8,6 +8,7 @@ import {
 } from "firebase/firestore";
 import { dbService } from "@/config/firebase";
 import Bookmark from "@/components/detail/Bookmark";
+import TopButton from "@/components/button/TopButton";
 import defaultImg from "../../public/images/profile.jpeg";
 import Image from "next/image";
 import Link from "next/link";
@@ -21,6 +22,7 @@ export default function DetailReciptPage(props: any) {
   //조회수
   let [views, setViews] = useState<number>(props.targetWholeData?.viewCount);
   const userUid = props.targetWholeData?.uid;
+
   //레시피 데이터 불러오기
   useEffect(() => {
     getRecipeData(props.targetWholeData);
@@ -29,6 +31,17 @@ export default function DetailReciptPage(props: any) {
     });
   }, []);
 
+  // post 시간 나타내는 함수
+  const getTimegap = () => {
+    let data: any = Date.now();
+    const date = new Date(data);
+    let year = date.getFullYear().toString().slice(-2); //년도
+    let month = ("0" + (date.getMonth() + 1)).slice(-2); //월 2자리
+    let day = ("0" + date.getDate()).slice(-2); //일 2자리
+    let hour = ("0" + date.getHours()).slice(-2); //시 2자리
+    let minute = ("0" + date.getMinutes()).slice(-2); //분 2자리
+    return (data = `${year} .${month}. ${day} .${hour}:${minute}`);
+  };
   //----------다경 추가---------------(시작)
   const [storageCurrentUser, setStorageCurrentUser]: any = useState({});
   useEffect(() => {
@@ -91,13 +104,11 @@ export default function DetailReciptPage(props: any) {
         <div className="flex-col my-5">
           <div className="flex justify-between my-5">
             <p className="text-2xl font-semibold">{recipeData.foodTitle}</p>
-            <p className="w-6 h-6">
-              <Bookmark
-                postId={props.postId}
-                recipeData={recipeData}
-                userData={userData}
-              />
-            </p>
+            {userData === "geust" ? null : (
+              <p className="w-6 h-6">
+                <Bookmark postId={props.postId} recipeData={recipeData} />
+              </p>
+            )}
           </div>
           <div className="flex items-center">
             <span className="float-left mr-2 ">
@@ -121,6 +132,7 @@ export default function DetailReciptPage(props: any) {
           <div className="flex justify-between border-b-2 border-border-500 pb-8 my-5">
             <p> {recipeData.animationTitle}</p>
             <p>{recipeData.foodCategory}</p>
+            <p>{getTimegap()}</p>
           </div>
         </div>
         <div>
@@ -179,9 +191,7 @@ export default function DetailReciptPage(props: any) {
         </div>
         <div className=" flex justify-between items-center border-b-2 border-border-500 pb-4 mt-11 mb-8 ">
           <div>조회수 : {views}</div>
-          <button className="border-2 border-border-500 px-4 py-2 ">
-            맨위로
-          </button>
+          <TopButton className="border-2 border-border-500 px-4 py-2 " />
         </div>
       </div>
     </div>

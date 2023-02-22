@@ -40,7 +40,6 @@ const Bookmark = (props: any) => {
     if (storedVisits !== null) {
       const parsingtoggle = JSON.parse(storedVisits);
       setToggleBookmark(parsingtoggle);
-      console.log("parsingtoggle,", parsingtoggle);
     }
   }, []);
 
@@ -83,7 +82,7 @@ const Bookmark = (props: any) => {
 
   return (
     <>
-      {props.userData === "geust" ? null : toggleBookmark ? (
+      {toggleBookmark ? (
         <button onClick={bookMarkPost}>
           <svg
             xmlns="http://www.w3.org/2000/svg"

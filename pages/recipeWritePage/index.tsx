@@ -270,13 +270,13 @@ const RecipeWritePage = () => {
                 }}
               >
                 <option value="none"> 음식 종류 선택 </option>
-                <option value="국&탕&찌개">국/탕/찌개</option>
-                <option value="구이&볶음&찜">구이/볶음/찜</option>
+                <option value="국/탕/찌개">국/탕/찌개</option>
+                <option value="구이/볶음/찜">구이/볶음/찜</option>
                 <option value="튀김류">튀김류</option>
-                <option value="베이커리&디저트">베이커리/디저트</option>
-                <option value="음료&주류">음료/주류</option>
-                <option value="밥&도시락&면">밥/도시락/면</option>
-                <option value="식단&건강관리">식단/건강관리</option>
+                <option value="베이커리/디저트">베이커리/디저트</option>
+                <option value="음료/주류">음료/주류</option>
+                <option value="밥/도시락/면">밥/도시락/면</option>
+                <option value="식단/건강관리">식단/건강관리</option>
               </select>
             </div>
             <div className="pb-[40px]">
