@@ -100,7 +100,7 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
     const q = query(communityRef, where("uid", "==", `${userId}`));
     onSnapshot(q, (snapshot) => {
       const myposts = snapshot.docs.map((doc) => {
-        // console.log(doc.data().writtenDate);
+        // console.log("postId: ", doc.id);
         const mypost = {
           postId: doc.id,
           writtenDate: convertTimestamp(doc.data().writtenDate),
@@ -159,8 +159,7 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
                 {p.thumbnail && (
                   <Image
                     className="object-cover aspect-[4/3]" //aspect-ratio 수정
-                    unoptimized
-                    src={p?.thumbnail}
+                    src={p.thumbnail}
                     priority={true}
                     loader={({ src }) => src}
                     width={180}
@@ -222,9 +221,13 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
               <hr className="border-border mx-8 mb-6 border-[1px]" />
               <div className="pl-8 space-x-[20px] items-center flex">
                 <div className="flex flex-col">
-                  <span>{p.writtenDate}</span>
+                  <div className="space-x-[10px]">
+                    <span>{p.category}게시판</span>
+                    <span>|</span>
+                    <span>{p.writtenDate}</span>
+                  </div>
                   <Link legacyBehavior href={`/communityPage/${p.postId}`}>
-                    <a>{p.title}</a>
+                    <a className="text-2xl font-semibold">{p.title}</a>
                   </Link>
                 </div>
               </div>
@@ -236,10 +239,32 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
         </Tab.Panel>
         <Tab.Panel>
           {commentPost?.map((p) => (
-            <div key={p.postId}>
-              <Link legacyBehavior href={`/communityPage/${p.boardId}`}>
-                <a>{p.comment}</a>
-              </Link>
+            <div key={p.postId} className="px-6 mb-5">
+              <hr className="border-border mx-8 mb-6 border-[1px]" />
+              <div className="pl-8 space-x-[20px] items-center flex">
+                <div className="flex flex-col">
+                  <div className="text-2xl font-semibold mb-4">
+                    <Link legacyBehavior href={`/communityPage/${p.boardId}`}>
+                      <a>{p.comment}</a>
+                    </Link>
+                  </div>
+                  {/* postId === boardId */}
+                  {/* map............ */}
+                  {communityPost.map(
+                    (item) =>
+                      item.postId === p.boardId && (
+                        <div key={item.postId}>
+                          <div className="space-x-[10px] text-mono70">
+                            <span>{item.category}게시판</span>
+                            {/* <span>|</span>
+                            <span>{item.writtenDate}</span> */}
+                          </div>
+                          <div className="text-mono70">{item.title}</div>
+                        </div>
+                      )
+                  )}
+                </div>
+              </div>
             </div>
           ))}
         </Tab.Panel>
