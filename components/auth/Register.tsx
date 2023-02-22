@@ -19,7 +19,7 @@ const RegisterPage = () => {
   const [pw, setPw] = useState("");
   const [pwConfirm, setPwConfirm] = useState("");
   const [nickname, setNickname] = useState("");
-  const [agree, setAgree] = useState(true);
+  const [agree, setAgree] = useState(false);
 
   // 브라우저 뒤로가기 버튼시 confirm창과 함께 "확인"클릭시 로그인 페이지로 이동하는 함수입니다.
   useEffect(() => {
@@ -128,9 +128,6 @@ const RegisterPage = () => {
           onChange={(e) => setEmail(e.target.value)}
           className="register-input"
         ></input>
-        <p className="mt-[5px] text-grayText text-xs">
-          등록한 이메일은 비밀번호 찾기의 이메일로 사용됩니다.
-        </p>
         <label htmlFor="pw" className="font-semibold mt-4">
           비밀번호
         </label>

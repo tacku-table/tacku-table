@@ -43,14 +43,14 @@ import { getStorage } from "firebase/storage";
 // };
 
 // // 다경님꺼2
-const firebaseConfig = {
-  apiKey: "AIzaSyC1Z5Sl0P_WuafG-4Fgx08TeKD1KzSAjFU",
-  authDomain: "tacku-table.firebaseapp.com",
-  projectId: "tacku-table",
-  storageBucket: "tacku-table.appspot.com",
-  messagingSenderId: "470777376989",
-  appId: "1:470777376989:web:ed93c811f68a6dd2ee2b34",
-};
+// const firebaseConfig = {
+//   apiKey: "AIzaSyC1Z5Sl0P_WuafG-4Fgx08TeKD1KzSAjFU",
+//   authDomain: "tacku-table.firebaseapp.com",
+//   projectId: "tacku-table",
+//   storageBucket: "tacku-table.appspot.com",
+//   messagingSenderId: "470777376989",
+//   appId: "1:470777376989:web:ed93c811f68a6dd2ee2b34",
+// };
 
 // 희진
 // const firebaseConfig = {
