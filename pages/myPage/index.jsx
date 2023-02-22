@@ -8,34 +8,41 @@ import { getDownloadURL, listAll, ref } from "firebase/storage";
 import Image from "next/image";
 import MyTabs from "../../components/tabs/MyTabs";
 const MyPage = () => {
-    const [userInfo, setUserInfo] = useState([]);
-    // const { uid } = JSON.parse(sessionStorage.getItem("User"));
-    const [showUserImg, setShowUserImg] = useState(defaultImg);
-    const [showUserUpdateImg, setShowUserUpdateImg] = useState("");
-    const [isEdit, setIsEdit] = useState(false);
+  const [userInfo, setUserInfo] = useState([]);
+  const [storageCurrentUser, setStorageCurrentUser] = useState({});
 
-    // useEffect(() => {
-    //   const currentUser = JSON.parse(sessionStorage.getItem("User"));
-    //   console.log(currentUser);
-    // }, []);
+  // const { uid } = JSON.parse(sessionStorage.getItem("User"));
 
-    // getCurrentUserInfo(uid);
-    // getUserProfileImg();
+  const getCurrentUserInfo = async (id) => {
+    await getDoc(doc(dbService, "user", id)).then((doc) => {
+      // console.log("getCurrentUserInfo의 data: ", doc.data());
+      const user = {
+        ...doc.data(),
+      };
+      setUserInfo(user);
+    });
+  };
 
-    const getCurrentUserInfo = async (id) => {
-        await getDoc(doc(dbService, "user", id)).then((doc) => {
-            // console.log("getCurrentUserInfo의 data: ", doc.data());
-            const user = {
-                ...doc.data(),
-            };
-            setUserInfo(user);
-        });
-    };
+  // useEffect(() => {
+  //   const currentUser = JSON.parse(sessionStorage.getItem("User"));
+  //   getCurrentUserInfo(currentUser.uid);
+  // }, []);
 
-    useEffect(() => {
-        const currentUser = JSON.parse(sessionStorage.getItem("User"));
-        getCurrentUserInfo(currentUser.uid);
-    }, []);
+  useEffect(() => {
+    const currentUser = JSON.parse(sessionStorage.getItem("User"));
+    if (currentUser) {
+      getCurrentUserInfo(currentUser.uid);
+      setStorageCurrentUser(currentUser);
+    } else {
+      setStorageCurrentUser("logout");
+    }
+  }, []);
+  useEffect(() => {
+    if (storageCurrentUser == "logout") {
+      // alert("로그아웃\n 메인 화면으로 이동합니다.");
+      location.href = "/loginPage";
+    }
+  }, [storageCurrentUser]);
   return (
     <>
       <div>
