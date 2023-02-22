@@ -48,18 +48,18 @@ const NewCommunityPost = () => {
 
     reader.readAsDataURL(file);
     reader.onload = () => {
-      const selectedImgUrl = reader.result;
       setImageUpload(file);
+      const selectedImgUrl = reader.result;
       localStorage.setItem("selectedImgUrl", selectedImgUrl);
       setImgPreview(selectedImgUrl);
       console.log("selectedImgUrl", selectedImgUrl);
-      console.log(imageUpload);
 
-      handleUpdateProfile();
+      handleUpdateProfile(file);
     };
   };
 
-  const handleUpdateProfile = async () => {
+  const handleUpdateProfile = async (file) => {
+    const imgFile = file;
     const selectedImgUrl = localStorage.getItem("selectedImgUrl");
     if (selectedImgUrl === null) return;
     // const metaData = {
@@ -67,7 +67,7 @@ const NewCommunityPost = () => {
     // };
     let randomID = Date.now();
     const imageRef = ref(storage, `communityThumbnail/${uid}/${randomID}`);
-    await uploadBytesResumable(imageRef, imageUpload, imageUpload?.type).then(
+    await uploadBytesResumable(imageRef, imgFile, imgFile.type).then(
       (snapshot) => {
         getDownloadURL(snapshot.ref).then((url) => {
           setThumbnail(url);
@@ -157,19 +157,13 @@ const NewCommunityPost = () => {
         </div>
         <div className="w-full h-[215px] bg-mono40 border-x border-b border-mono60 pt-7 px-4">
           {imgLoading == "loading" && (
-            <div
-              style={{
-                position: "absolute",
-                top: "35%",
-                left: "35%",
-                width: "500px",
-                height: "300px",
-                backgroundColor: "#FB4646",
-                zIndex: "30",
-                textAlign: "center",
-              }}
-            >
-              사진을 서버에 열심히 로딩하고 있어요🥺
+            <div className="flex items-center justify-center">
+              <div className="text-center absolute rounded-lg flex bg-brand100 w-[500px] h-[200px]">
+                <div className="text-xl text-white m-auto">
+                  사진을 서버에 열심히 로딩하고 있어요 <br />
+                  잠시만 기다려주세요 !!!!
+                </div>
+              </div>
             </div>
           )}
           <b>📸등록된 대표 이미지</b>
