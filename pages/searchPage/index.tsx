@@ -11,16 +11,55 @@ import RecipeData from "@/components/search/RecipeData";
 const SearchData: NextPage = () => {
     const router = useRouter();
     const deliverKeyword = router.query.keyword;
-    let deliverSorted = router.query.sortedBest;
-    console.log(deliverSorted);
+
+    //---------------------다경 추가(시작)--------------------------
+    useEffect(() => {
+        console.log("맨 처음에 isBest?", isBest);
+        if (sessionStorage.getItem("userWatching")) {
+            console.log("유저가 보고있던게 있어요");
+            const result = sessionStorage.getItem("userWatching");
+            console.log("result:", result);
+            console.log("result의 타입", typeof result);
+
+            if (result) {
+                setIsBest(result);
+            }
+        } else {
+            setIsBest("createdAt");
+        }
+    }, []);
+
+    //---------------------다경 추가(끝)--------------------------
 
     // 인기순,최신순
-    const [isBest, setIsBest] = useState(Boolean);
+    // const [isBest, setIsBest] = useState(false);
+    // 다경: useState를 "" 로 처음 초기세팅
+    const [isBest, setIsBest] = useState("");
+
+    // 인기순
     const activeBestBtn = () => {
-        setIsBest(true);
+        // 인기순 버튼을 클릭하면 sessionStorge에 viewCount라는 이름으로 데이터 저장
+        // key : userWatching , value : "viewCount"
+        sessionStorage.setItem("userWatching", "viewCount");
+        // state도 똑같은 값으로 업데이트---------------------
+        setIsBest("viewCount");
+        // state도 똑같은 값으로 업데이트---------------------
+        // setIsBest(true);
+        console.log("isBest:", isBest);
     };
+
+    // 최신순
     const inactiveBestBtn = () => {
-        setIsBest(false);
+        // 최신순 버튼을 클릭하면 sessionStorge에 "createdAt"라는 이름으로 데이터 저장
+        // key : userWatching , value : "createdAt"
+
+        // setIsBest(false);
+        sessionStorage.setItem("userWatching", "createdAt");
+        // state도 똑같은 값으로 업데이트---------------------
+        setIsBest("createdAt");
+        // state도 똑같은 값으로 업데이트---------------------
+
+        console.log("isBest:", isBest);
     };
 
     const [text, setText] = useState(deliverKeyword || "");
@@ -37,7 +76,11 @@ const SearchData: NextPage = () => {
     const getList = async () => {
         const items = query(
             collection(dbService, "recipe"),
-            orderBy(isBest ? "viewCount" : "createdAt", "desc")
+            // isBest가 true이면 viewCount 아니면 createdAt
+            // 다경 : isBest가 viewCount면 viewCount, createdAt이면 createdAt----------------(시작)
+            orderBy(isBest === "viewCount" ? "viewCount" : "createdAt", "desc")
+            // 다경 : isBest가 viewCount면 viewCount, createdAt이면 createdAt----------------(끝)
+            //   orderBy(isBest ? "viewCount" : "createdAt", "desc")
             // where("foodCategory", "==", "desc")
         );
         const querySnapshot = await getDocs(items);
@@ -107,7 +150,9 @@ const SearchData: NextPage = () => {
                     <li
                         className={cls(
                             "sorted-btn",
-                            isBest ? "bg-main text-white" : "text-grayText"
+                            isBest === "viewCount"
+                                ? "bg-main text-white"
+                                : "text-grayText"
                         )}
                         onClick={activeBestBtn}
                     >
@@ -116,7 +161,9 @@ const SearchData: NextPage = () => {
                     <li
                         className={cls(
                             "sorted-btn",
-                            !isBest ? "bg-main text-white" : "text-grayText"
+                            isBest === "createdAt"
+                                ? "bg-main text-white"
+                                : "text-grayText"
                         )}
                         onClick={inactiveBestBtn}
                     >
