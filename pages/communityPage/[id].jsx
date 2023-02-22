@@ -56,11 +56,8 @@ export default function DetailPage(props) {
   useEffect(() => {
     setDetailPageWholeData(props.targetWholeData);
     getWholeComments();
-    // setWritterProfileImg(detailPageWholeData.writterProfileImg);
   }, []);
 
-  console.log("detail데이터:", detailPageWholeData);
-  console.log("url잘나와뭐냐", detailPageWholeData.writterProfileImg);
   // 댓글 get
   let commentWholeData = [];
   const getWholeComments = async () => {
