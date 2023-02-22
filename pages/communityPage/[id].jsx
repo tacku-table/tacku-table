@@ -218,9 +218,13 @@ export default function DetailPage(props) {
                 {detailPageWholeData.title}
               </div>
               <div className="flex justify-end">
-                <div className="text-[16px] text-mono80">작성자 이름</div>
-                <div className="text-[16px] text-mono80"> 작성일</div>
-                <span>{detailPageWholeData.writtenDate}</span>
+                <div className="text-[16px] text-mono80">
+                  {detailPageWholeData.nickname}
+                </div>
+                <div className="ml-2 text-[16px] text-mono80">
+                  {detailPageWholeData.writtenDate}
+                </div>
+                {/* <span>{detailPageWholeData.writtenDate}</span> */}
               </div>
 
               <div className="block h-[60px]">
@@ -231,7 +235,9 @@ export default function DetailPage(props) {
                   height={270}
                   alt="대표 이미지가 없습니다."
                 />
-                <h3 className="relative top-[15px]">제목 밑에 작성자이름</h3>
+                <h3 className="relative top-[15px]">
+                  {detailPageWholeData.nickname}
+                </h3>
                 <hr class="h-px my-10 bg-mono50 border-[1px] border-mono50"></hr>
               </div>
               <div className="mt-10 text-center">
@@ -413,7 +419,9 @@ export async function getServerSideProps(context) {
   } else {
     console.log("No such document");
   }
-  targetWholeData = JSON.parse(JSON.stringify(targetWholeData));
+  if (targetWholeData) {
+    targetWholeData = JSON.parse(JSON.stringify(targetWholeData));
+  }
   return {
     props: {
       targetWholeData,
