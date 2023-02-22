@@ -8,35 +8,34 @@ import { getDownloadURL, listAll, ref } from "firebase/storage";
 import Image from "next/image";
 import MyTabs from "../../components/tabs/MyTabs";
 const MyPage = () => {
-  const [userInfo, setUserInfo] = useState([]);
-  // const { uid } = JSON.parse(sessionStorage.getItem("User"));
-  const [showUserImg, setShowUserImg] = useState(defaultImg);
-  const [showUserUpdateImg, setShowUserUpdateImg] = useState("");
-  const [isEdit, setIsEdit] = useState(false);
+    const [userInfo, setUserInfo] = useState([]);
+    // const { uid } = JSON.parse(sessionStorage.getItem("User"));
+    const [showUserImg, setShowUserImg] = useState(defaultImg);
+    const [showUserUpdateImg, setShowUserUpdateImg] = useState("");
+    const [isEdit, setIsEdit] = useState(false);
 
-  // useEffect(() => {
-  //   const currentUser = JSON.parse(sessionStorage.getItem("User"));
-  //   console.log(currentUser);
-  // }, []);
+    // useEffect(() => {
+    //   const currentUser = JSON.parse(sessionStorage.getItem("User"));
+    //   console.log(currentUser);
+    // }, []);
 
-  // getCurrentUserInfo(uid);
-  // getUserProfileImg();
+    // getCurrentUserInfo(uid);
+    // getUserProfileImg();
 
-  const getCurrentUserInfo = async (id) => {
-    await getDoc(doc(dbService, "user", id)).then((doc) => {
-      // console.log("getCurrentUserInfo의 data: ", doc.data());
-      const user = {
-        ...doc.data(),
-      };
-      setUserInfo(user);
-    });
-  };
+    const getCurrentUserInfo = async (id) => {
+        await getDoc(doc(dbService, "user", id)).then((doc) => {
+            // console.log("getCurrentUserInfo의 data: ", doc.data());
+            const user = {
+                ...doc.data(),
+            };
+            setUserInfo(user);
+        });
+    };
 
-  useEffect(() => {
-    const currentUser = JSON.parse(sessionStorage.getItem("User"));
-    getCurrentUserInfo(currentUser.uid);
-  }, []);
-
+    useEffect(() => {
+        const currentUser = JSON.parse(sessionStorage.getItem("User"));
+        getCurrentUserInfo(currentUser.uid);
+    }, []);
   return (
     <>
       <div>
