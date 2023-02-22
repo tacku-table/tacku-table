@@ -57,6 +57,9 @@ module.exports = {
         "up-down": "up-down 2s ease-out linear",
         "fade-in": "fade-in 2s ease-out infinite",
       },
+      backgroundImage: {
+        chihiro: "url('../public/images/chihiro.jpg')",
+      },
       //폰트
       fontFamily: {
         sans: ["pretendard", "Arial", "sans-serif"],
