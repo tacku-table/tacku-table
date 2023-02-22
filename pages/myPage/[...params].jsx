@@ -14,6 +14,7 @@ import defaultImg from "../../public/images/test1.png";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { storage } from "../../config/firebase";
 import { pwRegex, nickRegex, cls } from "../../util";
+import { useRouter } from "next/router";
 
 export default function ProfileEdit(props) {
   const [userInfo, setUserInfo] = useState();
@@ -37,7 +38,10 @@ export default function ProfileEdit(props) {
 
   // 닉네임 변경
   const [changeUserNickname, setChangeUserNickname] = useState([]);
-  // console.log(props);
+  // 이용약관 체크
+  const [agree, setAgree] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     setUserInfo(props.userData);
@@ -226,113 +230,131 @@ export default function ProfileEdit(props) {
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center mt-[86px]">
+      <div className="flex flex-col justify-center items-center my-[86px]">
         <span className="text-4xl font-bold">회원정보 수정</span>
-        <div className="flex flex-col py-10">
-          <div className="flex gap-14 items-center">
-            <span className="text-base">프로필 이미지</span>
-            <label>
-              {userInfo?.userImg === "null" ? (
-                <Image
-                  src={defaultImg}
-                  // loader={({ src }) => src}
-                  priority={true}
-                  width={100}
-                  height={100}
-                  alt="기본이미지"
+        <div className="flex flex-col min-w-[532px] py-10 space-y-7">
+          <div className="flex gap-14 items-start">
+            <span className="text-base  min-w-[120px]">프로필 이미지</span>
+            <div className="flex items-end space-x-5">
+              <label>
+                {userInfo?.userImg === "null" ? (
+                  <Image
+                    src={defaultImg}
+                    className="rounded-md aspect-square"
+                    // loader={({ src }) => src}
+                    priority={true}
+                    width={100}
+                    height={100}
+                    alt="기본이미지"
+                  />
+                ) : (
+                  <Image
+                    src={showUserUpdateImg}
+                    className="rounded-md  aspect-square"
+                    loader={({ src }) => src}
+                    priority={true}
+                    width={100}
+                    height={100}
+                    alt="프리뷰|업데이트이미지"
+                  />
+                )}
+                <input
+                  id="picture"
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  onChange={handleImageFile}
                 />
-              ) : (
-                <Image
-                  src={showUserUpdateImg}
-                  loader={({ src }) => src}
-                  priority={true}
-                  width={100}
-                  height={100}
-                  alt="프리뷰|업데이트이미지"
-                />
-              )}
-              <input
-                id="picture"
-                type="file"
-                accept="image/*"
-                hidden
-                onChange={handleImageFile}
-              />
-            </label>
-            <div className="flex flex-col">
-              <button
-                onClick={() => handleUpdateProfile(userInfo.userId)}
-                type="button"
-                disabled={!imageUpload}
-                className="text-white disabled:bg-slate-400 bg-brand100 hover:bg-brand100/80 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mr-2 mb-2"
-              >
-                프로필이미지 변경
-              </button>
-              {imgPreview === "uploading" && (
-                <span className="text-sm text-blue100">
-                  프로필이미지 변경 완료!
-                </span>
-              )}
+              </label>
+              <div className="flex flex-col items-start">
+                <button
+                  onClick={() => handleUpdateProfile(userInfo.userId)}
+                  type="button"
+                  disabled={!imageUpload}
+                  className="text-white disabled:bg-slate-400 bg-brand100 hover:bg-brand100 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-sm text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 "
+                >
+                  변경
+                </button>
+                {imgPreview === "uploading" && (
+                  <span className="text-sm text-blue100">
+                    프로필이미지 변경 완료
+                  </span>
+                )}
+              </div>
             </div>
           </div>
 
-          <div className="space-y-7">
-            <div className="flex gap-14 items-center">
-              <span className="text-base min-w-[120px]">이메일</span>
-              <input
-                disabled
-                placeholder={`${userInfo?.userEmail}`}
-                className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10"
-              />
-            </div>
-            <div className="flex flex-col">
-              <label className="flex gap-14 items-center">
-                <span className="text-base min-w-[120px]">비밀번호 변경</span>
+          <div className="flex gap-14 items-center">
+            <span className="text-base min-w-[120px]">이메일</span>
+            <input
+              disabled
+              placeholder={`${userInfo?.userEmail}`}
+              className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10"
+            />
+          </div>
+          <div>
+            <label className="flex gap-14 items-center">
+              <span className="text-base min-w-[120px] ">비밀번호 변경</span>
+              <div>
                 <input
                   type="text" //password로 수정 예정
                   placeholder="변경할 비밀번호를 입력해주세요."
                   onChange={handleChangePassword}
                   className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10 focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
                 />
-              </label>
-
-              {changeUserPw.length > 0 && (
-                <span
-                  className={cls(
-                    "text-xs",
-                    `${isPassword ? "text-xs text-blue100" : "text-brand100"}`
+                <div className="h-[16px]">
+                  {changeUserPw.length > 0 && (
+                    <span
+                      className={cls(
+                        "text-xs",
+                        `${
+                          isPassword ? "text-xs text-blue100" : "text-brand100"
+                        }`
+                      )}
+                    >
+                      {passwordMessage}
+                    </span>
                   )}
-                >
-                  {passwordMessage}
-                </span>
-              )}
-            </div>
-            <div className="flex flex-col">
-              <label className="flex gap-14 items-center">
-                <span className="text-base min-w-[120px]">
-                  비밀번호 변경 확인
-                </span>
+                </div>
+              </div>
+            </label>
+          </div>
+          <div className="flex flex-col">
+            <label className="flex gap-14 items-center">
+              <span className="text-base min-w-[120px]">
+                비밀번호 변경 확인
+              </span>
+              <div>
                 <input
                   type="text" //password로 수정 예정
                   placeholder="확인을 위해 비밀번호를 재입력해주세요."
                   onChange={handleChangePasswordConfirm}
                   className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10  focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
                 />
-              </label>
-            </div>
-            {confirmChangeUserPw.length > 0 && (
-              <span
-                className={cls(
-                  "text-xs",
-                  `${isPasswordConfirm ? "text-blue-600" : "text-orange-500"}`
-                )}
-              >
-                {passwordConfirmMessage}
-              </span>
-            )}
-            <div className="flex flex-col">
-              <label className="flex gap-14 items-center">
-                <span className="text-base min-w-[120px]">닉네임 변경</span>
+
+                <div className="h-[16px]">
+                  {confirmChangeUserPw.length > 0 && (
+                    <span
+                      className={cls(
+                        "text-xs",
+                        `${
+                          isPasswordConfirm
+                            ? "text-blue-600"
+                            : "text-orange-500"
+                        }`
+                      )}
+                    >
+                      {passwordConfirmMessage}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </label>
+          </div>
+          <div className="flex flex-col">
+            <label className="flex gap-14 items-center">
+              <span className="text-base min-w-[120px]">닉네임 변경</span>
+              <div>
                 <input
                   type="text"
                   onChange={(event) =>
@@ -340,29 +362,67 @@ export default function ProfileEdit(props) {
                   }
                   className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10  focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
                 />
-              </label>
-              {changeUserNickname.length > 0 && (
-                <span
-                  className={`${
-                    isPasswordConfirm ? "text-blue-600" : "text-orange-500"
-                  }`}
-                >
-                  {nicknameMessage}
-                </span>
-              )}
-            </div>
+                <div className="h-[16px]">
+                  {changeUserNickname.length > 0 && (
+                    <span
+                      className={cls(
+                        "text-xs",
+                        `${
+                          isPasswordConfirm
+                            ? "text-blue-600"
+                            : "text-orange-500"
+                        }`
+                      )}
+                    >
+                      {nicknameMessage}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </label>
+          </div>
+          <hr className="border-[1px] w-[580px] border-mono70 mb-4" />
+          <div className="flex justify-between items-center">
+            <label htmlFor="terms">
+              <input
+                id="terms"
+                type="checkbox"
+                onClick={(event) => {
+                  const target = event.target;
+                  setAgree(target.checked);
+                }}
+              />
+              <span className="ml-1 text-blue-500">이용약관</span>
+              과&nbsp;
+              <span className="ml-1 text-blue-500">개인정보취급방침</span>
+              에&nbsp;동의합니다.
+            </label>
+            <button
+              onClick={deleteCurrentUser}
+              className="disabled:text-mono100 bg-mono30 valid:hover:bg-brand100 hover:text-white focus:ring-4 focus:outline-none focus:ring-brand100/50 font-normal rounded-r-sm text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mb-2"
+              disabled={!agree}
+            >
+              회원탈퇴
+            </button>
           </div>
         </div>
-        <button
-          className="text-white disabled:bg-slate-400 valid:bg-brand100 hover:bg-brand100/80 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mr-2 mb-2"
-          onClick={() => handleUpdateUserDocs(userInfo.userId)}
-          disabled={!(isPassword && isPasswordConfirm && isNickname)}
-        >
-          수정하기
-        </button>
-        <button onClick={deleteCurrentUser}>회원탈퇴</button>
+        <div className="space-x-5">
+          <button
+            className="disabled:bg-mono30 disabled:text-mono100 valid:bg-brand100 valid:text-white hover:bg-brand100/80 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-sm text-sm px-28 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mb-2"
+            onClick={() => handleUpdateUserDocs(userInfo.userId)}
+            disabled={!(isPassword && isPasswordConfirm && isNickname)}
+          >
+            수정하기
+          </button>
+          <button
+            onClick={() => router.back()}
+            className="text-mono100 bg-mono30 hover:bg-brand100 hover:text-white focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-sm text-sm px-28 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mb-2"
+            // disabled={isPassword && isPasswordConfirm && isNickname}
+          >
+            취소하기
+          </button>
+        </div>
       </div>
-      <div className="hover:opacity-60"></div>
     </>
   );
 }
@@ -371,19 +431,19 @@ export const getServerSideProps = async (context) => {
   console.log(context);
   const { query } = context;
   const { id, userImg } = query;
-  console.log(id);
-  console.log(userImg);
+  // console.log(id);
+  // console.log(userImg);
 
   const docId = id;
   let userData;
   const snapshot = await getDoc(doc(dbService, "user", docId));
   if (snapshot.exists()) {
-    console.log(snapshot.data());
+    // console.log(snapshot.data());
     userData = snapshot.data();
   } else {
-    console.log("회원 정보가 없습니다.");
+    alert("회원 정보가 없습니다.");
   }
-  console.log("userData:", userData);
+  // console.log("userData:", userData);
 
   return {
     props: {
