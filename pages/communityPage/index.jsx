@@ -7,10 +7,10 @@ import SliderScreen from "../../components/community/SliderScreen";
 
 const Community = () => {
   return (
-    <div className="flex flex-col items-center my-10">
+    <div className="flex w-[1180px] m-auto flex-col items-center">
       <SliderScreen />
       <CommunityTabs />
-      <div className="flex w-[870px] justify-end">
+      <div className="flex w-full justify-end">
         <div className="flex w-36 h-11 text-white bg-brand100 my-10 ">
           <svg
             xmlns="http://www.w3.org/2000/svg"

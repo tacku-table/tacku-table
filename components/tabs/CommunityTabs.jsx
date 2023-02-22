@@ -53,7 +53,6 @@ const CommunityTabs = () => {
           title: doc.data().title,
           nickname: doc.data().nickname,
           editorText: doc.data().editorText,
-          thumbnail: doc.data().thumbnail,
           writtenDate: convertTimestamp(doc.data().writtenDate),
         };
         return newPost;
@@ -87,17 +86,17 @@ const CommunityTabs = () => {
     // setTimeout(() => console.log(gossipPost), 1000);
   };
   return (
-    <div>
+    <div className="w-[860px]">
       <Tab.Group>
-        <Tab.List className="flex w-[860px] rounded-sm p-1">
+        <Tab.List className="flex w-[780px] rounded-sm p-1 mx-auto my-6">
           {categories.map((category) => (
             <Tab
               key={category}
               className={({ selected }) =>
                 classNames(
-                  " w-full py-2.5 text-sm font-medium leading-5 text-white border border-mono60",
+                  " w-full h-[55px] py-2.5 text-sm font-medium leading-5 text-white border border-mono50",
                   "ring-white focus:outline-none",
-                  selected ? " text-orange-400" : "text-slate-200"
+                  selected ? " text-brand100" : "text-mono100"
                 )
               }
             >
@@ -105,21 +104,25 @@ const CommunityTabs = () => {
             </Tab>
           ))}
         </Tab.List>
-        <h4 className="w-full text-4xl font-bold pb-6 border-b-2 border-brand100">
+        <h4 className="w-full text-2xl font-bold pb-4 border-b-2 border-brand100">
           커뮤니티 글쓰기
         </h4>
         <Tab.Panels>
           <Tab.Panel>
             {communityList?.map((p) => (
-              <div key={p.id} className="border-b border-mono60">
+              <div key={p.id} className="border-b border-mono60 py-4 px-5">
                 {/* <div>글아이디:{post.id}</div> */}
-                <Link legacyBehavior href={`/communityPage/${p.id}`}>
-                  <a className="bg-orange-300">{p.title}</a>
-                </Link>
-                <div className="flex">
-                  <div className="border-r border-mono60"> {p.category}</div>
-                  <div className="border-r border-mono60">{p.writtenDate}</div>
-                  <div className="border-r border-mono60">{p.nickname}</div>
+                <div className="pl-5">
+                  <Link legacyBehavior href={`/communityPage/${p.id}`}>
+                    <a className="bg-orange-300">{p.title}</a>
+                  </Link>
+                  <div className="flex">
+                    <div className="border-r border-mono60"> {p.category}</div>
+                    <div className="border-r border-mono60">
+                      {p.writtenDate}
+                    </div>
+                    <div className="border-r border-mono60">{p.nickname}</div>
+                  </div>
                 </div>
               </div>
             ))}
