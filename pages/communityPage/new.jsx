@@ -81,7 +81,7 @@ const NewCommunityPost = () => {
 
   const handleOnSubmit = async (event) => {
     event.preventDefault();
-    handleUpdateProfile(uid);
+    await handleUpdateProfile(uid);
     console.log("대표사진 url", thumbnail);
 
     const newPost = {
