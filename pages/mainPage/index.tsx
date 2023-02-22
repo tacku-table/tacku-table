@@ -7,19 +7,21 @@ import Special from "@/components/main/Special";
 import Video from "@/components/main/video";
 
 const MainPage = () => {
-    return (
-        <div className="w-full">
-            <Video />
-            <Slider />
-            <div className="py-10 pb-[115px] flex flex-col items-center">
-                <SearchRecipeBar />
-                <BestRecipe />
-                <NewRecipe />
-            </div>
-            <GoToCommunity />
-            <Special />
-        </div>
-    );
+  return (
+    <div className="w-full">
+      <Video />
+      <div className="w-[1150px] mx-auto">
+        <Slider />
+      </div>
+      <div className="py-10 pb-[115px] flex flex-col items-center">
+        <SearchRecipeBar />
+        <BestRecipe />
+        <NewRecipe />
+      </div>
+      <GoToCommunity />
+      <Special />
+    </div>
+  );
 };
 
 export default MainPage;
