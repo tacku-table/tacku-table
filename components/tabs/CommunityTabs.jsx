@@ -93,7 +93,7 @@ const CommunityTabs = () => {
               key={category}
               className={({ selected }) =>
                 classNames(
-                  " w-full h-[55px] py-2.5 text-sm font-medium leading-5 text-white border border-mono50",
+                  " w-full h-[55px] py-2.5 text-sm font-medium leading-5 text-white border-y border-l border-mono50 last:border-r",
                   "ring-white focus:outline-none",
                   selected ? " text-brand100" : "text-mono100"
                 )

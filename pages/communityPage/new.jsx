@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from "react";
-import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { collection, addDoc, Timestamp, doc, getDoc } from "firebase/firestore";
 import {
   getDownloadURL,
   ref,
   uploadBytes,
+  uploadBytesResumable,
   uploadString,
 } from "firebase/storage";
 import { authService, dbService } from "../../config/firebase";
@@ -16,8 +17,10 @@ const NewCommunityPost = () => {
   const [editorText, setEditorText] = useState("");
   const [title, setTitle] = useState("");
   const [thumbnail, setThumbnail] = useState("");
-  const [imagePreview, setImagePreview] = useState("");
-  const [imageUpload, setImageUpload] = useState(null);
+  // const [imagePreview, setImagePreview] = useState("");
+  const [imgPreview, setImgPreview] = useState("");
+
+  const [imageUpload, setImageUpload] = useState("");
   const [imgLoading, setImgLoading] = useState("");
 
   // 카테고리 추가
@@ -32,47 +35,85 @@ const NewCommunityPost = () => {
   const handleChangeTitle = (event) => {
     setTitle(event.target.value);
   };
-  const onFileChange = (event) => {
+
+  // const imgDataUrl = reader.result;
+  // localStorage.setItem("imgDataUrl", imgDataUrl);
+  // console.log("imgDataUrl", imgDataUrl);
+  // setImagePreview(imgDataUrl);
+  // await addImageFirebase(uid);
+  const handleImageFile = (event) => {
     const file = event.target.files?.[0];
-    setImageUpload(file);
+    console.log(file);
     const reader = new FileReader();
+
     reader.readAsDataURL(file);
-    reader.onloadend = async () => {
-      const imgDataUrl = reader.result;
-      // localStorage.setItem("imgDataUrl", imgDataUrl);
-      // console.log("imgDataUrl", imgDataUrl);
-      setImagePreview(imgDataUrl);
-      await addImageFirebase(uid);
+    reader.onload = () => {
+      setImageUpload(file);
+      const selectedImgUrl = reader.result;
+      localStorage.setItem("selectedImgUrl", selectedImgUrl);
+      setImgPreview(selectedImgUrl);
+      console.log("selectedImgUrl", selectedImgUrl);
+
+      handleUpdateProfile(file);
     };
   };
-  const addImageFirebase = async (uid) => {
-    // if (imageUpload === null) return;
-    let randomID = Date.now();
-    const imageRef = ref(storage, `communityThumbnail/${uid}/${randomID}`);
-    await uploadBytes(imageRef, imageUpload).then((snapshot) => {
-      getDownloadURL(snapshot.ref).then((url) => {
-        setThumbnail(url);
-      });
-    });
+
+  const handleUpdateProfile = async (file) => {
+    const imgFile = file;
+    const selectedImgUrl = localStorage.getItem("selectedImgUrl");
+    // if (selectedImgUrl === null) return;
+    if (selectedImgUrl) {
+      setImgLoading("loading");
+      let randomID = Date.now();
+      const imageRef = ref(storage, `communityThumbnail/${uid}/${randomID}`);
+      await uploadBytesResumable(imageRef, imgFile, imgFile.type).then(
+        (snapshot) => {
+          getDownloadURL(snapshot.ref).then((url) => {
+            setThumbnail(url);
+          });
+          setImgLoading("default");
+        }
+      );
+    }
+    // const metaData = {
+    //   contentType: imageUpload.type,
+    // };
   };
 
   const handleOnSubmit = async (event) => {
     event.preventDefault();
-    console.log("대표사진 url", thumbnail);
+
+    //-----------------------------------
+    const docRef = doc(dbService, "user", uid);
+    const docSnap = await getDoc(docRef);
+    let writterProfileImg;
+    console.log("user", docSnap);
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+      const writterData = docSnap.data();
+      if (writterData) {
+        writterProfileImg = writterData.userImg;
+        console.log("writterProfileImg:", writterProfileImg);
+      }
+    } else {
+      console.log("No such document!");
+    }
+    //-----------------------------------
 
     const newPost = {
       uid,
       nickname,
       title,
-      thumbnail,
+      thumbnail: thumbnail,
       editorText,
       writtenDate: Timestamp.now(),
       category: selectCategory,
+      writterProfileImg,
     };
 
     if (
       !selectCategory ||
-      !imageUpload ||
+      // !imageUpload ||
       !editorText ||
       editorText === "<p><br></p>"
     ) {
@@ -80,16 +121,11 @@ const NewCommunityPost = () => {
         categoryRef.current?.focus();
         return false;
       }
-      if (!imageUpload) {
-        alert("대표 사진을 선택해주세요!");
-        thumbnailRef.current?.focus();
-        return false;
-      }
       alert("본문 입력은 필수입니다");
       return false;
     }
-    await addDoc(collection(dbService, "communityPost"), newPost);
 
+    await addDoc(collection(dbService, "communityPost"), newPost);
     alert("커뮤니티 글 업로드!");
     location.href = "/communityPage";
   };
@@ -130,19 +166,13 @@ const NewCommunityPost = () => {
         </div>
         <div className="w-full h-[215px] bg-mono40 border-x border-b border-mono60 pt-7 px-4">
           {imgLoading == "loading" && (
-            <div
-              style={{
-                position: "absolute",
-                top: "35%",
-                left: "35%",
-                width: "500px",
-                height: "300px",
-                backgroundColor: "#FB4646",
-                zIndex: "30",
-                textAlign: "center",
-              }}
-            >
-              사진을 서버에 열심히 로딩하고 있어요🥺
+            <div className="flex items-center justify-center">
+              <div className="text-center absolute rounded-lg flex bg-brand100 w-[500px] h-[200px]">
+                <div className="text-xl text-white m-auto">
+                  사진을 서버에 열심히 로딩하고 있어요 <br />
+                  잠시만 기다려주세요 !!!!
+                </div>
+              </div>
             </div>
           )}
           <b>📸등록된 대표 이미지</b>
@@ -152,14 +182,16 @@ const NewCommunityPost = () => {
             id="picture"
             type="file"
             accept="image/*"
-            onChange={onFileChange}
+            onChange={(event) => {
+              handleImageFile(event);
+            }}
             className="float-right w-[90px]"
           />
 
           <div className=" w-[140px] h-[97px] overflow-hidden relative border border-mono60 mt-5 ">
-            {imagePreview ? (
+            {imgPreview ? (
               <Image
-                src={imagePreview}
+                src={imgPreview}
                 loader={({ src }) => src}
                 priority={true}
                 fill

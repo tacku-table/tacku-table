@@ -60,7 +60,7 @@ const FindPassword = () => {
   };
 
   return (
-    <div className="w-[420px] mx-auto my-48">
+    <div className="w-[420px] mx-auto my-40">
       <div className="text-center mb-10">
         <h3 className="text-4xl font-bold text-center mb-4">비밀번호 찾기</h3>
         <p>비밀번호를 찾고자 하는 이메일을 입력해주세요.</p>
