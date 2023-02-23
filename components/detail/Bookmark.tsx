@@ -72,8 +72,8 @@ const Bookmark = (props: any) => {
         {
           thumbnail: props.recipeData.thumbnail,
           foodTitle: props.recipeData.foodTitle,
-          writerNickName: props.recipeData.writerNickName,
-          writerProfileImg: props.recipeData.writerProfileImg,
+          writerNickName: props.userFireData.userNickname,
+          writerProfileImg: props.userFireData.userImg,
           viewCount: props.recipeData.viewCount,
           cookingTime: props.recipeData.cookingTime,
           animationTitle: props.recipeData.animationTitle,

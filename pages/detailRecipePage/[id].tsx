@@ -42,7 +42,7 @@ export default function DetailReciptPage(props: any) {
     let minute = ("0" + date.getMinutes()).slice(-2); //분 2자리
     return (data = `${year}-${month}-${day} ${hour}:${minute}`);
   };
-
+  //----------다경 추가---------------(시작)
   const [storageCurrentUser, setStorageCurrentUser]: any = useState({});
   useEffect(() => {
     const user = sessionStorage.getItem("User") || "";
@@ -51,6 +51,7 @@ export default function DetailReciptPage(props: any) {
       setStorageCurrentUser(parseUser);
     }
   }, []);
+  //----------다경 추가---------------(끝)
 
   //조회수
   useEffect(() => {
@@ -105,7 +106,11 @@ export default function DetailReciptPage(props: any) {
             <p className="text-2xl font-semibold">{recipeData.foodTitle}</p>
             {userData === "geust" ? null : (
               <p className="w-6 h-6">
-                <Bookmark postId={props.postId} recipeData={recipeData} />
+                <Bookmark
+                  postId={props.postId}
+                  recipeData={recipeData}
+                  userFireData={userFireData}
+                />
               </p>
             )}
           </div>
