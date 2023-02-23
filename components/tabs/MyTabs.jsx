@@ -207,7 +207,7 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
               <div className="flex mt-9 ml-8 space-x-3">
                 {p.writerImg === "null" ? (
                   <Image
-                    className="aspect-square object-cover w-12 h-12"
+                    className="aspect-square rounded-md object-cover w-12 h-12"
                     src={defaultImg}
                     priority={true}
                     loader={({ src }) => src}
@@ -217,7 +217,7 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
                   />
                 ) : (
                   <Image
-                    className="aspect-square object-cover w-12 h-12"
+                    className="aspect-square rounded-md object-cover w-12 h-12"
                     src={p.writerImg}
                     priority={true}
                     loader={({ src }) => src}
