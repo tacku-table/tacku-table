@@ -40,7 +40,7 @@ export default function DetailReciptPage(props: any) {
     let day = ("0" + date.getDate()).slice(-2); //일 2자리
     let hour = ("0" + date.getHours()).slice(-2); //시 2자리
     let minute = ("0" + date.getMinutes()).slice(-2); //분 2자리
-    return (data = `${year} .${month}. ${day} .${hour}:${minute}`);
+    return (data = `${year}-${month}-${day} ${hour}:${minute}`);
   };
   //----------다경 추가---------------(시작)
   const [storageCurrentUser, setStorageCurrentUser]: any = useState({});
@@ -138,7 +138,7 @@ export default function DetailReciptPage(props: any) {
         <div>
           <div className="flex items-center justify-between ">
             <div className="flex items-center">
-              {userFireData.userImg === "null" ? (
+              {userFireData?.userImg === "null" ? (
                 <Image
                   src={defaultImg}
                   width={50}
@@ -149,7 +149,7 @@ export default function DetailReciptPage(props: any) {
                 />
               ) : (
                 <Image
-                  src={`${userFireData.userImg}`}
+                  src={`${userFireData?.userImg}`}
                   priority={true}
                   width={50}
                   height={50}
