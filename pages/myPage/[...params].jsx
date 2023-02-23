@@ -310,7 +310,7 @@ export default function ProfileEdit(props) {
               <span className="text-base min-w-[120px] ">비밀번호 변경</span>
               <div>
                 <input
-                  type="text" //password로 수정 예정
+                  type="password"
                   placeholder="변경할 비밀번호를 입력해주세요."
                   onChange={handleChangePassword}
                   className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10 focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
@@ -339,7 +339,7 @@ export default function ProfileEdit(props) {
               </span>
               <div>
                 <input
-                  type="text" //password로 수정 예정
+                  type="password"
                   placeholder="확인을 위해 비밀번호를 재입력해주세요."
                   onChange={handleChangePasswordConfirm}
                   className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10  focus:outline-none focus:border-0 focus:ring-2 ring-brand100"

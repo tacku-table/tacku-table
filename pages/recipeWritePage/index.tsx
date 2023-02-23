@@ -221,7 +221,6 @@ const RecipeWritePage = () => {
       console.log("imgDataUrl", imgDataUrl);
       setImgLoading("loading");
       const response = await uploadString(imgRef, imgDataUrl, "data_url");
-      alert("대표사진 업로드 완료!");
       setImgLoading("default");
       downloadUrl = await getDownloadURL(response.ref);
       console.log(downloadUrl);
