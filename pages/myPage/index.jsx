@@ -2,50 +2,55 @@ import { authService } from "@/config/firebase";
 import { collection, getDoc, query, doc, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { dbService, storage } from "../../config/firebase";
-import defaultImg from "../../public/images/profile.jpeg";
+import defaultImg from "../../public/images/test1.png";
 import Link from "next/link";
-import { getDownloadURL, listAll, ref } from "firebase/storage";
 import Image from "next/image";
 import MyTabs from "../../components/tabs/MyTabs";
 const MyPage = () => {
-    const [userInfo, setUserInfo] = useState([]);
-    // const { uid } = JSON.parse(sessionStorage.getItem("User"));
-    const [showUserImg, setShowUserImg] = useState(defaultImg);
-    const [showUserUpdateImg, setShowUserUpdateImg] = useState("");
-    const [isEdit, setIsEdit] = useState(false);
+  const [userInfo, setUserInfo] = useState([]);
+  const [storageCurrentUser, setStorageCurrentUser] = useState({});
 
-    // useEffect(() => {
-    //   const currentUser = JSON.parse(sessionStorage.getItem("User"));
-    //   console.log(currentUser);
-    // }, []);
+  // const { uid } = JSON.parse(sessionStorage.getItem("User"));
 
-    // getCurrentUserInfo(uid);
-    // getUserProfileImg();
+  const getCurrentUserInfo = async (id) => {
+    await getDoc(doc(dbService, "user", id)).then((doc) => {
+      // console.log("getCurrentUserInfo의 data: ", doc.data());
+      const user = {
+        ...doc.data(),
+      };
+      setUserInfo(user);
+    });
+  };
 
-    const getCurrentUserInfo = async (id) => {
-        await getDoc(doc(dbService, "user", id)).then((doc) => {
-            // console.log("getCurrentUserInfo의 data: ", doc.data());
-            const user = {
-                ...doc.data(),
-            };
-            setUserInfo(user);
-        });
-    };
+  // useEffect(() => {
+  //   const currentUser = JSON.parse(sessionStorage.getItem("User"));
+  //   getCurrentUserInfo(currentUser.uid);
+  // }, []);
 
-    useEffect(() => {
-        const currentUser = JSON.parse(sessionStorage.getItem("User"));
-        getCurrentUserInfo(currentUser.uid);
-    }, []);
+  useEffect(() => {
+    const currentUser = JSON.parse(sessionStorage.getItem("User"));
+    if (currentUser) {
+      getCurrentUserInfo(currentUser.uid);
+      setStorageCurrentUser(currentUser);
+    } else {
+      setStorageCurrentUser("logout");
+    }
+  }, []);
+  useEffect(() => {
+    if (storageCurrentUser == "logout") {
+      // alert("로그아웃\n 메인 화면으로 이동합니다.");
+      location.href = "/loginPage";
+    }
+  }, [storageCurrentUser]);
   return (
     <>
       <div>
-        <div className="bg-black w-full h-[280px] relative">
+        <div className="bg-coverBg bg-cover bg-center w-full h-[280px] bg-no-repeat relative">
           <div className="flex justify-center items-center space-x-[24px] absolute left-[370px] top-[151px] text-white">
-            {userInfo.userImg === "null" ? (
+            {userInfo?.userImg === "null" ? (
               <Image
                 className="rounded-md"
                 src={defaultImg}
-                loader={({ src }) => src}
                 width={100}
                 height={100}
                 alt="default_img"
@@ -73,7 +78,7 @@ const MyPage = () => {
               }}
             >
               <svg
-                className="w-9 h-9"
+                className="w-9 h-9 cursor-pointer"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="1.5"
