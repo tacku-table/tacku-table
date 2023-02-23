@@ -1,12 +1,17 @@
 import { dbService } from "@/config/firebase";
 import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
 import type { NextPage } from "next";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import RecipeData from "../search/RecipeData";
 
 const NewRecipe: NextPage = () => {
     const [dataResults, setDataResults] = useState<RecipeProps[]>([]);
+    const router = useRouter();
+    const sortedBest = () => {
+        router.push("/searchPage");
+        sessionStorage.setItem("userWatching", "createdAt");
+    };
 
     const getList = async () => {
         const items = query(
@@ -35,8 +40,11 @@ const NewRecipe: NextPage = () => {
                 </p>
             </div>
             <div className="flex flex-col items-end">
-                <button className="text-main border border-main w-[86px] h-[35px] mb-4 rounded-sm hover:bg-main hover:text-white transition-all duration-200">
-                    <Link href="/searchPage">더보기</Link>
+                <button
+                    onClick={sortedBest}
+                    className="text-main border border-main w-[86px] h-[35px] mb-4 rounded-sm hover:bg-main hover:text-white transition-all duration-200"
+                >
+                    더보기
                 </button>
                 <RecipeData dataResults={dataResults} />
             </div>

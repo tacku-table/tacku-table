@@ -1,12 +1,35 @@
-import SideCategory from "@/components/search/SideCategory";
 import { dbService } from "@/config/firebase";
-import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import Fuse from "fuse.js";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import {
+    ChangeEvent,
+    FormEvent,
+    useCallback,
+    useEffect,
+    useState,
+} from "react";
 import RecipeData from "@/components/search/RecipeData";
 import ChangeSortedBtn from "@/components/search/ChangeSortedBtn";
+import SideFoodCate from "@/components/search/SideFoodCate";
+import SideCookingTime from "@/components/search/SideCookingTime";
+
+const categoryList = [
+    { name: "밥&도시락&면" },
+    { name: "국&탕&찌개" },
+    { name: "구이&볶음&찜" },
+    { name: "튀김류" },
+    { name: "베이커리&디저트" },
+    { name: "음료&주류" },
+    { name: "식단&건강관리" },
+];
+const categoryList2 = [
+    { name: "15분이하" },
+    { name: "30분이하" },
+    { name: "1시간이하" },
+    { name: "1시간이상" },
+];
 
 const SearchData: NextPage = () => {
     const router = useRouter();
@@ -22,7 +45,6 @@ const SearchData: NextPage = () => {
         // state도 똑같은 값으로 업데이트---------------------
         setIsBest("viewCount");
         // state도 똑같은 값으로 업데이트---------------------
-        console.log("isBest:", isBest);
     };
 
     // 최신순
@@ -34,7 +56,6 @@ const SearchData: NextPage = () => {
         // state도 똑같은 값으로 업데이트---------------------
         setIsBest("createdAt");
         // state도 똑같은 값으로 업데이트---------------------
-        console.log("isBest:", isBest);
     };
 
     const [text, setText] = useState(deliverKeyword || "");
@@ -45,6 +66,33 @@ const SearchData: NextPage = () => {
         e.preventDefault();
     };
 
+    // 카테고리필터링(음식종류)
+    const [checkedList, setCheckedList] = useState<Array<string>>([]);
+
+    const onCheckedItem = useCallback(
+        (checked: boolean, item: string) => {
+            if (checked) {
+                setCheckedList((prev) => [...prev, item]);
+            } else if (!checked) {
+                setCheckedList(checkedList.filter((ele) => ele !== item));
+            }
+        },
+        [checkedList]
+    );
+    // 카테고리필터링(조리시간)
+    const [checkedList2, setCheckedList2] = useState<Array<string>>([]);
+
+    const onCheckedItem2 = useCallback(
+        (checked: boolean, item: string) => {
+            if (checked) {
+                setCheckedList2((prev) => [...prev, item]);
+            } else if (!checked) {
+                setCheckedList2(checkedList2.filter((ele) => ele !== item));
+            }
+        },
+        [checkedList2]
+    );
+
     // 전체목록불러오기
     const [currentItems, setCurrentItems] = useState<RecipeProps[]>([]);
 
@@ -52,7 +100,6 @@ const SearchData: NextPage = () => {
         const items = query(
             collection(dbService, "recipe"),
             orderBy(isBest === "viewCount" ? "viewCount" : "createdAt", "desc")
-            // where("foodCategory", "==", "desc")
         );
         const querySnapshot = await getDocs(items);
         const newData = querySnapshot.docs.map((doc) => ({
@@ -121,8 +168,21 @@ const SearchData: NextPage = () => {
             />
             <div className="w-4/5 border-b border-border mb-[30px]"></div>
             <div className="w-4/5 flex justify-between gap-7 mb-20">
-                <SideCategory />
-                <RecipeData dataResults={dataResults} />
+                <div className="flex flex-col">
+                    <SideFoodCate
+                        categoryList={categoryList}
+                        onCheckedItem={onCheckedItem}
+                    />
+                    <SideCookingTime
+                        categoryList2={categoryList2}
+                        onCheckedItem2={onCheckedItem2}
+                    />
+                </div>
+                <RecipeData
+                    dataResults={dataResults}
+                    checkedList={checkedList}
+                    checkedList2={checkedList2}
+                />
             </div>
         </div>
     );

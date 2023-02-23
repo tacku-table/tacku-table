@@ -19,6 +19,13 @@
             "@/*": ["./*"]
         }
     },
-    "include": ["next-env.d.ts", "global.d.ts", "**/*.ts", "**/*.tsx"],
+    "include": [
+        "next-env.d.ts",
+        "global.d.ts",
+        "**/*.ts",
+        "**/*.tsx",
+        "components/search/SideCategory.jsx",
+        "components/search/CheckBoxContext.jsx"
+    ],
     "exclude": ["node_modules"]
 }
