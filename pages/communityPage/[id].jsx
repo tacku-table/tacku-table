@@ -16,7 +16,7 @@ import { dbService } from "@/config/firebase";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import EditorComponent from "../../components/write/textEditor";
-import baseImg from "/public/images/test1.png";
+import baseImg from "../../public/images/test1.png";
 import profileLoading from "/public/images/loadingImg.png";
 
 import Image from "next/image";
@@ -229,7 +229,15 @@ export default function DetailPage(props) {
               </div>
 
               <div className="block h-[60px]">
-                {detailPageWholeData.writterProfileImg ? (
+                {detailPageWholeData.writterProfileImg === "null" ? (
+                  <Image
+                    className="w-[40px] h-[40px] object-cover object-center float-left m-2"
+                    src={baseImg}
+                    width={780}
+                    height={270}
+                    alt="대표 이미지가 없습니다."
+                  />
+                ) : (
                   <Image
                     src={detailPageWholeData.writterProfileImg}
                     loader={({ src }) => src}
@@ -237,14 +245,6 @@ export default function DetailPage(props) {
                     height={100}
                     alt="writterProfile"
                     className="w-[40px] h-[40px] object-cover object-center float-left m-2"
-                  />
-                ) : (
-                  <Image
-                    className="w-[40px] h-[40px] object-cover object-center float-left m-2"
-                    src={profileLoading}
-                    width={780}
-                    height={270}
-                    alt="대표 이미지가 없습니다."
                   />
                 )}
 
@@ -255,13 +255,24 @@ export default function DetailPage(props) {
               </div>
               <div className="mt-10 text-center">
                 {/* 대표사진 */}
-                <Image
-                  className="w-[780px] h-[270px] lg:w-5/6 md:w-5/6 mb-10 m-auto"
-                  src={baseImg}
-                  width={780}
-                  height={270}
-                  alt="대표 이미지가 없습니다."
-                />
+                {detailPageWholeData.thumbnail === "" ? (
+                  <Image
+                    className="w-[780px] h-[270px] lg:w-5/6 md:w-5/6 mb-10 m-auto"
+                    src={baseImg}
+                    width={780}
+                    height={270}
+                    alt="대표 이미지가 없습니다."
+                  />
+                ) : (
+                  <Image
+                    src={detailPageWholeData.thumbnail}
+                    loader={({ src }) => src}
+                    className="lg:w-5/6 md:w-5/6 mb-10 m-auto"
+                    width={780}
+                    height={270}
+                    alt="커뮤썸네일"
+                  />
+                )}
                 <div
                   dangerouslySetInnerHTML={{
                     __html: detailPageWholeData.editorText,
