@@ -78,12 +78,14 @@ const Header = () => {
           </button>
         )}
         {storageCurrentUser ? (
-          <Link
-            href="/myPage"
+          <button
+            // href="/myPage"
+            type="button"
+            onClick={() => (location.href = "/myPage")}
             className="hover:text-mono80 hover:transition hover:ease-out hover:duration-300"
           >
             마이페이지
-          </Link>
+          </button>
         ) : (
           <Link
             href={{
