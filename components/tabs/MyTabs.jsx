@@ -3,13 +3,12 @@ import { authService, dbService } from "@/config/firebase";
 import { convertTimestamp } from "../../util";
 import {
   collection,
-  doc,
-  docs,
-  getDoc,
-  getDocs,
   onSnapshot,
+  orderBy,
   query,
   where,
+  doc,
+  getDoc,
 } from "firebase/firestore";
 import Link from "next/link";
 import Image from "next/image";
@@ -43,7 +42,7 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
     getCommunityComment(userId);
     getMyBookmark(userId);
     // getWriterProfileImg();
-  });
+  }, []);
   // 즐겨찾기
   // user 컬렉션 -> userInfo.id 일치 doc ->
   // bookmarkPost 컬렉션 통째로 가져오기
@@ -51,32 +50,33 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
   // 레시피 uid === user 컬렉션 doc.id
   const getMyBookmark = async (userId) => {
     const q = query(collection(dbService, `user/${userId}/bookmarkPost`));
-    onSnapshot(q, (snapshot) => {
-      const myposts = snapshot.docs.map((doc) => {
+    onSnapshot(q, async (snapshots) => {
+      const myposts = snapshots.docs.map((doc) => {
+        const writerImg = getWriterProfileImg(doc.data().uid);
+        console.log(writerImg);
         const mypost = {
           postId: doc.id,
           writerUid: doc.data().uid,
+          writerImg,
           ...doc.data(),
         };
+        // console.log(mypost.writerImg);
         return mypost;
       });
       setBookmarkPost(myposts);
     });
   };
-  const getWriterProfileImg = async () => {
-    // if (userInfo?.userImg === "null") return;
-    const imageListRef = ref(storage, "profileImage/");
-    await listAll(imageListRef).then((response) => {
-      response.items.forEach((item) => {
-        getDownloadURL(item).then((url) => {
-          // url === writeruid
-          if (url === userInfo?.userImg) {
-            setShowUserUpdateImg(url);
-          }
-        });
-      });
+
+  // 유저 프사 불러오기
+  let writerImg;
+  const getWriterProfileImg = async (writerId) => {
+    await getDoc(doc(dbService, "user", writerId)).then((doc) => {
+      writerImg = doc.data().userImg;
     });
+    // console.log("writerImg:", writerImg);
+    return writerImg;
   };
+  console.log(typeof writerImg);
 
   // 내가 쓴 레시피
   const getMyRecipePost = async (userId) => {
@@ -97,7 +97,11 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
   // 커뮤니티 게시글
   const getMyCommunityPost = async (userId) => {
     const communityRef = collection(dbService, "communityPost");
-    const q = query(communityRef, where("uid", "==", `${userId}`));
+    const q = query(
+      communityRef,
+      where("uid", "==", `${userId}`),
+      orderBy("writtenDate", "desc")
+    );
     onSnapshot(q, (snapshot) => {
       const myposts = snapshot.docs.map((doc) => {
         // console.log("postId: ", doc.id);
@@ -130,6 +134,7 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
     });
   };
 
+  console.log(bookmarkPost);
   return (
     <Tab.Group>
       <Tab.List className="flex space-x-16 ml-[370px] bg-white">
@@ -178,7 +183,17 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
                 </div>
               </div>
               <div className="flex mt-9 ml-8 space-x-3">
-                <div className="w-7 h-7 bg-slate-500 aspect-square" />
+                {p.writerImg && (
+                  <Image
+                    className="aspect-square"
+                    src={p.writerImg}
+                    priority={true}
+                    loader={({ src }) => src}
+                    width={100}
+                    height={100}
+                    alt="글쓴이프로필"
+                  />
+                )}
                 <p className="text-[16px]">{p.writerNickName}</p>
               </div>
             </div>
