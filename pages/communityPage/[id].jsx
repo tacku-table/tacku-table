@@ -298,7 +298,7 @@ export default function DetailPage(props) {
               <div>
                 {boardComments?.map((item, index) => {
                   return (
-                    <>
+                    <div key={index}>
                       {targetIndex === index ? (
                         <div>
                           <Image
@@ -370,7 +370,7 @@ export default function DetailPage(props) {
                       ) : (
                         <div className="flex justify-end mb-1 h-5"></div>
                       )}
-                    </>
+                    </div>
                   );
                 })}
               </div>
