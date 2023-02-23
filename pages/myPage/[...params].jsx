@@ -93,6 +93,16 @@ export default function ProfileEdit(props) {
     }
   };
 
+  //------------------- 다경 로직 추가----(끝)-----------
+
+  // useEffect(() => {
+  //   getUserProfileImg();
+  // }, [userInfo]);
+
+  // 인풋값 관리 함수
+  const inputChangeSetFunc = (event, setFunction) => {
+    setFunction(event.target.value);
+  };
   const getUserProfileImg = async () => {
     if (userInfo?.userImg === "null") return;
     const imageListRef = ref(storage, "profileImage/");
@@ -431,6 +441,7 @@ export default function ProfileEdit(props) {
 }
 
 export const getServerSideProps = async (context) => {
+  console.log(context);
   const { query } = context;
   const { id, userImg } = query;
   // console.log(id);
