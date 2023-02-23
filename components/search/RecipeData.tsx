@@ -10,7 +10,7 @@ const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
 
     return (
         <div className="grid grid-cols-3 gap-5 gap-y-14">
-            {dataResults.length && checkedList ? (
+            {dataResults?.length && checkedList?.length ? (
                 dataResults
                     .filter((item: any) =>
                         item.foodCategory.includes(checkedList)
@@ -66,7 +66,7 @@ const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
                             </div>
                         );
                     })
-            ) : dataResults.length && checkedList2 ? (
+            ) : dataResults?.length && checkedList2?.length ? (
                 dataResults
                     .filter((item: any) =>
                         item.cookingTime.includes(checkedList2)
