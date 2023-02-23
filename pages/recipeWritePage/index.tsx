@@ -122,6 +122,7 @@ const RecipeWritePage = () => {
       // uid = 레시피 작성자
       uid: storageCurrentUser?.uid,
       writerNickName: storageCurrentUser?.displayName, // auth.currentUser에 있는 id
+      writerProfileImg: storageCurrentUser?.photoURL,
       animationTitle: targetTitle,
       foodTitle,
       ingredient,

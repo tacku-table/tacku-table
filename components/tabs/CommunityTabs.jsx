@@ -12,6 +12,7 @@ import Link from "next/link";
 import { authService, dbService } from "../../config/firebase";
 import { convertTimestamp } from "../../util";
 import Image from "next/image";
+import defaultImg from "../../public/images/test1.png";
 const CommunityTabs = () => {
   // 전체글 state
   const [communityList, setCommunityList] = useState([]);
@@ -113,15 +114,27 @@ const CommunityTabs = () => {
                 key={p.id}
                 className="border-b border-mono60 py-4 px-5 flex text-sm"
               >
-                <Image
-                  // className="object-cover aspect-[4/3]" //aspect-ratio 수정
-                  src={p.thumbnail}
-                  priority={true}
-                  loader={({ src }) => src}
-                  width={70}
-                  height={41}
-                  alt="community-thumbnail"
-                />
+                {p.thumbnail === "" ? (
+                  <Image
+                    // className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                    src={defaultImg}
+                    priority={true}
+                    // loader={({ src }) => src}
+                    width={70}
+                    height={41}
+                    alt="community-thumbnail-default"
+                  />
+                ) : (
+                  <Image
+                    // className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                    src={p.thumbnail}
+                    priority={true}
+                    loader={({ src }) => src}
+                    width={70}
+                    height={41}
+                    alt="community-thumbnail"
+                  />
+                )}
                 {/* <div>글아이디:{post.id}</div> */}
                 <div className="pl-5">
                   <Link legacyBehavior href={`/communityPage/${p.id}`}>
@@ -146,15 +159,27 @@ const CommunityTabs = () => {
                 key={p.id}
                 className="border-b border-mono60 py-4 px-5 flex text-sm"
               >
-                <Image
-                  className="object-cover aspect-[4/3]" //aspect-ratio 수정
-                  src={p.thumbnail}
-                  priority={true}
-                  loader={({ src }) => src}
-                  width={70}
-                  height={41}
-                  alt="community-thumbnail"
-                />
+                {p.thumbnail === "" ? (
+                  <Image
+                    // className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                    src={defaultImg}
+                    priority={true}
+                    // loader={({ src }) => src}
+                    width={70}
+                    height={41}
+                    alt="community-thumbnail-default"
+                  />
+                ) : (
+                  <Image
+                    // className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                    src={p.thumbnail}
+                    priority={true}
+                    loader={({ src }) => src}
+                    width={70}
+                    height={41}
+                    alt="community-thumbnail"
+                  />
+                )}
                 {/* <div>글아이디:{post.id}</div> */}
                 <div className="pl-5">
                   <Link legacyBehavior href={`/communityPage/${p.id}`}>
@@ -179,15 +204,27 @@ const CommunityTabs = () => {
                 key={p.id}
                 className="border-b border-mono60 py-4 px-5 flex text-sm"
               >
-                <Image
-                  className="object-cover aspect-[4/3]" //aspect-ratio 수정
-                  src={p.thumbnail}
-                  priority={true}
-                  loader={({ src }) => src}
-                  width={70}
-                  height={41}
-                  alt="community-thumbnail"
-                />
+                {p.thumbnail === "" ? (
+                  <Image
+                    // className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                    src={defaultImg}
+                    priority={true}
+                    // loader={({ src }) => src}
+                    width={70}
+                    height={41}
+                    alt="community-thumbnail-default"
+                  />
+                ) : (
+                  <Image
+                    // className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                    src={p.thumbnail}
+                    priority={true}
+                    loader={({ src }) => src}
+                    width={70}
+                    height={41}
+                    alt="community-thumbnail"
+                  />
+                )}
                 {/* <div>글아이디:{post.id}</div> */}
                 <div className="pl-5">
                   <Link legacyBehavior href={`/communityPage/${p.id}`}>
@@ -212,15 +249,27 @@ const CommunityTabs = () => {
                 key={p.id}
                 className="border-b border-mono60 py-4 px-5 flex text-sm"
               >
-                <Image
-                  className="object-cover aspect-[4/3]" //aspect-ratio 수정
-                  src={p.thumbnail}
-                  priority={true}
-                  loader={({ src }) => src}
-                  width={70}
-                  height={41}
-                  alt="community-thumbnail"
-                />
+                {p.thumbnail === "" ? (
+                  <Image
+                    // className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                    src={defaultImg}
+                    priority={true}
+                    // loader={({ src }) => src}
+                    width={70}
+                    height={41}
+                    alt="community-thumbnail-default"
+                  />
+                ) : (
+                  <Image
+                    // className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                    src={p.thumbnail}
+                    priority={true}
+                    loader={({ src }) => src}
+                    width={70}
+                    height={41}
+                    alt="community-thumbnail"
+                  />
+                )}
                 {/* <div>글아이디:{post.id}</div> */}
                 <div className="pl-5">
                   <Link legacyBehavior href={`/communityPage/${p.id}`}>

@@ -1,7 +1,6 @@
 //tailwind.config.js
 
 /** @type {import('tailwindcss').Config} */
-
 module.exports = {
   content: [
     "./app/**/*.{js,ts,jsx,tsx}",
@@ -60,6 +59,7 @@ module.exports = {
       },
       backgroundImage: {
         chihiro: "url('../public/images/chihiro.jpg')",
+        coverBg: "url('../public/images/cover-totoro.jpg')",
       },
       //폰트
       fontFamily: {

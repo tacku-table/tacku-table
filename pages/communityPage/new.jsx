@@ -9,7 +9,7 @@ import {
 } from "firebase/storage";
 import { authService, dbService } from "../../config/firebase";
 import EditorComponent from "../../components/write/textEditor";
-import defaultImg from "../../public/images/profile.jpeg";
+import defaultImg from "../../public/images/test1.png";
 import Image from "next/image";
 import { storage } from "../../config/firebase";
 
