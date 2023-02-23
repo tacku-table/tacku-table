@@ -164,7 +164,7 @@ const NewCommunityPost = () => {
             setEditorText={setEditorText}
           />
         </div>
-        <div className="w-full h-[215px] bg-mono40 border-x border-b border-mono60 pt-7 px-4">
+        <div className="w-full h-[215px] bg-mono40 border-x border-b border-mono60  px-4">
           {imgLoading == "loading" && (
             <div className="flex items-center justify-center">
               <div className="text-center absolute rounded-lg flex bg-brand100 w-[500px] h-[200px]">
@@ -175,18 +175,31 @@ const NewCommunityPost = () => {
               </div>
             </div>
           )}
-          <b>📸등록된 대표 이미지</b>
-          <input
-            ref={thumbnailRef}
-            name="thumbnail"
-            id="picture"
-            type="file"
-            accept="image/*"
-            onChange={(event) => {
-              handleImageFile(event);
-            }}
-            className="float-right w-[90px]"
-          />
+
+          <div className="mt-[12px] float-right flex items-stretch">
+            <div className="mt-2 text-mono80 text-[16px]">
+              대표 이미지 별도 등록
+            </div>
+            <label>
+              <div className="rounded-[2px] border border-mono60 ml-[20px] text-[16px] text-center pt-1 hover:cursor-pointer w-[100px] h-[35px] bg-mono40 text-mono100">
+                이미지 선택
+              </div>
+              <input
+                ref={thumbnailRef}
+                name="thumbnail"
+                id="picture"
+                type="file"
+                accept="image/*"
+                onChange={(event) => {
+                  handleImageFile(event);
+                }}
+                className="float-right w-[90px] hidden"
+              />
+            </label>
+          </div>
+          <div className="ml-[16px] pt-[20px] text-mono100 text-[16px]">
+            등록된 대표 이미지
+          </div>
 
           <div className=" w-[140px] h-[97px] overflow-hidden relative border border-mono60 mt-5 ">
             {imgPreview ? (

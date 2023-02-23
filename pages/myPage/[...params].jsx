@@ -60,12 +60,9 @@ export default function ProfileEdit(props) {
   }, []);
   useEffect(() => {
     if (storageCurrentUser == "logout") {
-      // alert("로그아웃\n 메인 화면으로 이동합니다.");
       location.href = "/loginPage";
     }
   }, [storageCurrentUser]);
-
-  //----------------다경 로직 추가-------(시작)------------
 
   const deleteCurrentUser = () => {
     const currentUser = authService.currentUser;
@@ -93,13 +90,6 @@ export default function ProfileEdit(props) {
     }
   };
 
-  //------------------- 다경 로직 추가----(끝)-----------
-
-  // useEffect(() => {
-  //   getUserProfileImg();
-  // }, [userInfo]);
-
-  // 인풋값 관리 함수
   const inputChangeSetFunc = (event, setFunction) => {
     setFunction(event.target.value);
   };
@@ -117,23 +107,15 @@ export default function ProfileEdit(props) {
     });
   };
 
-  // div를 클릭해도 input이 클릭되도록 하기
-  // const fileRef = useRef(null);
-  // const onClickUpload = () => {
-  //   fileRef.current?.click();
-  // };
   const handleImageFile = (event) => {
     const file = event.target.files?.[0];
     setImageUpload(file);
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      // console.log("파일 정상적으로 불러옴");
       const selectedImgUrl = reader.result;
       console.log("selectedImgUrl", selectedImgUrl);
       setShowUserUpdateImg(selectedImgUrl);
-
-      // setImageUpload(event.target.files?.[0]);
     };
   };
 
@@ -158,8 +140,7 @@ export default function ProfileEdit(props) {
     (event) => {
       const confirmedPW = event.target.value;
       setConfirmChangeUserPw(confirmedPW);
-      // console.log(confirmedPW);
-      // console.log(confirmChangeUserPw);
+
       if (changeUserPw === confirmedPW) {
         setPasswordConfirmMessage("비밀번호가 일치합니다.");
         setIsPasswordConfirm(true);
@@ -191,7 +172,6 @@ export default function ProfileEdit(props) {
       authService?.currentUser.email,
       userProvidedPassword
     );
-    // const userImg = url;
     await updateDoc(docRef, {
       userNickname: changeUserNickname,
       userPw: changeUserPw,
@@ -208,9 +188,6 @@ export default function ProfileEdit(props) {
       })
         .then(() => {
           console.log("닉네임 변경 완료!");
-          // sessionStorage.clear();
-          // sessionStorage.setItem("User", JSON.stringify(authService.currentUser));
-          // 변경 완료 후 마이페이지 메인으로 보냅니다. (임시)
           location.href = `/myPage`;
         })
         .catch((error) => console.log("닉네임 변경 에러: ", error));
@@ -430,7 +407,6 @@ export default function ProfileEdit(props) {
           <button
             onClick={() => router.back()}
             className="text-mono100 bg-mono30 hover:bg-brand100 hover:text-white focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-sm text-sm px-28 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mb-2"
-            // disabled={isPassword && isPasswordConfirm && isNickname}
           >
             취소하기
           </button>
@@ -451,17 +427,16 @@ export const getServerSideProps = async (context) => {
   let userData;
   const snapshot = await getDoc(doc(dbService, "user", docId));
   if (snapshot.exists()) {
-    // console.log(snapshot.data());
     userData = snapshot.data();
   } else {
     alert("회원 정보가 없습니다.");
   }
-  // console.log("userData:", userData);
 
   return {
     props: {
       id,
       userData,
+      userImg,
     },
   };
 };

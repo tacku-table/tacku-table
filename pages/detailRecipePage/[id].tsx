@@ -34,6 +34,7 @@ export default function DetailReciptPage(props: any) {
       setStorageCurrentUser("geust");
     }
   }, []);
+  //----------다경 추가---------------(끝)
 
   //조회수
   useEffect(() => {
