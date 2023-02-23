@@ -20,6 +20,7 @@ const SearchData: NextPage = () => {
     const deliverKeyword = router.query.keyword;
 
     const [isBest, setIsBest] = useState("");
+    const [filtered, setFiltered] = useState<string[] | "">("");
 
     // 인기순
     const activeBestBtn = () => {
@@ -52,11 +53,21 @@ const SearchData: NextPage = () => {
     const [checkedList, setCheckedList] = useState<Array<string>>([]);
 
     const onCheckedItem = useCallback(
-        (checked: boolean, item: string) => {
+        (checked: boolean, newItem: string) => {
             if (checked) {
-                setCheckedList((prev) => [...prev, item]);
+                setCheckedList((prev) => [...prev, newItem]);
+                sessionStorage.setItem(
+                    "filteredData",
+                    JSON.stringify([...checkedList, newItem])
+                );
+                setFiltered(checkedList);
             } else if (!checked) {
-                setCheckedList(checkedList.filter((ele) => ele !== item));
+                setCheckedList(checkedList.filter((ele) => ele !== newItem));
+                sessionStorage.setItem(
+                    "filteredData",
+                    JSON.stringify(checkedList.filter((ele) => ele !== newItem))
+                );
+                setFiltered(checkedList);
             }
         },
         [checkedList]
@@ -104,11 +115,21 @@ const SearchData: NextPage = () => {
 
     useEffect(() => {
         const result = sessionStorage.getItem("userWatching");
+        const filteredResults = JSON.parse(
+            sessionStorage.getItem("filteredData") || ""
+        );
+
         if (result) {
             setIsBest(result);
         } else {
             setIsBest("createdAt");
         }
+        if (filteredResults) {
+            setFiltered(filteredResults);
+        } else {
+            setFiltered("");
+        }
+
         getList();
     }, [isBest]);
 
@@ -156,6 +177,7 @@ const SearchData: NextPage = () => {
                     <SideFoodCate
                         categoryList={categoryList}
                         onCheckedItem={onCheckedItem}
+                        filtered={filtered}
                     />
                     <SideCookingTime
                         categoryList2={categoryList2}

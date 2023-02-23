@@ -1,4 +1,4 @@
-const SideFoodCate = ({ categoryList, onCheckedItem }: any) => {
+const SideFoodCate = ({ categoryList, onCheckedItem, filtered }: any) => {
     return (
         <div className="flex flex-col">
             <h4 className="mb-4 text-sm text-mono80">음식 종류</h4>

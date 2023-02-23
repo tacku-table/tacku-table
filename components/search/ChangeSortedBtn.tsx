@@ -9,9 +9,9 @@ const ChangeSortedBtn = ({
     checkedList2,
 }: any) => {
     return (
-        <div className="w-3/4 flex justify-end items-center mb-[20px]">
+        <div className="w-4/5 flex justify-end items-center mb-[20px]">
             {dataResults ? (
-                <p className=" text-mono100 mr-[280px]">
+                <p className=" text-mono100 mr-[330px]">
                     총&nbsp;
                     <span className="text-red100">
                         {dataResults?.length && checkedList?.length
