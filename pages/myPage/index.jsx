@@ -6,7 +6,6 @@ import defaultImg from "../../public/images/test1.png";
 import Link from "next/link";
 import Image from "next/image";
 import MyTabs from "../../components/tabs/MyTabs";
-import coverBg from "../../public/images/cover-totoro.jpg";
 const MyPage = () => {
   const [userInfo, setUserInfo] = useState([]);
   const [storageCurrentUser, setStorageCurrentUser] = useState({});

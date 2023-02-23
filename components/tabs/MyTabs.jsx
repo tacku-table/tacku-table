@@ -13,18 +13,38 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { getDownloadURL, listAll, ref } from "firebase/storage";
+import defaultImg from "../../public/images/test1.png";
 // interface MyTabsProps {
 //   userInfo: any;
 //   setUserInfo: any;
 // }
-const MyTabs = ({ userInfo, setUserInfo }) => {
+const MyTabs = () => {
+  const [userInfo, setUserInfo] = useState([]);
   const [recipePost, setRecipePost] = useState([]);
   const [communityPost, setCommunityPost] = useState([]);
   const [commentPost, setCommentPost] = useState([]);
   const [bookmarkPost, setBookmarkPost] = useState([]);
-  const userId = userInfo.userId;
-  // const currentUser = JSON.parse(sessionStorage.getItem("User")) || "";
+  const [storageCurrentUser, setStorageCurrentUser] = useState({});
+  const [bookmarkWriter, setBookmarkWriter] = useState("");
+
+  const getCurrentUserInfo = async (id) => {
+    await getDoc(doc(dbService, "user", id)).then((doc) => {
+      // console.log("getCurrentUserInfo의 data: ", doc.data());
+      const user = {
+        ...doc.data(),
+      };
+      setUserInfo(user);
+    });
+  };
+  useEffect(() => {
+    const currentUser = JSON.parse(sessionStorage.getItem("User"));
+    if (currentUser) {
+      getCurrentUserInfo(currentUser.uid);
+      setStorageCurrentUser(currentUser);
+    } else {
+      setStorageCurrentUser("logout");
+    }
+  }, []);
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -36,13 +56,13 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
     "내가 쓴 커뮤니티 댓글",
   ]);
   useEffect(() => {
-    const currentUser = JSON.parse(sessionStorage.getItem("User")) || "";
-    getMyCommunityPost(userId);
+    const userId = userInfo.userId;
     getMyRecipePost(userId);
+    getMyCommunityPost(userId);
     getCommunityComment(userId);
     getMyBookmark(userId);
-    // getWriterProfileImg();
-  }, []);
+  }, [bookmarkPost]);
+  // console.log(bookmarkPost);
   // 즐겨찾기
   // user 컬렉션 -> userInfo.id 일치 doc ->
   // bookmarkPost 컬렉션 통째로 가져오기
@@ -50,33 +70,33 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
   // 레시피 uid === user 컬렉션 doc.id
   const getMyBookmark = async (userId) => {
     const q = query(collection(dbService, `user/${userId}/bookmarkPost`));
-    onSnapshot(q, async (snapshots) => {
+    onSnapshot(q, (snapshots) => {
       const myposts = snapshots.docs.map((doc) => {
-        const writerImg = getWriterProfileImg(doc.data().uid);
-        console.log(writerImg);
         const mypost = {
           postId: doc.id,
           writerUid: doc.data().uid,
-          writerImg,
+          writerImg: getWriterProfileImg(doc.data().uid).then((res) => {
+            // console.log(res);
+            return res;
+          }),
           ...doc.data(),
         };
-        // console.log(mypost.writerImg);
         return mypost;
       });
+      // console.log("여기");
       setBookmarkPost(myposts);
     });
   };
-
   // 유저 프사 불러오기
+  // 그 꽂아준 uid 걔 하나
   let writerImg;
   const getWriterProfileImg = async (writerId) => {
+    // const docRef = doc(dbService, "user", writerId);
     await getDoc(doc(dbService, "user", writerId)).then((doc) => {
       writerImg = doc.data().userImg;
     });
-    // console.log("writerImg:", writerImg);
     return writerImg;
   };
-  console.log(typeof writerImg);
 
   // 내가 쓴 레시피
   const getMyRecipePost = async (userId) => {
@@ -134,7 +154,6 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
     });
   };
 
-  console.log(bookmarkPost);
   return (
     <Tab.Group>
       <Tab.List className="flex space-x-16 ml-[370px] bg-white">
@@ -183,14 +202,24 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
                 </div>
               </div>
               <div className="flex mt-9 ml-8 space-x-3">
-                {p.writerImg && (
+                {p.writerImg === "null" ? (
                   <Image
-                    className="aspect-square"
+                    className="aspect-square object-cover w-12 h-12"
+                    src={defaultImg}
+                    priority={true}
+                    loader={({ src }) => src}
+                    width={12}
+                    height={12}
+                    alt="글쓴이프로필"
+                  />
+                ) : (
+                  <Image
+                    className="aspect-square object-cover w-12 h-12"
                     src={p.writerImg}
                     priority={true}
                     loader={({ src }) => src}
-                    width={100}
-                    height={100}
+                    width={12}
+                    height={12}
                     alt="글쓴이프로필"
                   />
                 )}
