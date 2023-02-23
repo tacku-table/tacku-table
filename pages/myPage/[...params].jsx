@@ -232,7 +232,7 @@ export default function ProfileEdit(props) {
         updateDoc(docRef, {
           userImg: url,
         }).then(() => {
-          setImgPreview("uploading"); //ㅇㅣ게 먼저뜸
+          setImgPreview("uploading");
           console.log("컬렉션 업데이트 성공!");
         });
         // setImgPreview(url);
