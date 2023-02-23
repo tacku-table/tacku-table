@@ -91,6 +91,7 @@ const RegisterPage = () => {
         });
         await updateProfile(data.user, {
           displayName: nickname,
+          photoURL: "null",
         });
         alert("회원가입성공! 로그인해주세요!");
         signOut(authService).then(() => {
