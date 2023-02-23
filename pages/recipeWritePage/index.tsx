@@ -106,9 +106,8 @@ const RecipeWritePage = () => {
     console.log(event.target.value);
     setFunction(event.target.value);
   };
+  
   const fbUser = authService?.currentUser;
-  console.log("파베 유저 닉넴:", fbUser?.displayName);
-  console.log("파베 유저 이미지:", fbUser?.photoURL);
 
   const postNewRecipe = async (event: any) => {
     event.preventDefault();
