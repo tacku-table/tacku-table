@@ -356,8 +356,8 @@ const RecipeWritePage = () => {
               />
             </div>
             {imgLoading == "loading" && (
-              <div className="flex items-center justify-center">
-                <div className="text-center absolute rounded-lg flex bg-brand100 w-[500px] h-[200px]">
+              <div className="flex items-center justify-center fixed top-1/2 left-0 right-0">
+                <div className="text-center absolute  rounded-lg flex bg-brand100 w-[500px] h-[200px]">
                   <div className="text-xl text-white m-auto">
                     사진을 서버에 열심히 로딩하고 있어요 <br />
                     잠시만 기다려주세요 !!!!

@@ -23,32 +23,15 @@ export default function DetailReciptPage(props: any) {
   let [views, setViews] = useState<number>(props.targetWholeData?.viewCount);
   const userUid = props.targetWholeData?.uid;
 
-  //레시피 데이터 불러오기
-  useEffect(() => {
-    getRecipeData(props.targetWholeData);
-    onSnapshot(doc(dbService, "user", userUid), (snapshot) => {
-      setUserFireData(snapshot.data());
-    });
-  }, []);
-
-  // post 시간 나타내는 함수
-  const getTimegap = () => {
-    let data: any = Date.now();
-    const date = new Date(data);
-    let year = date.getFullYear().toString().slice(-2); //년도
-    let month = ("0" + (date.getMonth() + 1)).slice(-2); //월 2자리
-    let day = ("0" + date.getDate()).slice(-2); //일 2자리
-    let hour = ("0" + date.getHours()).slice(-2); //시 2자리
-    let minute = ("0" + date.getMinutes()).slice(-2); //분 2자리
-    return (data = `${year}-${month}-${day} ${hour}:${minute}`);
-  };
-
   const [storageCurrentUser, setStorageCurrentUser]: any = useState({});
   useEffect(() => {
     const user = sessionStorage.getItem("User") || "";
     if (user) {
       const parseUser = JSON.parse(user);
       setStorageCurrentUser(parseUser);
+    }
+    if (!user) {
+      setStorageCurrentUser("geust");
     }
   }, []);
 
@@ -60,17 +43,15 @@ export default function DetailReciptPage(props: any) {
     });
   }, []);
 
+  //레시피 데이터 불러오기
   useEffect(() => {
-    const sessionStorageUser = sessionStorage.getItem("User") || "";
-    if (sessionStorageUser) {
-      const parsingUser = JSON.parse(sessionStorageUser);
-      setUserData(parsingUser?.uid);
-    }
-    if (!sessionStorageUser) {
-      setUserData("geust");
-    }
+    getRecipeData(props.targetWholeData);
+    onSnapshot(doc(dbService, "user", userUid), (snapshot) => {
+      setUserFireData(snapshot.data());
+    });
   }, []);
-  //----------------다경 추가한 부분(시작)--------------------
+
+  //삭제
   const deleteTargetRecipe = async () => {
     const userConfirm = window.confirm("해당 글을 삭제하시겠습니까?");
     console.log("props.postId", props.postId);
@@ -85,7 +66,18 @@ export default function DetailReciptPage(props: any) {
       }
     }
   };
-  //----------------다경 추가한 부분(끝)--------------------
+
+  // post 시간 나타내는 함수
+  const getTimegap = () => {
+    let data: any = Date.now();
+    const date = new Date(data);
+    let year = date.getFullYear().toString().slice(-2); //년도
+    let month = ("0" + (date.getMonth() + 1)).slice(-2); //월 2자리
+    let day = ("0" + date.getDate()).slice(-2); //일 2자리
+    let hour = ("0" + date.getHours()).slice(-2); //시 2자리
+    let minute = ("0" + date.getMinutes()).slice(-2); //분 2자리
+    return (data = `${year}-${month}-${day} ${hour}:${minute}`);
+  };
 
   return (
     <div className="w-full h-full flex flex-col items-center bg-mono40 ">
@@ -103,9 +95,14 @@ export default function DetailReciptPage(props: any) {
         <div className="flex-col my-5">
           <div className="flex justify-between my-5">
             <p className="text-2xl font-semibold">{recipeData.foodTitle}</p>
-            {userData === "geust" ? null : (
+            {storageCurrentUser === "geust" ? null : (
               <p className="w-6 h-6">
-                <Bookmark postId={props.postId} recipeData={recipeData} />
+                <Bookmark
+                  postId={props.postId}
+                  recipeData={recipeData}
+                  storageCurrentUser={storageCurrentUser}
+                  userFireData={userFireData}
+                />
               </p>
             )}
           </div>
@@ -162,9 +159,12 @@ export default function DetailReciptPage(props: any) {
             {/* 수정/ 삭제 */}
             {props.targetWholeData?.uid == storageCurrentUser.uid ? (
               <div className="flex">
-                <div className="recipepage-edit-button pt-1">
-                  <Link href={`/recipeEditPage/${props.postId}`}>수정하기</Link>
-                </div>
+                <Link
+                  href={`/recipeEditPage/${props.postId}`}
+                  className="recipepage-edit-button pt-1"
+                >
+                  <p>수정하기</p>
+                </Link>
                 <button
                   className="recipepage-del-button  ml-2"
                   type="button"
