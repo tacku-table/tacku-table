@@ -50,7 +50,7 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
     getMyCommunityPost(userInfo.userId);
     getCommunityComment(userInfo.userId);
     getMyBookmark(userInfo.userId);
-  }, [userInfo]);
+  }, [userInfo.userId, bookmarkPost, communityPost, commentPost, recipePost]);
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -78,6 +78,7 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
         const mypost = {
           postId: doc.id,
           writerUid: doc.data().uid,
+          writerdisplayName: doc.data().writerNickName,
           writerImg: doc.data().writerProfileImg,
           ...doc.data(),
         };
@@ -226,7 +227,7 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
                     alt="글쓴이프로필"
                   />
                 )}
-                <p className="text-[16px]">{p.writerNickName}</p>
+                <p className="text-[16px]">{p.writerdisplayName}</p>
               </div>
             </div>
           ))}
