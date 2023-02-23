@@ -47,11 +47,10 @@ const MyPage = () => {
       <div>
         <div className="bg-coverBg bg-cover bg-center w-full h-[280px] bg-no-repeat relative">
           <div className="flex justify-center items-center space-x-[24px] absolute left-[370px] top-[151px] text-white">
-            {userInfo.userImg === "null" ? (
+            {userInfo?.userImg === "null" ? (
               <Image
                 className="rounded-md"
                 src={defaultImg}
-                // loader={({ src }) => src}
                 width={100}
                 height={100}
                 alt="default_img"
