@@ -20,7 +20,7 @@ const SearchData: NextPage = () => {
   const deliverKeyword = router.query.keyword;
 
   const [isBest, setIsBest] = useState("");
-  const [filtered, setFiltered] = useState<string[] | "">("");
+  //   const [filtered, setFiltered] = useState<string[] | "">("");
 
   // 인기순
   const activeBestBtn = () => {
@@ -56,18 +56,18 @@ const SearchData: NextPage = () => {
     (checked: boolean, newItem: string) => {
       if (checked) {
         setCheckedList((prev) => [...prev, newItem]);
-        sessionStorage.setItem(
-          "filteredData",
-          JSON.stringify([...checkedList, newItem])
-        );
-        setFiltered(checkedList);
+        // sessionStorage.setItem(
+        //   "filteredData",
+        //   JSON.stringify([...checkedList, newItem])
+        // );
+        // setFiltered(checkedList);
       } else if (!checked) {
         setCheckedList(checkedList.filter((ele) => ele !== newItem));
-        sessionStorage.setItem(
-          "filteredData",
-          JSON.stringify(checkedList.filter((ele) => ele !== newItem))
-        );
-        setFiltered(checkedList);
+        // sessionStorage.setItem(
+        //   "filteredData",
+        //   JSON.stringify(checkedList.filter((ele) => ele !== newItem))
+        // );
+        // setFiltered(checkedList);
       }
     },
     [checkedList]
@@ -177,7 +177,7 @@ const SearchData: NextPage = () => {
           <SideFoodCate
             categoryList={categoryList}
             onCheckedItem={onCheckedItem}
-            filtered={filtered}
+            // filtered={filtered}
           />
           <SideCookingTime
             categoryList2={categoryList2}
