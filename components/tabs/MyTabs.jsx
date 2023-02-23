@@ -18,14 +18,12 @@ import defaultImg from "../../public/images/test1.png";
 //   userInfo: any;
 //   setUserInfo: any;
 // }
-const MyTabs = () => {
-  const [userInfo, setUserInfo] = useState([]);
+const MyTabs = ({ userInfo, setUserInfo }) => {
   const [recipePost, setRecipePost] = useState([]);
   const [communityPost, setCommunityPost] = useState([]);
   const [commentPost, setCommentPost] = useState([]);
   const [bookmarkPost, setBookmarkPost] = useState([]);
   const [storageCurrentUser, setStorageCurrentUser] = useState({});
-  const [bookmarkWriter, setBookmarkWriter] = useState("");
 
   const getCurrentUserInfo = async (id) => {
     await getDoc(doc(dbService, "user", id)).then((doc) => {
@@ -37,7 +35,7 @@ const MyTabs = () => {
     });
   };
   useEffect(() => {
-    const currentUser = JSON.parse(sessionStorage.getItem("User"));
+    const currentUser = JSON.parse(sessionStorage.getItem("User")) || "";
     if (currentUser) {
       getCurrentUserInfo(currentUser.uid);
       setStorageCurrentUser(currentUser);
@@ -46,57 +44,62 @@ const MyTabs = () => {
     }
   }, []);
 
+  // const userId = userInfo.userId;
+  useEffect(() => {
+    getMyRecipePost(userInfo.userId);
+    getMyCommunityPost(userInfo.userId);
+    getCommunityComment(userInfo.userId);
+    getMyBookmark(userInfo.userId);
+  }, [userInfo]);
+
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
+
   let [categories] = useState([
     "즐겨찾기",
     "내가 쓴 레시피",
     "내가 쓴 커뮤니티글",
     "내가 쓴 커뮤니티 댓글",
   ]);
-  useEffect(() => {
-    const userId = userInfo.userId;
-    getMyRecipePost(userId);
-    getMyCommunityPost(userId);
-    getCommunityComment(userId);
-    getMyBookmark(userId);
-  }, [bookmarkPost]);
+
   // console.log(bookmarkPost);
   // 즐겨찾기
   // user 컬렉션 -> userInfo.id 일치 doc ->
   // bookmarkPost 컬렉션 통째로 가져오기
   // 하위문서로 접근 recipeid
   // 레시피 uid === user 컬렉션 doc.id
+
   const getMyBookmark = async (userId) => {
     const q = query(collection(dbService, `user/${userId}/bookmarkPost`));
-    onSnapshot(q, (snapshots) => {
+
+    onSnapshot(q, async (snapshots) => {
       const myposts = snapshots.docs.map((doc) => {
         const mypost = {
           postId: doc.id,
           writerUid: doc.data().uid,
-          writerImg: getWriterProfileImg(doc.data().uid).then((res) => {
-            // console.log(res);
-            return res;
-          }),
+          writerImg: doc.data().writerProfileImg,
           ...doc.data(),
         };
         return mypost;
       });
-      // console.log("여기");
+
       setBookmarkPost(myposts);
     });
   };
+  // console.log(bookmarkPost);
   // 유저 프사 불러오기
   // 그 꽂아준 uid 걔 하나
-  let writerImg;
-  const getWriterProfileImg = async (writerId) => {
-    // const docRef = doc(dbService, "user", writerId);
-    await getDoc(doc(dbService, "user", writerId)).then((doc) => {
-      writerImg = doc.data().userImg;
-    });
-    return writerImg;
-  };
+  // let writerImg;
+  // const getWriterProfileImg = async (writerId) => {
+  //   // const docRef = doc(dbService, "user", writerId);
+  //   const document = await getDoc(doc(dbService, "user", writerId));
+  //   return document.data().userImg;
+  //   // .then((doc) => {
+  //   //   console.log(doc.data());
+  //   //   return doc.data().userImg;
+  //   // });
+  // };
 
   // 내가 쓴 레시피
   const getMyRecipePost = async (userId) => {
