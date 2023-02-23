@@ -25,7 +25,7 @@ const Slider: NextPage = () => {
   }, [index]);
 
   return (
-    <div className="w-full h-14 relative overflow-hidden">
+    <div className="w-full h-5 relative overflow-hidden">
       {cards.map((item, i) => {
         const indexLeft = mod(index - 1, cards.length);
         const indexRight = mod(index + 1, cards.length);
@@ -36,10 +36,10 @@ const Slider: NextPage = () => {
             classN = "card";
             break;
           case indexLeft:
-            classN = "card transform translate-y-14 transition-all";
+            classN = "card transform -translate-y-28 transition-all";
             break;
           case indexRight:
-            classN = "card transform -translate-y-14 transition-all";
+            classN = "card transform translate-y-28 transition-all";
         }
         return (
           <div key={item.id} className={classN}>
