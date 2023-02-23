@@ -5,16 +5,28 @@ const ChangeSortedBtn = ({
     isBest,
     activeBestBtn,
     inactiveBestBtn,
+    checkedList,
+    checkedList2,
 }: any) => {
     return (
         <div className="w-3/4 flex justify-end items-center mb-[20px]">
             {dataResults ? (
                 <p className=" text-mono100 mr-[280px]">
                     총&nbsp;
-                    <span className="text-red100">{dataResults.length}</span>
+                    <span className="text-red100">
+                        {dataResults?.length && checkedList?.length
+                            ? dataResults.filter((item: any) =>
+                                  item.foodCategory.includes(checkedList)
+                              ).length
+                            : dataResults?.length && checkedList2?.length
+                            ? dataResults.filter((item: any) =>
+                                  item.cookingTime.includes(checkedList2)
+                              ).length
+                            : dataResults.length}
+                    </span>
                     건의 레시피가 기다리고 있어요!
                 </p>
-            ) : null}{" "}
+            ) : null}
             <ul className="flex justify-end">
                 <li
                     className={cls(

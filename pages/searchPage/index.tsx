@@ -15,22 +15,6 @@ import ChangeSortedBtn from "@/components/search/ChangeSortedBtn";
 import SideFoodCate from "@/components/search/SideFoodCate";
 import SideCookingTime from "@/components/search/SideCookingTime";
 
-const categoryList = [
-    { name: "밥&도시락&면" },
-    { name: "국&탕&찌개" },
-    { name: "구이&볶음&찜" },
-    { name: "튀김류" },
-    { name: "베이커리&디저트" },
-    { name: "음료&주류" },
-    { name: "식단&건강관리" },
-];
-const categoryList2 = [
-    { name: "15분이하" },
-    { name: "30분이하" },
-    { name: "1시간이하" },
-    { name: "1시간이상" },
-];
-
 const SearchData: NextPage = () => {
     const router = useRouter();
     const deliverKeyword = router.query.keyword;
@@ -44,7 +28,6 @@ const SearchData: NextPage = () => {
         sessionStorage.setItem("userWatching", "viewCount");
         // state도 똑같은 값으로 업데이트---------------------
         setIsBest("viewCount");
-        // state도 똑같은 값으로 업데이트---------------------
     };
 
     // 최신순
@@ -55,7 +38,6 @@ const SearchData: NextPage = () => {
         sessionStorage.setItem("userWatching", "createdAt");
         // state도 똑같은 값으로 업데이트---------------------
         setIsBest("createdAt");
-        // state도 똑같은 값으로 업데이트---------------------
     };
 
     const [text, setText] = useState(deliverKeyword || "");
@@ -165,6 +147,8 @@ const SearchData: NextPage = () => {
                 isBest={isBest}
                 activeBestBtn={activeBestBtn}
                 inactiveBestBtn={inactiveBestBtn}
+                checkedList={checkedList}
+                checkedList2={checkedList2}
             />
             <div className="w-4/5 border-b border-border mb-[30px]"></div>
             <div className="w-4/5 flex justify-between gap-7 mb-20">
@@ -189,3 +173,19 @@ const SearchData: NextPage = () => {
 };
 
 export default SearchData;
+
+const categoryList = [
+    { name: "밥&도시락&면" },
+    { name: "국&탕&찌개" },
+    { name: "구이&볶음&찜" },
+    { name: "튀김류" },
+    { name: "베이커리&디저트" },
+    { name: "음료&주류" },
+    { name: "식단&건강관리" },
+];
+const categoryList2 = [
+    { name: "15분이하" },
+    { name: "30분이하" },
+    { name: "1시간이하" },
+    { name: "1시간이상" },
+];
