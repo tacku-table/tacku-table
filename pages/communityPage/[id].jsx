@@ -218,41 +218,36 @@ export default function DetailPage(props) {
               <div className="text-[24px] text-mono100 font-medium pt-[30px]">
                 {detailPageWholeData.title}
               </div>
-              <div className="flex justify-end">
-                <div className="text-[16px] text-mono80">
-                  {detailPageWholeData.nickname}
+              <div className="flex justify-between items-center">
+                <div className="h-[60px] flex">
+                  {detailPageWholeData.writterProfileImg === "null" ? (
+                    <Image
+                      className="w-[40px] h-[40px] object-cover object-center float-left m-2"
+                      src={baseImg}
+                      width={780}
+                      height={270}
+                      alt="대표 이미지가 없습니다."
+                    />
+                  ) : (
+                    <Image
+                      src={detailPageWholeData.writterProfileImg}
+                      loader={({ src }) => src}
+                      width={100}
+                      height={100}
+                      alt="writterProfile"
+                      className="w-[40px] h-[40px] object-cover object-center float-left m-2"
+                    />
+                  )}
+
+                  <h3 className="relative top-[15px]">
+                    {detailPageWholeData.nickname}
+                  </h3>
                 </div>
-                <div className="ml-2 text-[16px] text-mono80">
+                <div className="text-[16px] text-mono80">
                   {detailPageWholeData.writtenDate}
                 </div>
-                {/* <span>{detailPageWholeData.writtenDate}</span> */}
               </div>
-
-              <div className="block h-[60px]">
-                {detailPageWholeData.writterProfileImg === "null" ? (
-                  <Image
-                    className="w-[40px] h-[40px] object-cover object-center float-left m-2"
-                    src={baseImg}
-                    width={780}
-                    height={270}
-                    alt="대표 이미지가 없습니다."
-                  />
-                ) : (
-                  <Image
-                    src={detailPageWholeData.writterProfileImg}
-                    loader={({ src }) => src}
-                    width={100}
-                    height={100}
-                    alt="writterProfile"
-                    className="w-[40px] h-[40px] object-cover object-center float-left m-2"
-                  />
-                )}
-
-                <h3 className="relative top-[15px]">
-                  {detailPageWholeData.nickname}
-                </h3>
-                <hr class="h-px my-10 bg-mono50 border-[1px] border-mono50"></hr>
-              </div>
+              <hr class="h-px mt-5 mb-10 bg-mono50 border-[1px] border-mono50"></hr>
               <div className="mt-10 text-center">
                 {/* 대표사진 */}
                 {detailPageWholeData.thumbnail === "" ? (
