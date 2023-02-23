@@ -26,6 +26,9 @@ const RecipeData = ({ dataResults }: any) => {
       router.push(`/detailRecipePage/${id}`);
     }
   };
+  const goToDetails = (id: any) => {
+    router.push(`/detailRecipePage/${id}`);
+  };
   //
 
   return (
@@ -36,7 +39,11 @@ const RecipeData = ({ dataResults }: any) => {
             <div
               key={item.id}
               className="w-[316px] cursor-pointer"
-              onClick={() => goToDetail(item.id)}
+              onClick={() => {
+                item.displayStatus === "회원 공개"
+                  ? goToDetail(item.id)
+                  : goToDetails(item.id);
+              }}
 
               //
             >
