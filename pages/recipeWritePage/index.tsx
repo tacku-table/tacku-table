@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
-import { storage } from "@/config/firebase";
+import { authService, storage } from "@/config/firebase";
 import EditorComponent from "@/components/write/TextEditor";
 import { collection, addDoc } from "firebase/firestore";
 import { dbService } from "../../config/firebase";
@@ -106,6 +106,8 @@ const RecipeWritePage = () => {
     console.log(event.target.value);
     setFunction(event.target.value);
   };
+  
+  const fbUser = authService?.currentUser;
 
   const postNewRecipe = async (event: any) => {
     event.preventDefault();
@@ -121,8 +123,8 @@ const RecipeWritePage = () => {
     const newRecipe = {
       // uid = 레시피 작성자
       uid: storageCurrentUser?.uid,
-      writerNickName: storageCurrentUser?.displayName, // auth.currentUser에 있는 id
-      writerProfileImg: storageCurrentUser?.photoURL,
+      writerNickName: fbUser?.displayName, // auth.currentUser에 있는 id
+      writerProfileImg: fbUser?.photoURL,
       animationTitle: targetTitle,
       foodTitle,
       ingredient,
@@ -218,7 +220,6 @@ const RecipeWritePage = () => {
       console.log("imgDataUrl", imgDataUrl);
       setImgLoading("loading");
       const response = await uploadString(imgRef, imgDataUrl, "data_url");
-      alert("대표사진 업로드 완료!");
       setImgLoading("default");
       downloadUrl = await getDownloadURL(response.ref);
       console.log(downloadUrl);
