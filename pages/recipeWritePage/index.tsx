@@ -106,7 +106,7 @@ const RecipeWritePage = () => {
     console.log(event.target.value);
     setFunction(event.target.value);
   };
-  
+
   const fbUser = authService?.currentUser;
 
   const postNewRecipe = async (event: any) => {

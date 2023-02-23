@@ -15,7 +15,7 @@ import {
 import { dbService } from "@/config/firebase";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import EditorComponent from "../../components/write/textEditor";
+import EditorComponent from "../../components/write/TextEditor";
 import baseImg from "../../public/images/test1.png";
 import profileLoading from "/public/images/loadingImg.png";
 
