@@ -116,7 +116,7 @@ const CommunityTabs = () => {
               >
                 {p.thumbnail === "" ? (
                   <Image
-                    // className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                    className="object-cover aspect-[4/3]" //aspect-ratio 수정
                     src={defaultImg}
                     priority={true}
                     // loader={({ src }) => src}
@@ -126,7 +126,7 @@ const CommunityTabs = () => {
                   />
                 ) : (
                   <Image
-                    // className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                    className="object-cover aspect-[4/3]" //aspect-ratio 수정
                     src={p.thumbnail}
                     priority={true}
                     loader={({ src }) => src}
@@ -135,7 +135,6 @@ const CommunityTabs = () => {
                     alt="community-thumbnail"
                   />
                 )}
-                {/* <div>글아이디:{post.id}</div> */}
                 <div className="pl-5">
                   <Link legacyBehavior href={`/communityPage/${p.id}`}>
                     <a>{p.title}</a>
@@ -161,7 +160,7 @@ const CommunityTabs = () => {
               >
                 {p.thumbnail === "" ? (
                   <Image
-                    // className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                    className="object-cover aspect-[4/3]" //aspect-ratio 수정
                     src={defaultImg}
                     priority={true}
                     // loader={({ src }) => src}
@@ -171,7 +170,7 @@ const CommunityTabs = () => {
                   />
                 ) : (
                   <Image
-                    // className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                    className="object-cover aspect-[4/3]"
                     src={p.thumbnail}
                     priority={true}
                     loader={({ src }) => src}
@@ -180,7 +179,6 @@ const CommunityTabs = () => {
                     alt="community-thumbnail"
                   />
                 )}
-                {/* <div>글아이디:{post.id}</div> */}
                 <div className="pl-5">
                   <Link legacyBehavior href={`/communityPage/${p.id}`}>
                     <a>{p.title}</a>
@@ -206,7 +204,7 @@ const CommunityTabs = () => {
               >
                 {p.thumbnail === "" ? (
                   <Image
-                    // className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                    className="object-cover aspect-[4/3]" //aspect-ratio 수정
                     src={defaultImg}
                     priority={true}
                     // loader={({ src }) => src}
@@ -216,7 +214,7 @@ const CommunityTabs = () => {
                   />
                 ) : (
                   <Image
-                    // className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                    className="object-cover aspect-[4/3]" //aspect-ratio 수정
                     src={p.thumbnail}
                     priority={true}
                     loader={({ src }) => src}
@@ -225,7 +223,6 @@ const CommunityTabs = () => {
                     alt="community-thumbnail"
                   />
                 )}
-                {/* <div>글아이디:{post.id}</div> */}
                 <div className="pl-5">
                   <Link legacyBehavior href={`/communityPage/${p.id}`}>
                     <a>{p.title}</a>
@@ -251,7 +248,7 @@ const CommunityTabs = () => {
               >
                 {p.thumbnail === "" ? (
                   <Image
-                    // className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                    className="object-cover aspect-[4/3]" //aspect-ratio 수정
                     src={defaultImg}
                     priority={true}
                     // loader={({ src }) => src}
@@ -261,7 +258,7 @@ const CommunityTabs = () => {
                   />
                 ) : (
                   <Image
-                    // className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                    className="object-cover aspect-[4/3]" //aspect-ratio 수정
                     src={p.thumbnail}
                     priority={true}
                     loader={({ src }) => src}
@@ -270,7 +267,6 @@ const CommunityTabs = () => {
                     alt="community-thumbnail"
                   />
                 )}
-                {/* <div>글아이디:{post.id}</div> */}
                 <div className="pl-5">
                   <Link legacyBehavior href={`/communityPage/${p.id}`}>
                     <a>{p.title}</a>
