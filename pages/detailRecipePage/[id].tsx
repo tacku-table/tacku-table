@@ -32,7 +32,7 @@ export default function DetailReciptPage(props: any) {
             setStorageCurrentUser(parseUser);
         }
         if (!user) {
-            setStorageCurrentUser("geust");
+            setStorageCurrentUser("guest");
         }
     }, []);
     //----------다경 추가---------------(끝)
@@ -98,7 +98,7 @@ export default function DetailReciptPage(props: any) {
                         <p className="text-2xl font-semibold">
                             {recipeData?.foodTitle}
                         </p>
-                        {storageCurrentUser === "geust" ? null : (
+                        {storageCurrentUser === "guest" ? null : (
                             <p className="w-6 h-6">
                                 <Bookmark
                                     postId={props.postId}

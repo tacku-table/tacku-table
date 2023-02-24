@@ -39,8 +39,8 @@ const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
                 dataResults
                     .filter(
                         (item: any) =>
-                            item.foodCategory.includes(checkedList) ||
-                            item.cookingTime.includes(checkedList2)
+                            checkedList.includes(item.foodCategory) ||
+                            checkedList2.includes(item.cookingTime)
                     )
                     .map((item: any) => {
                         return (
@@ -100,7 +100,7 @@ const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
             ) : dataResults?.length && checkedList?.length ? (
                 dataResults
                     .filter((item: any) =>
-                        item.foodCategory.includes(checkedList)
+                        checkedList.includes(item.foodCategory)
                     )
                     .map((item: any) => {
                         return (
@@ -160,7 +160,7 @@ const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
             ) : dataResults?.length && checkedList2?.length ? (
                 dataResults
                     .filter((item: any) =>
-                        item.cookingTime.includes(checkedList2)
+                        checkedList2.includes(item.cookingTime)
                     )
                     .map((item: any) => {
                         return (
