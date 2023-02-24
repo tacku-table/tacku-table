@@ -49,7 +49,7 @@ const MyPage = () => {
           <div className="flex justify-center items-center space-x-[24px] absolute left-[370px] top-[151px] text-white">
             {userInfo?.userImg === "null" ? (
               <Image
-                className="rounded-md"
+                className="rounded-md object-cover aspect-square"
                 src={defaultImg}
                 width={100}
                 height={100}
@@ -57,7 +57,7 @@ const MyPage = () => {
               />
             ) : (
               <Image
-                className="rounded-md"
+                className="rounded-md object-cover aspect-square"
                 src={userInfo.userImg}
                 priority={true}
                 loader={({ src }) => src}

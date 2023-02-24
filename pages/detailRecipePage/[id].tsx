@@ -16,6 +16,7 @@ import Link from "next/link";
 export default function DetailReciptPage(props: any) {
   //레시피 데이터
   const [recipeData, getRecipeData] = useState<any>("");
+  console.log(recipeData);
   //회원 데이터
   const [userData, setUserData] = useState<any>("");
   const [userFireData, setUserFireData] = useState<any>("");
@@ -31,7 +32,7 @@ export default function DetailReciptPage(props: any) {
       setStorageCurrentUser(parseUser);
     }
     if (!user) {
-      setStorageCurrentUser("geust");
+      setStorageCurrentUser("guest");
     }
   }, []);
   //----------다경 추가---------------(끝)
@@ -79,13 +80,12 @@ export default function DetailReciptPage(props: any) {
     let minute = ("0" + date.getMinutes()).slice(-2); //분 2자리
     return (data = `${year}-${month}-${day} ${hour}:${minute}`);
   };
-
   return (
     <div className="w-full h-full flex flex-col items-center bg-mono40 ">
       <div className=" w-[1180px] my-4 bg-white pb-[131px] pt-[52px] px-[200px]">
         <div className="bg-slate-100 w-full h-[440px] overflow-hidden relative">
           <Image
-            src={`${recipeData.thumbnail}`}
+            src={`${recipeData?.thumbnail}`}
             alt="thumbnail"
             className="image-detail"
             fill
@@ -95,8 +95,8 @@ export default function DetailReciptPage(props: any) {
         </div>
         <div className="flex-col my-5">
           <div className="flex justify-between my-5">
-            <p className="text-2xl font-semibold">{recipeData.foodTitle}</p>
-            {storageCurrentUser === "geust" ? null : (
+            <p className="text-2xl font-semibold">{recipeData?.foodTitle}</p>
+            {storageCurrentUser === "guest" ? null : (
               <p className="w-6 h-6">
                 <Bookmark
                   postId={props.postId}
@@ -124,11 +124,11 @@ export default function DetailReciptPage(props: any) {
                 />
               </svg>
             </span>
-            <p>{recipeData.cookingTime}</p>
+            <p>{recipeData?.cookingTime}</p>
           </div>
           <div className="flex justify-between border-b-2 border-border-500 pb-8 my-5">
-            <p> {recipeData.animationTitle}</p>
-            <p>{recipeData.foodCategory}</p>
+            <p> {recipeData?.animationTitle}</p>
+            <p>{props.targetWholeData.foodCategory.replaceAll("&", "/")}</p>
             <p>{getTimegap()}</p>
           </div>
         </div>
@@ -181,7 +181,7 @@ export default function DetailReciptPage(props: any) {
           <p className=" border-b-2 border-border-500 pb-3 mt-12 font-semibold">
             재료
           </p>
-          <p className="mt-8"> {recipeData.ingredient}</p>
+          <p className="mt-8"> {recipeData?.ingredient}</p>
         </div>
         <div className=" border-b-2 border-border-500 pb-3 mt-16 mb-8 font-semibold">
           <p>레시피</p>
@@ -227,6 +227,9 @@ export const getServerSideProps: any = async (context: any) => {
   //`undefined` cannot be serialized as JSON. Please use `null` or omit this value
   // 해결 : or연산자로 null 을 달아줌
   return {
-    props: { targetWholeData: targetWholeData || null, postId: postId || null },
+    props: {
+      targetWholeData: targetWholeData || null,
+      postId: postId || null,
+    },
   };
 };
