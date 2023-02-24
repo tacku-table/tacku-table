@@ -115,20 +115,20 @@ const SearchData: NextPage = () => {
 
     useEffect(() => {
         const result = sessionStorage.getItem("userWatching");
-        const filteredResults = JSON.parse(
-            sessionStorage.getItem("filteredData") || ""
-        );
+        // const filteredResults = JSON.parse(
+        //     sessionStorage.getItem("filteredData") || ""
+        // );
 
         if (result) {
             setIsBest(result);
         } else {
             setIsBest("createdAt");
         }
-        if (filteredResults) {
-            setFiltered(filteredResults);
-        } else {
-            setFiltered("");
-        }
+        // if (filteredResults) {
+        //     setFiltered(filteredResults);
+        // } else {
+        //     setFiltered("");
+        // }
 
         getList();
     }, [isBest]);
