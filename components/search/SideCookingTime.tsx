@@ -1,4 +1,11 @@
-const SideCookingTime = ({ categoryList2, onCheckedItem2 }: any) => {
+const categoryList2 = [
+    { name: "15분이하" },
+    { name: "30분이하" },
+    { name: "1시간이하" },
+    { name: "1시간이상" },
+];
+
+const SideCookingTime = ({ onCheckedItem2 }: any) => {
     return (
         <div className="flex flex-col mt-7">
             <h4 className="mb-4 text-sm text-mono80">조리 시간</h4>
