@@ -1,27 +1,27 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { FieldErrors, useForm } from "react-hook-form";
 
 const SearchRecipeBar: NextPage = () => {
-    const [text, setText] = useState("");
-    const searchTextHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setText(e.target.value);
-    };
     const router = useRouter();
-    const deliverKeyword = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const { register, handleSubmit, getValues } = useForm();
+    const onValid = () => {
         router.push({
             pathname: "/searchPage",
-            query: { keyword: text },
+            query: { keyword: getValues("text") },
         });
     };
-
+    const onInValid = (errors: FieldErrors) => {
+        console.log(errors);
+    };
     return (
-        <form className="relative mt-4 mb-24 flex" onSubmit={deliverKeyword}>
+        <form
+            onSubmit={handleSubmit(onValid, onInValid)}
+            className="relative mt-4 mb-24 flex"
+        >
             <input
+                {...register("text")}
                 type="text"
-                value={text}
-                onChange={searchTextHandler}
                 className="w-[300px] h-[50px] text-sm font-medium pl-7 focus:outline-none rounded-[5px] rounded-r-none border border-slate-300"
                 placeholder="하울의 움직이는 성 베이컨계란요리"
             ></input>
