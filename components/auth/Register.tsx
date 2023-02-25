@@ -1,14 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { authService, dbService } from "@/config/firebase";
 import {
     createUserWithEmailAndPassword,
     signOut,
     updateProfile,
 } from "firebase/auth";
-import { emailRegex, pwRegex } from "@/util";
+import { cls, emailRegex, pwRegex } from "@/util";
 import { setDoc, doc } from "firebase/firestore";
 import { useForm } from "react-hook-form";
 import { FieldErrors } from "react-hook-form/dist/types";
+import ShowPwBtn from "../button/ShowPwBtn";
+import HidePwBtn from "../button/HidePwBtn";
 
 interface RegisterForm {
     email: string;
@@ -34,6 +36,7 @@ const RegisterPage = () => {
     const onInValid = (errors: FieldErrors) => {
         console.log(errors);
     };
+    const [showPw, setShowPw] = useState(false);
 
     // 회원가입
     const signUp = () => {
@@ -90,7 +93,7 @@ const RegisterPage = () => {
         <div className="w-[420px] mx-auto mb-20 text-baseText">
             <form
                 onSubmit={handleSubmit(onValid, onInValid)}
-                className="flex flex-col"
+                className="flex flex-col relative"
             >
                 <h2 className="text-3xl font-bold self-center">회원가입</h2>
                 <label htmlFor="email" className="font-semibold mt-4">
@@ -115,44 +118,61 @@ const RegisterPage = () => {
                 <label htmlFor="pw" className="font-semibold mt-4">
                     비밀번호
                 </label>
-                <input
-                    {...register("pw", {
-                        required: "비밀번호를 입력하세요",
-                        minLength: {
-                            message:
-                                "영문, 숫자, 특수기호 포함 최소 8자이상 입력해주세요",
-                            value: 8,
-                        },
-                        pattern: {
-                            value: pwRegex,
-                            message: "영문, 숫자, 특수기호를 포함해야 합니다",
-                        },
-                    })}
-                    id="pw"
-                    type="password"
-                    placeholder="비밀번호 설정"
-                    className="register-input"
-                ></input>
-                <p className="mt-[5px] text-red100 text-xs">
+                <div className="relative">
+                    <input
+                        {...register("pw", {
+                            required: "비밀번호를 입력하세요",
+                            minLength: {
+                                message:
+                                    "영문, 숫자, 특수기호 포함 최소 8자이상 입력해주세요",
+                                value: 8,
+                            },
+                            pattern: {
+                                value: pwRegex,
+                                message:
+                                    "영문, 숫자, 특수기호를 포함해야 합니다",
+                            },
+                        })}
+                        id="pw"
+                        type={showPw ? "text" : "password"}
+                        placeholder="비밀번호 설정"
+                        className="register-input w-full"
+                    ></input>
+                    <div className="absolute top-[18px] right-7">
+                        <ShowPwBtn showPw={showPw} setShowPw={setShowPw} />
+                        <HidePwBtn showPw={showPw} setShowPw={setShowPw} />
+                    </div>
+                </div>
+                <p
+                    className={cls(
+                        errors.pw ? "mt-[5px] text-red100 text-xs" : "mt-[19px]"
+                    )}
+                >
                     {errors.pw?.message}
                 </p>
                 <label htmlFor="pwConfirm" className="font-semibold mt-4">
                     비밀번호 확인
                 </label>
-                <input
-                    {...register("pwConfirm", {
-                        required: "비밀번호 확인란을 입력하세요",
-                        validate: {
-                            notSamePw: (value) =>
-                                value === getValues("pw") ||
-                                "비밀번호 입력란과 동일하게 입력하세요",
-                        },
-                    })}
-                    id="pwConfirm"
-                    type="password"
-                    placeholder="비밀번호 확인"
-                    className="register-input"
-                ></input>
+                <div className="relative">
+                    <input
+                        {...register("pwConfirm", {
+                            required: "비밀번호 확인란을 입력하세요",
+                            validate: {
+                                notSamePw: (value) =>
+                                    value === getValues("pw") ||
+                                    "비밀번호 입력란과 동일하게 입력하세요",
+                            },
+                        })}
+                        id="pwConfirm"
+                        type={showPw ? "text" : "password"}
+                        placeholder="비밀번호 확인"
+                        className="register-input w-full"
+                    ></input>
+                    <div className="absolute top-[18px] right-7">
+                        <ShowPwBtn showPw={showPw} setShowPw={setShowPw} />
+                        <HidePwBtn showPw={showPw} setShowPw={setShowPw} />
+                    </div>
+                </div>
                 <p className="mt-[5px] text-red100 text-xs">
                     {errors.pwConfirm?.message}
                 </p>
@@ -184,9 +204,9 @@ const RegisterPage = () => {
                         type="checkbox"
                     />
                     <label htmlFor="terms">
-                        <span className="ml-1 text-blue-500">이용약관</span>
+                        <span className="ml-1 text-blue100">이용약관</span>
                         과&nbsp;
-                        <span className="ml-1 text-blue-500">
+                        <span className="ml-1 text-blue100">
                             개인정보취급방침
                         </span>
                         에&nbsp;동의합니다.
