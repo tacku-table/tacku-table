@@ -14,13 +14,21 @@ import RecipeData from "@/components/search/RecipeData";
 import ChangeSortedBtn from "@/components/search/ChangeSortedBtn";
 import SideFoodCate from "@/components/search/SideFoodCate";
 import SideCookingTime from "@/components/search/SideCookingTime";
+import { FieldErrors, useForm } from "react-hook-form";
 
 const SearchData: NextPage = () => {
     const router = useRouter();
     const deliverKeyword = router.query.keyword;
-
+    const [text, setText] = useState(deliverKeyword || "");
     const [isBest, setIsBest] = useState("");
     const [filtered, setFiltered] = useState<string[] | "">("");
+    const { register, handleSubmit, getValues } = useForm();
+    const onValid = () => {
+        setText(getValues("searchText"));
+    };
+    const onInValid = (errors: FieldErrors) => {
+        console.log(errors);
+    };
 
     // 인기순
     const activeBestBtn = () => {
@@ -39,14 +47,6 @@ const SearchData: NextPage = () => {
         sessionStorage.setItem("userWatching", "createdAt");
         // state도 똑같은 값으로 업데이트---------------------
         setIsBest("createdAt");
-    };
-
-    const [text, setText] = useState(deliverKeyword || "");
-    const searchTextHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setText(e.target.value);
-    };
-    const submitHandler = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
     };
 
     // 카테고리필터링(음식종류)
@@ -135,11 +135,13 @@ const SearchData: NextPage = () => {
 
     return (
         <div className="w-full mt-20 flex flex-col justify-center items-center">
-            <form className="relative mt-4 mb-16 flex" onSubmit={submitHandler}>
+            <form
+                onSubmit={handleSubmit(onValid, onInValid)}
+                className="relative mt-4 mb-16 flex"
+            >
                 <input
+                    {...register("searchText")}
                     type="text"
-                    value={text}
-                    onChange={searchTextHandler}
                     className="w-[300px] h-[50px] text-sm font-medium pl-7 focus:outline-none rounded-[5px] rounded-r-none border border-slate-300"
                     placeholder="하울의 움직이는 성 베이컨계란요리"
                 ></input>
