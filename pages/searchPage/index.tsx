@@ -141,7 +141,7 @@ const SearchData: NextPage = () => {
                 ></input>
                 <button
                     type="submit"
-                    className="bg-main rounded-[5px] rounded-l-none w-[50px] h-[50px] text-center"
+                    className="bg-brand100 rounded-[5px] rounded-l-none w-[50px] h-[50px] text-center"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -167,7 +167,7 @@ const SearchData: NextPage = () => {
                 checkedList={checkedList}
                 checkedList2={checkedList2}
             />
-            <div className="w-4/5 border-b border-border mb-[30px]"></div>
+            <div className="w-4/5 border-b border-mono50 mb-[30px]"></div>
             <div className="w-4/5 flex justify-between gap-7 mb-20">
                 <div className="flex flex-col">
                     <SideFoodCate

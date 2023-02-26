@@ -96,7 +96,7 @@ const ClassifiedRecipe: NextPage = () => {
                 ></input>
                 <button
                     type="submit"
-                    className="bg-main rounded-[5px] rounded-l-none w-[50px] h-[50px] text-center"
+                    className="bg-brand100 rounded-[5px] rounded-l-none w-[50px] h-[50px] text-center"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -120,7 +120,7 @@ const ClassifiedRecipe: NextPage = () => {
                 activeBestBtn={activeBestBtn}
                 inactiveBestBtn={inactiveBestBtn}
             />
-            <div className="w-4/5 border-b border-border mb-[30px]"></div>
+            <div className="w-4/5 border-b border-mono50 mb-[30px]"></div>
             <div className="w-4/5 flex justify-between mb-20">
                 <div className="bg-mono30 rounded-[3px] w-auto h-9 px-6 mr-7 text-sm flex items-center text-brand100">
                     {router.query.cate?.toString().replaceAll("&", "/")}

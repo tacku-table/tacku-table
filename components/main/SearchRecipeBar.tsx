@@ -27,7 +27,7 @@ const SearchRecipeBar: NextPage = () => {
             ></input>
             <button
                 type="submit"
-                className="bg-main rounded-[5px] rounded-l-none w-[50px] h-[50px] text-center"
+                className="bg-brand100 rounded-[5px] rounded-l-none w-[50px] h-[50px] text-center"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"

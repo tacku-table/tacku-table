@@ -30,7 +30,7 @@ const Header = () => {
     }, []);
 
     return (
-        <div className="fixed top-0 z-50 w-full h-20 px-24 py-7 bg-white border-b-[1.5px] border-border flex justify-between items-center text-sm">
+        <div className="fixed top-0 z-50 w-full h-20 px-24 py-7 bg-white border-b-[1.5px] border-mono50 flex justify-between items-center text-sm">
             <ul className="flex justify-center items-center">
                 <li className="header-title">
                     <Link href="/mainPage">

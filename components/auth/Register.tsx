@@ -90,7 +90,7 @@ const RegisterPage = () => {
     }, []);
 
     return (
-        <div className="w-[420px] mx-auto mb-20 text-baseText">
+        <div className="w-[420px] mx-auto mb-20 text-mono100">
             <form
                 onSubmit={handleSubmit(onValid, onInValid)}
                 className="flex flex-col relative"
@@ -195,8 +195,8 @@ const RegisterPage = () => {
                 <p className="mt-[5px] text-red100 text-xs">
                     {errors.nickname?.message}
                 </p>
-                <div className="border border-border mt-7"></div>
-                <div className="flex text-grayText text-xs mt-2">
+                <div className="border border-mono50 mt-7"></div>
+                <div className="flex text-mono80 text-xs mt-2">
                     <input
                         {...register("checkbox", {
                             required: "동의하셔야 가입가능합니다",
@@ -217,7 +217,7 @@ const RegisterPage = () => {
                 </p>
                 <button
                     type="submit"
-                    className="bg-main text-white h-[45px] mt-10"
+                    className="bg-brand100 text-white h-[45px] mt-10"
                 >
                     회원가입
                 </button>
