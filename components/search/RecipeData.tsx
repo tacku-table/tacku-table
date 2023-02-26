@@ -46,7 +46,7 @@ const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
                         return (
                             <div
                                 key={item.id}
-                                className="w-[316px] cursor-pointer"
+                                className="w-[316px] cursor-pointer inline-block"
                                 onClick={() => {
                                     item.displayStatus === "회원 공개"
                                         ? goToDetail(item.id)
@@ -106,7 +106,7 @@ const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
                         return (
                             <div
                                 key={item.id}
-                                className="w-[316px] cursor-pointer"
+                                className="w-[316px] cursor-pointer inline-block"
                                 onClick={() => {
                                     item.displayStatus === "회원 공개"
                                         ? goToDetail(item.id)
@@ -166,7 +166,7 @@ const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
                         return (
                             <div
                                 key={item.id}
-                                className="w-[316px] cursor-pointer"
+                                className="w-[316px] cursor-pointer inline-block"
                                 onClick={() => {
                                     item.displayStatus === "회원 공개"
                                         ? goToDetail(item.id)

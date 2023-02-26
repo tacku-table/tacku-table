@@ -3,13 +3,7 @@ import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import Fuse from "fuse.js";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import {
-    ChangeEvent,
-    FormEvent,
-    useCallback,
-    useEffect,
-    useState,
-} from "react";
+import { useCallback, useEffect, useState } from "react";
 import RecipeData from "@/components/search/RecipeData";
 import ChangeSortedBtn from "@/components/search/ChangeSortedBtn";
 import SideFoodCate from "@/components/search/SideFoodCate";
