@@ -4,20 +4,14 @@ import { useRouter } from "next/router";
 // 전체레시피불러오기
 const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
     //회원아니면 alert뜨게함. 추가 로직
-    const [storageCurrentUser, setStorageCurrentUser]: any = useState("");
+    const [storageCurrentUser, setStorageCurrentUser] = useState("");
 
     // 상세페이지이동
     const router = useRouter();
-    const goToDetail = (id: any) => {
-        if (storageCurrentUser === "guest") {
-            alert("멤버공개 레시피글입니다. 로그인을 진행해주세요.");
-            return false;
-        } else {
-            router.push(`/detailRecipePage/${id}`);
-        }
-    };
-    const goToDetails = (id: any) => {
-        router.push(`/detailRecipePage/${id}`);
+    const goToDetail = (item: any) => {
+        item.displayStatus === "회원 공개" && storageCurrentUser === "guest"
+            ? alert("멤버공개 레시피글입니다. 로그인을 진행해주세요.")
+            : router.push(`/detailRecipePage/${item.id}`);
     };
 
     useEffect(() => {
@@ -48,9 +42,7 @@ const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
                                 key={item.id}
                                 className="w-[316px] cursor-pointer inline-block"
                                 onClick={() => {
-                                    item.displayStatus === "회원 공개"
-                                        ? goToDetail(item.id)
-                                        : goToDetails(item.id);
+                                    goToDetail(item);
                                 }}
                             >
                                 <div className="w-full h-[188px] overflow-hidden mx-auto relative">
@@ -108,9 +100,7 @@ const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
                                 key={item.id}
                                 className="w-[316px] cursor-pointer inline-block"
                                 onClick={() => {
-                                    item.displayStatus === "회원 공개"
-                                        ? goToDetail(item.id)
-                                        : goToDetails(item.id);
+                                    goToDetail(item);
                                 }}
                             >
                                 <div className="w-full h-[188px] overflow-hidden mx-auto relative">
@@ -168,9 +158,7 @@ const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
                                 key={item.id}
                                 className="w-[316px] cursor-pointer inline-block"
                                 onClick={() => {
-                                    item.displayStatus === "회원 공개"
-                                        ? goToDetail(item.id)
-                                        : goToDetails(item.id);
+                                    goToDetail(item);
                                 }}
                             >
                                 <div className="w-full h-[188px] overflow-hidden mx-auto relative">
@@ -224,9 +212,7 @@ const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
                             key={item.id}
                             className="w-[316px] cursor-pointer"
                             onClick={() => {
-                                item.displayStatus === "회원 공개"
-                                    ? goToDetail(item.id)
-                                    : goToDetails(item.id);
+                                goToDetail(item);
                             }}
                         >
                             <div className="w-full h-[188px] overflow-hidden mx-auto relative">
