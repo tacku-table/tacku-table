@@ -13,10 +13,13 @@ import { FieldErrors, useForm } from "react-hook-form";
 const SearchData: NextPage = () => {
     const router = useRouter();
     const deliverKeyword = router.query.keyword;
-    const [text, setText] = useState(deliverKeyword || "");
+    const [text, setText] = useState(deliverKeyword?.toString() || "");
     const [isBest, setIsBest] = useState("");
     const [filteredFood, setFilteredFood] = useState<string[] | "">("");
     const [filteredTime, setFilteredTime] = useState<string[] | "">("");
+    const [checkedList, setCheckedList] = useState<string[]>([]);
+    const [checkedList2, setCheckedList2] = useState<string[]>([]);
+    const [currentItems, setCurrentItems] = useState<RecipeProps[]>([]);
 
     const { register, handleSubmit, getValues } = useForm();
     const onValid = () => {
@@ -39,7 +42,6 @@ const SearchData: NextPage = () => {
     };
 
     // 카테고리필터링(음식종류)
-    const [checkedList, setCheckedList] = useState<Array<string>>([]);
 
     const onCheckedItem = useCallback(
         (checked: boolean, newItem: string) => {
@@ -62,8 +64,6 @@ const SearchData: NextPage = () => {
         [checkedList]
     );
     // 카테고리필터링(조리시간)
-    const [checkedList2, setCheckedList2] = useState<Array<string>>([]);
-
     const onCheckedItem2 = useCallback(
         (checked: boolean, newItem: string) => {
             if (checked) {
@@ -88,8 +88,6 @@ const SearchData: NextPage = () => {
     );
 
     // 전체목록불러오기
-    const [currentItems, setCurrentItems] = useState<RecipeProps[]>([]);
-
     const getList = async () => {
         const items = query(
             collection(dbService, "recipe"),
@@ -108,7 +106,6 @@ const SearchData: NextPage = () => {
         keys: ["animationTitle", "foodTitle", "content"],
         includeScore: true,
     });
-    // @ts-ignore
     const results = fuse.search(text);
     const dataResults = text
         ? results.map((recipe) => recipe.item)

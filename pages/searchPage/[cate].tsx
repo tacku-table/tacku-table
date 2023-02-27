@@ -13,6 +13,9 @@ const ClassifiedRecipe: NextPage = () => {
     const [isBest, setIsBest] = useState("");
     const [text, setText] = useState("");
     const { register, handleSubmit, getValues } = useForm();
+    const [currentItems, setCurrentItems] = useState<RecipeProps[]>([]);
+    const router = useRouter();
+
     const onValid = () => {
         setText(getValues("searchText"));
     };
@@ -33,9 +36,6 @@ const ClassifiedRecipe: NextPage = () => {
     };
 
     // 목록불러오기
-    const [currentItems, setCurrentItems] = useState<RecipeProps[]>([]);
-
-    const router = useRouter();
 
     const getList = async () => {
         const items = query(

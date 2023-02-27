@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { FieldErrors } from "react-hook-form/dist/types";
 import ShowPwBtn from "../button/ShowPwBtn";
 import HidePwBtn from "../button/HidePwBtn";
+import { toast, ToastContainer } from "react-toastify";
 
 interface RegisterForm {
     email: string;
@@ -37,6 +38,8 @@ const RegisterPage = () => {
         console.log(errors);
     };
     const [showPw, setShowPw] = useState(false);
+    // 성공 알람 ( 초록색 창 )
+    const success = () => toast.success("Success!");
 
     // 회원가입
     const signUp = () => {
@@ -58,7 +61,8 @@ const RegisterPage = () => {
                     displayName: getValues("nickname"),
                     photoURL: "null",
                 });
-                alert("회원가입성공! 로그인해주세요!");
+                // alert("회원가입성공! 로그인해주세요!");
+                success();
                 signOut(authService).then(() => {
                     sessionStorage.clear();
                     location.href = "/loginPage";
@@ -91,6 +95,7 @@ const RegisterPage = () => {
 
     return (
         <div className="w-[420px] mx-auto mb-20 text-mono100">
+            <ToastContainer position="top-right" autoClose={5000} />
             <form
                 onSubmit={handleSubmit(onValid, onInValid)}
                 className="flex flex-col relative"
