@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
     // 회원아니면 alert뜨게함. 추가 로직
     const [storageCurrentUser, setStorageCurrentUser] = useState("");
+    console.log(storageCurrentUser);
 
     // 상세페이지이동
     const router = useRouter();
@@ -18,13 +19,13 @@ const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
         const user = sessionStorage.getItem("User") || "";
         if (user) {
             const parseUser = JSON.parse(user);
-            setStorageCurrentUser(parseUser.uid);
+            return setStorageCurrentUser(parseUser.uid);
         }
         setStorageCurrentUser("guest");
-    }, []);
+    }, [storageCurrentUser]);
 
     return (
-        <div className="grid grid-cols-3 gap-5 gap-y-14">
+        <div className="grid grid-cols-3 gap-x-5 gap-y-14">
             {dataResults?.length &&
             checkedList?.length &&
             checkedList2?.length ? (
@@ -38,12 +39,21 @@ const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
                         return (
                             <div
                                 key={item.id}
-                                className="w-[316px] cursor-pointer inline-block"
+                                className="aspect-[1/0.7] cursor-pointer"
                                 onClick={() => {
                                     goToDetail(item);
                                 }}
                             >
-                                <div className="w-full h-[188px] overflow-hidden mx-auto relative">
+                                <div className="h-[188px] overflow-hidden mx-auto relative">
+                                    <picture>
+                                        <img
+                                            src={`${item.thumbnail}`}
+                                            className="aspect-[1/0.7] object-cover rounded-sm"
+                                            alt="recipe picture"
+                                            width={316}
+                                            height={188}
+                                        />
+                                    </picture>
                                     {item.displayStatus === "회원 공개" && (
                                         <>
                                             <div className="w-full h-full bg-slate-50 opacity-60 absolute top-0 left-0"></div>
@@ -63,15 +73,6 @@ const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
                                             </svg>
                                         </>
                                     )}
-                                    <picture>
-                                        <img
-                                            src={`${item.thumbnail}`}
-                                            className="w-full h-full object-cover rounded-sm"
-                                            alt="recipe picture"
-                                            width={316}
-                                            height={188}
-                                        />
-                                    </picture>
                                 </div>
                                 <ul className="text-sm text-slate-500 space-x-4 mt-1 flex">
                                     <li className="text-ellipsis overflow-hidden whitespace-nowrap text-blue100">
@@ -96,12 +97,21 @@ const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
                         return (
                             <div
                                 key={item.id}
-                                className="w-[316px] cursor-pointer inline-block"
+                                className="aspect-[1/0.7] cursor-pointer"
                                 onClick={() => {
                                     goToDetail(item);
                                 }}
                             >
-                                <div className="w-full h-[188px] overflow-hidden mx-auto relative">
+                                <div className="h-[188px] overflow-hidden mx-auto relative">
+                                    <picture>
+                                        <img
+                                            src={`${item.thumbnail}`}
+                                            className="aspect-[1/0.7] object-cover rounded-sm"
+                                            alt="recipe picture"
+                                            width={316}
+                                            height={188}
+                                        />
+                                    </picture>
                                     {item.displayStatus === "회원 공개" && (
                                         <>
                                             <div className="w-full h-full bg-slate-50 opacity-60 absolute top-0 left-0"></div>
@@ -121,15 +131,6 @@ const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
                                             </svg>
                                         </>
                                     )}
-                                    <picture>
-                                        <img
-                                            src={`${item.thumbnail}`}
-                                            className="w-full h-full object-cover rounded-sm"
-                                            alt="recipe picture"
-                                            width={316}
-                                            height={188}
-                                        />
-                                    </picture>
                                 </div>
                                 <ul className="text-sm text-slate-500 space-x-4 mt-1 flex">
                                     <li className="text-ellipsis overflow-hidden whitespace-nowrap text-blue100">
@@ -154,12 +155,21 @@ const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
                         return (
                             <div
                                 key={item.id}
-                                className="w-[316px] cursor-pointer inline-block"
+                                className="aspect-[1/0.7] cursor-pointer"
                                 onClick={() => {
                                     goToDetail(item);
                                 }}
                             >
-                                <div className="w-full h-[188px] overflow-hidden mx-auto relative">
+                                <div className="h-[188px] overflow-hidden mx-auto relative">
+                                    <picture>
+                                        <img
+                                            src={`${item.thumbnail}`}
+                                            className="aspect-[1/0.7] object-cover rounded-sm"
+                                            alt="recipe picture"
+                                            width={316}
+                                            height={188}
+                                        />
+                                    </picture>
                                     {item.displayStatus === "회원 공개" && (
                                         <>
                                             <div className="w-full h-full bg-slate-50 opacity-60 absolute top-0 left-0"></div>
@@ -179,15 +189,6 @@ const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
                                             </svg>
                                         </>
                                     )}
-                                    <picture>
-                                        <img
-                                            src={`${item.thumbnail}`}
-                                            className="w-full h-full object-cover rounded-sm"
-                                            alt="recipe picture"
-                                            width={316}
-                                            height={188}
-                                        />
-                                    </picture>
                                 </div>
                                 <ul className="text-sm text-slate-500 space-x-4 mt-1 flex">
                                     <li className="text-ellipsis overflow-hidden whitespace-nowrap text-blue100">
@@ -208,15 +209,24 @@ const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
                     return (
                         <div
                             key={item.id}
-                            className="w-[316px] cursor-pointer"
+                            className="aspect-[1/0.7] cursor-pointer"
                             onClick={() => {
                                 goToDetail(item);
                             }}
                         >
                             <div className="w-full h-[188px] overflow-hidden mx-auto relative">
+                                <picture>
+                                    <img
+                                        src={`${item.thumbnail}`}
+                                        className="aspect-[1/0.7] object-cover rounded-sm"
+                                        alt="recipe picture"
+                                        width={316}
+                                        height={188}
+                                    />
+                                </picture>
                                 {item.displayStatus === "회원 공개" && (
                                     <>
-                                        <div className="w-full h-full bg-slate-50 opacity-60 absolute top-0 left-0"></div>
+                                        <div className="w-full h-full aspect-[1/0.7] bg-slate-50 opacity-60 absolute top-0 left-0"></div>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             fill="none"
@@ -233,15 +243,6 @@ const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
                                         </svg>
                                     </>
                                 )}
-                                <picture>
-                                    <img
-                                        src={`${item.thumbnail}`}
-                                        className="w-full h-full object-cover rounded-sm"
-                                        alt="recipe picture"
-                                        width={316}
-                                        height={188}
-                                    />
-                                </picture>
                             </div>
                             <ul className="text-sm text-slate-500 space-x-4 mt-1 flex">
                                 <li className="text-ellipsis overflow-hidden whitespace-nowrap text-blue100">
