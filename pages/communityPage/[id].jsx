@@ -13,7 +13,7 @@ import {
     updateDoc,
 } from "firebase/firestore";
 import { dbService } from "@/config/firebase";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import EditorComponent from "../../components/write/TextEditor";
 import baseImg from "../../public/images/test1.png";
@@ -21,6 +21,7 @@ import profileLoading from "/public/images/loadingImg.png";
 
 import Image from "next/image";
 import { convertTimestamp } from "../../util";
+import { authService } from "../../config/firebase";
 
 export default function DetailPage(props) {
     const [detailPageWholeData, setDetailPageWholeData] = useState({});
@@ -32,6 +33,7 @@ export default function DetailPage(props) {
     const [targetIndex, setTargetIndex] = useState("");
     const [targetIsEdit, setTargetIsEdit] = useState("");
     const [commentWriterNickName, setCommentWriterNickName] = useState("");
+    const [commentProfile, setCommentProfile] = useState("");
     const router = useRouter();
     //여기 게시글
     const [editPostTitle, setEditPostTitle] = useState(
@@ -43,10 +45,17 @@ export default function DetailPage(props) {
 
     useEffect(() => {
         const sessionStorageUser = sessionStorage.getItem("User") || "";
+
         if (sessionStorageUser) {
             const parsingUser = JSON.parse(sessionStorageUser);
+            if (authService.currentUser) {
+                console.log(
+                    "실시간 유저 정보:",
+                    authService.currentUser.photoURL
+                );
+                setCommentProfile(authService.currentUser.photoURL);
+            }
             setUid(parsingUser?.uid);
-            // console.log(parsingUser?.displayName);
             setCommentWriterNickName(parsingUser?.displayName);
         }
         if (!sessionStorageUser) {
@@ -57,6 +66,8 @@ export default function DetailPage(props) {
         setDetailPageWholeData(props.targetWholeData);
         getWholeComments();
     }, []);
+
+    console.log("commentProfile:", commentProfile);
 
     // 댓글 get
     let commentWholeData = [];
@@ -136,6 +147,7 @@ export default function DetailPage(props) {
             comment,
             writterNickName: commentWriterNickName,
             writtenDate: dateString,
+            writterProfileImg: commentProfile,
         };
         await addDoc(collection(dbService, "comments"), newComment);
         getWholeComments();
@@ -346,13 +358,29 @@ export default function DetailPage(props) {
                                                 </div>
                                             ) : (
                                                 <div>
-                                                    <Image
-                                                        className="w-[40px] h-[40px] object-cover object-center float-left m-2"
-                                                        src={baseImg}
-                                                        width={780}
-                                                        height={270}
-                                                        alt="대표 이미지가 없습니다."
-                                                    />
+                                                    {item.writterProfileImg ===
+                                                    "null" ? (
+                                                        <Image
+                                                            className="w-[40px] h-[40px] object-cover object-center float-left m-2"
+                                                            src={baseImg}
+                                                            width={780}
+                                                            height={270}
+                                                            alt="대표 이미지가 없습니다."
+                                                        />
+                                                    ) : (
+                                                        <Image
+                                                            className="w-[40px] h-[40px] object-cover object-center float-left m-2"
+                                                            src={
+                                                                item.writterProfileImg
+                                                            }
+                                                            loader={({ src }) =>
+                                                                src
+                                                            }
+                                                            width={780}
+                                                            height={270}
+                                                            alt="대표 이미지가 없습니다."
+                                                        />
+                                                    )}
 
                                                     <div>
                                                         <span className="text-[12px]">
@@ -426,7 +454,7 @@ export default function DetailPage(props) {
                     ) : (
                         <div className="w-full text-center mt-5">
                             <input
-                                className="border-mono80 border rounded-[2px] h-[90px] w-5/6 p3"
+                                className="border-mono80 border rounded-[2px] h-[90px] w-5/6 p-3"
                                 placeholder=" 타쿠의식탁 커뮤니티가 훈훈해지는 댓글을 남겨주세요."
                                 type="text"
                                 value={comment}

@@ -128,7 +128,7 @@ export default function DetailReciptPage(props: any) {
                         </span>
                         <p>{recipeData?.cookingTime}</p>
                     </div>
-                    <div className="flex justify-between border-b-2 border-mono50-500 pb-8 my-5">
+                    <div className="flex justify-between border-b-2 border-border-500 pb-8 my-5">
                         <p> {recipeData?.animationTitle}</p>
                         <p>
                             {props.targetWholeData.foodCategory.replaceAll(
@@ -188,12 +188,12 @@ export default function DetailReciptPage(props: any) {
                     </div>
                 </div>
                 <div>
-                    <p className=" border-b-2 border-mono50-500 pb-3 mt-12 font-semibold">
+                    <p className=" border-b-2 border-border-500 pb-3 mt-12 font-semibold">
                         재료
                     </p>
                     <p className="mt-8"> {recipeData?.ingredient}</p>
                 </div>
-                <div className=" border-b-2 border-mono50-500 pb-3 mt-16 mb-8 font-semibold">
+                <div className=" border-b-2 border-border-500 pb-3 mt-16 mb-8 font-semibold">
                     <p>레시피</p>
                 </div>
                 <div className="w-4/5 m-auto text-center items-center">
@@ -201,9 +201,9 @@ export default function DetailReciptPage(props: any) {
                         dangerouslySetInnerHTML={{ __html: recipeData.content }}
                     />
                 </div>
-                <div className=" flex justify-between items-center border-b-2 border-mono50-500 pb-4 mt-11 mb-8 ">
+                <div className=" flex justify-between items-center border-b-2 border-border-500 pb-4 mt-11 mb-8 ">
                     <div>조회수 : {views}</div>
-                    <TopButton className="border-2 border-mono50-500 px-4 py-2 " />
+                    <TopButton className="border-2 border-border-500 px-4 py-2 " />
                 </div>
             </div>
         </div>

@@ -24,6 +24,7 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
     const [commentPost, setCommentPost] = useState([]);
     const [bookmarkPost, setBookmarkPost] = useState([]);
     const [storageCurrentUser, setStorageCurrentUser] = useState({});
+    const [communityList, setCommunityList] = useState([]);
 
     const getCurrentUserInfo = async (id) => {
         await getDoc(doc(dbService, "user", id)).then((doc) => {
@@ -46,6 +47,7 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
 
     // const userId = userInfo.userId;
     useEffect(() => {
+        getCommunityList();
         getMyRecipePost(userInfo.userId);
         getMyCommunityPost(userInfo.userId);
         getCommunityComment(userInfo.userId);
@@ -69,6 +71,27 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
     // bookmarkPost 컬렉션 통째로 가져오기
     // 하위문서로 접근 recipeid
     // 레시피 uid === user 컬렉션 doc.id
+
+    const getCommunityList = () => {
+        const communityRef = collection(dbService, "communityPost");
+        const q = query(communityRef, orderBy("writtenDate", "desc"));
+        onSnapshot(q, (snapshot) => {
+            const newPosts = snapshot.docs.map((doc) => {
+                const newPost = {
+                    id: doc.id,
+                    category: doc.data().category,
+                    title: doc.data().title,
+                    editorText: doc.data().editorText,
+                    writtenDate: convertTimestamp(doc.data().writtenDate),
+                    thumbnail: doc.data().thumbnail,
+                    nickname: doc.data().nickname,
+                };
+                return newPost;
+            });
+            setCommunityList(newPosts);
+            //   console.log(communityList);
+        });
+    };
 
     const getMyBookmark = async (userId) => {
         const q = query(collection(dbService, `user/${userId}/bookmarkPost`));
@@ -278,7 +301,7 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
                 <Tab.Panel>
                     {communityPost?.map((p) => (
                         <div key={p.postId} className="px-6 mb-5">
-                            <hr className="border-mono50 mx-8 mb-6 border-[1px]" />
+                            <hr className="border-border mx-8 mb-6 border-[1px]" />
                             <div className="pl-8 space-x-[20px] items-center flex">
                                 <div className="flex flex-col">
                                     <div className="space-x-[10px]">
@@ -307,7 +330,7 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
                 <Tab.Panel>
                     {commentPost?.map((p) => (
                         <div key={p.postId} className="px-6 mb-5">
-                            <hr className="border-mono50 mx-8 mb-6 border-[1px]" />
+                            <hr className="border-border mx-8 mb-6 border-[1px]" />
                             <div className="pl-8 space-x-[20px] items-center flex">
                                 <div className="flex flex-col">
                                     <div className="text-2xl font-semibold mb-4">
@@ -320,10 +343,10 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
                                     </div>
                                     {/* postId === boardId */}
                                     {/* map............ */}
-                                    {communityPost.map(
+                                    {communityList.map(
                                         (item) =>
-                                            item.postId === p.boardId && (
-                                                <div key={item.postId}>
+                                            item.id === p.boardId && (
+                                                <div key={item.id}>
                                                     <div className="space-x-[10px] text-mono70">
                                                         <span>
                                                             {item.category}
