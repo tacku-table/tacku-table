@@ -12,9 +12,9 @@ const Pagination = ({ total, limit, page, setPage }: PaginationProps) => {
 
   return (
     <>
-      <nav>
+      <nav className="flex justify-center space-x-4">
         <button onClick={() => setPage(page - 1)} disabled={page === 1}>
-          이전
+          {page > 1 && "이전"}
         </button>
         {[...Array(numPages)].map((_, i) => (
           <button
@@ -26,7 +26,7 @@ const Pagination = ({ total, limit, page, setPage }: PaginationProps) => {
           </button>
         ))}
         <button onClick={() => setPage(page + 1)} disabled={page === numPages}>
-          다음
+          {numPages > 1 && "다음"}
         </button>
       </nav>
     </>
