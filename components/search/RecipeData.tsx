@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 
 // 전체레시피불러오기
 const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
-    //회원아니면 alert뜨게함. 추가 로직
+    // 회원아니면 alert뜨게함. 추가 로직
     const [storageCurrentUser, setStorageCurrentUser] = useState("");
 
     // 상세페이지이동
@@ -20,9 +20,7 @@ const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
             const parseUser = JSON.parse(user);
             setStorageCurrentUser(parseUser.uid);
         }
-        if (!user) {
-            setStorageCurrentUser("guest");
-        }
+        setStorageCurrentUser("guest");
     }, []);
 
     return (

@@ -13,16 +13,16 @@ const SideFoodCate = ({ onCheckedItem }: any) => {
         <div className="flex flex-col">
             <h4 className="mb-4 text-sm text-mono80">음식 종류</h4>
             <div className="flex flex-col justify-center gap-y-3 ml-5">
-                {categoryList.map((item: any) => {
+                {categoryList.map((item) => {
                     return (
                         <label key={item.name}>
                             <input
                                 type="checkbox"
-                                id={item.name}
+                                value={item.name}
                                 onChange={(e) => {
                                     onCheckedItem(
                                         e.target.checked,
-                                        e.target.id
+                                        e.target.value
                                     );
                                 }}
                             />

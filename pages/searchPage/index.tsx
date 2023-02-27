@@ -16,6 +16,7 @@ const SearchData: NextPage = () => {
     const [text, setText] = useState(deliverKeyword || "");
     const [isBest, setIsBest] = useState("");
     const [filtered, setFiltered] = useState<string[] | "">("");
+
     const { register, handleSubmit, getValues } = useForm();
     const onValid = () => {
         setText(getValues("searchText"));
@@ -26,20 +27,13 @@ const SearchData: NextPage = () => {
 
     // 인기순
     const activeBestBtn = () => {
-        // 인기순 버튼을 클릭하면 sessionStorge에 viewCount라는 이름으로 데이터 저장
-        // key : userWatching , value : "viewCount"
         sessionStorage.setItem("userWatching", "viewCount");
-        // state도 똑같은 값으로 업데이트---------------------
         setIsBest("viewCount");
     };
 
     // 최신순
     const inactiveBestBtn = () => {
-        // 최신순 버튼을 클릭하면 sessionStorge에 "createdAt"라는 이름으로 데이터 저장
-        // key : userWatching , value : "createdAt"
-        // setIsBest(false);
         sessionStorage.setItem("userWatching", "createdAt");
-        // state도 똑같은 값으로 업데이트---------------------
         setIsBest("createdAt");
     };
 
@@ -54,14 +48,16 @@ const SearchData: NextPage = () => {
                     "filteredData",
                     JSON.stringify([...checkedList, newItem])
                 );
-                setFiltered(checkedList);
+                setFiltered([...checkedList, newItem]);
+                console.log([...checkedList, newItem]);
             } else if (!checked) {
                 setCheckedList(checkedList.filter((ele) => ele !== newItem));
                 sessionStorage.setItem(
                     "filteredData",
                     JSON.stringify(checkedList.filter((ele) => ele !== newItem))
                 );
-                setFiltered(checkedList);
+                setFiltered(checkedList.filter((ele) => ele !== newItem));
+                console.log(checkedList.filter((ele) => ele !== newItem));
             }
         },
         [checkedList]
