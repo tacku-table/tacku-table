@@ -15,10 +15,8 @@ const SearchData: NextPage = () => {
     const deliverKeyword = router.query.keyword;
     const [text, setText] = useState(deliverKeyword?.toString() || "");
     const [isBest, setIsBest] = useState("");
-    const [filteredFood, setFilteredFood] = useState<string[] | "">("");
-    const [filteredTime, setFilteredTime] = useState<string[] | "">("");
-    const [checkedList, setCheckedList] = useState<string[]>([]);
-    const [checkedList2, setCheckedList2] = useState<string[]>([]);
+    const [filteredFood, setFilteredFood] = useState<string[]>([]);
+    const [filteredTime, setFilteredTime] = useState<string[]>([]);
     const [currentItems, setCurrentItems] = useState<RecipeProps[]>([]);
 
     const { register, handleSubmit, getValues } = useForm();
@@ -46,45 +44,43 @@ const SearchData: NextPage = () => {
     const onCheckedItem = useCallback(
         (checked: boolean, newItem: string) => {
             if (checked) {
-                setCheckedList((prev) => [...prev, newItem]);
                 sessionStorage.setItem(
                     "filteredFoodData",
-                    JSON.stringify([...checkedList, newItem])
+                    JSON.stringify([...filteredFood, newItem])
                 );
-                setFilteredFood([...checkedList, newItem]);
+                setFilteredFood([...filteredFood, newItem]);
             } else if (!checked) {
-                setCheckedList(checkedList.filter((ele) => ele !== newItem));
                 sessionStorage.setItem(
                     "filteredFoodData",
-                    JSON.stringify(checkedList.filter((ele) => ele !== newItem))
+                    JSON.stringify(
+                        filteredFood.filter((ele) => ele !== newItem)
+                    )
                 );
-                setFilteredFood(checkedList.filter((ele) => ele !== newItem));
+                setFilteredFood(filteredFood.filter((ele) => ele !== newItem));
             }
         },
-        [checkedList]
+        [filteredFood]
     );
     // 카테고리필터링(조리시간)
     const onCheckedItem2 = useCallback(
         (checked: boolean, newItem: string) => {
             if (checked) {
-                setCheckedList2((prev) => [...prev, newItem]);
                 sessionStorage.setItem(
                     "filteredTimeData",
-                    JSON.stringify([...checkedList2, newItem])
+                    JSON.stringify([...filteredTime, newItem])
                 );
-                setFilteredTime([...checkedList2, newItem]);
+                setFilteredTime([...filteredTime, newItem]);
             } else if (!checked) {
-                setCheckedList2(checkedList2.filter((ele) => ele !== newItem));
                 sessionStorage.setItem(
                     "filteredTimeData",
                     JSON.stringify(
-                        checkedList2.filter((ele) => ele !== newItem)
+                        filteredTime.filter((ele) => ele !== newItem)
                     )
                 );
-                setFilteredTime(checkedList2.filter((ele) => ele !== newItem));
+                setFilteredTime(filteredTime.filter((ele) => ele !== newItem));
             }
         },
-        [checkedList2]
+        [filteredTime]
     );
 
     // 전체목록불러오기
@@ -113,10 +109,10 @@ const SearchData: NextPage = () => {
 
     useEffect(() => {
         const result = sessionStorage.getItem("userWatching");
-        const filteredFoodResults = JSON.parse(
+        const getFilteredFood = JSON.parse(
             sessionStorage.getItem("filteredFoodData")!
         );
-        const filteredTimeResults = JSON.parse(
+        const getFilteredTime = JSON.parse(
             sessionStorage.getItem("filteredTimeData")!
         );
 
@@ -125,11 +121,11 @@ const SearchData: NextPage = () => {
         } else {
             setIsBest("createdAt");
         }
-        if (filteredFoodResults) {
-            setFilteredFood(filteredFoodResults);
+        if (getFilteredFood) {
+            setFilteredFood(getFilteredFood);
         }
-        if (filteredTimeResults) {
-            setFilteredTime(filteredTimeResults);
+        if (getFilteredTime) {
+            setFilteredTime(getFilteredTime);
         }
         getList();
     }, [isBest]);

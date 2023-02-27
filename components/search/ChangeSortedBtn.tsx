@@ -14,13 +14,23 @@ const ChangeSortedBtn = ({
                 <p className=" text-mono100 mr-[330px]">
                     총&nbsp;
                     <span className="text-red100">
-                        {dataResults?.length && filteredFood?.length
+                        {dataResults?.length &&
+                        filteredFood?.length &&
+                        filteredTime?.length
+                            ? dataResults.filter(
+                                  (item: any) =>
+                                      filteredFood.includes(
+                                          item.foodCategory
+                                      ) ||
+                                      filteredTime.includes(item.cookingTime)
+                              ).length
+                            : dataResults?.length && filteredFood?.length
                             ? dataResults.filter((item: any) =>
-                                  item.foodCategory.includes(filteredFood)
+                                  filteredFood.includes(item.foodCategory)
                               ).length
                             : dataResults?.length && filteredTime?.length
                             ? dataResults.filter((item: any) =>
-                                  item.cookingTime.includes(filteredTime)
+                                  filteredTime.includes(item.cookingTime)
                               ).length
                             : dataResults.length}
                     </span>
