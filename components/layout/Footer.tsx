@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer = () => {
     return (
-        <div className="bg-[#FFF5F5] px-64 flex flex-col justify-start text-baseText">
+        <div className="bg-[#FFF5F5] px-64 flex flex-col justify-start text-mono100">
             <ul className="border-b border-white pt-6">
                 <li className="mb-4">
                     <span className="mr-7 w-[52px] h-[18px] text-xs">

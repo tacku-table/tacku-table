@@ -32,8 +32,8 @@ const ChangeSortedBtn = ({
                     className={cls(
                         "sorted-btn",
                         isBest === "viewCount"
-                            ? "bg-main text-white"
-                            : "text-grayText"
+                            ? "bg-brand100 text-white"
+                            : "text-mono80"
                     )}
                     onClick={activeBestBtn}
                 >
@@ -43,8 +43,8 @@ const ChangeSortedBtn = ({
                     className={cls(
                         "sorted-btn",
                         isBest === "createdAt"
-                            ? "bg-main text-white"
-                            : "text-grayText"
+                            ? "bg-brand100 text-white"
+                            : "text-mono80"
                     )}
                     onClick={inactiveBestBtn}
                 >

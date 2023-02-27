@@ -42,7 +42,7 @@ const BestRecipe: NextPage = () => {
             <div className="flex flex-col items-end">
                 <button
                     onClick={sortedBest}
-                    className="text-main border border-main w-[86px] h-[35px] mb-4 rounded-sm hover:bg-main hover:text-white transition-all duration-200"
+                    className="text-brand100 border border-brand100 w-[86px] h-[35px] mb-4 rounded-sm hover:bg-brand100 hover:text-white transition-all duration-200"
                 >
                     더보기
                 </button>
