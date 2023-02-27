@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 // 전체레시피불러오기
-const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
+const RecipeData = ({ dataResults, checkedList2, filteredFood }: any) => {
     // 회원아니면 alert뜨게함. 추가 로직
     const [storageCurrentUser, setStorageCurrentUser] = useState("");
-    console.log(storageCurrentUser);
 
     // 상세페이지이동
     const router = useRouter();
@@ -27,12 +26,12 @@ const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
     return (
         <div className="grid grid-cols-3 gap-x-5 gap-y-14">
             {dataResults?.length &&
-            checkedList?.length &&
+            filteredFood?.length &&
             checkedList2?.length ? (
                 dataResults
                     .filter(
                         (item: any) =>
-                            checkedList.includes(item.foodCategory) ||
+                            filteredFood.includes(item.foodCategory) ||
                             checkedList2.includes(item.cookingTime)
                     )
                     .map((item: any) => {
@@ -88,10 +87,10 @@ const RecipeData = ({ dataResults, checkedList, checkedList2 }: any) => {
                             </div>
                         );
                     })
-            ) : dataResults?.length && checkedList?.length ? (
+            ) : dataResults?.length && filteredFood?.length ? (
                 dataResults
                     .filter((item: any) =>
-                        checkedList.includes(item.foodCategory)
+                        filteredFood.includes(item.foodCategory)
                     )
                     .map((item: any) => {
                         return (

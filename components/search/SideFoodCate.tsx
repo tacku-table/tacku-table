@@ -8,7 +8,7 @@ const categoryList = [
     { name: "식단&건강관리" },
 ];
 
-const SideFoodCate = ({ onCheckedItem }: any) => {
+const SideFoodCate = ({ onCheckedItem, filteredFood }: any) => {
     return (
         <div className="flex flex-col">
             <h4 className="mb-4 text-sm text-mono80">음식 종류</h4>
@@ -25,11 +25,14 @@ const SideFoodCate = ({ onCheckedItem }: any) => {
                                         e.target.value
                                     );
                                 }}
+                                checked={
+                                    filteredFood.includes(item.name)
+                                        ? true
+                                        : false
+                                }
                             />
                             <label htmlFor={item.name} className="ml-2">
-                                <span>
-                                    {item.name.toString().replaceAll("&", "/")}
-                                </span>
+                                {item.name.toString().replaceAll("&", "/")}
                             </label>
                         </label>
                     );

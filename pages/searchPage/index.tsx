@@ -15,7 +15,7 @@ const SearchData: NextPage = () => {
     const deliverKeyword = router.query.keyword;
     const [text, setText] = useState(deliverKeyword || "");
     const [isBest, setIsBest] = useState("");
-    const [filtered, setFiltered] = useState<string[] | "">("");
+    const [filteredFood, setFilteredFood] = useState<string[] | "">("");
 
     const { register, handleSubmit, getValues } = useForm();
     const onValid = () => {
@@ -48,7 +48,7 @@ const SearchData: NextPage = () => {
                     "filteredData",
                     JSON.stringify([...checkedList, newItem])
                 );
-                setFiltered([...checkedList, newItem]);
+                setFilteredFood([...checkedList, newItem]);
                 console.log([...checkedList, newItem]);
             } else if (!checked) {
                 setCheckedList(checkedList.filter((ele) => ele !== newItem));
@@ -56,7 +56,7 @@ const SearchData: NextPage = () => {
                     "filteredData",
                     JSON.stringify(checkedList.filter((ele) => ele !== newItem))
                 );
-                setFiltered(checkedList.filter((ele) => ele !== newItem));
+                setFilteredFood(checkedList.filter((ele) => ele !== newItem));
                 console.log(checkedList.filter((ele) => ele !== newItem));
             }
         },
@@ -105,21 +105,18 @@ const SearchData: NextPage = () => {
 
     useEffect(() => {
         const result = sessionStorage.getItem("userWatching");
-        // const filteredResults = JSON.parse(
-        //     sessionStorage.getItem("filteredData") || ""
-        // );
+        const filteredResults = JSON.parse(
+            sessionStorage.getItem("filteredData")!
+        );
 
         if (result) {
             setIsBest(result);
         } else {
             setIsBest("createdAt");
         }
-        // if (filteredResults) {
-        //     setFiltered(filteredResults);
-        // } else {
-        //     setFiltered("");
-        // }
-
+        if (filteredResults) {
+            setFilteredFood(filteredResults);
+        }
         getList();
     }, [isBest]);
 
@@ -168,7 +165,7 @@ const SearchData: NextPage = () => {
                 <div className="flex flex-col">
                     <SideFoodCate
                         onCheckedItem={onCheckedItem}
-                        // filtered={filtered}
+                        filteredFood={filteredFood}
                     />
                     <SideCookingTime onCheckedItem2={onCheckedItem2} />
                 </div>
@@ -176,6 +173,7 @@ const SearchData: NextPage = () => {
                     dataResults={dataResults}
                     checkedList={checkedList}
                     checkedList2={checkedList2}
+                    filteredFood={filteredFood}
                 />
             </div>
         </div>
