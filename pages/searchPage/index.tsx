@@ -16,6 +16,7 @@ const SearchData: NextPage = () => {
     const [text, setText] = useState(deliverKeyword || "");
     const [isBest, setIsBest] = useState("");
     const [filteredFood, setFilteredFood] = useState<string[] | "">("");
+    const [filteredTime, setFilteredTime] = useState<string[] | "">("");
 
     const { register, handleSubmit, getValues } = useForm();
     const onValid = () => {
@@ -45,19 +46,17 @@ const SearchData: NextPage = () => {
             if (checked) {
                 setCheckedList((prev) => [...prev, newItem]);
                 sessionStorage.setItem(
-                    "filteredData",
+                    "filteredFoodData",
                     JSON.stringify([...checkedList, newItem])
                 );
                 setFilteredFood([...checkedList, newItem]);
-                console.log([...checkedList, newItem]);
             } else if (!checked) {
                 setCheckedList(checkedList.filter((ele) => ele !== newItem));
                 sessionStorage.setItem(
-                    "filteredData",
+                    "filteredFoodData",
                     JSON.stringify(checkedList.filter((ele) => ele !== newItem))
                 );
                 setFilteredFood(checkedList.filter((ele) => ele !== newItem));
-                console.log(checkedList.filter((ele) => ele !== newItem));
             }
         },
         [checkedList]
@@ -66,11 +65,23 @@ const SearchData: NextPage = () => {
     const [checkedList2, setCheckedList2] = useState<Array<string>>([]);
 
     const onCheckedItem2 = useCallback(
-        (checked: boolean, item: string) => {
+        (checked: boolean, newItem: string) => {
             if (checked) {
-                setCheckedList2((prev) => [...prev, item]);
+                setCheckedList2((prev) => [...prev, newItem]);
+                sessionStorage.setItem(
+                    "filteredTimeData",
+                    JSON.stringify([...checkedList2, newItem])
+                );
+                setFilteredTime([...checkedList2, newItem]);
             } else if (!checked) {
-                setCheckedList2(checkedList2.filter((ele) => ele !== item));
+                setCheckedList2(checkedList2.filter((ele) => ele !== newItem));
+                sessionStorage.setItem(
+                    "filteredTimeData",
+                    JSON.stringify(
+                        checkedList2.filter((ele) => ele !== newItem)
+                    )
+                );
+                setFilteredTime(checkedList2.filter((ele) => ele !== newItem));
             }
         },
         [checkedList2]
@@ -105,8 +116,11 @@ const SearchData: NextPage = () => {
 
     useEffect(() => {
         const result = sessionStorage.getItem("userWatching");
-        const filteredResults = JSON.parse(
-            sessionStorage.getItem("filteredData")!
+        const filteredFoodResults = JSON.parse(
+            sessionStorage.getItem("filteredFoodData")!
+        );
+        const filteredTimeResults = JSON.parse(
+            sessionStorage.getItem("filteredTimeData")!
         );
 
         if (result) {
@@ -114,8 +128,11 @@ const SearchData: NextPage = () => {
         } else {
             setIsBest("createdAt");
         }
-        if (filteredResults) {
-            setFilteredFood(filteredResults);
+        if (filteredFoodResults) {
+            setFilteredFood(filteredFoodResults);
+        }
+        if (filteredTimeResults) {
+            setFilteredTime(filteredTimeResults);
         }
         getList();
     }, [isBest]);
@@ -157,8 +174,8 @@ const SearchData: NextPage = () => {
                 isBest={isBest}
                 activeBestBtn={activeBestBtn}
                 inactiveBestBtn={inactiveBestBtn}
-                checkedList={checkedList}
-                checkedList2={checkedList2}
+                filteredFood={filteredFood}
+                filteredTime={filteredTime}
             />
             <div className="w-4/5 border-b border-mono50 mb-[30px]"></div>
             <div className="w-4/5 flex justify-between gap-7 mb-20">
@@ -167,13 +184,15 @@ const SearchData: NextPage = () => {
                         onCheckedItem={onCheckedItem}
                         filteredFood={filteredFood}
                     />
-                    <SideCookingTime onCheckedItem2={onCheckedItem2} />
+                    <SideCookingTime
+                        onCheckedItem2={onCheckedItem2}
+                        filteredTime={filteredTime}
+                    />
                 </div>
                 <RecipeData
                     dataResults={dataResults}
-                    checkedList={checkedList}
-                    checkedList2={checkedList2}
                     filteredFood={filteredFood}
+                    filteredTime={filteredTime}
                 />
             </div>
         </div>

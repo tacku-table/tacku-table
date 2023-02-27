@@ -5,7 +5,7 @@ const categoryList2 = [
     { name: "1시간이상" },
 ];
 
-const SideCookingTime = ({ onCheckedItem2 }: any) => {
+const SideCookingTime = ({ onCheckedItem2, filteredTime }: any) => {
     return (
         <div className="flex flex-col mt-7">
             <h4 className="mb-4 text-sm text-mono80">조리 시간</h4>
@@ -22,6 +22,11 @@ const SideCookingTime = ({ onCheckedItem2 }: any) => {
                                         e.target.id
                                     );
                                 }}
+                                checked={
+                                    filteredTime.includes(item.name)
+                                        ? true
+                                        : false
+                                }
                             />
                             <label htmlFor={item.name} className="ml-2">
                                 <span>{item.name}</span>
