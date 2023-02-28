@@ -13,7 +13,7 @@ import baseImg from "../../public/images/test1.png";
 import Image from "next/image";
 import { convertTimestamp } from "../../util";
 import { authService } from "../../config/firebase";
-import useGetUserProfileNicnName from "../../hooks/useGetUserProfileNickName";
+import useGetUserProfileNickName from "../../hooks/useGetUserProfileNickName";
 import Comments from "../../components/community/Comments";
 
 export default function DetailPage(props) {
@@ -23,8 +23,15 @@ export default function DetailPage(props) {
   const [commentWriterNickName, setCommentWriterNickName] = useState("");
   const [commentProfile, setCommentProfile] = useState("");
   const writterUID = props.targetWholeData.uid;
-  const [writterNickName, setWritterNickName] = useState("");
-  const [writterProfile, setWritterProfile] = useState("");
+
+  const { userNickName: writterNickName, userProfileURL: writterProfile } =
+    useGetUserProfileNickName(writterUID);
+
+  console.log(
+    "useGetUserProfileNickName(writterUID)",
+    useGetUserProfileNickName(writterUID)
+  );
+
   const boardId = props.targetId;
 
   const router = useRouter();
@@ -56,14 +63,21 @@ export default function DetailPage(props) {
   }, []);
 
   // useGetUserProfileNicnName 훅 사용하여 글 작성자 닉네임, 프로필 사진 업데이트------(시작)
-  useGetUserProfileNicnName(writterUID).then((item) => {
-    console.log("커스텀훅으로 뽑아냄", item.userNickName, item.userProfileURL);
-    setWritterNickName(item.userNickName);
-    setWritterProfile(item.userProfileURL);
-  });
 
-  console.log("writterNickName:", writterNickName);
-  console.log("writterProfile:", writterProfile);
+  // useGetUserProfileNicnName(writterUID).then((item) => {
+  //   console.log("커스텀훅으로 뽑아냄", item.userNickName, item.userProfileURL);
+  //   setWritterNickName(item.userNickName);
+  //   setWritterProfile(item.userProfileURL);
+  // });
+
+  useEffect(() => {
+    console.log(
+      "writterNickName, writterProfile",
+      writterNickName,
+      writterProfile
+    );
+  }, [writterNickName, writterProfile]);
+
   // useGetUserProfileNicnName 훅 사용하여 글 작성자 닉네임, 프로필 사진 업데이트------(끝)
 
   // 글 수정
