@@ -13,9 +13,14 @@ import { authService, dbService } from "../../config/firebase";
 import { convertTimestamp } from "../../util";
 import Image from "next/image";
 import defaultImg from "../../public/images/test1.png";
+import Pagination from "../community/Pagination";
 const CommunityTabs = () => {
   // 전체글 state
   const [communityList, setCommunityList] = useState([]);
+  // 페이지네이션 limit, page, offset
+  const [limit, setLimit] = useState(5);
+  const [page, setPage] = useState(1); //default=현재 페이지번호
+  const offset = (page - 1) * limit;
   const [foodPost, setFoodPost] = useState([]);
   const [animePost, setAnimePost] = useState([]);
   const [gossipPost, setGossipPost] = useState([]);
@@ -31,6 +36,12 @@ const CommunityTabs = () => {
     "애니게시판",
     "잡담게시판",
   ]);
+  // let [categories] = useState({
+  //   전체글목록: communityList,
+  //   요리게시판: foodPost,
+  //   애니게시판: animePost,
+  //   잡담게시판: gossipPost,
+  // });
 
   useEffect(() => {
     getCommunityList();
@@ -109,7 +120,7 @@ const CommunityTabs = () => {
         </h4>
         <Tab.Panels>
           <Tab.Panel>
-            {communityList?.map((p) => (
+            {communityList?.slice(offset, offset + limit).map((p) => (
               <div
                 key={p.id}
                 className="border-b border-mono60 py-4 px-5 flex text-sm"
@@ -151,9 +162,15 @@ const CommunityTabs = () => {
                 </div>
               </div>
             ))}
+            <Pagination
+              total={communityList.length}
+              limit={limit}
+              page={page}
+              setPage={setPage}
+            />
           </Tab.Panel>
           <Tab.Panel>
-            {foodPost.map((p) => (
+            {foodPost?.slice(offset, offset + limit).map((p) => (
               <div
                 key={p.id}
                 className="border-b border-mono60 py-4 px-5 flex text-sm"
@@ -195,9 +212,15 @@ const CommunityTabs = () => {
                 </div>
               </div>
             ))}
+            <Pagination
+              total={foodPost.length}
+              limit={limit}
+              page={page}
+              setPage={setPage}
+            />
           </Tab.Panel>
           <Tab.Panel>
-            {animePost.map((p) => (
+            {animePost?.slice(offset, offset + limit).map((p) => (
               <div
                 key={p.id}
                 className="border-b border-mono60 py-4 px-5 flex text-sm"
@@ -239,9 +262,15 @@ const CommunityTabs = () => {
                 </div>
               </div>
             ))}
+            <Pagination
+              total={animePost.length}
+              limit={limit}
+              page={page}
+              setPage={setPage}
+            />
           </Tab.Panel>
           <Tab.Panel>
-            {gossipPost.map((p) => (
+            {gossipPost?.slice(offset, offset + limit).map((p) => (
               <div
                 key={p.id}
                 className="border-b border-mono60 py-4 px-5 flex text-sm"
@@ -283,6 +312,12 @@ const CommunityTabs = () => {
                 </div>
               </div>
             ))}
+            <Pagination
+              total={gossipPost.length}
+              limit={limit}
+              page={page}
+              setPage={setPage}
+            />
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
