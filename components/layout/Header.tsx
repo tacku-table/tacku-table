@@ -24,7 +24,9 @@ const Header = () => {
         location.href = "/loginPage";
     };
     const clearStorage = () => {
-        sessionStorage.clear();
+        sessionStorage.removeItem("filteredFoodData");
+        sessionStorage.removeItem("filteredTimeData");
+        sessionStorage.removeItem("searchData");
         window.location.replace("/searchPage");
     };
 
