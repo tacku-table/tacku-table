@@ -11,7 +11,7 @@ const categoryList = [
 const SideFoodCate = ({ onCheckedItem, filteredFood }: any) => {
     return (
         <div className="flex flex-col">
-            <h4 className="mb-4 text-sm text-mono80">음식 종류</h4>
+            <h4 className="mb-3 text-sm text-mono80">음식 종류</h4>
             <div className="flex flex-col justify-center gap-y-3 ml-5">
                 {categoryList.map((item) => {
                     return (

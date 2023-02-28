@@ -24,7 +24,7 @@ const RecipeData = ({ dataResults, filteredFood, filteredTime }: any) => {
     }, [storageCurrentUser]);
 
     return (
-        <div className="grid grid-cols-3 gap-x-5 gap-y-14">
+        <div className="grid grid-cols-3 gap-x-4 gap-y-9">
             {dataResults?.length &&
             filteredFood?.length &&
             filteredTime?.length ? (
@@ -38,12 +38,12 @@ const RecipeData = ({ dataResults, filteredFood, filteredTime }: any) => {
                         return (
                             <div
                                 key={item.id}
-                                className="aspect-[1/0.7] cursor-pointer"
+                                className="w-[316px] aspect-[1/0.7] cursor-pointer"
                                 onClick={() => {
                                     goToDetail(item);
                                 }}
                             >
-                                <div className="h-[188px] overflow-hidden mx-auto relative">
+                                <div className="w-[316px] h-[188px] overflow-hidden mx-auto relative">
                                     <picture>
                                         <img
                                             src={`${item.thumbnail}`}
@@ -96,12 +96,12 @@ const RecipeData = ({ dataResults, filteredFood, filteredTime }: any) => {
                         return (
                             <div
                                 key={item.id}
-                                className="aspect-[1/0.7] cursor-pointer"
+                                className="w-[316px] aspect-[1/0.7] cursor-pointer"
                                 onClick={() => {
                                     goToDetail(item);
                                 }}
                             >
-                                <div className="h-[188px] overflow-hidden mx-auto relative">
+                                <div className="w-[316px] h-[188px] overflow-hidden mx-auto relative">
                                     <picture>
                                         <img
                                             src={`${item.thumbnail}`}
@@ -154,12 +154,12 @@ const RecipeData = ({ dataResults, filteredFood, filteredTime }: any) => {
                         return (
                             <div
                                 key={item.id}
-                                className="aspect-[1/0.7] cursor-pointer"
+                                className="w-[316px] aspect-[1/0.7] cursor-pointer"
                                 onClick={() => {
                                     goToDetail(item);
                                 }}
                             >
-                                <div className="h-[188px] overflow-hidden mx-auto relative">
+                                <div className="w-[316px] h-[188px] overflow-hidden mx-auto relative">
                                     <picture>
                                         <img
                                             src={`${item.thumbnail}`}
@@ -208,12 +208,12 @@ const RecipeData = ({ dataResults, filteredFood, filteredTime }: any) => {
                     return (
                         <div
                             key={item.id}
-                            className="aspect-[1/0.7] cursor-pointer"
+                            className="w-[316px] aspect-[1/0.7] cursor-pointer"
                             onClick={() => {
                                 goToDetail(item);
                             }}
                         >
-                            <div className="w-full h-[188px] overflow-hidden mx-auto relative">
+                            <div className="w-[316px] h-[188px] overflow-hidden mx-auto relative">
                                 <picture>
                                     <img
                                         src={`${item.thumbnail}`}
