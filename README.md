@@ -1,38 +1,68 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+## 🍙 탁쿠의 식탁
+탁쿠의 식탁 홈페이지 이미지 들어갈 곳<br>
 
-First, run the development server:
+## 📢 프로젝트 소개
+애니메이션을 보다가 “어! 이 음식 맛잇겠다” 생각해본적 없으신가요?<br>
+애니메이션 속 음식을 직접 만들어볼 수 있는 웹사이트 “오타쿠의 식탁”을 소개합니다.<br>
+다른 사람들과 함께 레시피를 공유하고 내가 따라해본 애니메이션 레시피도 함께 공유해주세요!
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🍽 탁쿠의 식탁 바로 보러가기 !!
+[홈페이지 방문하기](https://tacku-table-a8ls0imjf-tacku-table.vercel.app/)
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## 📢 탁쿠의 식탁 주요 기능
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+* 나만의 레시피 작성 
+* 공유하고 싶은 레시피 소셜네트워크에 직접 공유하기
+* 찾고싶은 레시피 직접 키워드 검색
+* 내가 보고싶은 레시피 카테고리별 조회
+* 마음에 들었던 레시피 북마크 저장
+* 나만의 페이지에서 내 북마크 글 조회, 내 글 한눈에 보기
+* 커뮤니티 자유롭게 글 작성
+* 커뮤니티 글에 자유롭게 댓글 달기
+* 카카오톡 소셜 회원가입
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+## 🪜 프로젝트 아키텍처 
+아키텍츠 사진 들어갈 곳
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🛠 STACK  
+( 추후 업데이트 예정 )
+  
+  
+## 🛠 DEV-Tool 
+( 추후 업데이트 예정 )
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## 💥 Trouble Shooting
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. 문제 : ( 추후 업데이트 예정 )
+2. 해결방안 : ( 추후 업데이트 예정 )
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## 👀 우리의 Git Convention
+
+* main : 주가 되는 백업 브랜치, dev에서 작업이 끝나면 병합할 최종본
+* dev : 각자 작업 내용을 merge 하면서 관리하는 브랜치
+* release : 배포용 브랜치
+* 기능별 이름 brench : 이슈별 작업을 반영하고 업로드하는 각 업무별 브랜치
+
+### 커밋 메세지 양식
+* feat : 새로운 기능 추가
+* fix : 버그 수정
+* design : UI 작업
+* refactor : 기존 코드 리팩토링
+
+
+## 타쿠의 식탁 팀원들!
+
+Role|Name|GitHub|
+---|---|---|
+리더*FE|홍다경|https://github.com|
+부리더*FE|홍희진|https://github.com|
+FE|김채하|https://github.com|
+FE|서재희|https://github.com|
+Design|이상빈|https://github.com|
