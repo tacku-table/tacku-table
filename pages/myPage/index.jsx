@@ -9,6 +9,7 @@ import MyTabs from "../../components/tabs/MyTabs";
 const MyPage = () => {
   const [userInfo, setUserInfo] = useState([]);
   const [storageCurrentUser, setStorageCurrentUser] = useState({});
+  const [imgPreview, setImgPreview] = useState();
 
   // const { uid } = JSON.parse(sessionStorage.getItem("User"));
 
@@ -20,7 +21,6 @@ const MyPage = () => {
       };
       setUserInfo(user);
     });
-    getUserProfileImg();
   };
 
   // useEffect(() => {
@@ -37,6 +37,12 @@ const MyPage = () => {
       setStorageCurrentUser("logout");
     }
   }, []);
+
+  useEffect(() => {
+    // setTimeout(getUserProfileImg(userInfo?.userImg), 1000);
+    getUserProfileImg(userInfo?.userImg);
+  }, [userInfo.userImg]);
+
   useEffect(() => {
     if (storageCurrentUser == "logout") {
       // alert("로그아웃\n 메인 화면으로 이동합니다.");
@@ -44,20 +50,11 @@ const MyPage = () => {
     }
   }, [storageCurrentUser]);
 
-  const getUserProfileImg = async () => {
-    if (userInfo?.userImg === "null") {
-      return setShowUserUpdateImg(defaultImg);
+  const getUserProfileImg = (userImg) => {
+    if (userImg === "null") {
+      return setImgPreview(defaultImg);
     }
-    // const imageListRef = ref(storage, "profileImage/");
-    // await listAll(imageListRef).then((response) => {
-    //   response.items.forEach((item) => {
-    //     getDownloadURL(item).then((url) => {
-    else {
-      return setShowUserUpdateImg(userInfo.userImg);
-    }
-    //   });
-    // });
-    // });
+    setImgPreview(userImg);
   };
 
   return (
@@ -65,15 +62,18 @@ const MyPage = () => {
       <div>
         <div className="bg-coverBg bg-cover bg-center w-full h-[280px] bg-no-repeat relative">
           <div className="flex justify-center items-center space-x-[24px] absolute left-[370px] top-[151px] text-white">
-            <Image
-              src={showUserUpdateImg}
-              className="rounded-md aspect-square"
-              loader={({ src }) => src}
-              priority={true}
-              width={100}
-              height={100}
-              alt="프로필이미지"
-            />
+            {imgPreview && (
+              <Image
+                src={imgPreview}
+                className="rounded-md aspect-square"
+                loader={({ src }) => src}
+                unoptimized
+                priority={true}
+                width={100}
+                height={100}
+                alt="프로필이미지"
+              />
+            )}
             <p className="text-4xl">{userInfo.userNick}</p>
             <Link
               legacyBehavior
