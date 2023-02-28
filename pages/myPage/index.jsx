@@ -5,7 +5,7 @@ import { dbService, storage } from "../../config/firebase";
 import defaultImg from "../../public/images/test1.png";
 import Link from "next/link";
 import Image from "next/image";
-import MyTabs from "../../components/tabs/MyTabs";
+import MyTabs from "../../components/profile/MyTabs";
 const MyPage = () => {
   const [userInfo, setUserInfo] = useState([]);
   const [storageCurrentUser, setStorageCurrentUser] = useState({});
@@ -74,7 +74,7 @@ const MyPage = () => {
                 alt="프로필이미지"
               />
             )}
-            <p className="text-4xl">{userInfo.userNick}</p>
+            <p className="text-4xl">{userInfo.userNickname}</p>
             <Link
               legacyBehavior
               href={{

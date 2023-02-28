@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { onSnapshot, query, collection, orderBy } from "firebase/firestore";
 import { dbService } from "@/config/firebase";
 import Link from "next/link";
-import CommunityTabs from "../../components/tabs/CommunityTabs";
+import CommunityTabs from "../../components/community/CommunityTabs";
 import SliderScreen from "../../components/community/SliderScreen";
 
 const Community = () => {
