@@ -173,13 +173,14 @@ const SearchData: NextPage = () => {
                 filteredFood={filteredFood}
                 filteredTime={filteredTime}
             />
-            <div className="w-4/5 border-b border-mono50 mb-[30px]"></div>
-            <div className="w-4/5 flex justify-between gap-7 mb-20">
-                <div className="flex flex-col">
+            <div className="w-4/5 border-b border-mono70 mb-[30px]"></div>
+            <div className="w-4/5 flex justify-between mb-20">
+                <div className="flex flex-col mr-3">
                     <SideFoodCate
                         onCheckedItem={onCheckedItem}
                         filteredFood={filteredFood}
                     />
+                    <div className="w-full border border-mono50 my-4"></div>
                     <SideCookingTime
                         onCheckedItem2={onCheckedItem2}
                         filteredTime={filteredTime}

@@ -27,12 +27,10 @@ const RegisterPage = () => {
         register,
         handleSubmit,
         getValues,
-        reset,
         formState: { errors },
     } = useForm<RegisterForm>({ mode: "onChange" });
     const onValid = (data: RegisterForm) => {
         signUp();
-        reset();
     };
     const onInValid = (errors: FieldErrors) => {
         console.log(errors);

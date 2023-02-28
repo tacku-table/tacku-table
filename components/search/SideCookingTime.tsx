@@ -7,8 +7,8 @@ const categoryList2 = [
 
 const SideCookingTime = ({ onCheckedItem2, filteredTime }: any) => {
     return (
-        <div className="flex flex-col mt-7">
-            <h4 className="mb-4 text-sm text-mono80">조리 시간</h4>
+        <div className="flex flex-col">
+            <h4 className="mb-3 text-sm text-mono80">조리 시간</h4>
             <div className="flex flex-col justify-center gap-y-3 ml-5">
                 {categoryList2.map((item: any) => {
                     return (
