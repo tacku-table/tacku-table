@@ -21,6 +21,7 @@ const SearchData: NextPage = () => {
 
     const { register, handleSubmit, getValues } = useForm();
     const onValid = () => {
+        sessionStorage.setItem("searchData", getValues("searchText"));
         setText(getValues("searchText"));
     };
     const onInValid = (errors: FieldErrors) => {
@@ -38,6 +39,29 @@ const SearchData: NextPage = () => {
         sessionStorage.setItem("userWatching", "createdAt");
         setIsBest("createdAt");
     };
+
+    // 전체목록불러오기
+    const getList = async () => {
+        const items = query(
+            collection(dbService, "recipe"),
+            orderBy(isBest === "viewCount" ? "viewCount" : "createdAt", "desc")
+        );
+        const querySnapshot = await getDocs(items);
+        const newData = querySnapshot.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+        }));
+        setCurrentItems(newData);
+    };
+    // 검색
+    const fuse = new Fuse(currentItems, {
+        keys: ["animationTitle", "foodTitle", "content"],
+        includeScore: true,
+    });
+    const results = fuse.search(text);
+    const dataResults = text
+        ? results.map((recipe) => recipe.item)
+        : currentItems;
 
     // 카테고리필터링(음식종류)
 
@@ -83,49 +107,28 @@ const SearchData: NextPage = () => {
         [filteredTime]
     );
 
-    // 전체목록불러오기
-    const getList = async () => {
-        const items = query(
-            collection(dbService, "recipe"),
-            orderBy(isBest === "viewCount" ? "viewCount" : "createdAt", "desc")
-        );
-        const querySnapshot = await getDocs(items);
-        const newData = querySnapshot.docs.map((doc) => ({
-            ...doc.data(),
-            id: doc.id,
-        }));
-        setCurrentItems(newData);
-    };
-
-    // 검색
-    const fuse = new Fuse(currentItems, {
-        keys: ["animationTitle", "foodTitle", "content"],
-        includeScore: true,
-    });
-    const results = fuse.search(text);
-    const dataResults = text
-        ? results.map((recipe) => recipe.item)
-        : currentItems;
-
     useEffect(() => {
         const result = sessionStorage.getItem("userWatching");
-        const getFilteredFood = JSON.parse(
+        const storeSearchText = sessionStorage.getItem("searchData");
+        const storeFilteredFood = JSON.parse(
             sessionStorage.getItem("filteredFoodData")!
         );
-        const getFilteredTime = JSON.parse(
+        const storeFilteredTime = JSON.parse(
             sessionStorage.getItem("filteredTimeData")!
         );
-
         if (result) {
             setIsBest(result);
         } else {
             setIsBest("createdAt");
         }
-        if (getFilteredFood) {
-            setFilteredFood(getFilteredFood);
+        if (storeSearchText) {
+            setText(storeSearchText);
         }
-        if (getFilteredTime) {
-            setFilteredTime(getFilteredTime);
+        if (storeFilteredFood) {
+            setFilteredFood(storeFilteredFood);
+        }
+        if (storeFilteredTime) {
+            setFilteredTime(storeFilteredTime);
         }
         getList();
     }, [isBest]);
