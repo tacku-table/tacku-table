@@ -94,13 +94,15 @@ export default function ProfileEdit(props) {
     setFunction(event.target.value);
   };
   const getUserProfileImg = async () => {
-    if (userInfo?.userImg === "null") return;
+    if (userInfo?.userImg === "null") {
+      return setShowUserUpdateImg(defaultImg);
+    }
     const imageListRef = ref(storage, "profileImage/");
     await listAll(imageListRef).then((response) => {
       response.items.forEach((item) => {
         getDownloadURL(item).then((url) => {
           if (url === userInfo?.userImg) {
-            setShowUserUpdateImg(url);
+            return setShowUserUpdateImg(url);
           }
         });
       });
@@ -227,7 +229,17 @@ export default function ProfileEdit(props) {
             <span className="text-base  min-w-[120px]">프로필 이미지</span>
             <div className="flex items-end space-x-5">
               <label className="cursor-pointer hover:opacity-40">
-                {userInfo?.userImg === "null" ? (
+                <Image
+                  src={showUserUpdateImg}
+                  className="rounded-md aspect-square"
+                  loader={({ src }) => src}
+                  priority={true}
+                  width={100}
+                  height={100}
+                  alt="프리뷰|업데이트이미지"
+                />
+
+                {/* {userInfo?.userImg === "null" ? (
                   <Image
                     src={defaultImg}
                     className="rounded-md aspect-square"
@@ -247,7 +259,7 @@ export default function ProfileEdit(props) {
                     height={100}
                     alt="프리뷰|업데이트이미지"
                   />
-                )}
+                )} */}
                 <input
                   id="picture"
                   type="file"
