@@ -15,14 +15,14 @@ const SideFoodCate = ({ onCheckedItem, filteredFood }: any) => {
             <div className="flex flex-col justify-center gap-y-3 ml-5">
                 {categoryList.map((item) => {
                     return (
-                        <label key={item.name}>
+                        <div key={item.name}>
                             <input
                                 type="checkbox"
-                                value={item.name}
+                                id={item.name}
                                 onChange={(e) => {
                                     onCheckedItem(
                                         e.target.checked,
-                                        e.target.value
+                                        e.target.id
                                     );
                                 }}
                                 checked={
@@ -34,7 +34,7 @@ const SideFoodCate = ({ onCheckedItem, filteredFood }: any) => {
                             <label htmlFor={item.name} className="ml-2">
                                 {item.name.toString().replaceAll("&", "/")}
                             </label>
-                        </label>
+                        </div>
                     );
                 })}
             </div>

@@ -12,7 +12,7 @@ const SideCookingTime = ({ onCheckedItem2, filteredTime }: any) => {
             <div className="flex flex-col justify-center gap-y-3 ml-5">
                 {categoryList2.map((item: any) => {
                     return (
-                        <label key={item.name}>
+                        <div key={item.name}>
                             <input
                                 type="checkbox"
                                 id={item.name}
@@ -29,9 +29,9 @@ const SideCookingTime = ({ onCheckedItem2, filteredTime }: any) => {
                                 }
                             />
                             <label htmlFor={item.name} className="ml-2">
-                                <span>{item.name}</span>
+                                {item.name}
                             </label>
-                        </label>
+                        </div>
                     );
                 })}
             </div>
