@@ -5,8 +5,8 @@ const ChangeSortedBtn = ({
     isBest,
     activeBestBtn,
     inactiveBestBtn,
-    checkedList,
-    checkedList2,
+    filteredFood,
+    filteredTime,
 }: any) => {
     return (
         <div className="w-4/5 flex justify-end items-center mb-[20px]">
@@ -14,13 +14,23 @@ const ChangeSortedBtn = ({
                 <p className=" text-mono100 mr-[330px]">
                     총&nbsp;
                     <span className="text-red100">
-                        {dataResults?.length && checkedList?.length
-                            ? dataResults.filter((item: any) =>
-                                  item.foodCategory.includes(checkedList)
+                        {dataResults?.length &&
+                        filteredFood?.length &&
+                        filteredTime?.length
+                            ? dataResults.filter(
+                                  (item: any) =>
+                                      filteredFood.includes(
+                                          item.foodCategory
+                                      ) ||
+                                      filteredTime.includes(item.cookingTime)
                               ).length
-                            : dataResults?.length && checkedList2?.length
+                            : dataResults?.length && filteredFood?.length
                             ? dataResults.filter((item: any) =>
-                                  item.cookingTime.includes(checkedList2)
+                                  filteredFood.includes(item.foodCategory)
+                              ).length
+                            : dataResults?.length && filteredTime?.length
+                            ? dataResults.filter((item: any) =>
+                                  filteredTime.includes(item.cookingTime)
                               ).length
                             : dataResults.length}
                     </span>
