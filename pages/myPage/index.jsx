@@ -20,6 +20,7 @@ const MyPage = () => {
       };
       setUserInfo(user);
     });
+    getUserProfileImg();
   };
 
   // useEffect(() => {
@@ -42,31 +43,38 @@ const MyPage = () => {
       location.href = "/loginPage";
     }
   }, [storageCurrentUser]);
+
+  const getUserProfileImg = async () => {
+    if (userInfo?.userImg === "null") {
+      return setShowUserUpdateImg(defaultImg);
+    }
+    // const imageListRef = ref(storage, "profileImage/");
+    // await listAll(imageListRef).then((response) => {
+    //   response.items.forEach((item) => {
+    //     getDownloadURL(item).then((url) => {
+    else {
+      return setShowUserUpdateImg(userInfo.userImg);
+    }
+    //   });
+    // });
+    // });
+  };
+
   return (
     <>
       <div>
         <div className="bg-coverBg bg-cover bg-center w-full h-[280px] bg-no-repeat relative">
           <div className="flex justify-center items-center space-x-[24px] absolute left-[370px] top-[151px] text-white">
-            {userInfo?.userImg === "null" ? (
-              <Image
-                className="rounded-md object-cover aspect-square"
-                src={defaultImg}
-                width={100}
-                height={100}
-                alt="default_img"
-              />
-            ) : (
-              <Image
-                className="rounded-md object-cover aspect-square"
-                src={userInfo.userImg}
-                priority={true}
-                loader={({ src }) => src}
-                width={100}
-                height={100}
-                alt="user_img"
-              />
-            )}
-            <p className="text-4xl">{userInfo.userNickname}</p>
+            <Image
+              src={showUserUpdateImg}
+              className="rounded-md aspect-square"
+              loader={({ src }) => src}
+              priority={true}
+              width={100}
+              height={100}
+              alt="프로필이미지"
+            />
+            <p className="text-4xl">{userInfo.userNick}</p>
             <Link
               legacyBehavior
               href={{
