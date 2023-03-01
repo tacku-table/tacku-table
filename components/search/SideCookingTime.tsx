@@ -1,23 +1,30 @@
-const categoryList2 = [
+// interface TypeTimeProps {
+//     onCheckedTime :{
+//         checked: boolean, newItem: string
+//     }
+//     filteredTime : string[]
+// }
+
+const categoryTimeList = [
     { name: "15분이하" },
     { name: "30분이하" },
     { name: "1시간이하" },
     { name: "1시간이상" },
 ];
 
-const SideCookingTime = ({ onCheckedItem2, filteredTime }: any) => {
+const SideCookingTime = ({ onCheckedTime, filteredTime }: any) => {
     return (
         <div className="flex flex-col">
             <h4 className="mb-3 text-sm text-mono80">조리 시간</h4>
             <div className="flex flex-col justify-center gap-y-3 ml-5">
-                {categoryList2.map((item: any) => {
+                {categoryTimeList.map((item: any) => {
                     return (
                         <div key={item.name}>
                             <input
                                 type="checkbox"
                                 id={item.name}
                                 onChange={(e) => {
-                                    onCheckedItem2(
+                                    onCheckedTime(
                                         e.target.checked,
                                         e.target.id
                                     );

@@ -1,4 +1,4 @@
-const categoryList = [
+const categoryFoodList = [
     { name: "밥&도시락&면" },
     { name: "국&탕&찌개" },
     { name: "구이&볶음&찜" },
@@ -8,19 +8,19 @@ const categoryList = [
     { name: "식단&건강관리" },
 ];
 
-const SideFoodCate = ({ onCheckedItem, filteredFood }: any) => {
+const SideFoodCate = ({ onCheckedFood, filteredFood }: any) => {
     return (
         <div className="flex flex-col">
             <h4 className="mb-3 text-sm text-mono80">음식 종류</h4>
             <div className="flex flex-col justify-center gap-y-3 ml-5">
-                {categoryList.map((item) => {
+                {categoryFoodList.map((item) => {
                     return (
                         <div key={item.name}>
                             <input
                                 type="checkbox"
                                 id={item.name}
                                 onChange={(e) => {
-                                    onCheckedItem(
+                                    onCheckedFood(
                                         e.target.checked,
                                         e.target.id
                                     );

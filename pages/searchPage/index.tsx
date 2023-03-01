@@ -4,7 +4,7 @@ import Fuse from "fuse.js";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
-import RecipeData from "@/components/search/RecipeData";
+import RecipeList from "@/components/search/RecipeList";
 import ChangeSortedBtn from "@/components/search/ChangeSortedBtn";
 import SideFoodCate from "@/components/search/SideFoodCate";
 import SideCookingTime from "@/components/search/SideCookingTime";
@@ -64,8 +64,7 @@ const SearchData: NextPage = () => {
         : currentItems;
 
     // 카테고리필터링(음식종류)
-
-    const onCheckedItem = useCallback(
+    const onCheckedFood = useCallback(
         (checked: boolean, newItem: string) => {
             if (checked) {
                 sessionStorage.setItem(
@@ -86,7 +85,7 @@ const SearchData: NextPage = () => {
         [filteredFood]
     );
     // 카테고리필터링(조리시간)
-    const onCheckedItem2 = useCallback(
+    const onCheckedTime = useCallback(
         (checked: boolean, newItem: string) => {
             if (checked) {
                 sessionStorage.setItem(
@@ -177,16 +176,16 @@ const SearchData: NextPage = () => {
             <div className="w-4/5 flex justify-between mb-20">
                 <div className="flex flex-col mr-3">
                     <SideFoodCate
-                        onCheckedItem={onCheckedItem}
+                        onCheckedFood={onCheckedFood}
                         filteredFood={filteredFood}
                     />
                     <div className="w-full border border-mono50 my-4"></div>
                     <SideCookingTime
-                        onCheckedItem2={onCheckedItem2}
+                        onCheckedTime={onCheckedTime}
                         filteredTime={filteredTime}
                     />
                 </div>
-                <RecipeData
+                <RecipeList
                     dataResults={dataResults}
                     filteredFood={filteredFood}
                     filteredTime={filteredTime}

@@ -4,7 +4,7 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Fuse from "fuse.js";
-import RecipeData from "@/components/search/RecipeData";
+import RecipeList from "@/components/search/RecipeList";
 import ChangeSortedBtn from "@/components/search/ChangeSortedBtn";
 import { FieldErrors, useForm } from "react-hook-form";
 
@@ -125,7 +125,7 @@ const ClassifiedRecipe: NextPage = () => {
                 <div className="bg-mono30 rounded-[3px] w-auto h-9 px-6 mr-7 text-sm flex items-center text-brand100">
                     {router.query.cate?.toString().replaceAll("&", "/")}
                 </div>
-                <RecipeData dataResults={dataResults} />
+                <RecipeList dataResults={dataResults} />
             </div>
         </div>
     );
