@@ -1,5 +1,12 @@
 import { dbService } from "@/config/firebase";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import {
+    collection,
+    getDocs,
+    limit,
+    orderBy,
+    query,
+    startAfter,
+} from "firebase/firestore";
 import Fuse from "fuse.js";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -18,6 +25,7 @@ const SearchData: NextPage = () => {
     const [filteredFood, setFilteredFood] = useState<string[]>([]);
     const [filteredTime, setFilteredTime] = useState<string[]>([]);
     const [currentItems, setCurrentItems] = useState<RecipeProps[]>([]);
+    const [lastDoc, setLastdoc] = useState(0);
 
     const { register, handleSubmit, getValues } = useForm();
     const onValid = () => {
@@ -41,17 +49,53 @@ const SearchData: NextPage = () => {
     };
 
     // 전체목록불러오기
-    const getList = async () => {
-        const items = query(
-            collection(dbService, "recipe"),
-            orderBy(isBest === "viewCount" ? "viewCount" : "createdAt", "desc")
+    // const getList = async () => {
+    //     const items = query(
+    //         collection(dbService, "recipe"),
+    //         orderBy(isBest === "viewCount" ? "viewCount" : "createdAt", "desc")
+    //     );
+    //     const querySnapshot = await getDocs(items);
+    //     const newData = querySnapshot.docs.map((doc) => ({
+    //         ...doc.data(),
+    //         id: doc.id,
+    //     }));
+    //     setCurrentItems(newData);
+    // };
+    const first = async () => {
+        const querySnapshot = await getDocs(
+            query(
+                collection(dbService, "recipe"),
+                orderBy("createdAt", "desc"),
+                limit(6)
+            )
         );
-        const querySnapshot = await getDocs(items);
-        const newData = querySnapshot.docs.map((doc) => ({
+        const newData = querySnapshot.docs.map((doc: any) => ({
             ...doc.data(),
             id: doc.id,
         }));
         setCurrentItems(newData);
+        const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+        setLastdoc(lastDoc);
+    };
+    const next = async () => {
+        const querySnapshot = await getDocs(
+            query(
+                collection(dbService, "recipe"),
+                orderBy("createdAt", "desc"),
+                startAfter(lastDoc),
+                limit(6)
+            )
+        );
+        updateState(querySnapshot);
+    };
+    const updateState = (querySnapshot: any) => {
+        const newData = querySnapshot.docs.map((doc: any) => ({
+            ...doc.data(),
+            id: doc.id,
+        }));
+        const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+        setCurrentItems((prev) => [...prev, ...newData]);
+        setLastdoc(lastDoc);
     };
     // 검색
     const fuse = new Fuse(currentItems, {
@@ -129,7 +173,8 @@ const SearchData: NextPage = () => {
         if (storeFilteredTime) {
             setFilteredTime(storeFilteredTime);
         }
-        getList();
+        // getList();
+        first();
     }, [isBest]);
 
     return (
@@ -189,6 +234,7 @@ const SearchData: NextPage = () => {
                     dataResults={dataResults}
                     filteredFood={filteredFood}
                     filteredTime={filteredTime}
+                    next={next}
                 />
             </div>
         </div>

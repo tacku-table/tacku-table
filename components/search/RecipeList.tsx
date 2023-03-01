@@ -6,11 +6,7 @@ interface TypeRecipeList {
 }
 
 // 전체레시피불러오기
-const RecipeList = ({
-    dataResults,
-    filteredFood,
-    filteredTime,
-}: TypeRecipeList) => {
+const RecipeList = ({ dataResults, filteredFood, filteredTime, next }: any) => {
     const filteredFoodAndTime =
         dataResults?.length && filteredFood?.length && filteredTime?.length;
     const filteredOnlyFood = dataResults?.length && filteredFood?.length;
@@ -51,6 +47,9 @@ const RecipeList = ({
             ) : (
                 <div>게시물이 존재하지 않습니다.</div>
             )}
+            <button type="button" onClick={next} className="border">
+                더보기
+            </button>
         </div>
     );
 };
