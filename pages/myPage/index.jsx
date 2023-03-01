@@ -9,6 +9,7 @@ import MyTabs from "../../components/tabs/MyTabs";
 const MyPage = () => {
   const [userInfo, setUserInfo] = useState([]);
   const [storageCurrentUser, setStorageCurrentUser] = useState({});
+  const [imgPreview, setImgPreview] = useState();
 
   // const { uid } = JSON.parse(sessionStorage.getItem("User"));
 
@@ -36,37 +37,44 @@ const MyPage = () => {
       setStorageCurrentUser("logout");
     }
   }, []);
+
+  useEffect(() => {
+    // setTimeout(getUserProfileImg(userInfo?.userImg), 1000);
+    getUserProfileImg(userInfo?.userImg);
+  }, [userInfo.userImg]);
+
   useEffect(() => {
     if (storageCurrentUser == "logout") {
       // alert("로그아웃\n 메인 화면으로 이동합니다.");
       location.href = "/loginPage";
     }
   }, [storageCurrentUser]);
+
+  const getUserProfileImg = (userImg) => {
+    if (userImg === "null") {
+      return setImgPreview(defaultImg);
+    }
+    setImgPreview(userImg);
+  };
+
   return (
     <>
       <div>
         <div className="bg-coverBg bg-cover bg-center w-full h-[280px] bg-no-repeat relative">
           <div className="flex justify-center items-center space-x-[24px] absolute left-[370px] top-[151px] text-white">
-            {userInfo?.userImg === "null" ? (
+            {imgPreview && (
               <Image
-                className="rounded-md object-cover aspect-square"
-                src={defaultImg}
-                width={100}
-                height={100}
-                alt="default_img"
-              />
-            ) : (
-              <Image
-                className="rounded-md object-cover aspect-square"
-                src={userInfo.userImg}
-                priority={true}
+                src={imgPreview}
+                className="rounded-md aspect-square"
                 loader={({ src }) => src}
+                unoptimized
+                priority={true}
                 width={100}
                 height={100}
-                alt="user_img"
+                alt="프로필이미지"
               />
             )}
-            <p className="text-4xl">{userInfo.userNickname}</p>
+            <p className="text-4xl">{userInfo.userNick}</p>
             <Link
               legacyBehavior
               href={{
