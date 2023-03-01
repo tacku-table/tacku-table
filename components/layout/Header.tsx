@@ -20,10 +20,16 @@ const Header = () => {
                 console.log("error:", error);
             });
     };
-
     const moveLoginPage = () => {
         location.href = "/loginPage";
     };
+    const clearStorage = () => {
+        sessionStorage.removeItem("filteredFoodData");
+        sessionStorage.removeItem("filteredTimeData");
+        sessionStorage.removeItem("searchData");
+        window.location.replace("/searchPage");
+    };
+
     useEffect(() => {
         const user = sessionStorage.getItem("User") || "";
         setStorageCurrentUser(user);
@@ -42,10 +48,11 @@ const Header = () => {
                         />
                     </Link>
                 </li>
-                <li onClick={() => (location.href = "/searchPage")}>
-                    <Link href="/searchPage" className="header-title">
-                        전체 레시피
-                    </Link>
+                <li
+                    onClick={clearStorage}
+                    className="header-title cursor-pointer"
+                >
+                    전체 레시피
                 </li>
                 <FoodCategory />
                 <CookingTime />
@@ -83,7 +90,6 @@ const Header = () => {
                 )}
                 {storageCurrentUser ? (
                     <button
-                        // href="/myPage"
                         type="button"
                         onClick={() => (location.href = "/myPage")}
                         className="hover:text-mono80 hover:transition hover:ease-out hover:duration-300"

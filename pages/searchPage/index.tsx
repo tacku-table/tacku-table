@@ -13,12 +13,15 @@ import { FieldErrors, useForm } from "react-hook-form";
 const SearchData: NextPage = () => {
     const router = useRouter();
     const deliverKeyword = router.query.keyword;
-    const [text, setText] = useState(deliverKeyword || "");
+    const [text, setText] = useState(deliverKeyword?.toString() || "");
     const [isBest, setIsBest] = useState("");
-    const [filtered, setFiltered] = useState<string[] | "">("");
+    const [filteredFood, setFilteredFood] = useState<string[]>([]);
+    const [filteredTime, setFilteredTime] = useState<string[]>([]);
+    const [currentItems, setCurrentItems] = useState<RecipeProps[]>([]);
 
     const { register, handleSubmit, getValues } = useForm();
     const onValid = () => {
+        sessionStorage.setItem("searchData", getValues("searchText"));
         setText(getValues("searchText"));
     };
     const onInValid = (errors: FieldErrors) => {
@@ -37,48 +40,7 @@ const SearchData: NextPage = () => {
         setIsBest("createdAt");
     };
 
-    // 카테고리필터링(음식종류)
-    const [checkedList, setCheckedList] = useState<Array<string>>([]);
-
-    const onCheckedItem = useCallback(
-        (checked: boolean, newItem: string) => {
-            if (checked) {
-                setCheckedList((prev) => [...prev, newItem]);
-                sessionStorage.setItem(
-                    "filteredData",
-                    JSON.stringify([...checkedList, newItem])
-                );
-                setFiltered([...checkedList, newItem]);
-                console.log([...checkedList, newItem]);
-            } else if (!checked) {
-                setCheckedList(checkedList.filter((ele) => ele !== newItem));
-                sessionStorage.setItem(
-                    "filteredData",
-                    JSON.stringify(checkedList.filter((ele) => ele !== newItem))
-                );
-                setFiltered(checkedList.filter((ele) => ele !== newItem));
-                console.log(checkedList.filter((ele) => ele !== newItem));
-            }
-        },
-        [checkedList]
-    );
-    // 카테고리필터링(조리시간)
-    const [checkedList2, setCheckedList2] = useState<Array<string>>([]);
-
-    const onCheckedItem2 = useCallback(
-        (checked: boolean, item: string) => {
-            if (checked) {
-                setCheckedList2((prev) => [...prev, item]);
-            } else if (!checked) {
-                setCheckedList2(checkedList2.filter((ele) => ele !== item));
-            }
-        },
-        [checkedList2]
-    );
-
     // 전체목록불러오기
-    const [currentItems, setCurrentItems] = useState<RecipeProps[]>([]);
-
     const getList = async () => {
         const items = query(
             collection(dbService, "recipe"),
@@ -91,35 +53,83 @@ const SearchData: NextPage = () => {
         }));
         setCurrentItems(newData);
     };
-
     // 검색
     const fuse = new Fuse(currentItems, {
         keys: ["animationTitle", "foodTitle", "content"],
         includeScore: true,
     });
-    // @ts-ignore
     const results = fuse.search(text);
     const dataResults = text
         ? results.map((recipe) => recipe.item)
         : currentItems;
 
+    // 카테고리필터링(음식종류)
+
+    const onCheckedItem = useCallback(
+        (checked: boolean, newItem: string) => {
+            if (checked) {
+                sessionStorage.setItem(
+                    "filteredFoodData",
+                    JSON.stringify([...filteredFood, newItem])
+                );
+                setFilteredFood([...filteredFood, newItem]);
+            } else if (!checked) {
+                sessionStorage.setItem(
+                    "filteredFoodData",
+                    JSON.stringify(
+                        filteredFood.filter((ele) => ele !== newItem)
+                    )
+                );
+                setFilteredFood(filteredFood.filter((ele) => ele !== newItem));
+            }
+        },
+        [filteredFood]
+    );
+    // 카테고리필터링(조리시간)
+    const onCheckedItem2 = useCallback(
+        (checked: boolean, newItem: string) => {
+            if (checked) {
+                sessionStorage.setItem(
+                    "filteredTimeData",
+                    JSON.stringify([...filteredTime, newItem])
+                );
+                setFilteredTime([...filteredTime, newItem]);
+            } else if (!checked) {
+                sessionStorage.setItem(
+                    "filteredTimeData",
+                    JSON.stringify(
+                        filteredTime.filter((ele) => ele !== newItem)
+                    )
+                );
+                setFilteredTime(filteredTime.filter((ele) => ele !== newItem));
+            }
+        },
+        [filteredTime]
+    );
+
     useEffect(() => {
         const result = sessionStorage.getItem("userWatching");
-        // const filteredResults = JSON.parse(
-        //     sessionStorage.getItem("filteredData") || ""
-        // );
-
+        const storeSearchText = sessionStorage.getItem("searchData");
+        const storeFilteredFood = JSON.parse(
+            sessionStorage.getItem("filteredFoodData")!
+        );
+        const storeFilteredTime = JSON.parse(
+            sessionStorage.getItem("filteredTimeData")!
+        );
         if (result) {
             setIsBest(result);
         } else {
             setIsBest("createdAt");
         }
-        // if (filteredResults) {
-        //     setFiltered(filteredResults);
-        // } else {
-        //     setFiltered("");
-        // }
-
+        if (storeSearchText) {
+            setText(storeSearchText);
+        }
+        if (storeFilteredFood) {
+            setFilteredFood(storeFilteredFood);
+        }
+        if (storeFilteredTime) {
+            setFilteredTime(storeFilteredTime);
+        }
         getList();
     }, [isBest]);
 
@@ -160,22 +170,26 @@ const SearchData: NextPage = () => {
                 isBest={isBest}
                 activeBestBtn={activeBestBtn}
                 inactiveBestBtn={inactiveBestBtn}
-                checkedList={checkedList}
-                checkedList2={checkedList2}
+                filteredFood={filteredFood}
+                filteredTime={filteredTime}
             />
-            <div className="w-4/5 border-b border-mono50 mb-[30px]"></div>
-            <div className="w-4/5 flex justify-between gap-7 mb-20">
-                <div className="flex flex-col">
+            <div className="w-4/5 border-b border-mono70 mb-[30px]"></div>
+            <div className="w-4/5 flex justify-between mb-20">
+                <div className="flex flex-col mr-3">
                     <SideFoodCate
                         onCheckedItem={onCheckedItem}
-                        // filtered={filtered}
+                        filteredFood={filteredFood}
                     />
-                    <SideCookingTime onCheckedItem2={onCheckedItem2} />
+                    <div className="w-full border border-mono50 my-4"></div>
+                    <SideCookingTime
+                        onCheckedItem2={onCheckedItem2}
+                        filteredTime={filteredTime}
+                    />
                 </div>
                 <RecipeData
                     dataResults={dataResults}
-                    checkedList={checkedList}
-                    checkedList2={checkedList2}
+                    filteredFood={filteredFood}
+                    filteredTime={filteredTime}
                 />
             </div>
         </div>

@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
 import { emailRegex, pwRegex } from "@/util";
-import KakaoLogin from "./KakaoLogin";
+import { KakaoLogin } from "./KakaoLogin";
 
 const Login = ({ setStatus, status }: { setStatus: any; status: string }) => {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -22,7 +22,6 @@ const Login = ({ setStatus, status }: { setStatus: any; status: string }) => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(authService, provider)
       .then(async (data) => {
-        console.log("data", data);
         await setDoc(doc(dbService, "user", data.user.uid), {
           userId: data.user.uid,
           userNickname: data.user.displayName,
@@ -35,7 +34,7 @@ const Login = ({ setStatus, status }: { setStatus: any; status: string }) => {
           photoURL: "null",
         });
         sessionStorage.setItem("User", JSON.stringify(authService.currentUser));
-        location.href = "/mainPage";
+        //location.href = "/mainPage";
       })
       .catch((err) => {
         console.log(err);

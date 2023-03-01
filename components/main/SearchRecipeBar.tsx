@@ -6,6 +6,7 @@ const SearchRecipeBar: NextPage = () => {
     const router = useRouter();
     const { register, handleSubmit, getValues } = useForm();
     const onValid = () => {
+        sessionStorage.setItem("searchData", getValues("text"));
         router.push({
             pathname: "/searchPage",
             query: { keyword: getValues("text") },
