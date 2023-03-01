@@ -49,18 +49,6 @@ const SearchData: NextPage = () => {
     };
 
     // 전체목록불러오기
-    // const getList = async () => {
-    //     const items = query(
-    //         collection(dbService, "recipe"),
-    //         orderBy(isBest === "viewCount" ? "viewCount" : "createdAt", "desc")
-    //     );
-    //     const querySnapshot = await getDocs(items);
-    //     const newData = querySnapshot.docs.map((doc) => ({
-    //         ...doc.data(),
-    //         id: doc.id,
-    //     }));
-    //     setCurrentItems(newData);
-    // };
     const first = async () => {
         const querySnapshot = await getDocs(
             query(
@@ -76,6 +64,16 @@ const SearchData: NextPage = () => {
         setCurrentItems(newData);
         const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
         setLastdoc(lastDoc);
+        // updateState(querySnapshot);
+    };
+    const updateState = (querySnapshot: any) => {
+        const newData = querySnapshot.docs.map((doc: any) => ({
+            ...doc.data(),
+            id: doc.id,
+        }));
+        const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+        setCurrentItems((prev) => [...prev, ...newData]);
+        setLastdoc(lastDoc);
     };
     const next = async () => {
         const querySnapshot = await getDocs(
@@ -87,15 +85,6 @@ const SearchData: NextPage = () => {
             )
         );
         updateState(querySnapshot);
-    };
-    const updateState = (querySnapshot: any) => {
-        const newData = querySnapshot.docs.map((doc: any) => ({
-            ...doc.data(),
-            id: doc.id,
-        }));
-        const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
-        setCurrentItems((prev) => [...prev, ...newData]);
-        setLastdoc(lastDoc);
     };
     // 검색
     const fuse = new Fuse(currentItems, {
@@ -173,71 +162,81 @@ const SearchData: NextPage = () => {
         if (storeFilteredTime) {
             setFilteredTime(storeFilteredTime);
         }
-        // getList();
         first();
     }, [isBest]);
 
     return (
-        <div className="w-full mt-20 flex flex-col justify-center items-center">
-            <form
-                onSubmit={handleSubmit(onValid, onInValid)}
-                className="relative mt-4 mb-16 flex"
-            >
-                <input
-                    {...register("searchText")}
-                    type="text"
-                    className="w-[300px] h-[50px] text-sm font-medium pl-7 focus:outline-none rounded-[5px] rounded-r-none border border-slate-300"
-                    placeholder="하울의 움직이는 성 베이컨계란요리"
-                ></input>
-                <button
-                    type="submit"
-                    className="bg-brand100 rounded-[5px] rounded-l-none w-[50px] h-[50px] text-center"
+        <>
+            <div className="w-full mt-20 flex flex-col justify-center items-center">
+                <form
+                    onSubmit={handleSubmit(onValid, onInValid)}
+                    className="relative mt-4 mb-16 flex"
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        className="w-6 h-6 text-white absolute top-3 ml-3 pointer-events-none"
+                    <input
+                        {...register("searchText")}
+                        type="text"
+                        className="w-[300px] h-[50px] text-sm font-medium pl-7 focus:outline-none rounded-[5px] rounded-r-none border border-slate-300"
+                        placeholder="하울의 움직이는 성 베이컨계란요리"
+                    ></input>
+                    <button
+                        type="submit"
+                        className="bg-brand100 rounded-[5px] rounded-l-none w-[50px] h-[50px] text-center"
                     >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                        />
-                    </svg>
-                </button>
-            </form>
-            <ChangeSortedBtn
-                dataResults={dataResults}
-                isBest={isBest}
-                activeBestBtn={activeBestBtn}
-                inactiveBestBtn={inactiveBestBtn}
-                filteredFood={filteredFood}
-                filteredTime={filteredTime}
-            />
-            <div className="w-4/5 border-b border-mono70 mb-[30px]"></div>
-            <div className="w-4/5 flex justify-between mb-20">
-                <div className="flex flex-col mr-3">
-                    <SideFoodCate
-                        onCheckedFood={onCheckedFood}
-                        filteredFood={filteredFood}
-                    />
-                    <div className="w-full border border-mono50 my-4"></div>
-                    <SideCookingTime
-                        onCheckedTime={onCheckedTime}
-                        filteredTime={filteredTime}
-                    />
-                </div>
-                <RecipeList
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="1.5"
+                            stroke="currentColor"
+                            className="w-6 h-6 text-white absolute top-3 ml-3 pointer-events-none"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                            />
+                        </svg>
+                    </button>
+                </form>
+                <ChangeSortedBtn
                     dataResults={dataResults}
+                    isBest={isBest}
+                    activeBestBtn={activeBestBtn}
+                    inactiveBestBtn={inactiveBestBtn}
                     filteredFood={filteredFood}
                     filteredTime={filteredTime}
-                    next={next}
                 />
+                <div className="w-4/5 border-b border-mono70 mb-[30px]"></div>
+                <div className="w-4/5 flex justify-between mb-20">
+                    <div className="flex flex-col mr-3">
+                        <SideFoodCate
+                            onCheckedFood={onCheckedFood}
+                            filteredFood={filteredFood}
+                        />
+                        <div className="w-full border border-mono50 my-4"></div>
+                        <SideCookingTime
+                            onCheckedTime={onCheckedTime}
+                            filteredTime={filteredTime}
+                        />
+                    </div>
+                    <RecipeList
+                        dataResults={dataResults}
+                        filteredFood={filteredFood}
+                        filteredTime={filteredTime}
+                        next={next}
+                    />
+                </div>
             </div>
-        </div>
+            <div className="w-full flex justify-center items-center mb-[30px]">
+                <button
+                    type="button"
+                    onClick={next}
+                    className="border px-7 py-1"
+                >
+                    더보기
+                </button>
+            </div>
+        </>
     );
 };
 
