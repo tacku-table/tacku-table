@@ -57,7 +57,7 @@ export default function DetailReciptPage(props: any) {
     if (userConfirm) {
       try {
         await deleteDoc(doc(dbService, "recipe", targetBoardId));
-        toast.success("게시물이 삭제되었습니다.");
+        toast.warn("🗑 게시글이 삭제되었습니다");
         location.href = "/mainPage";
       } catch (error) {
         console.log("error: ", error);
@@ -154,10 +154,8 @@ export default function DetailReciptPage(props: any) {
                   unoptimized
                 />
               )}
-              <Link href={`/myPage/${userFireData?.userId}`}>
-                <p className="pl-5 font-semibold">
-                  {userFireData.userNickname}
-                </p>
+              <Link href={`/myPage/${userData?.userId}`}>
+                <p className="pl-5 font-semibold">{userData.userNickname}</p>
               </Link>
             </div>
             {/* 수정/ 삭제 */}
