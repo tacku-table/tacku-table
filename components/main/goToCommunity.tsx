@@ -4,8 +4,8 @@ import Link from "next/link";
 const GoToCommunity: NextPage = () => {
     return (
         <div className="relative w-full h-[384px] text-white flex flex-col justify-center bg-chihiro bg-cover">
-            <div className="w-[1150px] mx-auto">
-                <p className="text-xl font-semibold mt-[105px] mb-4 ">
+            <div className="w-4/6 mx-auto">
+                <p className="text-xl font-semibold mt-[105px] mb-4">
                     커뮤니티
                 </p>
                 <p className="text-sm z-50">

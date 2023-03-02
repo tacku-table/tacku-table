@@ -16,6 +16,7 @@ import ChangeSortedBtn from "@/components/search/ChangeSortedBtn";
 import SideFoodCate from "@/components/search/SideFoodCate";
 import SideCookingTime from "@/components/search/SideCookingTime";
 import { FieldErrors, useForm } from "react-hook-form";
+import { cls } from "@/util";
 
 const SearchData: NextPage = () => {
     const router = useRouter();
@@ -63,8 +64,7 @@ const SearchData: NextPage = () => {
         }));
         setCurrentItems(newData);
         const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
-        setLastdoc(lastDoc);
-        // updateState(querySnapshot);
+        lastDoc ? setLastdoc(lastDoc as any) : null;
     };
     const updateState = (querySnapshot: any) => {
         const newData = querySnapshot.docs.map((doc: any) => ({
@@ -231,7 +231,10 @@ const SearchData: NextPage = () => {
                 <button
                     type="button"
                     onClick={next}
-                    className="border px-7 py-1"
+                    className={cls(
+                        "border px-7 py-1",
+                        !lastDoc ? "hidden" : ""
+                    )}
                 >
                     더보기
                 </button>

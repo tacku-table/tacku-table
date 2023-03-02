@@ -12,7 +12,7 @@ const TopButton = ({ className }: any) => {
             <button
                 type="button"
                 onClick={scrollToTop}
-                className="bg-brand100 p-2 rounded-full text-white fixed bottom-5 right-7"
+                className="bg-brand100 p-2 rounded-full text-white fixed bottom-5 right-28"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"

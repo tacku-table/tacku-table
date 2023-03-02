@@ -1,4 +1,7 @@
+import { dbService } from "@/config/firebase";
 import { cls } from "@/util";
+import { collection, getCountFromServer, query } from "firebase/firestore";
+import TopButton from "../button/TopButton";
 
 const ChangeSortedBtn = ({
     dataResults,
@@ -8,6 +11,12 @@ const ChangeSortedBtn = ({
     filteredFood,
     filteredTime,
 }: any) => {
+    const countData = async () => {
+        const q = query(collection(dbService, "recipe"));
+        const snapshot = await getCountFromServer(q);
+        const counting = snapshot.data().count;
+    };
+    countData();
     const filteredFoodAndTime =
         dataResults?.length && filteredFood?.length && filteredTime?.length;
     const filteredOnlyFood = dataResults?.length && filteredFood?.length;
@@ -15,6 +24,7 @@ const ChangeSortedBtn = ({
 
     return (
         <div className="w-4/5 flex justify-end items-center mb-[20px]">
+            <TopButton />
             {dataResults ? (
                 <p className=" text-mono100 mr-[330px]">
                     총&nbsp;
