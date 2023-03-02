@@ -10,9 +10,6 @@ import { useRouter } from "next/router";
 
 const Header = () => {
   const [storageCurrentUser, setStorageCurrentUser] = useState("");
-  // 마이페이지 uid param
-  //   const [uid, setUid] = useState("");
-  const [currentUser, setCurrentUser] = useState();
 
   const logoutAction = () => {
     signOut(authService)
@@ -32,17 +29,13 @@ const Header = () => {
   const router = useRouter();
   const moveMyPage = (currentUser: any) => {
     const { uid, displayName, photoURL } = JSON.parse(currentUser);
-    console.log(uid, displayName, photoURL);
+    console.log(uid);
     router.push(
       {
         pathname: `/myPage/${uid}`,
-        query: {
-          id: uid,
-          nickName: displayName,
-          profileImg: photoURL,
-        },
+        query: { id: uid, displayName: displayName },
       },
-      `myPage/${displayName}`
+      `myPage/${uid}`
     );
   };
 
@@ -56,8 +49,6 @@ const Header = () => {
   useEffect(() => {
     const user = sessionStorage.getItem("User") || "";
     setStorageCurrentUser(user);
-    const parsingUser = JSON.parse(user);
-    setCurrentUser(parsingUser);
   }, []);
 
   return (

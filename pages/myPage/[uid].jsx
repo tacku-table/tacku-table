@@ -7,30 +7,34 @@ import Link from "next/link";
 import Image from "next/image";
 import MyTabs from "../../components/profile/MyTabs";
 import { useRouter } from "next/router";
-export default function MyPage() {
-  const [userInfo, setUserInfo] = useState([]);
-  const [storageCurrentUser, setStorageCurrentUser] = useState({});
-  const [currentUser, setCurrentUser] = useState();
 
+const MyPage = () => {
+  const [userInfo, setUserInfo] = useState({});
+  const [storageCurrentUser, setStorageCurrentUser] = useState({});
+  const [isOwner, setIsOwner] = useState({});
   const [imgPreview, setImgPreview] = useState();
 
   const router = useRouter();
   // JSON.parse 사용
   // currentUserState
-  // useEffect(() => {
-  //   if (!router.isReady) return;
-  //   const { currentUserState } = router.query;
-  //   console.log(currentUserState);
-  //   console.log(router);
-  //   // const res = JSON.parse(currentUserState);
-  //   // setCurrentUser(res);
-  // }, [router.isReady]);
+  useEffect(() => {
+    if (!router.isReady) return;
+    console.log(router);
+    const { id } = router.query;
+    const res = {
+      id,
+    };
+    setIsOwner(res);
+    console.log(id);
 
-  // console.log(currentUser);
+    getCurrentUserInfo(id);
+
+    // const res = JSON.parse(currentUserState);
+    // setCurrentUser(res);
+  }, [router.isReady]);
 
   const getCurrentUserInfo = async (id) => {
     await getDoc(doc(dbService, "user", id)).then((doc) => {
-      // console.log("getCurrentUserInfo의 data: ", doc.data());
       const user = {
         ...doc.data(),
       };
@@ -41,7 +45,7 @@ export default function MyPage() {
   useEffect(() => {
     const currentUser = JSON.parse(sessionStorage.getItem("User"));
     if (currentUser) {
-      getCurrentUserInfo(currentUser.uid);
+      // getCurrentUserInfo(currentUser.uid);
       setStorageCurrentUser(currentUser);
     } else {
       setStorageCurrentUser("logout");
@@ -49,7 +53,6 @@ export default function MyPage() {
   }, []);
 
   useEffect(() => {
-    // setTimeout(getUserProfileImg(userInfo?.userImg), 1000);
     getUserProfileImg(userInfo?.userImg);
   }, [userInfo.userImg]);
 
@@ -85,6 +88,7 @@ export default function MyPage() {
               />
             )}
             <p className="text-4xl">{userInfo.userNickname}</p>
+
             <Link
               legacyBehavior
               href={{
@@ -122,15 +126,16 @@ export default function MyPage() {
       <MyTabs userInfo={userInfo} setUserInfo={setUserInfo} />
     </>
   );
-}
-export async function getServerSideProps(context) {
-  console.log(context);
-  const { params } = context;
-  console.log(params);
-  // const { currentUserState } = query;
-  // const res = JSON.parse(currentUserState);
-  // console.log(res);
-  return {
-    props: {},
-  };
-}
+};
+export default MyPage;
+// export async function getServerSideProps(context) {
+//   console.log(context);
+//   const { query } = context;
+//   console.log(query);
+//   // const { currentUserState } = query;
+//   // const res = JSON.parse(currentUserState);
+//   // console.log(res);
+//   return {
+//     props: {},
+//   };
+// }
