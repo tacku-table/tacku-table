@@ -8,6 +8,7 @@ import EditorComponent from "@/components/write/TextEditor";
 import { collection, addDoc } from "firebase/firestore";
 import { dbService } from "../../config/firebase";
 import baseImg from "/public/images/test1.png";
+import { toast, ToastContainer } from "react-toastify";
 
 interface TitleType {
   title: string;
@@ -50,7 +51,7 @@ const RecipeWritePage = () => {
     console.log("document.URL:", document.URL);
     window.addEventListener("popstate", function (event) {
       const result = window.confirm(
-        "레시피 글쓰기 정보를 모두 잃을수 있습니다 \n 그래도 나가시겠습니까?"
+        "레시피 글쓰기 정보를 모두 잃을수 있습니다\n그래도 나가시겠습니까?"
       );
       if (result) {
         window.location.replace(`/searchPage`);
@@ -107,6 +108,19 @@ const RecipeWritePage = () => {
     setFunction(event.target.value);
   };
 
+  const toastAlert = (alertText: string) => {
+    toast(`${alertText}`, {
+      position: "top-right",
+      autoClose: 1300,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+
   const fbUser = authService?.currentUser;
 
   const postNewRecipe = async (event: any) => {
@@ -143,6 +157,8 @@ const RecipeWritePage = () => {
       !ingredient ||
       !selectCookTime ||
       !foodCategory ||
+      foodCategory == "none" ||
+      selectCookTime == "none" ||
       !displayStatus ||
       !thumbnail ||
       !editorText ||
@@ -150,48 +166,57 @@ const RecipeWritePage = () => {
       editorText === "<p><br></p>"
     ) {
       if (!targetTitle) {
-        alert("영화 제목을 선택해주세요!");
+        toastAlert("🥺 영화 제목을 선택해주세요 🥺");
         movieTitleRef.current?.focus();
         return false;
       }
       if (!foodTitle) {
-        alert("음식명을 작성해주세요!");
+        toastAlert("🥺 레시피 제목을 깜빡하셨어요 🥺");
         foodTitleRef.current?.focus();
         return false;
       }
-      if (!ingredient) {
-        alert("재료명을 작성해주세요!");
-        // ingredientRef.current?
-        ingredientRef.current?.focus();
-        return false;
-      }
-      if (!selectCookTime) {
-        alert("조리 시간을 작성해주세요!");
-        cookTimeRef.current?.focus();
-        return false;
-      }
-      if (!foodCategory) {
-        alert("음식 종류를 선택해주세요!");
+      if (!foodCategory || foodCategory == "none") {
+        toastAlert("🥺 음식 종류를 선택해주세요! 🥺");
         foodCategoryRef.current?.focus();
         return false;
       }
+
+      if (!selectCookTime || selectCookTime == "none") {
+        toastAlert("🥺 소요 시간을 작성해주세요 🥺");
+        cookTimeRef.current?.focus();
+        return false;
+      }
+
+      if (!ingredient) {
+        toastAlert("🥺 재료명을 작성해주세요 🥺");
+        ingredientRef.current?.focus();
+        return false;
+      }
+
+      if (!editorText) {
+        toastAlert("🥺 본문이 채워지지 않았어요!🥺");
+        return false;
+      }
+
       if (!thumbnail) {
-        alert("대표 사진을 선택해주세요!");
+        toastAlert("🥺 대표 사진을 선택해주세요! 🥺");
         thumbnailRef.current?.focus();
         return false;
       }
       if (!displayStatus) {
-        alert("게시글 공개여부를 체크해주세요!");
+        toastAlert("🥺 게시글 공개여부를 체크해주세요! 🥺");
         return false;
       }
 
-      alert("게시글 본문이 채워지지 않았어요 😥");
+      toastAlert("🥺 게시글 본문이 채워지지 않았어요🥺");
       return false;
     }
     console.log("newRecipe", newRecipe);
     await addDoc(collection(dbService, "recipe"), newRecipe);
-    alert("레시피 저장 성공!");
-    location.href = "/searchPage";
+    toast.success("레시피 저장 성공!");
+    setTimeout(() => {
+      location.href = "/searchPage";
+    }, 700);
   };
 
   const onFileChange = (event: any) => {
@@ -218,6 +243,7 @@ const RecipeWritePage = () => {
     if (imgDataUrl) {
       console.log("imgDataUrl", imgDataUrl);
       setImgLoading("loading");
+
       const response = await uploadString(imgRef, imgDataUrl, "data_url");
       setImgLoading("default");
       downloadUrl = await getDownloadURL(response.ref);
@@ -228,6 +254,7 @@ const RecipeWritePage = () => {
 
   return (
     <div className="bg-white p-10">
+      <ToastContainer position="top-right" autoClose={1000} />
       <div className="mt-[75px] rounded-md p-7 container w-[1180px] mx-auto flex justify-center flex-col bg-white">
         <h3 className="text-4xl font-bold">레시피 글쓰기 </h3>
         <hr className="mt-[24px] h-px border-[1.5px] border-brand100"></hr>
@@ -246,14 +273,6 @@ const RecipeWritePage = () => {
 
             {searchTitle ? (
               <div className="ml-[5px] rounded-lg w-[450px]  text-center mt-1">
-                {/* <h3 className="mt-4">
-                  <b className="text-brand100 text-[21px]">{searchTitle} </b>
-                  키워드로 검색된 결과입니다.
-                </h3>
-                <h6>
-                  아래에서 <b>영화를 선택</b>해주세요
-                </h6> */}
-
                 <select
                   className="ml-[185px] w-[280px] h-[40px] mt-[16px] border border-mono60 rounded-[2px] text-center"
                   onChange={(event) => {
@@ -273,7 +292,6 @@ const RecipeWritePage = () => {
                     </option>
                   ))}
                 </select>
-                {/* <div className="flex items-stretch ml-10">dfdf</div> */}
               </div>
             ) : (
               <div></div>
