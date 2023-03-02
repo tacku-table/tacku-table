@@ -55,14 +55,14 @@ const Bookmark = (props: any) => {
       await setDoc(
         doc(dbService, "user", currenDetailUser, "bookmarkPost", props.postId),
         {
-          thumbnail: props.recipeData.thumbnail,
-          foodTitle: props.recipeData.foodTitle,
-          writerNickName: props.userFireData.userNickname,
-          writerProfileImg: props.userFireData.userImg,
-          viewCount: props.recipeData.viewCount,
-          cookingTime: props.recipeData.cookingTime,
-          animationTitle: props.recipeData.animationTitle,
-          uid: props.recipeData.uid,
+          thumbnail: props.targetWholeData.thumbnail,
+          foodTitle: props.targetWholeData.foodTitle,
+          writerNickName: props.userData.userNickname,
+          writerProfileImg: props.userData.userImg,
+          viewCount: props.targetWholeData.viewCount,
+          cookingTime: props.targetWholeData.cookingTime,
+          animationTitle: props.targetWholeData.animationTitle,
+          uid: props.targetWholeData.uid,
         }
       );
     }

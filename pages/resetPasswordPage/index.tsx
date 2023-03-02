@@ -3,6 +3,7 @@ import { authService } from "@/config/firebase";
 import { useSearchParams } from "next/navigation";
 import { confirmPasswordReset } from "firebase/auth";
 import { emailRegex, pwRegex } from "@/util";
+import { toast } from "react-toastify";
 
 const ResetPassword = () => {
   //searchParams : URL 검색 매개변수를 읽다. url에 있는 oobcode를 읽는 것같다.
@@ -29,17 +30,17 @@ const ResetPassword = () => {
       return true;
     }
     if (newPassword !== conirmPassword) {
-      alert("비밀번호가 다릅니다.");
+      toast.error("비밀번호가 다릅니다.");
       return;
     }
     confirmPasswordReset(authService, oobCode, newPassword)
-      .then((data) => {
-        alert("비밀번호를 변경했습니다. 다시 로그인해주세요.");
+      .then((data: any) => {
+        toast.success("비밀번호를 변경했습니다. 다시 로그인해주세요.");
         window.location.href = "/loginPage";
       })
-      .catch((error) => {
+      .catch((error: any) => {
         if (error.code === "auth/invalid-action-code") {
-          alert("회원이 아닙니다.");
+          console.log("회원이 아닙니다.");
           return;
         }
         console.log(error.message);
