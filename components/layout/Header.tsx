@@ -6,6 +6,8 @@ import FoodCategory from "../main/category/FoodCategory";
 import CookingTime from "../main/category/CookingTime";
 import logo2 from "../../public/images/logo2.png";
 import Image from "next/image";
+import { toast } from "react-toastify";
+import { setTimeout } from "timers";
 
 const Header = () => {
     const [storageCurrentUser, setStorageCurrentUser] = useState("");
@@ -13,8 +15,10 @@ const Header = () => {
         signOut(authService)
             .then(() => {
                 sessionStorage.clear();
-                alert("로그아웃 성공!");
-                location.reload();
+                toast.success("로그아웃성공!");
+                setTimeout(() => {
+                    location.reload();
+                }, 2000);
             })
             .catch((error) => {
                 console.log("error:", error);

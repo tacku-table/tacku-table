@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const RecipeListData = ({ item }: any) => {
     // 회원아니면 alert뜨게함. 추가 로직
@@ -9,7 +10,7 @@ const RecipeListData = ({ item }: any) => {
     const router = useRouter();
     const goToDetail = (item: RecipeProps) => {
         item.displayStatus === "회원 공개" && storageCurrentUser === "guest"
-            ? alert("멤버공개 레시피글입니다. 로그인을 진행해주세요.")
+            ? toast.warning("멤버공개 레시피글입니다. 로그인을 진행해주세요.")
             : router.push(`/detailRecipePage/${item.id}`);
     };
 
