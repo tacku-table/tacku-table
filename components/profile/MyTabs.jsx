@@ -99,18 +99,20 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
     const q = query(collection(dbService, `user/${userId}/bookmarkPost`));
 
     onSnapshot(q, async (snapshots) => {
-      const myposts = snapshots.docs.map((doc) => {
-        const mypost = {
-          postId: doc.id,
-          writerUid: doc.data().uid,
-          writerdisplayName: doc.data().writerNickName,
-          writerImg: doc.data().writerProfileImg,
-          ...doc.data(),
-        };
-        return mypost;
+      const myposts = snapshots.docs.map((d) => {
+        if (!d.isDelete) {
+          // console.log(d.data());
+          const mypost = {
+            postId: d.id,
+            writerUid: d.data().uid,
+            writerdisplayName: d.data().writerNickName,
+            writerImg: d.data().writerProfileImg,
+            ...d.data(),
+          };
+          return mypost;
+        }
+        setBookmarkPost(myposts);
       });
-
-      setBookmarkPost(myposts);
     });
   };
 
@@ -120,7 +122,7 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
     const q = query(
       recipeRef,
       where("uid", "==", `${userId}`),
-      orderBy("writtenDate", "desc")
+      orderBy("createdAt", "desc")
     );
     onSnapshot(q, (snapshot) => {
       const myposts = snapshot.docs.map((doc) => {

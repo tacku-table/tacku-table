@@ -137,6 +137,7 @@ const RecipeWritePage = () => {
     const newRecipe = {
       // uid = 레시피 작성자
       uid: storageCurrentUser?.uid,
+      isDelete: false,
       writerNickName: fbUser?.displayName, // auth.currentUser에 있는 id
       writerProfileImg: fbUser?.photoURL,
       animationTitle: targetTitle,

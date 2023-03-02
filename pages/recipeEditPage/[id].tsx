@@ -128,6 +128,7 @@ const RecipeEditPage = ({
     //new가 아니고 해당 게시물의 uid를 기준으로 updateDoc을 해줘야지
 
     const newEditRecipe = {
+      isDelete: false,
       uid: storageCurrentUser?.uid,
       writerNickName: storageCurrentUser?.displayName, // auth.currentUser에 있는 id
       animationTitle: targetTitle,

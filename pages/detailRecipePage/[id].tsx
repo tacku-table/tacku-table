@@ -60,7 +60,17 @@ export default function DetailReciptPage(props: any) {
     const targetBoardId = props.postId;
     if (userConfirm) {
       try {
-        await deleteDoc(doc(dbService, "recipe", targetBoardId));
+        await updateDoc(doc(dbService, "recipe", targetBoardId), {
+          isDelete: true,
+        });
+
+        // const docRef = doc(dbService, "communityPost", postId);
+        // await updateDoc(docRef, {
+        //   title: editPostTitle,
+        //   editorText: editPostContent,
+        //   writtenDate: Timestamp.now(),
+        // });
+
         alert("게시물이 삭제되었습니다.");
         location.href = "/mainPage";
       } catch (error) {
