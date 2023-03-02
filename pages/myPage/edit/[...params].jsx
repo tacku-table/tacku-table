@@ -241,7 +241,7 @@ export default function ProfileEdit(props) {
             <div className="flex items-end space-x-5">
               <label className="cursor-pointer hover:opacity-40">
                 {showUserUpdateImg && (
-                  <div className="relative">
+                  <>
                     <Image
                       src={showUserUpdateImg}
                       className="rounded-md aspect-square"
@@ -251,27 +251,29 @@ export default function ProfileEdit(props) {
                       height={100}
                       alt="프리뷰|업데이트이미지"
                     />
-                    <svg
-                      className="absolute w-6 h-6 top-1/2"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z"
-                      ></path>
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z"
-                      ></path>
-                    </svg>
-                  </div>
+                    <div className="relative">
+                      <svg
+                        className="absolute bottom-2 right-2 w-6 h-6 text-black"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z"
+                        ></path>
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z"
+                        ></path>
+                      </svg>
+                    </div>
+                  </>
                 )}
 
                 <input
@@ -287,9 +289,9 @@ export default function ProfileEdit(props) {
                   onClick={() => handleUpdateProfile(userInfo.userId)}
                   type="button"
                   disabled={!imageUpload}
-                  className="text-white disabled:bg-slate-400 bg-brand100 hover:bg-brand100 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-sm text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 "
+                  className="text-white disabled:opacity-50 bg-brand100 hover:bg-brand100 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-sm text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 "
                 >
-                  변경
+                  수정
                 </button>
                 {imgPreview === "uploading" && (
                   <span className="text-sm text-blue100">
@@ -309,10 +311,10 @@ export default function ProfileEdit(props) {
             />
           </div>
           <div>
-            <label className="flex gap-14 items-center">
+            <div className="flex gap-14 items-center">
               <span className="text-base min-w-[120px] ">비밀번호 변경</span>
               {!togglePwChange && (
-                <div className="px-2 py-1 text-center border-mono60 border-[1px] text-base">
+                <div className="px-2 py-1 text-center w-fit border-mono60 border-[1px] text-base">
                   <button onClick={() => setTogglePwChange(true)}>
                     변경하기
                   </button>
@@ -344,7 +346,7 @@ export default function ProfileEdit(props) {
                   </div>
                 </div>
               )}
-            </label>
+            </div>
           </div>
           {togglePwChange && (
             <div className="flex flex-col">
