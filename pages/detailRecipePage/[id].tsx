@@ -12,6 +12,7 @@ import TopButton from "@/components/button/TopButton";
 import defaultImg from "../../public/images/test1.png";
 import Image from "next/image";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 export default function DetailReciptPage(props: any) {
   //레시피 데이터
@@ -61,7 +62,7 @@ export default function DetailReciptPage(props: any) {
     if (userConfirm) {
       try {
         await deleteDoc(doc(dbService, "recipe", targetBoardId));
-        alert("게시물이 삭제되었습니다.");
+        toast.success("게시물이 삭제되었습니다.");
         location.href = "/mainPage";
       } catch (error) {
         console.log("error: ", error);
