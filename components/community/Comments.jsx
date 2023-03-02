@@ -21,37 +21,40 @@ const Comments = ({ boardId, uid }) => {
   const [targetIsEdit, setTargetIsEdit] = useState("");
   const [commentWriterNickName, setCommentWriterNickName] = useState("");
   const [commentProfile, setCommentProfile] = useState("");
-
   useEffect(() => {
     getComments();
-  }, [commentProfile]);
+  }, []);
 
   console.log("boardId : ", boardId);
   let commentsListArray = [];
+
   // 댓글 get
   const getComments = async () => {
+    console.log("getComment함수 시작");
     const q = query(
       collection(dbService, "comments"),
       where("boardId", "==", boardId)
     );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      const commentsWritterUID = doc.data().uid;
-      getUserInfoInUserCollection(commentsWritterUID)
+      const WritterUID = doc.data().uid;
+      //userInfo를 가져온다음 => userNickName이랑 userImg를 담아서
+      getUserInfoInUserCollection(WritterUID)
         .then((item) => {
           const userNickname = item.userNickname;
           const userImg = item.userImg;
           setCommentWriterNickName(userNickname);
           setCommentProfile(userImg);
+          return { userNickname, userImg };
         })
-        .then(() => {
+        .then((res) => {
           const comments = {
             id: doc.id,
-            commentProfile,
-            commentWriterNickName,
+            commentProfile: res.userImg,
+            commentWriterNickName: res.userNickname,
             ...doc.data(),
           };
-          console.log(doc.id, " => ", doc.data());
+          console.log("comments", comments);
           commentsListArray.push(comments);
           setBoardComments(commentsListArray);
           setComment("");
@@ -64,11 +67,11 @@ const Comments = ({ boardId, uid }) => {
 
   //User 컬랙션에셔 실시간 유저 정보 가져오는 함수
   const getUserInfoInUserCollection = async (commentsWritterUID) => {
+    console.log("commentsWritterUID:", commentsWritterUID);
     const docRef = doc(dbService, "user", commentsWritterUID);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       const userData = docSnap.data();
-      console.log("뭐냐고", userData.userNickname);
       const commentUserInfo = {
         userUID: userData.userId,
         userNickname: userData.userNickname,
@@ -93,7 +96,7 @@ const Comments = ({ boardId, uid }) => {
     let month = ("0" + (today.getMonth() + 1)).slice(-2);
     let day = ("0" + today.getDate()).slice(-2);
     let dateString = year + "-" + month + "-" + day;
-    console.log("현재날짜:", dateString);
+    // console.log("현재날짜:", dateString);
 
     const newComment = {
       //uid : 작성자의 id
@@ -124,8 +127,8 @@ const Comments = ({ boardId, uid }) => {
 
   const commentEdit = async (id, index) => {
     // id는 해당 게시물의 고유 id
-    console.log(id);
-    console.log("index:", index);
+    // console.log(id);
+    // console.log("index:", index);
     setTargetIndex(index);
     setTargetIsEdit(index);
     const postRef = doc(dbService, "comments", id);
@@ -145,7 +148,7 @@ const Comments = ({ boardId, uid }) => {
   // boardComment안의 uid의 nickName과 profileImg가 필요해
 
   // 댓글 작성자 id를 기준으로
-  console.log("uid는 현재 로그인유저 uid", uid);
+  // console.log("uid는 현재 로그인유저 uid", uid);
 
   return (
     <div>
