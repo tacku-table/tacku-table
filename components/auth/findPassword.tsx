@@ -3,6 +3,7 @@ import Link from "next/link";
 import { authService } from "@/config/firebase";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { emailRegex, pwRegex } from "@/util";
+import { toast } from "react-toastify";
 
 const FindPassword = () => {
   // useRef로 취득하는 DOM은 최초 mount되기 전엔 null이다
@@ -43,12 +44,12 @@ const FindPassword = () => {
       return;
     }
     sendPasswordResetEmail(authService, email)
-      .then((data) => {
-        alert("이메일을 발송했습니다.");
+      .then((data: any) => {
+        toast.success("이메일을 발송했습니다.");
       })
-      .catch((error) => {
+      .catch((error: any) => {
         if (error.message.includes("auth/user-not-found")) {
-          alert("회원이 아님.");
+          toast.warn("회원이 아닙니다. 회원가입을 먼저 진행해 주세요.");
           return;
         }
         console.log(error.message);
