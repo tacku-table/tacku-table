@@ -11,7 +11,8 @@ import { useForm } from "react-hook-form";
 import { FieldErrors } from "react-hook-form/dist/types";
 import ShowPwBtn from "../button/ShowPwBtn";
 import HidePwBtn from "../button/HidePwBtn";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
+import { setTimeout } from "timers";
 
 interface RegisterForm {
     email: string;
@@ -36,8 +37,6 @@ const RegisterPage = () => {
         console.log(errors);
     };
     const [showPw, setShowPw] = useState(false);
-    // 성공 알람 ( 초록색 창 )
-    const success = () => toast.success("Success!");
 
     // 회원가입
     const signUp = () => {
@@ -59,18 +58,20 @@ const RegisterPage = () => {
                     displayName: getValues("nickname"),
                     photoURL: "null",
                 });
-                // alert("회원가입성공! 로그인해주세요!");
-                success();
-                signOut(authService).then(() => {
-                    sessionStorage.clear();
-                    location.href = "/loginPage";
-                });
+                toast.success("회원가입성공! 로그인해주세요");
+                setTimeout(() => {
+                    signOut(authService).then(() => {
+                        sessionStorage.clear();
+                        location.href = "/loginPage";
+                    });
+                }, 2000);
+
                 return data.user;
             })
             .catch((error) => {
                 console.log(error.message);
                 if (error.message.includes("already-in-use")) {
-                    alert("이미 가입한 회원입니다.");
+                    toast.error("이미 가입한 회원입니다");
                     return;
                 }
             });
@@ -79,7 +80,6 @@ const RegisterPage = () => {
     // 브라우저 뒤로가기 버튼시 confirm창과 함께 "확인"클릭시 로그인 페이지로 이동하는 함수입니다.
     useEffect(() => {
         window.history.pushState(null, "null", document.URL);
-        console.log("document.URL:", document.URL);
         window.addEventListener("popstate", function () {
             const result = window.confirm("회원가입을 취소하시겠습니까?");
             if (result) {
@@ -93,7 +93,6 @@ const RegisterPage = () => {
 
     return (
         <div className="w-[420px] mx-auto mb-20 text-mono100">
-            <ToastContainer position="top-right" autoClose={5000} />
             <form
                 onSubmit={handleSubmit(onValid, onInValid)}
                 className="flex flex-col relative"

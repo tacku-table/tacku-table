@@ -16,8 +16,7 @@ const SliderScreen: NextPage = () => {
         { id: "2", image: aniImg02 },
         { id: "3", image: aniImg03 },
     ];
-    // @ts-ignore
-    const mod = (n, m) => {
+    const mod = (n: number, m: number) => {
         const result = n % m; //반환하는값이 양수인지 확인
         return result >= 0 ? result : result + m;
     };

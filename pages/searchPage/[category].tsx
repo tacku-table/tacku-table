@@ -4,7 +4,7 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Fuse from "fuse.js";
-import RecipeData from "@/components/search/RecipeData";
+import RecipeList from "@/components/search/RecipeList";
 import ChangeSortedBtn from "@/components/search/ChangeSortedBtn";
 import { FieldErrors, useForm } from "react-hook-form";
 
@@ -43,15 +43,15 @@ const ClassifiedRecipe: NextPage = () => {
             orderBy(isBest === "viewCount" ? "viewCount" : "createdAt", "desc"),
             where(
                 `${
-                    router.query.cate === "15분이하" ||
-                    router.query.cate === "30분이하" ||
-                    router.query.cate === "1시간이하" ||
-                    router.query.cate === "1시간이상"
+                    router.query.category === "15분이하" ||
+                    router.query.category === "30분이하" ||
+                    router.query.category === "1시간이하" ||
+                    router.query.category === "1시간이상"
                         ? "cookingTime"
                         : "foodCategory"
                 }`,
                 "==",
-                `${router.query.cate}`
+                `${router.query.category}`
             )
         );
         const querySnapshot = await getDocs(items);
@@ -80,7 +80,7 @@ const ClassifiedRecipe: NextPage = () => {
             setIsBest("createdAt");
         }
         getList();
-    }, [router.query.cate, isBest]);
+    }, [router.query.category, isBest]);
 
     return (
         <div className="w-full mt-20 flex flex-col justify-center items-center">
@@ -123,9 +123,9 @@ const ClassifiedRecipe: NextPage = () => {
             <div className="w-4/5 border-b border-mono50 mb-[30px]"></div>
             <div className="w-4/5 flex justify-between mb-20">
                 <div className="bg-mono30 rounded-[3px] w-auto h-9 px-6 mr-7 text-sm flex items-center text-brand100">
-                    {router.query.cate?.toString().replaceAll("&", "/")}
+                    {router.query.category?.toString().replaceAll("&", "/")}
                 </div>
-                <RecipeData dataResults={dataResults} />
+                <RecipeList dataResults={dataResults} />
             </div>
         </div>
     );
