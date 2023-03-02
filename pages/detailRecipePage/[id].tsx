@@ -127,11 +127,8 @@ export default function DetailReciptPage(props: any) {
             <p>{recipeData?.cookingTime}</p>
           </div>
           <div className="flex justify-between border-b-2 border-border-500 pb-8 my-5">
-            <p>애니메이션 제목: {recipeData?.animationTitle}</p>
-            <p>
-              음식종류:
-              {props.targetWholeData.foodCategory.replaceAll("&", "/")}
-            </p>
+            <p>{recipeData?.animationTitle}</p>
+            <p>{props.targetWholeData.foodCategory.replaceAll("&", "/")}</p>
             <p>{getTimegap()}</p>
           </div>
         </div>
