@@ -154,7 +154,11 @@ export default function DetailReciptPage(props: any) {
                   unoptimized
                 />
               )}
-              <p className="pl-5 font-semibold">{userData.userNickname}</p>
+              <Link href={`/myPage/${userFireData?.userId}`}>
+                <p className="pl-5 font-semibold">
+                  {userFireData.userNickname}
+                </p>
+              </Link>
             </div>
             {/* 수정/ 삭제 */}
             {props.targetWholeData?.uid == storageCurrentUser.uid ? (
