@@ -9,7 +9,6 @@ import {
   query,
 } from "@firebase/firestore";
 import { authService, dbService } from "@/config/firebase";
-
 const Bookmark = (props: any) => {
   //북마크
   const [bookMark, setBookMark] = useState<any[]>([]);
@@ -18,14 +17,12 @@ const Bookmark = (props: any) => {
   );
   const [toggleBookmark, setToggleBookmark] = useState<boolean>(false);
   let currenDetailUser = props.storageCurrentUser.uid;
-
   //북마크 토글
   useEffect(() => {
     setToggleBookmark(
       bookMark.findIndex((mark) => mark.id === props.postId) !== -1
     );
   }, [bookMark, props.postId]);
-
   //유저 북마크 모아오기
   useEffect(() => {
     const bookmarkLoad = () => {
@@ -40,7 +37,6 @@ const Bookmark = (props: any) => {
     };
     bookmarkLoad();
   }, [currenDetailUser]);
-
   //북마크 db 추가 삭제
   const bookMarkPost = async () => {
     if (toggleBookmark) {
@@ -55,19 +51,18 @@ const Bookmark = (props: any) => {
       await setDoc(
         doc(dbService, "user", currenDetailUser, "bookmarkPost", props.postId),
         {
-          thumbnail: props.recipeData.thumbnail,
-          foodTitle: props.recipeData.foodTitle,
-          writerNickName: props.userFireData.userNickname,
-          writerProfileImg: props.userFireData.userImg,
-          viewCount: props.recipeData.viewCount,
-          cookingTime: props.recipeData.cookingTime,
-          animationTitle: props.recipeData.animationTitle,
-          uid: props.recipeData.uid,
+          thumbnail: props.targetWholeData.thumbnail,
+          foodTitle: props.targetWholeData.foodTitle,
+          writerNickName: props.userData.userNickname,
+          writerProfileImg: props.userData.userImg,
+          viewCount: props.targetWholeData.viewCount,
+          cookingTime: props.targetWholeData.cookingTime,
+          animationTitle: props.targetWholeData.animationTitle,
+          uid: props.targetWholeData.uid,
         }
       );
     }
   };
-
   return (
     <>
       {toggleBookmark ? (
@@ -106,5 +101,4 @@ const Bookmark = (props: any) => {
     </>
   );
 };
-
 export default Bookmark;
