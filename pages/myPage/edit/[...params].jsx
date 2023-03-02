@@ -411,12 +411,8 @@ export default function ProfileEdit(props) {
 }
 
 export const getServerSideProps = async (context) => {
-  console.log(context);
   const { query } = context;
   const { id, userImg } = query;
-  // console.log(id);
-  // console.log(userImg);
-
   const docId = id;
   let userData;
   const snapshot = await getDoc(doc(dbService, "user", docId));
