@@ -30,7 +30,9 @@ export default function ProfileEdit(props) {
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
   const [nicknameMessage, setNicknameMessage] = useState("");
   // 비밀번호 변경
-  const [changeUserPw, setChangeUserPw] = useState("");
+  const [togglePwChange, setTogglePwChange] = useState(false);
+  // 초기값을 기존 비밀번호로 설정
+  const [changeUserPw, setChangeUserPw] = useState();
   // 비밀번호 확인
   const [confirmChangeUserPw, setConfirmChangeUserPw] = useState("");
   // 비밀번호 일치
@@ -125,7 +127,7 @@ export default function ProfileEdit(props) {
   const handleChangePassword = useCallback(
     (event) => {
       const changedPw = event.target.value;
-      console.log(changedPw);
+      // console.log(changedPw);
       setChangeUserPw(changedPw);
       if (!pwRegex.test(changedPw)) {
         setPasswordMessage(
@@ -166,35 +168,45 @@ export default function ProfileEdit(props) {
       setIsNickname(true);
     }
   };
+
   const handleUpdateUserDocs = async (uid) => {
+    // 비밀번호 변경했을때랑 아닐때
     const docId = uid;
     const docRef = doc(dbService, "user", docId);
-    // console.log("userInfo.userPw", userInfo.userPw);
-    const userProvidedPassword = userInfo.userPw;
+    const userProvidedPassword = userInfo?.userPw;
     const credential = EmailAuthProvider.credential(
       authService?.currentUser.email,
       userProvidedPassword
     );
-    await updateDoc(docRef, {
-      userNickname: changeUserNickname,
-      userPw: changeUserPw,
-    }).then(() => console.log("컬렉션 업데이트 성공!"));
-    await reauthenticateWithCredential(
-      authService.currentUser,
-      credential
-    ).then(async () => {
-      await updatePassword(authService?.currentUser, changeUserPw)
-        .then(() => console.log("비밀번호 변경 완료!"))
-        .catch((error) => console.log("비밀번호 변경 에러: ", error));
-      await updateProfile(authService?.currentUser, {
-        displayName: changeUserNickname,
-      })
-        .then(() => {
-          console.log("닉네임 변경 완료!");
-          location.href = `/myPage`;
-        })
-        .catch((error) => console.log("닉네임 변경 에러: ", error));
-    });
+    if (!togglePwChange) {
+      setChangeUserPw(userInfo.pw);
+      await updateDoc(docRef, {
+        userNickname: changeUserNickname,
+      }).then(() => console.log("닉네임 업데이트 성공!"));
+    } else {
+      await updateDoc(docRef, {
+        userNickname: changeUserNickname,
+        userPw: changeUserPw,
+      }).then(() => console.log("컬렉션 업데이트 성공!"));
+    }
+    setTimeout(() => {
+      console.log(changeUserPw);
+      reauthenticateWithCredential(authService?.currentUser, credential).then(
+        async () => {
+          await updatePassword(authService?.currentUser, changeUserPw)
+            .then(() => console.log("비밀번호 변경 완료!"))
+            .catch((error) => console.log("비밀번호 변경 에러: ", error));
+          await updateProfile(authService?.currentUser, {
+            displayName: changeUserNickname,
+          })
+            .then(() => {
+              console.log("닉네임 변경 완료!");
+              location.href = `/myPage/${userInfo?.userId}`;
+            })
+            .catch((error) => console.log("닉네임 변경 에러: ", error));
+        }
+      );
+    }, 500);
   };
 
   // 이미지 변경
@@ -301,62 +313,74 @@ export default function ProfileEdit(props) {
           <div>
             <label className="flex gap-14 items-center">
               <span className="text-base min-w-[120px] ">비밀번호 변경</span>
-              <div>
-                <input
-                  type="password"
-                  placeholder="변경할 비밀번호를 입력해주세요."
-                  onChange={handleChangePassword}
-                  className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10 focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
-                />
-                <div className="h-[16px]">
-                  {changeUserPw.length > 0 && (
-                    <span
-                      className={cls(
-                        "text-xs",
-                        `${
-                          isPassword ? "text-xs text-blue100" : "text-brand100"
-                        }`
-                      )}
-                    >
-                      {passwordMessage}
-                    </span>
-                  )}
+              {!togglePwChange && (
+                <div className="px-2 py-1 text-center border-mono60 border-[1px] text-base">
+                  <button onClick={() => setTogglePwChange(true)}>
+                    변경하기
+                  </button>
                 </div>
-              </div>
+              )}
+              {togglePwChange && (
+                <div>
+                  <input
+                    type="password"
+                    placeholder="변경할 비밀번호를 입력해주세요."
+                    onChange={handleChangePassword}
+                    className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10 focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
+                  />
+                  <div className="h-[16px]">
+                    {changeUserPw?.length > 0 && (
+                      <span
+                        className={cls(
+                          "text-xs",
+                          `${
+                            isPassword
+                              ? "text-xs text-blue100"
+                              : "text-brand100"
+                          }`
+                        )}
+                      >
+                        {passwordMessage}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              )}
             </label>
           </div>
-          <div className="flex flex-col">
-            <label className="flex gap-14 items-center">
-              <span className="text-base min-w-[120px]">
-                비밀번호 변경 확인
-              </span>
-              <div>
-                <input
-                  type="password"
-                  placeholder="확인을 위해 비밀번호를 재입력해주세요."
-                  onChange={handleChangePasswordConfirm}
-                  className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10  focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
-                />
-
-                <div className="h-[16px]">
-                  {confirmChangeUserPw.length > 0 && (
-                    <span
-                      className={cls(
-                        "text-xs",
-                        `${
-                          isPasswordConfirm
-                            ? "text-blue-600"
-                            : "text-orange-500"
-                        }`
-                      )}
-                    >
-                      {passwordConfirmMessage}
-                    </span>
-                  )}
+          {togglePwChange && (
+            <div className="flex flex-col">
+              <label className="flex gap-14 items-center">
+                <span className="text-base min-w-[120px]">
+                  비밀번호 변경 확인
+                </span>
+                <div>
+                  <input
+                    type="password"
+                    placeholder="확인을 위해 비밀번호를 재입력해주세요."
+                    onChange={handleChangePasswordConfirm}
+                    className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10  focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
+                  />
+                  <div className="h-[16px]">
+                    {confirmChangeUserPw?.length > 0 && (
+                      <span
+                        className={cls(
+                          "text-xs",
+                          `${
+                            isPasswordConfirm
+                              ? "text-blue-600"
+                              : "text-orange-500"
+                          }`
+                        )}
+                      >
+                        {passwordConfirmMessage}
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </label>
-          </div>
+              </label>
+            </div>
+          )}
           <div className="flex flex-col">
             <label className="flex gap-14 items-center">
               <span className="text-base min-w-[120px]">닉네임 변경</span>
@@ -416,7 +440,7 @@ export default function ProfileEdit(props) {
           <button
             className="disabled:bg-mono30 disabled:text-mono100 valid:bg-brand100 valid:text-white hover:bg-brand100/80 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-sm text-sm px-28 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mb-2"
             onClick={() => handleUpdateUserDocs(userInfo.userId)}
-            disabled={!(isPassword && isPasswordConfirm && isNickname)}
+            disabled={!((isPassword && isPasswordConfirm) || isNickname)}
           >
             수정하기
           </button>
