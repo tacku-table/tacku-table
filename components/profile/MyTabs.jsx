@@ -25,20 +25,20 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
   const [bookmarkPost, setBookmarkPost] = useState([]);
   const [storageCurrentUser, setStorageCurrentUser] = useState({});
   const [communityList, setCommunityList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const getCurrentUserInfo = async (id) => {
-    await getDoc(doc(dbService, "user", id)).then((doc) => {
-      // console.log("getCurrentUserInfo의 data: ", doc.data());
-      const user = {
-        ...doc.data(),
-      };
-      setUserInfo(user);
-    });
-  };
+  //   const getCurrentUserInfo = async (id) => {
+  //     await getDoc(doc(dbService, "user", id)).then((doc) => {
+  //       // console.log("getCurrentUserInfo의 data: ", doc.data());
+  //       const user = {
+  //         ...doc.data(),
+  //       };
+  //       setUserInfo(user);
+  //     });
+  //   };
   useEffect(() => {
     const currentUser = JSON.parse(sessionStorage.getItem("User")) || "";
     if (currentUser) {
-      // getCurrentUserInfo(currentUser.uid);
       setStorageCurrentUser(currentUser);
     } else {
       setStorageCurrentUser("logout");
@@ -54,15 +54,24 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
     getMyBookmark(userInfo.userId);
   }, [userInfo.userId, bookmarkPost, communityPost, commentPost, recipePost]);
 
+  useEffect(() => {
+    setIsLoading(false);
+  });
+
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
 
-  let [categories] = useState([
+  let [categoriesOfmine] = useState([
     "즐겨찾기",
-    "레시피",
-    "커뮤니티글",
-    "커뮤니티 댓글",
+    "내가 쓴 레시피",
+    "내가 쓴 커뮤니티글",
+    "내가 쓴 커뮤니티 댓글",
+  ]);
+  let [categoriesOfOther] = useState([
+    "님의 즐겨찾기",
+    "님의 레시피",
+    "님의 커뮤니티글",
   ]);
 
   // console.log(bookmarkPost);
@@ -171,26 +180,44 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
   return (
     <Tab.Group>
       <Tab.List className="flex space-x-16 ml-[370px] bg-white">
-        {categories.map((category) => (
-          <Tab
-            key={category}
-            className={({ selected }) =>
-              classNames(
-                "w-fit pt-7 pb-[15px] text-[18px] font-medium leading-5 text-mono100 border-[3px] border-x-0  border-white",
-                "ring-white ring-opacity-60 focus:outline-none focus:ring-2",
-                selected
-                  ? "bg-white  border-b-brand100  border-b-[3px] font-bold"
-                  : " hover:bg-white/[0.12]"
-              )
-            }
-          >
-            {storageCurrentUser?.uid === userInfo.userId ? (
-              <>{`내가 쓴 ${category}`}</>
-            ) : (
-              <>{`${userInfo.userNickname}의 ${category}`}</>
-            )}
-          </Tab>
-        ))}
+        {storageCurrentUser?.uid === userInfo.userId ? (
+          <>
+            {categoriesOfmine.map((category) => (
+              <Tab
+                key={category}
+                className={({ selected }) =>
+                  classNames(
+                    "w-fit pt-7 pb-[15px] text-[18px] font-medium leading-5 text-mono100 border-[3px] border-x-0  border-white",
+                    "ring-white ring-opacity-60 focus:outline-none focus:ring-2",
+                    selected
+                      ? "bg-white  border-b-brand100  border-b-[3px] font-bold"
+                      : " hover:bg-white/[0.12]"
+                  )
+                }
+              ></Tab>
+            ))}
+          </>
+        ) : (
+          <>
+            {categoriesOfOther.map((category) => (
+              <Tab
+                key={category}
+                className={({ selected }) =>
+                  classNames(
+                    "w-fit pt-7 pb-[15px] text-[18px] font-medium leading-5 text-mono100 border-[3px] border-x-0  border-white",
+                    "ring-white ring-opacity-60 focus:outline-none focus:ring-2",
+                    selected
+                      ? "bg-white  border-b-brand100  border-b-[3px] font-bold"
+                      : " hover:bg-white/[0.12]"
+                  )
+                }
+              >
+                <span className="mr-1">{userInfo?.userNickname}</span>
+                {category}
+              </Tab>
+            ))}
+          </>
+        )}
       </Tab.List>
       <Tab.Panels className="w-[880px] h-full min-h-[501px] mt-8 mb-[100px] shadow-xl m-auto ">
         <Tab.Panel className="pt-[91px] pb-6">
