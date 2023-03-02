@@ -100,19 +100,17 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
 
     onSnapshot(q, async (snapshots) => {
       const myposts = snapshots.docs.map((d) => {
-        if (!d.isDelete) {
-          // console.log(d.data());
-          const mypost = {
-            postId: d.id,
-            writerUid: d.data().uid,
-            writerdisplayName: d.data().writerNickName,
-            writerImg: d.data().writerProfileImg,
-            ...d.data(),
-          };
-          return mypost;
-        }
-        setBookmarkPost(myposts);
+        // console.log(d.data());
+        const mypost = {
+          postId: d.id,
+          writerUid: d.data().uid,
+          writerdisplayName: d.data().writerNickName,
+          writerImg: d.data().writerProfileImg,
+          ...d.data(),
+        };
+        return mypost;
       });
+      setBookmarkPost(myposts);
     });
   };
 

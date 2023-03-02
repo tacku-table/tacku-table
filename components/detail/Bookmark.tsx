@@ -55,7 +55,6 @@ const Bookmark = (props: any) => {
       await setDoc(
         doc(dbService, "user", currenDetailUser, "bookmarkPost", props.postId),
         {
-          isDelete: props.recipeData.isDelete,
           thumbnail: props.recipeData.thumbnail,
           foodTitle: props.recipeData.foodTitle,
           writerNickName: props.userFireData.userNickname,
