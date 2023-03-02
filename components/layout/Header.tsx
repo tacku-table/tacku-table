@@ -8,9 +8,11 @@ import logo2 from "../../public/images/logo2.png";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import { setTimeout } from "timers";
+import { useRouter } from "next/router";
 
 const Header = () => {
     const [storageCurrentUser, setStorageCurrentUser] = useState("");
+
     const logoutAction = () => {
         signOut(authService)
             .then(() => {
@@ -27,6 +29,20 @@ const Header = () => {
     const moveLoginPage = () => {
         location.href = "/loginPage";
     };
+    // 마이페이지
+    const router = useRouter();
+    const moveMyPage = (currentUser: any) => {
+        const { uid } = JSON.parse(currentUser);
+        location.href = `/myPage/${uid}`;
+        // router.push(
+        //   {
+        //     pathname: `/myPage/${uid}`,
+        //     query: { id: uid },
+        //   },
+        //   `myPage/${uid}`
+        // );
+    };
+
     const clearStorage = () => {
         sessionStorage.removeItem("filteredFoodData");
         sessionStorage.removeItem("filteredTimeData");
@@ -94,8 +110,7 @@ const Header = () => {
                 )}
                 {storageCurrentUser ? (
                     <button
-                        type="button"
-                        onClick={() => (location.href = "/myPage")}
+                        onClick={() => moveMyPage(storageCurrentUser)}
                         className="hover:text-mono80 hover:transition hover:ease-out hover:duration-300"
                     >
                         마이페이지

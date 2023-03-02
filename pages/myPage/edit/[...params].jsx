@@ -1,4 +1,4 @@
-import { authService, dbService } from "../../config/firebase";
+import { authService, dbService } from "../../../config/firebase";
 import {
   updatePassword,
   updateProfile,
@@ -10,10 +10,10 @@ import {
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, listAll, uploadBytes } from "firebase/storage";
 import Image from "next/image";
-import defaultImg from "../../public/images/test1.png";
+import defaultImg from "../../../public/images/test1.png";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { storage } from "../../config/firebase";
-import { pwRegex, nickRegex, cls } from "../../util";
+import { storage } from "../../../config/firebase";
+import { pwRegex, nickRegex, cls } from "../../../util";
 import { useRouter } from "next/router";
 
 export default function ProfileEdit(props) {
@@ -411,12 +411,8 @@ export default function ProfileEdit(props) {
 }
 
 export const getServerSideProps = async (context) => {
-  console.log(context);
   const { query } = context;
   const { id, userImg } = query;
-  // console.log(id);
-  // console.log(userImg);
-
   const docId = id;
   let userData;
   const snapshot = await getDoc(doc(dbService, "user", docId));
