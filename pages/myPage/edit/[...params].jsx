@@ -10,7 +10,7 @@ import {
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, listAll, uploadBytes } from "firebase/storage";
 import Image from "next/image";
-import defaultImg from "../../public/images/test1.png";
+import defaultImg from "../../../public/images/test1.png";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { storage } from "../../../config/firebase";
 import { pwRegex, nickRegex, cls } from "../../../util";
