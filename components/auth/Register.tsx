@@ -11,7 +11,8 @@ import { useForm } from "react-hook-form";
 import { FieldErrors } from "react-hook-form/dist/types";
 import ShowPwBtn from "../button/ShowPwBtn";
 import HidePwBtn from "../button/HidePwBtn";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
+import { setTimeout } from "timers";
 
 interface RegisterForm {
     email: string;
@@ -58,10 +59,13 @@ const RegisterPage = () => {
                     photoURL: "null",
                 });
                 toast.success("회원가입성공! 로그인해주세요");
-                signOut(authService).then(() => {
-                    sessionStorage.clear();
-                    location.href = "/loginPage";
-                });
+                setTimeout(() => {
+                    signOut(authService).then(() => {
+                        sessionStorage.clear();
+                        location.href = "/loginPage";
+                    });
+                }, 2000);
+
                 return data.user;
             })
             .catch((error) => {

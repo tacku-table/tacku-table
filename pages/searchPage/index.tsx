@@ -26,6 +26,7 @@ const SearchData: NextPage = () => {
     const [filteredFood, setFilteredFood] = useState<string[]>([]);
     const [filteredTime, setFilteredTime] = useState<string[]>([]);
     const [currentItems, setCurrentItems] = useState<RecipeProps[]>([]);
+    const [totalItems, setTotalItems] = useState<RecipeProps[]>([]);
     const [lastDoc, setLastdoc] = useState(0);
 
     const { register, handleSubmit, getValues } = useForm();
@@ -49,7 +50,7 @@ const SearchData: NextPage = () => {
         setIsBest("createdAt");
     };
 
-    // 전체목록불러오기
+    // 초반6개목록
     const first = async () => {
         const querySnapshot = await getDocs(
             query(
@@ -75,6 +76,7 @@ const SearchData: NextPage = () => {
         setCurrentItems((prev) => [...prev, ...newData]);
         setLastdoc(lastDoc);
     };
+    // 더보기event
     const next = async () => {
         const querySnapshot = await getDocs(
             query(
@@ -86,8 +88,21 @@ const SearchData: NextPage = () => {
         );
         updateState(querySnapshot);
     };
+    // 전체목록불러오기
+    const getList = async () => {
+        const items = query(
+            collection(dbService, "recipe"),
+            orderBy(isBest === "viewCount" ? "viewCount" : "createdAt", "desc")
+        );
+        const querySnapshot = await getDocs(items);
+        const newData = querySnapshot.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+        }));
+        setTotalItems(newData);
+    };
     // 검색
-    const fuse = new Fuse(currentItems, {
+    const fuse = new Fuse(totalItems, {
         keys: ["animationTitle", "foodTitle", "content"],
         includeScore: true,
     });
