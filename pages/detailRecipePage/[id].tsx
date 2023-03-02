@@ -15,16 +15,11 @@ import Link from "next/link";
 import { toast } from "react-toastify";
 
 export default function DetailReciptPage(props: any) {
-  //레시피 데이터
-  const [recipeData, getRecipeData] = useState<any>("");
-  console.log(recipeData);
   //회원 데이터
   const [userData, setUserData] = useState<any>("");
-  const [userFireData, setUserFireData] = useState<any>("");
   //조회수
   let [views, setViews] = useState<number>(props.targetWholeData?.viewCount);
   const userUid = props.targetWholeData?.uid;
-
   const [storageCurrentUser, setStorageCurrentUser]: any = useState({});
   useEffect(() => {
     const user = sessionStorage.getItem("User") || "";
@@ -48,9 +43,9 @@ export default function DetailReciptPage(props: any) {
 
   //레시피 데이터 불러오기
   useEffect(() => {
-    getRecipeData(props.targetWholeData);
+    //getRecipeData(props.targetWholeData);
     onSnapshot(doc(dbService, "user", userUid), (snapshot) => {
-      setUserFireData(snapshot.data());
+      setUserData(snapshot.data());
     });
   }, []);
 
@@ -86,7 +81,7 @@ export default function DetailReciptPage(props: any) {
       <div className=" w-[1180px] my-4 bg-white pb-[131px] pt-[52px] px-[200px]">
         <div className="bg-slate-100 w-full h-[440px] overflow-hidden relative">
           <Image
-            src={`${recipeData?.thumbnail}`}
+            src={`${props.targetWholeData?.thumbnail}`}
             alt="thumbnail"
             className="image-detail"
             fill
@@ -96,14 +91,17 @@ export default function DetailReciptPage(props: any) {
         </div>
         <div className="flex-col my-5">
           <div className="flex justify-between my-5">
-            <p className="text-2xl font-semibold">{recipeData?.foodTitle}</p>
+            <p className="text-2xl font-semibold">
+              {props.targetWholeData?.foodTitle}
+            </p>
+            <p></p>
             {storageCurrentUser === "guest" ? null : (
-              <p className="w-6 h-6">
+              <p className="w-6 h-6 ml-4">
                 <Bookmark
                   postId={props.postId}
-                  recipeData={recipeData}
+                  targetWholeData={props.targetWholeData}
                   storageCurrentUser={storageCurrentUser}
-                  userFireData={userFireData}
+                  userData={userData}
                 />
               </p>
             )}
@@ -125,18 +123,18 @@ export default function DetailReciptPage(props: any) {
                 />
               </svg>
             </span>
-            <p>{recipeData?.cookingTime}</p>
+            <p>{props.targetWholeData?.cookingTime}</p>
           </div>
           <div className="flex justify-between border-b-2 border-border-500 pb-8 my-5">
-            <p>{recipeData?.animationTitle}</p>
-            <p>{props.targetWholeData.foodCategory.replaceAll("&", "/")}</p>
+            <p> {props.targetWholeData?.animationTitle}</p>
+            <p>{props.targetWholeData?.foodCategory.replaceAll("&", "/")}</p>
             <p>{getTimegap()}</p>
           </div>
         </div>
         <div>
           <div className="flex items-center justify-between ">
             <div className="flex items-center">
-              {userFireData?.userImg === "null" ? (
+              {userData?.userImg === "null" ? (
                 <Image
                   src={defaultImg}
                   width={50}
@@ -147,7 +145,7 @@ export default function DetailReciptPage(props: any) {
                 />
               ) : (
                 <Image
-                  src={`${userFireData?.userImg}`}
+                  src={`${userData?.userImg}`}
                   priority={true}
                   width={50}
                   height={50}
@@ -156,11 +154,7 @@ export default function DetailReciptPage(props: any) {
                   unoptimized
                 />
               )}
-              <Link href={`/myPage/${userFireData?.userId}`}>
-                <p className="pl-5 font-semibold">
-                  {userFireData.userNickname}
-                </p>
-              </Link>
+              <p className="pl-5 font-semibold">{userData.userNickname}</p>
             </div>
             {/* 수정/ 삭제 */}
             {props.targetWholeData?.uid == storageCurrentUser.uid ? (
@@ -186,13 +180,15 @@ export default function DetailReciptPage(props: any) {
           <p className=" border-b-2 border-border-500 pb-3 mt-12 font-semibold">
             재료
           </p>
-          <p className="mt-8"> {recipeData?.ingredient}</p>
+          <p className="mt-8"> {props.targetWholeData?.ingredient}</p>
         </div>
         <div className=" border-b-2 border-border-500 pb-3 mt-16 mb-8 font-semibold">
           <p>레시피</p>
         </div>
         <div className="w-4/5 m-auto text-center items-center">
-          <div dangerouslySetInnerHTML={{ __html: recipeData.content }} />
+          <div
+            dangerouslySetInnerHTML={{ __html: props.targetWholeData?.content }}
+          />
         </div>
         <div className=" flex justify-between items-center border-b-2 border-border-500 pb-4 mt-11 mb-8 ">
           <div>조회수 : {views}</div>
