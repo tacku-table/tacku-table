@@ -68,13 +68,6 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
     "님의 커뮤니티글",
   ]);
 
-  // console.log(bookmarkPost);
-  // 즐겨찾기
-  // user 컬렉션 -> userInfo.id 일치 doc ->
-  // bookmarkPost 컬렉션 통째로 가져오기
-  // 하위문서로 접근 recipeid
-  // 레시피 uid === user 컬렉션 doc.id
-
   const getCommunityList = () => {
     const communityRef = collection(dbService, "communityPost");
     const q = query(communityRef, orderBy("writtenDate", "desc"));
@@ -203,7 +196,7 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
   return (
     <Tab.Group>
       <Tab.List className="flex space-x-16 ml-[370px] bg-white">
-        {storageCurrentUser?.uid === userInfo.userId ? (
+        {storageCurrentUser.uid === userInfo.userId ? (
           <>
             {categoriesOfmine.map((category) => (
               <Tab
@@ -252,7 +245,7 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
               <div className="pl-8 space-x-[20px] items-center flex">
                 {p.thumbnail && (
                   <Image
-                    className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                    className="object-cover aspect-[4/3]"
                     src={p.thumbnail}
                     priority={true}
                     loader={({ src }) => src}
@@ -294,24 +287,26 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
                   />
                 )}
                 <p className="text-[16px]">{p.writerdisplayName}</p>
-                <svg
-                  className="w-6 h-6 absolute right-8 cursor-pointer hover:text-brand100"
-                  onClick={() => {
-                    handleDeleteBookmark(p);
-                  }}
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-                  ></path>
-                </svg>
+                {storageCurrentUser.uid === userInfo.userId && (
+                  <svg
+                    className="w-6 h-6 absolute right-8 cursor-pointer hover:text-brand100"
+                    onClick={() => {
+                      handleDeleteBookmark(p);
+                    }}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                    ></path>
+                  </svg>
+                )}
               </div>
             </div>
           ))}
@@ -322,7 +317,7 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
               <hr className="border-mono50 mx-8 mb-6 border-[1px]" />
               <div className="pl-8 space-x-[20px] items-center flex">
                 <Image
-                  className="object-cover aspect-[4/3]" //aspect-ratio 수정
+                  className="object-cover aspect-[4/3]"
                   src={p.thumbnail}
                   priority={true}
                   loader={({ src }) => src}
@@ -340,10 +335,6 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
                   </Link>
                 </div>
               </div>
-              {/* <div className="flex mt-9 ml-8 space-x-3">
-                <div className="w-7 h-7 bg-slate-500 aspect-square" />
-                <p className="text-[16px]">{p.writerNickName}</p>
-              </div> */}
             </div>
           ))}
         </Tab.Panel>
@@ -380,8 +371,6 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
                       <a>{p.comment}</a>
                     </Link>
                   </div>
-                  {/* postId === boardId */}
-                  {/* map............ */}
                   {communityList.map(
                     (item) =>
                       item.id === p.boardId && (
