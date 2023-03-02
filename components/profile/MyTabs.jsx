@@ -124,7 +124,11 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
   // 내가 쓴 레시피
   const getMyRecipePost = async (userId) => {
     const recipeRef = collection(dbService, "recipe");
-    const q = query(recipeRef, where("uid", "==", `${userId}`));
+    const q = query(
+      recipeRef,
+      where("uid", "==", `${userId}`),
+      orderBy("writtenDate", "desc")
+    );
     onSnapshot(q, (snapshot) => {
       const myposts = snapshot.docs.map((doc) => {
         const mypost = {
@@ -194,7 +198,9 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
                       : " hover:bg-white/[0.12]"
                   )
                 }
-              ></Tab>
+              >
+                {category}
+              </Tab>
             ))}
           </>
         ) : (
