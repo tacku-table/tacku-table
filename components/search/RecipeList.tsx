@@ -6,16 +6,31 @@ interface TypeRecipeList {
 }
 
 // 전체레시피불러오기
-const RecipeList = ({ dataResults, filteredFood, filteredTime }: any) => {
+const RecipeList = ({
+    currentItems,
+    totalItems,
+    dataResults,
+    filteredFood,
+    filteredTime,
+}: any) => {
+    // dataResults = 검색결과
+    // totalItems = 전체레시피(6개씩)
+    // currentItems = 전체레시피(총)
     const filteredFoodAndTime =
-        dataResults?.length && filteredFood?.length && filteredTime?.length;
-    const filteredOnlyFood = dataResults?.length && filteredFood?.length;
-    const filteredOnlyTime = dataResults?.length && filteredTime?.length;
+        (!dataResults?.length ? currentItems?.length : dataResults?.length) &&
+        filteredFood?.length &&
+        filteredTime?.length;
+    const filteredOnlyFood =
+        (!dataResults?.length ? currentItems?.length : dataResults?.length) &&
+        filteredFood?.length;
+    const filteredOnlyTime =
+        (!dataResults?.length ? currentItems?.length : dataResults?.length) &&
+        filteredTime?.length;
 
     return (
         <div className="grid grid-cols-3 gap-x-4 gap-y-9">
             {filteredFoodAndTime ? (
-                dataResults
+                (!dataResults?.length ? currentItems : dataResults)
                     .filter(
                         (item: any) =>
                             filteredFood.includes(item.foodCategory) ||
@@ -25,7 +40,7 @@ const RecipeList = ({ dataResults, filteredFood, filteredTime }: any) => {
                         return <RecipeListData key={item.id} item={item} />;
                     })
             ) : filteredOnlyFood ? (
-                dataResults
+                (!dataResults?.length ? currentItems : dataResults)
                     .filter((item: any) =>
                         filteredFood.includes(item.foodCategory)
                     )
@@ -33,7 +48,7 @@ const RecipeList = ({ dataResults, filteredFood, filteredTime }: any) => {
                         return <RecipeListData key={item.id} item={item} />;
                     })
             ) : filteredOnlyTime ? (
-                dataResults
+                (!dataResults?.length ? currentItems : dataResults)
                     .filter((item: any) =>
                         filteredTime.includes(item.cookingTime)
                     )
@@ -42,6 +57,10 @@ const RecipeList = ({ dataResults, filteredFood, filteredTime }: any) => {
                     })
             ) : dataResults.length ? (
                 dataResults.map((item: any) => {
+                    return <RecipeListData key={item.id} item={item} />;
+                })
+            ) : totalItems?.length ? (
+                totalItems.map((item: any) => {
                     return <RecipeListData key={item.id} item={item} />;
                 })
             ) : (
