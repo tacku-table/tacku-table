@@ -13,7 +13,7 @@ import { authService, dbService } from "../../config/firebase";
 import { convertTimestamp } from "../../util";
 import Image from "next/image";
 import defaultImg from "../../public/images/test1.png";
-import Pagination from "../community/Pagination";
+import Pagination from "./Pagination";
 const CommunityTabs = () => {
   // 전체글 state
   const [communityList, setCommunityList] = useState([]);

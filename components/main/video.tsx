@@ -22,7 +22,7 @@ const Video = () => {
                             },
                         },
                     }}
-                    width="76%"
+                    width="100%"
                     height="650px"
                     playing={true} // 자동 재생 on
                     muted={true} // 음소거 on

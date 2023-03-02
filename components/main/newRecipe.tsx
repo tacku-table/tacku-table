@@ -3,7 +3,7 @@ import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import RecipeData from "../search/RecipeData";
+import RecipeList from "../search/RecipeList";
 
 const NewRecipe: NextPage = () => {
     const [dataResults, setDataResults] = useState<RecipeProps[]>([]);
@@ -46,7 +46,7 @@ const NewRecipe: NextPage = () => {
                 >
                     더보기
                 </button>
-                <RecipeData dataResults={dataResults} />
+                <RecipeList dataResults={dataResults} />
             </div>
         </>
     );
