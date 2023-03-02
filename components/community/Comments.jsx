@@ -6,13 +6,16 @@ import {
   doc,
   getDoc,
   getDocs,
+  orderBy,
   query,
   updateDoc,
   where,
 } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import baseImg from "../../public/images/test1.png";
+import { toast, ToastContainer } from "react-toastify";
+
 const Comments = ({ boardId, uid }) => {
   const [comment, setComment] = useState("");
   const [boardComments, setBoardComments] = useState([]);
@@ -21,6 +24,8 @@ const Comments = ({ boardId, uid }) => {
   const [targetIsEdit, setTargetIsEdit] = useState("");
   const [commentWriterNickName, setCommentWriterNickName] = useState("");
   const [commentProfile, setCommentProfile] = useState("");
+  const commentRef = useRef("");
+
   useEffect(() => {
     getComments();
   }, []);
@@ -28,17 +33,30 @@ const Comments = ({ boardId, uid }) => {
   console.log("boardId : ", boardId);
   let commentsListArray = [];
 
+  const toastAlert = (alertText) => {
+    toast(`${alertText}`, {
+      position: "top-right",
+      autoClose: 1300,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+
   // 댓글 get
   const getComments = async () => {
-    console.log("getComment함수 시작");
     const q = query(
       collection(dbService, "comments"),
-      where("boardId", "==", boardId)
+      where("boardId", "==", boardId),
+      orderBy("ordeyByDate", "desc")
     );
+
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       const WritterUID = doc.data().uid;
-      //userInfo를 가져온다음 => userNickName이랑 userImg를 담아서
       getUserInfoInUserCollection(WritterUID)
         .then((item) => {
           const userNickname = item.userNickname;
@@ -84,40 +102,49 @@ const Comments = ({ boardId, uid }) => {
     return commentUserInfo;
   };
 
+  //   function checkExistData(value, dataName) {
+  //     if (value == "") {
+  //         alert("공백 안된다능");
+  //         return false;
+  //     }
+  //     return true;
+  // }
+  console.log("comment", comment);
+
   // 댓글 add
   const addComment = async (event) => {
     event.preventDefault();
-    // uid : 댓글 작성자 id
-    // boardId : 게시물 id
-    // 게시물 id는 firebase에서 자동으로 들어간다.
-
     let today = new Date();
     let year = today.getFullYear();
     let month = ("0" + (today.getMonth() + 1)).slice(-2);
     let day = ("0" + today.getDate()).slice(-2);
     let dateString = year + "-" + month + "-" + day;
-    // console.log("현재날짜:", dateString);
+    //댓글 공백, 빈칸 유효성 검사
+    if (!comment || !comment.trim().length) {
+      toastAlert("😥 댓글이 입력되지 않았어요 ");
+      commentRef.current?.focus();
+      return false;
+    }
 
     const newComment = {
-      //uid : 작성자의 id
       uid,
       boardId,
       comment,
       writtenDate: dateString,
+      ordeyByDate: new Date(),
     };
     await addDoc(collection(dbService, "comments"), newComment);
     getComments();
-    alert("댓글 저장 성공!");
+    toastAlert("🎉 댓글 저장 성공!");
   };
 
   // 댓글 delete
   const deleteComment = async (id) => {
-    console.log("댓글 id?", id);
     const userConfirm = window.confirm("해당 댓글을 정말 삭제하시겠습니까?");
     if (userConfirm) {
       try {
         await deleteDoc(doc(dbService, "comments", id));
-        alert("댓글 삭제 완료!");
+        toastAlert("🗑 댓글이 삭제되었습니다");
         getComments();
       } catch (error) {
         alert(error);
@@ -126,9 +153,6 @@ const Comments = ({ boardId, uid }) => {
   };
 
   const commentEdit = async (id, index) => {
-    // id는 해당 게시물의 고유 id
-    // console.log(id);
-    // console.log("index:", index);
     setTargetIndex(index);
     setTargetIsEdit(index);
     const postRef = doc(dbService, "comments", id);
@@ -136,22 +160,16 @@ const Comments = ({ boardId, uid }) => {
       await updateDoc(postRef, {
         comment: editComment,
       });
-      alert("댓글 수정 완료!");
-      // setEditComment("");
+      toastAlert("🎉 댓글 수정 완료!");
       setTargetIsEdit(!index);
       setTargetIndex(!index);
       getComments();
     }
   };
 
-  console.log("댓글 List : ", boardComments);
-  // boardComment안의 uid의 nickName과 profileImg가 필요해
-
-  // 댓글 작성자 id를 기준으로
-  // console.log("uid는 현재 로그인유저 uid", uid);
-
   return (
     <div>
+      <ToastContainer position="top-right" autoClose={1000} />
       <div>
         <h3 className="text-[21px]">
           댓글 <b className="text-[#FF0000]">{boardComments.length}</b>
@@ -280,6 +298,7 @@ const Comments = ({ boardId, uid }) => {
       ) : (
         <div className="w-full text-center mt-5">
           <input
+            ref={commentRef}
             className="border-mono80 border rounded-[2px] h-[90px] w-5/6 p-3"
             placeholder=" 타쿠의식탁 커뮤니티가 훈훈해지는 댓글을 남겨주세요."
             type="text"
