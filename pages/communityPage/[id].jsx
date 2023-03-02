@@ -15,6 +15,7 @@ import { convertTimestamp } from "../../util";
 import { authService } from "../../config/firebase";
 import useGetUserProfileNickName from "../../hooks/useGetUserProfileNickName";
 import Comments from "../../components/community/Comments";
+import { toast } from "react-toastify";
 
 export default function DetailPage(props) {
   const [detailPageWholeData, setDetailPageWholeData] = useState({});
@@ -26,11 +27,6 @@ export default function DetailPage(props) {
 
   const { userNickName: writterNickName, userProfileURL: writterProfile } =
     useGetUserProfileNickName(writterUID);
-
-  console.log(
-    "useGetUserProfileNickName(writterUID)",
-    useGetUserProfileNickName(writterUID)
-  );
 
   const boardId = props.targetId;
 
@@ -62,14 +58,6 @@ export default function DetailPage(props) {
     setDetailPageWholeData(props.targetWholeData);
   }, []);
 
-  // useGetUserProfileNicnName 훅 사용하여 글 작성자 닉네임, 프로필 사진 업데이트------(시작)
-
-  // useGetUserProfileNicnName(writterUID).then((item) => {
-  //   console.log("커스텀훅으로 뽑아냄", item.userNickName, item.userProfileURL);
-  //   setWritterNickName(item.userNickName);
-  //   setWritterProfile(item.userProfileURL);
-  // });
-
   useEffect(() => {
     console.log(
       "writterNickName, writterProfile",
@@ -78,12 +66,8 @@ export default function DetailPage(props) {
     );
   }, [writterNickName, writterProfile]);
 
-  // useGetUserProfileNicnName 훅 사용하여 글 작성자 닉네임, 프로필 사진 업데이트------(끝)
-
   // 글 수정
   const updatePost = async (postId) => {
-    // 수정이랑 완료랑 같이..관리중
-    // 버튼 클릭-> isPostEdit(true) -> 편집에서 완료
     setIsPostEdit(!isPostEdit);
     const docRef = doc(dbService, "communityPost", postId);
     await updateDoc(docRef, {
@@ -91,8 +75,7 @@ export default function DetailPage(props) {
       editorText: editPostContent,
       writtenDate: Timestamp.now(),
     });
-    // 업데이트 된 후에...
-    // getDoc
+
     getDoc(doc(dbService, "communityPost", postId)).then((doc) => {
       const data = doc.data();
       setDetailPageWholeData({
@@ -102,7 +85,7 @@ export default function DetailPage(props) {
       });
     });
   };
-  // 글 삭제
+
   const deletePost = async (postId) => {
     const userConfirm = window.confirm("해당 글을 삭제하시겠습니까?");
     if (userConfirm) {
@@ -110,7 +93,7 @@ export default function DetailPage(props) {
         await deleteDoc(doc(dbService, "communityPost", postId));
         router.back();
       } catch (error) {
-        console.log("error: ", error);
+        toast.error("삭제에 실패하였습니다. 다시 시도해주세요.");
       }
     }
   };
@@ -122,7 +105,9 @@ export default function DetailPage(props) {
   return (
     <div className="bg-[#FFF5F5] ">
       <div className="pt-[75px] rounded-md p-7 container w-[780px] mx-auto flex justify-center flex-col bg-white">
-        <h3 className="text-4xl pt-[24px]">잡담게시판</h3>
+        <h3 className="text-4xl pt-[24px]">
+          {detailPageWholeData.category}게시판
+        </h3>
         <div className=" flex justify-end">
           <button
             onClick={moveMainPage}

@@ -15,6 +15,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { storage } from "../../../config/firebase";
 import { pwRegex, nickRegex, cls } from "../../../util";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 export default function ProfileEdit(props) {
   const [userInfo, setUserInfo] = useState();
@@ -70,24 +71,37 @@ export default function ProfileEdit(props) {
     }
   }, [storageCurrentUser]);
 
+  const toastAlert = (alertText) => {
+    toast(`${alertText}`, {
+      position: "top-right",
+      autoClose: 1300,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
   const deleteCurrentUser = () => {
     const currentUser = authService.currentUser;
 
     if (currentUser) {
       const result = confirm("정말 회원탈퇴를 하실건가요?🥹");
-      console.log("result:", result);
-      console.log("currentUser:", currentUser);
 
       if (result) {
         signOut(authService).then(() => {
           sessionStorage.clear();
           deleteUser(currentUser)
             .then(() => {
-              alert("회원탈퇴가 완료되었습니다.");
+              toastAlert("회원탈퇴가 완료되었습니다.");
               location.href = "/mainPage";
             })
             .catch((error) => {
-              console.log(error);
+              toast.error(
+                "회원탈퇴에 실패하였습니다. 다시 시도해주세요.\n",
+                error
+              );
             });
         });
       } else {
@@ -119,7 +133,6 @@ export default function ProfileEdit(props) {
     reader.readAsDataURL(file);
     reader.onload = () => {
       const selectedImgUrl = reader.result;
-      console.log("selectedImgUrl", selectedImgUrl);
       setShowUserUpdateImg(selectedImgUrl);
     };
   };
@@ -190,10 +203,10 @@ export default function ProfileEdit(props) {
       });
     }
     setTimeout(() => {
-      reauthenticateWithCredential(authService?.currentUser, credential).then(
-        async () => {
+      reauthenticateWithCredential(authService?.currentUser, credential)
+        .then(async () => {
           await updatePassword(authService?.currentUser, changeUserPw).catch(
-            (error) => console.log("비밀번호 변경 에러: ", error)
+            (error) => toast.error("비밀번호 변경에 실패하였습니다.\n", error)
           );
           await updateProfile(authService?.currentUser, {
             displayName: changeUserNickname,
@@ -201,9 +214,11 @@ export default function ProfileEdit(props) {
             .then(() => {
               location.href = `/myPage/${userInfo?.userId}`;
             })
-            .catch((error) => console.log("닉네임 변경 에러: ", error));
-        }
-      );
+            .catch((error) =>
+              toast.error("닉네임 변경에 실패하였습니다.\n", error)
+            );
+        })
+        .catch((error) => toast.error("재로그인이 필요합니다.", error));
     }, 500);
   };
 
@@ -465,7 +480,7 @@ export const getServerSideProps = async (context) => {
   if (snapshot.exists()) {
     userData = snapshot.data();
   } else {
-    alert("회원 정보가 없습니다.");
+    toastAlert("회원 정보가 없습니다.");
   }
 
   return {
