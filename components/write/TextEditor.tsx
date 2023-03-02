@@ -29,6 +29,8 @@ const formats = [
   "link",
   "image",
   "video",
+  "color",
+  "align",
 ];
 
 interface EditorProps {
@@ -88,7 +90,7 @@ const EditorComponent = ({ editorText, setEditorText }: EditorProps) => {
     () => ({
       toolbar: {
         container: [
-          ["bold", "italic", "underline", "strike", "blockquote"],
+          ["bold", "italic", "blockquote"],
           [{ size: ["small", false, "large", "huge"] }, { color: [] }],
           [
             { list: "ordered" },
