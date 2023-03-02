@@ -7,10 +7,7 @@ import Image from "next/image";
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import { storage } from "@/config/firebase";
 import EditorComponent from "@/components/write/TextEditor";
-import { collection, addDoc } from "firebase/firestore";
-import baseImg from "/public/images/test1.png";
-import { authService } from "@/config/firebase";
-import { isAbsolute } from "path";
+import { toast, ToastContainer } from "react-toastify";
 
 interface TitleType {
   title: string;
@@ -87,6 +84,18 @@ const RecipeEditPage = ({
   // console.log(originImgThumbNail);
 
   // 체인지 이벤트 발생시 실행되는 함수-----------------
+  const toastAlert = (alertText: string) => {
+    toast(`${alertText}`, {
+      position: "top-right",
+      autoClose: 1300,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
 
   const inputChangeSetFunc = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -139,45 +148,54 @@ const RecipeEditPage = ({
       !ingredient ||
       !selectCookTime ||
       !foodCategory ||
+      foodCategory == "none" ||
+      selectCookTime == "none" ||
       !displayStatus ||
       !thumbnail ||
       !editorText ||
+      !displayStatus ||
       editorText === "<p><br></p>"
     ) {
       if (!targetTitle) {
-        alert("영화 제목을 선택해주세요!");
+        toastAlert("🥺 영화 제목을 선택해주세요 🥺");
         movieTitleRef.current?.focus();
         return false;
       }
       if (!foodTitle) {
-        alert("음식명을 작성해주세요!");
+        toastAlert("🥺 레시피 제목을 깜빡하셨어요 🥺");
         foodTitleRef.current?.focus();
         return false;
       }
-      if (!ingredient) {
-        alert("재료명을 작성해주세요!");
-        // ingredientRef.current?
-        ingredientRef.current?.focus();
-        return false;
-      }
-      if (!selectCookTime) {
-        alert("조리 시간을 작성해주세요!");
-        cookTimeRef.current?.focus();
-        return false;
-      }
-      if (!foodCategory) {
-        alert("음식 종류를 선택해주세요!");
+      if (!foodCategory || foodCategory == "none") {
+        toastAlert("🥺 음식 종류를 선택해주세요! 🥺");
         foodCategoryRef.current?.focus();
         return false;
       }
+
+      if (!selectCookTime || selectCookTime == "none") {
+        toastAlert("🥺 소요 시간을 작성해주세요 🥺");
+        cookTimeRef.current?.focus();
+        return false;
+      }
+
+      if (!ingredient) {
+        toastAlert("🥺 재료명을 작성해주세요 🥺");
+        ingredientRef.current?.focus();
+        return false;
+      }
+
+      if (!editorText) {
+        toastAlert("🥺 본문이 채워지지 않았어요!🥺");
+        return false;
+      }
+
       if (!thumbnail) {
-        alert("대표 사진을 선택해주세요!");
+        toastAlert("🥺 대표 사진을 선택해주세요! 🥺");
         thumbnailRef.current?.focus();
         return false;
       }
       if (!displayStatus) {
-        alert("게시물 공개여부를 선택해주세요!");
-        displayStatusRef.current?.focus();
+        toastAlert("🥺 게시글 공개여부를 체크해주세요! 🥺");
         return false;
       }
       alert("게시글 본문이 채워지지 않았어요 😥");
@@ -246,6 +264,7 @@ const RecipeEditPage = ({
 
   return (
     <div className="bg-white p-10">
+      <ToastContainer position="top-right" autoClose={1000} />
       <div className="mt-[75px] rounded-md p-7 container w-[1180px] mx-auto flex justify-center flex-col bg-white">
         <h3 className="text-4xl font-bold">레시피 수정하기</h3>
         <hr className="mt-[24px] h-px border-[1.5px] border-brand100"></hr>
@@ -444,7 +463,7 @@ const RecipeEditPage = ({
           </div>
           <div className="mt-[40px] float-right">
             <button
-              className="w-[180px] h-[48px] bg-brand100 border border-mono60"
+              className="text-white w-[180px] h-[48px] bg-brand100 border border-mono60"
               type="submit"
             >
               완료
