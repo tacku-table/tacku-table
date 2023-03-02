@@ -158,15 +158,7 @@ export default function DetailReciptPage(props: any) {
                   unoptimized
                 />
               )}
-              <Link
-                href={{
-                  pathname: `/myPage/${userFireData?.userId}`,
-                  query: {
-                    id: userFireData?.userId,
-                    // displayname: userFireData.userNickname,
-                  },
-                }}
-              >
+              <Link href={`/myPage/${userFireData?.userId}`}>
                 <p className="pl-5 font-semibold">
                   {userFireData.userNickname}
                 </p>

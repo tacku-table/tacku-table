@@ -28,15 +28,15 @@ const Header = () => {
   // 마이페이지
   const router = useRouter();
   const moveMyPage = (currentUser: any) => {
-    const { uid, displayName, photoURL } = JSON.parse(currentUser);
-    console.log(uid);
-    router.push(
-      {
-        pathname: `/myPage/${uid}`,
-        query: { id: uid, displayName: displayName },
-      },
-      `myPage/${uid}`
-    );
+    const { uid } = JSON.parse(currentUser);
+    location.href = `/myPage/${uid}`;
+    // router.push(
+    //   {
+    //     pathname: `/myPage/${uid}`,
+    //     query: { id: uid },
+    //   },
+    //   `myPage/${uid}`
+    // );
   };
 
   const clearStorage = () => {

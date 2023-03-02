@@ -15,19 +15,18 @@ const MyPage = () => {
   const [imgPreview, setImgPreview] = useState();
 
   const router = useRouter();
-  // JSON.parse 사용
-  // currentUserState
+
   useEffect(() => {
     if (!router.isReady) return;
-    // console.log(router);
-    const { id } = router.query;
+    console.log(router);
+    const { uid } = router.query;
     const res = {
-      id,
+      uid,
     };
     setIsOwner(res);
     // console.log(id);
 
-    getCurrentUserInfo(id);
+    getCurrentUserInfo(uid);
   }, [router.isReady]);
 
   const getCurrentUserInfo = async (id) => {
@@ -89,7 +88,7 @@ const MyPage = () => {
               <Link
                 legacyBehavior
                 href={{
-                  pathname: `/myPage/editProfile`,
+                  pathname: `/myPage/edit/${userInfo.userId}`,
                   query: {
                     id: userInfo.userId,
                     userImg: userInfo.userImg,
