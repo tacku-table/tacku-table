@@ -14,7 +14,7 @@ const MainPage = () => {
             <div className="w-[1150px] mx-auto">
                 <Slider />
             </div>
-            <div className="py-10 pb-[115px] flex flex-col items-center">
+            <div className="w-4/5 mx-auto py-10 pb-[115px] flex flex-col items-center">
                 <SearchRecipeBar />
                 <BestRecipe />
                 <NewRecipe />
