@@ -246,12 +246,8 @@ const SearchData: NextPage = () => {
                         "border px-7 py-1",
                         !lastDoc ||
                             text ||
-                            (!currentItems.filter(
-                                (item: any) =>
-                                    filteredFood.includes(item.foodCategory) ||
-                                    filteredTime.includes(item.cookingTime)
-                            ).length &&
-                                !totalItems?.length)
+                            filteredFood?.length ||
+                            filteredTime?.length
                             ? "hidden"
                             : ""
                     )}
