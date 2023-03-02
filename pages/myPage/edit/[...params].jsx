@@ -182,25 +182,23 @@ export default function ProfileEdit(props) {
       setChangeUserPw(userInfo.pw);
       await updateDoc(docRef, {
         userNickname: changeUserNickname,
-      }).then(() => console.log("닉네임 업데이트 성공!"));
+      });
     } else {
       await updateDoc(docRef, {
         userNickname: changeUserNickname,
         userPw: changeUserPw,
-      }).then(() => console.log("컬렉션 업데이트 성공!"));
+      });
     }
     setTimeout(() => {
-      console.log(changeUserPw);
       reauthenticateWithCredential(authService?.currentUser, credential).then(
         async () => {
-          await updatePassword(authService?.currentUser, changeUserPw)
-            .then(() => console.log("비밀번호 변경 완료!"))
-            .catch((error) => console.log("비밀번호 변경 에러: ", error));
+          await updatePassword(authService?.currentUser, changeUserPw).catch(
+            (error) => console.log("비밀번호 변경 에러: ", error)
+          );
           await updateProfile(authService?.currentUser, {
             displayName: changeUserNickname,
           })
             .then(() => {
-              console.log("닉네임 변경 완료!");
               location.href = `/myPage/${userInfo?.userId}`;
             })
             .catch((error) => console.log("닉네임 변경 에러: ", error));
