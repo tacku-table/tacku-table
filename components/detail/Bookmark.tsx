@@ -9,7 +9,6 @@ import {
   query,
 } from "@firebase/firestore";
 import { authService, dbService } from "@/config/firebase";
-
 const Bookmark = (props: any) => {
   //북마크
   const [bookMark, setBookMark] = useState<any[]>([]);
@@ -18,14 +17,12 @@ const Bookmark = (props: any) => {
   );
   const [toggleBookmark, setToggleBookmark] = useState<boolean>(false);
   let currenDetailUser = props.storageCurrentUser.uid;
-
   //북마크 토글
   useEffect(() => {
     setToggleBookmark(
       bookMark.findIndex((mark) => mark.id === props.postId) !== -1
     );
   }, [bookMark, props.postId]);
-
   //유저 북마크 모아오기
   useEffect(() => {
     const bookmarkLoad = () => {
@@ -40,7 +37,6 @@ const Bookmark = (props: any) => {
     };
     bookmarkLoad();
   }, [currenDetailUser]);
-
   //북마크 db 추가 삭제
   const bookMarkPost = async () => {
     if (toggleBookmark) {
@@ -67,7 +63,6 @@ const Bookmark = (props: any) => {
       );
     }
   };
-
   return (
     <>
       {toggleBookmark ? (
@@ -106,5 +101,4 @@ const Bookmark = (props: any) => {
     </>
   );
 };
-
 export default Bookmark;
