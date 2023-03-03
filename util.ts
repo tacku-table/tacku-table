@@ -16,3 +16,9 @@ export const convertTimestamp = (writtenDate: any) => {
   let yyyy = date.getFullYear();
   return (date = `${yyyy}-${mm}-${dd} ${hours}:${minutes}`);
 };
+
+export const kakaoInit = () => {
+  if (!window.Kakao.isInitialized() && window.Kakao) {
+    window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_API_KEY);
+  }
+};
