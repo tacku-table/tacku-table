@@ -54,7 +54,6 @@ const MyPage = () => {
 
   useEffect(() => {
     if (storageCurrentUser == "logout") {
-      // alert("로그아웃\n 메인 화면으로 이동합니다.");
       location.href = "/loginPage";
     }
   }, [storageCurrentUser]);

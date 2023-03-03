@@ -12,6 +12,7 @@ import EditorComponent from "../../components/write/TextEditor";
 import defaultImg from "../../public/images/test1.png";
 import Image from "next/image";
 import { storage } from "../../config/firebase";
+import { toast } from "react-toastify";
 
 const NewCommunityPost = () => {
   const [editorText, setEditorText] = useState("");
@@ -34,6 +35,19 @@ const NewCommunityPost = () => {
 
   const handleChangeTitle = (event) => {
     setTitle(event.target.value);
+  };
+
+  const toastAlert = (alertText) => {
+    toast(`${alertText}`, {
+      position: "top-right",
+      autoClose: 1300,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   };
 
   // const imgDataUrl = reader.result;
@@ -121,12 +135,12 @@ const NewCommunityPost = () => {
         categoryRef.current?.focus();
         return false;
       }
-      alert("본문 입력은 필수입니다");
+      toastAlert("본문 입력은 필수입니다.");
       return false;
     }
 
     await addDoc(collection(dbService, "communityPost"), newPost);
-    alert("커뮤니티 글 업로드!");
+    toastAlert("업로드 완료");
     location.href = "/communityPage";
   };
   return (
