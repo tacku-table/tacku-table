@@ -14,6 +14,7 @@ import defaultImg from "../../public/images/test1.png";
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "react-toastify";
+import { GetServerSideProps } from "next";
 
 export default function DetailReciptPage(props: any) {
   //회원 데이터
@@ -221,10 +222,10 @@ export default function DetailReciptPage(props: any) {
   );
 }
 
-export const getServerSideProps: any = async (context: any) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   let targetWholeData;
-  const { params } = context;
-  const { id } = params;
+  const { params, res } = context;
+  const { id }: any = params;
   //페이지 해당 id
   const postId = id;
   const snap = await getDoc(doc(dbService, "recipe", postId));
@@ -232,6 +233,9 @@ export const getServerSideProps: any = async (context: any) => {
     targetWholeData = snap.data();
   } else {
     console.log("가져올 문서가 없습니다.");
+    res.setHeader("Location", "/deletePage");
+    res.statusCode = 302;
+    return { props: {} };
   }
 
   // 해결한 코드
