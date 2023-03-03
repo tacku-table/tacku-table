@@ -17,7 +17,12 @@ export async function middleware(request: NextRequest) {
   if (snap.exists()) {
     return;
   } else {
-    return NextResponse.redirect(new URL("/deletePage", request.url));
+    return NextResponse.redirect(
+      new URL(
+        "https://tacku-table-v1-flludcxgy-tacku-table.vercel.app/detailRecipePage",
+        request.url
+      )
+    );
   }
 }
 
