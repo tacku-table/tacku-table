@@ -18,7 +18,7 @@ const CommunityTabs = () => {
   // 전체글 state
   const [communityList, setCommunityList] = useState([]);
   // 페이지네이션 limit, page, offset
-  const [limit, setLimit] = useState(5);
+  const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1); //default=현재 페이지번호
   const offset = (page - 1) * limit;
   const [foodPost, setFoodPost] = useState([]);

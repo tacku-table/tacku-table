@@ -12,7 +12,7 @@ const Pagination = ({ total, limit, page, setPage }: PaginationProps) => {
 
   return (
     <>
-      <nav className="flex justify-center space-x-4">
+      <nav className="flex justify-center space-x-4 mt-4 mb-2">
         <button onClick={() => setPage(page - 1)} disabled={page === 1}>
           {page > 1 && (
             <>
