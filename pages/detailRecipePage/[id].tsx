@@ -31,7 +31,6 @@ export default function DetailReciptPage(props: any) {
       setStorageCurrentUser("guest");
     }
   }, []);
-  //----------다경 추가---------------(끝)
 
   //조회수
   useEffect(() => {
@@ -49,6 +48,19 @@ export default function DetailReciptPage(props: any) {
     });
   }, []);
 
+  const toastAlert = (alertText: string) => {
+    toast(`${alertText}`, {
+      position: "top-right",
+      autoClose: 1300,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+
   //삭제
   const deleteTargetRecipe = async () => {
     const userConfirm = window.confirm("해당 글을 삭제하시겠습니까?");
@@ -57,8 +69,11 @@ export default function DetailReciptPage(props: any) {
     if (userConfirm) {
       try {
         await deleteDoc(doc(dbService, "recipe", targetBoardId));
-        toast.warn("🗑 게시글이 삭제되었습니다");
-        location.href = "/mainPage";
+        // toast.warn("🗑 게시글이 삭제되었습니다");
+        toastAlert("🗑 게시글이 삭제되었습니다");
+        setTimeout(() => {
+          location.href = "/searchPage";
+        }, 1200);
       } catch (error) {
         console.log("error: ", error);
       }
@@ -94,9 +109,9 @@ export default function DetailReciptPage(props: any) {
             <p className="text-2xl font-semibold">
               {props.targetWholeData?.foodTitle}
             </p>
-            <p></p>
+
             {storageCurrentUser === "guest" ? null : (
-              <p className="w-6 h-6 ml-4">
+              <p className="w-6 h-6 mr-2">
                 <Bookmark
                   postId={props.postId}
                   targetWholeData={props.targetWholeData}
@@ -107,7 +122,7 @@ export default function DetailReciptPage(props: any) {
             )}
           </div>
           <div className="flex items-center">
-            <span className="float-left mr-2 ">
+            <span className="float-left mr-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -179,12 +194,12 @@ export default function DetailReciptPage(props: any) {
           </div>
         </div>
         <div>
-          <p className=" border-b-2 border-border-500 pb-3 mt-12 font-semibold">
+          <p className="text-[24px] border-b-2 border-border-500 pb-3 mt-12 font-semibold">
             재료
           </p>
           <p className="mt-8"> {props.targetWholeData?.ingredient}</p>
         </div>
-        <div className=" border-b-2 border-border-500 pb-3 mt-16 mb-8 font-semibold">
+        <div className="text-[24px] border-b-2 border-border-500 pb-3 mt-16 mb-8 font-semibold">
           <p>레시피</p>
         </div>
         <div className="w-4/5 m-auto text-center items-center">

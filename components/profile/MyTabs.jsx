@@ -180,11 +180,16 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
   };
 
   const handleDeleteBookmark = async (p) => {
-    console.log(p.uid, p.postId);
     const userConfirm = window.confirm("즐겨찾기 레시피를 삭제하시겠습니까?");
     if (userConfirm) {
       try {
-        await deleteDoc(doc(dbService, `user/${p.uid}/bookmarkPost`, p.postId));
+        await deleteDoc(
+          doc(
+            dbService,
+            `user/${storageCurrentUser.uid}/bookmarkPost`,
+            p.postId
+          )
+        );
         getMyBookmark(userInfo.userId);
         toastAlert("🗑 삭제되었습니다");
       } catch (error) {

@@ -219,8 +219,10 @@ const RecipeEditPage = ({
 
     //---------------------------------------
     console.log("newEditRecipe", newEditRecipe);
-    alert("게시물 수정이 완료되었습니다. 메인 홈으로 돌아갑니다.");
-    location.href = "/mainPage";
+    toastAlert("게시물 수정이 완료되었습니다.");
+    setTimeout(() => {
+      location.href = "/searchPage";
+    }, 1200);
   };
 
   const onFileChange = (event: any) => {
@@ -244,16 +246,12 @@ const RecipeEditPage = ({
     let downloadUrl: any;
 
     if (imgDataUrl) {
-      console.log("imgDataUrl", imgDataUrl);
       setImgLoading("loading");
       const response = await uploadString(imgRef, imgDataUrl, "data_url");
-      console.log("response:", response);
-
       downloadUrl = await getDownloadURL(response.ref);
-      alert("대표 이미지 업데이트 성공~!");
+      toastAlert("대표 이미지 업데이트 성공~!");
       await setImgLoading("loaded");
 
-      console.log(downloadUrl);
       setThumbnail(downloadUrl);
     }
   };
