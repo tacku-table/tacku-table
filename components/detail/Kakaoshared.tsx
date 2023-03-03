@@ -21,7 +21,7 @@ function Kakaoshared() {
         width={36}
         height={36}
         alt="default_img"
-        className="rounded-md object-cover aspect-[4/3]"
+        className="rounded-md"
         unoptimized
       />
     </button>
