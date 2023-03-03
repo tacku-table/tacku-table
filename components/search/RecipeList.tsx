@@ -7,6 +7,7 @@ interface TypeRecipeList {
 
 // 전체레시피불러오기
 const RecipeList = ({
+    text,
     currentItems,
     totalItems,
     dataResults,
@@ -59,6 +60,8 @@ const RecipeList = ({
                 dataResults.map((item: any) => {
                     return <RecipeListData key={item.id} item={item} />;
                 })
+            ) : text && !dataResults.length ? (
+                <div>해당되는 게시물이 존재하지 않습니다.</div>
             ) : totalItems?.length ? (
                 totalItems.map((item: any) => {
                     return <RecipeListData key={item.id} item={item} />;
