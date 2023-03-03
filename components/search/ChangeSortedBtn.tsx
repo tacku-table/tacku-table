@@ -32,10 +32,15 @@ const ChangeSortedBtn = ({
             <p
                 className={cls(
                     "text-mono100 mr-[330px]",
-                    dataResults?.length ? "" : "hidden"
+                    dataResults?.length || (text && !dataResults.length)
+                        ? ""
+                        : "hidden"
                 )}
             >
-                총&nbsp;
+                <span className="text-red100 text-lg">
+                    {text ? `"${text}"` : null}
+                </span>
+                <span className="text-mono100">{text ? `에 대한 ` : null}</span>
                 <span className="text-red100">
                     {dataResults
                         ? filteredFoodAndTime
@@ -62,12 +67,12 @@ const ChangeSortedBtn = ({
             <p
                 className={cls(
                     "text-mono100 mr-[330px]",
-                    dataResults?.length ? "hidden" : ""
+                    dataResults?.length || (text && !dataResults.length)
+                        ? "hidden"
+                        : ""
                 )}
             >
-                <span className="text-red100">
-                    {text ? `${text}의 결과` : null}
-                </span>
+                총&nbsp;
                 <span className="text-red100">
                     {currentItems?.length
                         ? filteredFoodAndTime
