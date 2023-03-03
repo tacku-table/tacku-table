@@ -50,12 +50,15 @@ const SearchData: NextPage = () => {
         setIsBest("createdAt");
     };
 
-    // 초반6개목록
+    // 전체목록(6개씩)
     const first = async () => {
         const querySnapshot = await getDocs(
             query(
                 collection(dbService, "recipe"),
-                orderBy("createdAt", "desc"),
+                orderBy(
+                    isBest === "viewCount" ? "viewCount" : "createdAt",
+                    "desc"
+                ),
                 limit(6)
             )
         );
@@ -63,7 +66,7 @@ const SearchData: NextPage = () => {
             ...doc.data(),
             id: doc.id,
         }));
-        setCurrentItems(newData);
+        setTotalItems(newData);
         const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
         lastDoc ? setLastdoc(lastDoc as any) : null;
     };
@@ -73,7 +76,7 @@ const SearchData: NextPage = () => {
             id: doc.id,
         }));
         const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
-        setCurrentItems((prev) => [...prev, ...newData]);
+        setTotalItems((prev) => [...prev, ...newData]);
         setLastdoc(lastDoc);
     };
     // 더보기event
@@ -99,17 +102,15 @@ const SearchData: NextPage = () => {
             ...doc.data(),
             id: doc.id,
         }));
-        setTotalItems(newData);
+        setCurrentItems(newData);
     };
     // 검색
-    const fuse = new Fuse(totalItems, {
+    const fuse = new Fuse(currentItems, {
         keys: ["animationTitle", "foodTitle", "content"],
         includeScore: true,
     });
     const results = fuse.search(text);
-    const dataResults = text
-        ? results.map((recipe) => recipe.item)
-        : currentItems;
+    const dataResults = results.map((recipe) => recipe.item);
 
     // 카테고리필터링(음식종류)
     const onCheckedFood = useCallback(
@@ -163,21 +164,13 @@ const SearchData: NextPage = () => {
         const storeFilteredTime = JSON.parse(
             sessionStorage.getItem("filteredTimeData")!
         );
-        if (result) {
-            setIsBest(result);
-        } else {
-            setIsBest("createdAt");
-        }
-        if (storeSearchText) {
-            setText(storeSearchText);
-        }
-        if (storeFilteredFood) {
-            setFilteredFood(storeFilteredFood);
-        }
-        if (storeFilteredTime) {
-            setFilteredTime(storeFilteredTime);
-        }
+        result ? setIsBest(result) : setIsBest("createdAt");
+
+        storeSearchText && setText(storeSearchText);
+        storeFilteredFood && setFilteredFood(storeFilteredFood);
+        storeFilteredTime && setFilteredTime(storeFilteredTime);
         first();
+        getList();
     }, [isBest]);
 
     return (
@@ -214,6 +207,8 @@ const SearchData: NextPage = () => {
                     </button>
                 </form>
                 <ChangeSortedBtn
+                    text={text}
+                    currentItems={currentItems}
                     dataResults={dataResults}
                     isBest={isBest}
                     activeBestBtn={activeBestBtn}
@@ -235,10 +230,11 @@ const SearchData: NextPage = () => {
                         />
                     </div>
                     <RecipeList
+                        currentItems={currentItems}
+                        totalItems={totalItems}
                         dataResults={dataResults}
                         filteredFood={filteredFood}
                         filteredTime={filteredTime}
-                        next={next}
                     />
                 </div>
             </div>
@@ -248,7 +244,12 @@ const SearchData: NextPage = () => {
                     onClick={next}
                     className={cls(
                         "border px-7 py-1",
-                        !lastDoc ? "hidden" : ""
+                        !lastDoc ||
+                            text ||
+                            filteredFood?.length ||
+                            filteredTime?.length
+                            ? "hidden"
+                            : ""
                     )}
                 >
                     더보기
