@@ -14,6 +14,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import defaultImg from "../../public/images/test1.png";
+import { toast, ToastContainer } from "react-toastify";
+
 // interface MyTabsProps {
 //   userInfo: any;
 //   setUserInfo: any;
@@ -27,15 +29,6 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
   const [communityList, setCommunityList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  //   const getCurrentUserInfo = async (id) => {
-  //     await getDoc(doc(dbService, "user", id)).then((doc) => {
-  //       // console.log("getCurrentUserInfo의 data: ", doc.data());
-  //       const user = {
-  //         ...doc.data(),
-  //       };
-  //       setUserInfo(user);
-  //     });
-  //   };
   useEffect(() => {
     const currentUser = JSON.parse(sessionStorage.getItem("User")) || "";
     if (currentUser) {

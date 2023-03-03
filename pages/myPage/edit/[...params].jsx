@@ -15,6 +15,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { storage } from "../../../config/firebase";
 import { pwRegex, nickRegex, cls } from "../../../util";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 export default function ProfileEdit(props) {
   const [userInfo, setUserInfo] = useState();
@@ -30,7 +31,9 @@ export default function ProfileEdit(props) {
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
   const [nicknameMessage, setNicknameMessage] = useState("");
   // 비밀번호 변경
-  const [changeUserPw, setChangeUserPw] = useState("");
+  const [togglePwChange, setTogglePwChange] = useState(false);
+  // 초기값을 기존 비밀번호로 설정
+  const [changeUserPw, setChangeUserPw] = useState();
   // 비밀번호 확인
   const [confirmChangeUserPw, setConfirmChangeUserPw] = useState("");
   // 비밀번호 일치
@@ -68,24 +71,37 @@ export default function ProfileEdit(props) {
     }
   }, [storageCurrentUser]);
 
+  const toastAlert = (alertText) => {
+    toast(`${alertText}`, {
+      position: "top-right",
+      autoClose: 1300,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
   const deleteCurrentUser = () => {
     const currentUser = authService.currentUser;
 
     if (currentUser) {
       const result = confirm("정말 회원탈퇴를 하실건가요?🥹");
-      console.log("result:", result);
-      console.log("currentUser:", currentUser);
 
       if (result) {
         signOut(authService).then(() => {
           sessionStorage.clear();
           deleteUser(currentUser)
             .then(() => {
-              alert("회원탈퇴가 완료되었습니다.");
+              toastAlert("회원탈퇴가 완료되었습니다.");
               location.href = "/mainPage";
             })
             .catch((error) => {
-              console.log(error);
+              toast.error(
+                "회원탈퇴에 실패하였습니다. 다시 시도해주세요.\n",
+                error
+              );
             });
         });
       } else {
@@ -117,7 +133,6 @@ export default function ProfileEdit(props) {
     reader.readAsDataURL(file);
     reader.onload = () => {
       const selectedImgUrl = reader.result;
-      console.log("selectedImgUrl", selectedImgUrl);
       setShowUserUpdateImg(selectedImgUrl);
     };
   };
@@ -125,7 +140,7 @@ export default function ProfileEdit(props) {
   const handleChangePassword = useCallback(
     (event) => {
       const changedPw = event.target.value;
-      console.log(changedPw);
+      // console.log(changedPw);
       setChangeUserPw(changedPw);
       if (!pwRegex.test(changedPw)) {
         setPasswordMessage(
@@ -166,35 +181,45 @@ export default function ProfileEdit(props) {
       setIsNickname(true);
     }
   };
+
   const handleUpdateUserDocs = async (uid) => {
+    // 비밀번호 변경했을때랑 아닐때
     const docId = uid;
     const docRef = doc(dbService, "user", docId);
-    // console.log("userInfo.userPw", userInfo.userPw);
-    const userProvidedPassword = userInfo.userPw;
+    const userProvidedPassword = userInfo?.userPw;
     const credential = EmailAuthProvider.credential(
       authService?.currentUser.email,
       userProvidedPassword
     );
-    await updateDoc(docRef, {
-      userNickname: changeUserNickname,
-      userPw: changeUserPw,
-    }).then(() => console.log("컬렉션 업데이트 성공!"));
-    await reauthenticateWithCredential(
-      authService.currentUser,
-      credential
-    ).then(async () => {
-      await updatePassword(authService?.currentUser, changeUserPw)
-        .then(() => console.log("비밀번호 변경 완료!"))
-        .catch((error) => console.log("비밀번호 변경 에러: ", error));
-      await updateProfile(authService?.currentUser, {
-        displayName: changeUserNickname,
-      })
-        .then(() => {
-          console.log("닉네임 변경 완료!");
-          location.href = `/myPage`;
+    if (!togglePwChange) {
+      setChangeUserPw(userInfo.pw);
+      await updateDoc(docRef, {
+        userNickname: changeUserNickname,
+      });
+    } else {
+      await updateDoc(docRef, {
+        userNickname: changeUserNickname,
+        userPw: changeUserPw,
+      });
+    }
+    setTimeout(() => {
+      reauthenticateWithCredential(authService?.currentUser, credential)
+        .then(async () => {
+          await updatePassword(authService?.currentUser, changeUserPw).catch(
+            (error) => toast.error("비밀번호 변경에 실패하였습니다.\n", error)
+          );
+          await updateProfile(authService?.currentUser, {
+            displayName: changeUserNickname,
+          })
+            .then(() => {
+              location.href = `/myPage/${userInfo?.userId}`;
+            })
+            .catch((error) =>
+              toast.error("닉네임 변경에 실패하였습니다.\n", error)
+            );
         })
-        .catch((error) => console.log("닉네임 변경 에러: ", error));
-    });
+        .catch((error) => toast.error("재로그인이 필요합니다.", error));
+    }, 500);
   };
 
   // 이미지 변경
@@ -231,15 +256,39 @@ export default function ProfileEdit(props) {
             <div className="flex items-end space-x-5">
               <label className="cursor-pointer hover:opacity-40">
                 {showUserUpdateImg && (
-                  <Image
-                    src={showUserUpdateImg}
-                    className="rounded-md aspect-square"
-                    loader={({ src }) => src}
-                    priority={true}
-                    width={100}
-                    height={100}
-                    alt="프리뷰|업데이트이미지"
-                  />
+                  <>
+                    <Image
+                      src={showUserUpdateImg}
+                      className="rounded-md aspect-square"
+                      loader={({ src }) => src}
+                      priority={true}
+                      width={100}
+                      height={100}
+                      alt="프리뷰|업데이트이미지"
+                    />
+                    <div className="relative">
+                      <svg
+                        className="absolute bottom-2 right-2 w-6 h-6 text-black"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z"
+                        ></path>
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z"
+                        ></path>
+                      </svg>
+                    </div>
+                  </>
                 )}
 
                 <input
@@ -255,9 +304,9 @@ export default function ProfileEdit(props) {
                   onClick={() => handleUpdateProfile(userInfo.userId)}
                   type="button"
                   disabled={!imageUpload}
-                  className="text-white disabled:bg-slate-400 bg-brand100 hover:bg-brand100 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-sm text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 "
+                  className="text-white disabled:opacity-50 bg-brand100 hover:bg-brand100 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-sm text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 "
                 >
-                  변경
+                  수정
                 </button>
                 {imgPreview === "uploading" && (
                   <span className="text-sm text-blue100">
@@ -277,64 +326,76 @@ export default function ProfileEdit(props) {
             />
           </div>
           <div>
-            <label className="flex gap-14 items-center">
+            <div className="flex gap-14 items-center">
               <span className="text-base min-w-[120px] ">비밀번호 변경</span>
-              <div>
-                <input
-                  type="password"
-                  placeholder="변경할 비밀번호를 입력해주세요."
-                  onChange={handleChangePassword}
-                  className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10 focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
-                />
-                <div className="h-[16px]">
-                  {changeUserPw.length > 0 && (
-                    <span
-                      className={cls(
-                        "text-xs",
-                        `${
-                          isPassword ? "text-xs text-blue100" : "text-brand100"
-                        }`
-                      )}
-                    >
-                      {passwordMessage}
-                    </span>
-                  )}
+              {!togglePwChange && (
+                <div className="px-2 py-1 text-center w-fit border-mono60 border-[1px] text-base">
+                  <button onClick={() => setTogglePwChange(true)}>
+                    변경하기
+                  </button>
                 </div>
-              </div>
-            </label>
-          </div>
-          <div className="flex flex-col">
-            <label className="flex gap-14 items-center">
-              <span className="text-base min-w-[120px]">
-                비밀번호 변경 확인
-              </span>
-              <div>
-                <input
-                  type="password"
-                  placeholder="확인을 위해 비밀번호를 재입력해주세요."
-                  onChange={handleChangePasswordConfirm}
-                  className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10  focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
-                />
-
-                <div className="h-[16px]">
-                  {confirmChangeUserPw.length > 0 && (
-                    <span
-                      className={cls(
-                        "text-xs",
-                        `${
-                          isPasswordConfirm
-                            ? "text-blue-600"
-                            : "text-orange-500"
-                        }`
-                      )}
-                    >
-                      {passwordConfirmMessage}
-                    </span>
-                  )}
+              )}
+              {togglePwChange && (
+                <div>
+                  <input
+                    type="password"
+                    placeholder="변경할 비밀번호를 입력해주세요."
+                    onChange={handleChangePassword}
+                    className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10 focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
+                  />
+                  <div className="h-[16px]">
+                    {changeUserPw?.length > 0 && (
+                      <span
+                        className={cls(
+                          "text-xs",
+                          `${
+                            isPassword
+                              ? "text-xs text-blue100"
+                              : "text-brand100"
+                          }`
+                        )}
+                      >
+                        {passwordMessage}
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </label>
+              )}
+            </div>
           </div>
+          {togglePwChange && (
+            <div className="flex flex-col">
+              <label className="flex gap-14 items-center">
+                <span className="text-base min-w-[120px]">
+                  비밀번호 변경 확인
+                </span>
+                <div>
+                  <input
+                    type="password"
+                    placeholder="확인을 위해 비밀번호를 재입력해주세요."
+                    onChange={handleChangePasswordConfirm}
+                    className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10  focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
+                  />
+                  <div className="h-[16px]">
+                    {confirmChangeUserPw?.length > 0 && (
+                      <span
+                        className={cls(
+                          "text-xs",
+                          `${
+                            isPasswordConfirm
+                              ? "text-blue-600"
+                              : "text-orange-500"
+                          }`
+                        )}
+                      >
+                        {passwordConfirmMessage}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </label>
+            </div>
+          )}
           <div className="flex flex-col">
             <label className="flex gap-14 items-center">
               <span className="text-base min-w-[120px]">닉네임 변경</span>
@@ -394,7 +455,7 @@ export default function ProfileEdit(props) {
           <button
             className="disabled:bg-mono30 disabled:text-mono100 valid:bg-brand100 valid:text-white hover:bg-brand100/80 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-sm text-sm px-28 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mb-2"
             onClick={() => handleUpdateUserDocs(userInfo.userId)}
-            disabled={!(isPassword && isPasswordConfirm && isNickname)}
+            disabled={!((isPassword && isPasswordConfirm) || isNickname)}
           >
             수정하기
           </button>
@@ -419,7 +480,7 @@ export const getServerSideProps = async (context) => {
   if (snapshot.exists()) {
     userData = snapshot.data();
   } else {
-    alert("회원 정보가 없습니다.");
+    toastAlert("회원 정보가 없습니다.");
   }
 
   return {
