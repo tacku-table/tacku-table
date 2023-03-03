@@ -9,6 +9,7 @@ import {
 import { dbService } from "@/config/firebase";
 import Bookmark from "@/components/detail/Bookmark";
 import TopButton from "@/components/button/TopButton";
+import Kakaoshared from "@/components/detail/Kakaoshared";
 import defaultImg from "../../public/images/test1.png";
 import Image from "next/image";
 import Link from "next/link";
@@ -109,17 +110,21 @@ export default function DetailReciptPage(props: any) {
             <p className="text-2xl font-semibold">
               {props.targetWholeData?.foodTitle}
             </p>
-
-            {storageCurrentUser === "guest" ? null : (
-              <p className="w-6 h-6 mr-2">
-                <Bookmark
-                  postId={props.postId}
-                  targetWholeData={props.targetWholeData}
-                  storageCurrentUser={storageCurrentUser}
-                  userData={userData}
-                />
+            <div className="flex items-center">
+              <p className="mr-5">
+                <Kakaoshared />
               </p>
-            )}
+              {storageCurrentUser === "guest" ? null : (
+                <p className="mr-2">
+                  <Bookmark
+                    postId={props.postId}
+                    targetWholeData={props.targetWholeData}
+                    storageCurrentUser={storageCurrentUser}
+                    userData={userData}
+                  />
+                </p>
+              )}
+            </div>
           </div>
           <div className="flex items-center">
             <span className="float-left mr-2">
@@ -155,7 +160,7 @@ export default function DetailReciptPage(props: any) {
                   width={50}
                   height={50}
                   alt="default_img"
-                  className="rounded-md"
+                  className="rounded-md object-cover aspect-[4/3]"
                   unoptimized
                 />
               ) : (
@@ -165,7 +170,7 @@ export default function DetailReciptPage(props: any) {
                   width={50}
                   height={50}
                   alt="user_img"
-                  className="rounded-md"
+                  className="rounded-md object-cover aspect-[4/3]"
                   unoptimized
                 />
               )}

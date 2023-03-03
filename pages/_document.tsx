@@ -10,6 +10,7 @@ export default function Document() {
         as="style"
         href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard.css"
       />
+      <script defer src="https://developers.kakao.com/sdk/js/kakao.js"></script>
       <body>
         <Main />
         <NextScript />
