@@ -115,6 +115,7 @@ const ClassifiedRecipe: NextPage = () => {
                 </button>
             </form>
             <ChangeSortedBtn
+                text={text}
                 dataResults={dataResults}
                 isBest={isBest}
                 activeBestBtn={activeBestBtn}
