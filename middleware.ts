@@ -5,12 +5,9 @@ import { dbService } from "./config/firebase";
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
-  console.log("request:", request.nextUrl.pathname);
   const nextURL = request.nextUrl.pathname;
-
   const splitURL = nextURL.split("/");
   const id = splitURL[2];
-  console.log("id : ", id);
 
   const snap = await getDoc(doc(dbService, "recipe", id));
   if (snap.exists()) {
