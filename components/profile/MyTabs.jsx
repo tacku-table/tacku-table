@@ -16,16 +16,19 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import defaultImg from "../../public/images/test1.png";
 import { toast } from "react-toastify";
+import MyBookmarkTab from "../profile/MyBookmarkTab";
+import MyRecipeTab from "../profile/MyRecipeTab";
+import MyCommunityTab from "../profile/MyCommunityTab";
 
 // interface MyTabsProps {
 //   userInfo: any;
 //   setUserInfo: any;
 // }
 const MyTabs = ({ userInfo, setUserInfo }) => {
-  const [recipePost, setRecipePost] = useState([]);
-  const [communityPost, setCommunityPost] = useState([]);
+  // const [recipePost, setRecipePost] = useState([]);
+  // const [communityPost, setCommunityPost] = useState([]);
   const [commentPost, setCommentPost] = useState([]);
-  const [bookmarkPost, setBookmarkPost] = useState([]);
+  // const [bookmarkPost, setBookmarkPost] = useState([]);
   const [storageCurrentUser, setStorageCurrentUser] = useState({});
   const [communityList, setCommunityList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -42,11 +45,11 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
   // const userId = userInfo.userId;
   useEffect(() => {
     getCommunityList();
-    getMyRecipePost(userInfo.userId);
-    getMyCommunityPost(userInfo.userId);
+    // getMyRecipePost(userInfo.userId);
+    // getMyCommunityPost(userInfo.userId);
     getCommunityComment(userInfo.userId);
-    getMyBookmark(userInfo.userId);
-  }, [userInfo.userId, bookmarkPost, communityPost, commentPost, recipePost]);
+    // getMyBookmark(userInfo.userId);
+  }, [userInfo.userId, commentPost]);
 
   useEffect(() => {
     setIsLoading(false);
@@ -179,25 +182,6 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
     });
   };
 
-  const handleDeleteBookmark = async (p) => {
-    const userConfirm = window.confirm("즐겨찾기 레시피를 삭제하시겠습니까?");
-    if (userConfirm) {
-      try {
-        await deleteDoc(
-          doc(
-            dbService,
-            `user/${storageCurrentUser.uid}/bookmarkPost`,
-            p.postId
-          )
-        );
-        getMyBookmark(userInfo.userId);
-        toastAlert("🗑 삭제되었습니다");
-      } catch (error) {
-        toast.error("삭제에 실패하였습니다. 다시 시도해주세요.", error);
-      }
-    }
-  };
-
   return (
     <Tab.Group>
       <Tab.List className="flex space-x-16 ml-[370px] bg-white">
@@ -243,128 +227,13 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
         )}
       </Tab.List>
       <Tab.Panels className="w-[880px] h-full min-h-[501px] mt-8 mb-[100px] shadow-xl m-auto ">
-        <Tab.Panel className="pt-[91px] pb-6">
-          {bookmarkPost?.map((p) => (
-            <div key={p.postId} className="px-6 mb-5">
-              <hr className="border-mono50 mx-8 mb-6 border-[1px]" />
-              <div className="pl-8 space-x-[20px] items-center flex">
-                {p.thumbnail && (
-                  <Image
-                    className="object-cover aspect-[4/3]"
-                    src={p.thumbnail}
-                    priority={true}
-                    loader={({ src }) => src}
-                    width={180}
-                    height={105}
-                    alt="bookmark-thumbnail"
-                  />
-                )}
-                <div className="flex flex-col">
-                  <div className="flex space-x-1">
-                    <span>#{p.animationTitle}</span>
-                    <span>#{p.cookingTime}</span>
-                  </div>
-                  <Link legacyBehavior href={`/detailRecipePage/${p.postId}`}>
-                    <a className="text-[24px]">{p.foodTitle}</a>
-                  </Link>
-                </div>
-              </div>
-              <div className="flex mt-9 ml-8 space-x-3 relative items-center">
-                {p.writerImg === "null" ? (
-                  <Image
-                    className="aspect-square rounded-md object-cover w-12 h-12"
-                    src={defaultImg}
-                    priority={true}
-                    loader={({ src }) => src}
-                    width={12}
-                    height={12}
-                    alt="글쓴이프로필"
-                  />
-                ) : (
-                  <Image
-                    className="aspect-square rounded-md object-cover w-12 h-12"
-                    src={p.writerImg}
-                    priority={true}
-                    loader={({ src }) => src}
-                    width={12}
-                    height={12}
-                    alt="글쓴이프로필"
-                  />
-                )}
-                <p className="text-[16px]">{p.writerdisplayName}</p>
-                {storageCurrentUser.uid === userInfo.userId && (
-                  <svg
-                    className="w-6 h-6 absolute right-8 cursor-pointer hover:text-brand100"
-                    onClick={() => {
-                      handleDeleteBookmark(p);
-                    }}
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-                    ></path>
-                  </svg>
-                )}
-              </div>
-            </div>
-          ))}
-        </Tab.Panel>
-        <Tab.Panel>
-          {recipePost?.map((p) => (
-            <div key={p.postId} className="px-6 mb-5">
-              <hr className="border-mono50 mx-8 mb-6 border-[1px]" />
-              <div className="pl-8 space-x-[20px] items-center flex">
-                <Image
-                  className="object-cover aspect-[4/3]"
-                  src={p.thumbnail}
-                  priority={true}
-                  loader={({ src }) => src}
-                  width={180}
-                  height={105}
-                  alt="bookmark-thumbnail"
-                />
-                <div className="flex flex-col">
-                  <div className="flex space-x-1">
-                    <span>#{p.animationTitle}</span>
-                    <span>#{p.cookingTime}</span>
-                  </div>
-                  <Link legacyBehavior href={`/detailRecipePage/${p.postId}`}>
-                    <a className="text-[24px]">{p.foodTitle}</a>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          ))}
-        </Tab.Panel>
-        <Tab.Panel>
-          {communityPost?.map((p) => (
-            <div key={p.postId} className="px-6 mb-5">
-              <hr className="border-border mx-8 mb-6 border-[1px]" />
-              <div className="pl-8 space-x-[20px] items-center flex">
-                <div className="flex flex-col">
-                  <div className="space-x-[10px]">
-                    <span>{p.category}게시판</span>
-                    <span>|</span>
-                    <span>{p.writtenDate}</span>
-                  </div>
-                  <Link legacyBehavior href={`/communityPage/${p.postId}`}>
-                    <a className="text-2xl font-semibold">{p.title}</a>
-                  </Link>
-                </div>
-              </div>
-              <div className="flex mt-9 ml-8 space-x-3">
-                <p className="text-[16px]">{p.writerNickName}</p>
-              </div>
-            </div>
-          ))}
-        </Tab.Panel>
+        <MyBookmarkTab
+          storageCurrentUser={storageCurrentUser}
+          userInfo={userInfo}
+        />
+        <MyRecipeTab userInfo={userInfo} />
+        <MyCommunityTab userInfo={userInfo} />
+
         <Tab.Panel>
           {commentPost?.map((p) => (
             <div key={p.postId} className="px-6 mb-5">
@@ -385,8 +254,6 @@ const MyTabs = ({ userInfo, setUserInfo }) => {
                               {item.category}
                               게시판
                             </span>
-                            {/* <span>|</span>
-                            <span>{item.writtenDate}</span> */}
                           </div>
                           <div className="text-mono70">{item.title}</div>
                         </div>
