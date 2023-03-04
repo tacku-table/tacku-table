@@ -12,7 +12,10 @@ export const convertTimestamp = (writtenDate: any) => {
   let minutes = date.getMinutes() < 10 ? "0" : "";
   minutes = minutes + date.getMinutes();
   let mm = date.getMonth() + 1;
-  let dd = date.getDate();
+  mm = mm < 10 ? "0" + mm : "" + mm;
+
+  let dd = date.getDate() < 10 ? "0" : "";
+  dd = dd + date.getDate();
   let yyyy = date.getFullYear();
   return (date = `${yyyy}-${mm}-${dd} ${hours}:${minutes}`);
 };
