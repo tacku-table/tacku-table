@@ -255,8 +255,7 @@ const RegisterPage = () => {
                 },
                 validate: {
                   val: (value) =>
-                    (nicknameCheck && tempNickname === value) ||
-                    "고유한 닉네임을 입력해주세요",
+                    (nicknameCheck && tempNickname === value) || "",
                 },
               })}
               id="nickname"
