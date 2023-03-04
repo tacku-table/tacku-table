@@ -82,8 +82,8 @@ export default function DetailReciptPage(props: any) {
   };
 
   // post 시간 나타내는 함수
-  const getTimegap = () => {
-    let data: any = Date.now();
+  const getTimegap = (createdAt: any) => {
+    let data = createdAt;
     const date = new Date(data);
     let year = date.getFullYear().toString().slice(-2); //년도
     let month = ("0" + (date.getMonth() + 1)).slice(-2); //월 2자리
@@ -92,6 +92,7 @@ export default function DetailReciptPage(props: any) {
     let minute = ("0" + date.getMinutes()).slice(-2); //분 2자리
     return (data = `${year}-${month}-${day} ${hour}:${minute}`);
   };
+
   return (
     <div className="w-full h-full flex flex-col items-center bg-mono40 ">
       <div className=" w-[1180px] my-4 bg-white pb-[131px] pt-[52px] px-[200px]">
@@ -144,7 +145,7 @@ export default function DetailReciptPage(props: any) {
           <div className="flex justify-between border-b-2 border-border-500 pb-8 my-5">
             <p> {props.targetWholeData?.animationTitle}</p>
             <p>{props.targetWholeData?.foodCategory.replaceAll("&", "/")}</p>
-            <p>{getTimegap()}</p>
+            <p>{getTimegap(props.targetWholeData?.createdAt)}</p>
           </div>
         </div>
         <div>
