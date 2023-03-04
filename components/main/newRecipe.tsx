@@ -3,6 +3,7 @@ import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { clearStorage } from "../layout/Header";
 import RecipeList from "../search/RecipeList";
 
 const NewRecipe: NextPage = () => {
@@ -10,6 +11,7 @@ const NewRecipe: NextPage = () => {
     const router = useRouter();
     const sortedBest = () => {
         router.push("/searchPage");
+        clearStorage();
         sessionStorage.setItem("userWatching", "createdAt");
     };
 

@@ -29,18 +29,18 @@ const ChangeSortedBtn = ({
     return (
         <div className="w-4/5 flex justify-end items-center mb-[20px]">
             <TopButton />
-            <p
+            <div
                 className={cls(
-                    "text-mono100 mr-[330px]",
-                    dataResults?.length || (text && !dataResults.length)
-                        ? ""
-                        : "hidden"
+                    "text-mono100 mr-[330px] flex",
+                    text ? "" : "hidden"
                 )}
             >
-                <span className="text-red100 text-lg">
+                <span className="text-red100 text-lg text-ellipsis overflow-hidden whitespace-nowrap">
                     {text ? `"${text}"` : null}
                 </span>
-                <span className="text-mono100">{text ? `에 대한 ` : null}</span>
+                <span className="text-mono100">
+                    {text ? `에 대한` : null}&nbsp;
+                </span>
                 <span className="text-red100">
                     {dataResults
                         ? filteredFoodAndTime
@@ -63,7 +63,7 @@ const ChangeSortedBtn = ({
                         : null}
                 </span>
                 건의 레시피가 준비되어 있습니다.
-            </p>
+            </div>
             <p
                 className={cls(
                     "text-mono100 mr-[330px]",

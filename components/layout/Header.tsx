@@ -10,6 +10,13 @@ import { toast } from "react-toastify";
 import { setTimeout } from "timers";
 import { useRouter } from "next/router";
 
+export const clearStorage = () => {
+    sessionStorage.removeItem("filteredFoodData");
+    sessionStorage.removeItem("filteredTimeData");
+    sessionStorage.removeItem("searchData");
+    sessionStorage.removeItem("userWatching");
+};
+
 const Header = () => {
     const [storageCurrentUser, setStorageCurrentUser] = useState("");
     const toastAlert = (alertText: string) => {
@@ -59,11 +66,6 @@ const Header = () => {
         sessionStorage.removeItem("filteredTimeData");
         sessionStorage.removeItem("searchData");
         window.location.replace("/searchPage");
-    };
-    const clearStorage = () => {
-        sessionStorage.removeItem("filteredFoodData");
-        sessionStorage.removeItem("filteredTimeData");
-        sessionStorage.removeItem("searchData");
     };
 
     useEffect(() => {
