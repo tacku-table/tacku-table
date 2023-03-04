@@ -1,8 +1,16 @@
 import React, { useRef, useState } from "react";
-import { authService } from "@/config/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { authService, dbService } from "@/config/firebase";
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  updateProfile,
+} from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore";
 import { emailRegex, pwRegex } from "@/util";
 import { toast } from "react-toastify";
+import { SiKakaotalk } from "react-icons/si";
+import { AiFillGoogleSquare } from "react-icons/ai";
 
 const Login = ({ setStatus, status }: { setStatus: any; status: string }) => {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -23,6 +31,31 @@ const Login = ({ setStatus, status }: { setStatus: any; status: string }) => {
       theme: "light",
     });
   };
+
+  // 구글 로그인
+  // const gooleLogin = () => {
+  //   const provider = new GoogleAuthProvider();
+  //   signInWithPopup(authService, provider)
+  //     .then(async (data) => {
+  //       await setDoc(doc(dbService, "user", data.user.uid), {
+  //         userId: data.user.uid,
+  //         userNickname: data.user.displayName,
+  //         userEmail: data.user.email,
+  //         userPw: "google",
+  //         userImg: "null",
+  //       });
+  //       await updateProfile(data.user, {
+  //         displayName: data.user.displayName,
+  //         photoURL: "null",
+  //       });
+  //       sessionStorage.setItem("User", JSON.stringify(authService.currentUser));
+  //       //location.href = "/mainPage";
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
+
   // 유효성 검사
   const validateInputs = () => {
     if (!email) {
@@ -138,22 +171,27 @@ const Login = ({ setStatus, status }: { setStatus: any; status: string }) => {
       ) : (
         <div className="mt-[32px] h-[24px]"></div>
       )}
-
       {status === "login" ? (
-        <div className="mt-10 m-auto text-center">
-          <span className="text-[16px]">
-            아직 <b className="text-blue100">타쿠의 식탁</b> 계정이 없으신가요?
-          </span>
-          <button
-            className="ml-2 text-[18px] text-blue100 relative font-light"
-            type="button"
-            onClick={() => {
-              setStatus("signUp");
-            }}
-          >
-            지금 가입하기
+        <>
+          <div className="mt-10 m-auto text-center">
+            <span className="text-[16px]">
+              아직 <b className="text-blue100">타쿠의 식탁</b> 계정이
+              없으신가요?
+            </span>
+            <button
+              className="ml-2 text-[18px] text-blue100 relative font-light"
+              type="button"
+              onClick={() => {
+                setStatus("signUp");
+              }}
+            >
+              지금 가입하기
+            </button>
+          </div>
+          <button onClick={gooleLogin}>
+            <AiFillGoogleSquare />
           </button>
-        </div>
+        </>
       ) : (
         <div></div>
       )}
