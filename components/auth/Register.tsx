@@ -253,6 +253,11 @@ const RegisterPage = () => {
                   value: nickRegex,
                   message: "8자 이하의 영어, 숫자, 한글로만 입력해주세요.",
                 },
+                validate: {
+                  val: (value) =>
+                    (nicknameCheck && tempNickname === value) ||
+                    "고유한 닉네임을 입력해주세요",
+                },
               })}
               id="nickname"
               type="text"
