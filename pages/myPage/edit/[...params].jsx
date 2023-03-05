@@ -55,8 +55,6 @@ export default function ProfileEdit(props) {
     }
   }, [userInfo]);
 
-  useEffect(() => {}, []);
-
   useEffect(() => {
     const currentUser = JSON.parse(sessionStorage.getItem("User"));
     if (currentUser) {
@@ -256,7 +254,10 @@ export default function ProfileEdit(props) {
             <div className="flex items-end space-x-5">
               <label className="cursor-pointer hover:opacity-40">
                 {showUserUpdateImg && (
-                  <>
+                  <div
+                    onClick={() => handleUpdateProfile(userInfo.userId)}
+                    disabled={!imageUpload}
+                  >
                     <Image
                       src={showUserUpdateImg}
                       className="rounded-md aspect-square"
@@ -288,7 +289,7 @@ export default function ProfileEdit(props) {
                         ></path>
                       </svg>
                     </div>
-                  </>
+                  </div>
                 )}
 
                 <input
@@ -426,30 +427,6 @@ export default function ProfileEdit(props) {
               </div>
             </label>
           </div>
-          <hr className="border-[1px] w-[580px] border-mono70 mb-4" />
-          <div className="flex justify-between items-center">
-            <label htmlFor="terms">
-              <input
-                id="terms"
-                type="checkbox"
-                onClick={(event) => {
-                  const target = event.target;
-                  setAgree(target.checked);
-                }}
-              />
-              <span className="ml-1 text-blue-500">이용약관</span>
-              과&nbsp;
-              <span className="ml-1 text-blue-500">개인정보취급방침</span>
-              에&nbsp;동의합니다.
-            </label>
-            <button
-              onClick={deleteCurrentUser}
-              className="disabled:text-mono100 bg-mono30 valid:hover:bg-brand100 hover:text-white focus:ring-4 focus:outline-none focus:ring-brand100/50 font-normal rounded-r-sm text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mb-2"
-              disabled={!agree}
-            >
-              회원탈퇴
-            </button>
-          </div>
         </div>
         <div className="space-x-5">
           <button
@@ -464,6 +441,30 @@ export default function ProfileEdit(props) {
             className="text-mono100 bg-mono30 hover:bg-brand100 hover:text-white focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-sm text-sm px-28 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mb-2"
           >
             취소하기
+          </button>
+        </div>
+        <hr className="border-[1px] w-[580px] border-mono70 mb-4" />
+        <div className="flex justify-between items-center">
+          <label htmlFor="terms">
+            <input
+              id="terms"
+              type="checkbox"
+              onClick={(event) => {
+                const target = event.target;
+                setAgree(target.checked);
+              }}
+            />
+            <span className="ml-1 text-blue-500">이용약관</span>
+            과&nbsp;
+            <span className="ml-1 text-blue-500">개인정보취급방침</span>
+            에&nbsp;동의합니다.
+          </label>
+          <button
+            onClick={deleteCurrentUser}
+            className="disabled:text-mono100 bg-mono30 valid:hover:bg-brand100 hover:text-white focus:ring-4 focus:outline-none focus:ring-brand100/50 font-normal rounded-r-sm text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mb-2"
+            disabled={!agree}
+          >
+            회원탈퇴
           </button>
         </div>
       </div>
