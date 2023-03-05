@@ -15,29 +15,15 @@ const CommunityTabs = () => {
     "애니게시판",
     "잡담게시판",
   ]);
+
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-    }, 500);
+    }, 100);
   });
   if (isLoading) {
     return <></>;
   }
-
-  // const getUserInfoInUserCollection = async (uid) => {
-  //   const docRef = doc(dbService, "user", uid);
-  //   const docSnap = await getDoc(docRef);
-  //   if (docSnap.exists()) {
-  //     const userData = docSnap.data();
-  //     const userInfo = {
-  //       userNickname: userData.userNickname,
-  //     };
-  //     return userInfo;
-  //   } else {
-  //     console.log("No such document!");
-  //   }
-  //   return userInfo;
-  // };
 
   return (
     <div className="w-[860px]">
