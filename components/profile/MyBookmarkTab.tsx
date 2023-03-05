@@ -79,7 +79,11 @@ const MyBookmarkTab = ({ userInfo, storageCurrentUser }: any) => {
           <hr className="border-mono50 mx-8 mb-6 border-[1px]" />
           <div className="pl-8 space-x-[20px] items-center flex">
             {p.thumbnail && (
-              <Link legacyBehavior href={`/detailRecipePage/${p.postId}`}>
+              <div
+                onClick={() => {
+                  location.href = `/detailRecipePage/${p.postId}`;
+                }}
+              >
                 <Image
                   className="object-cover aspect-[4/3] rounded-md cursor-pointer"
                   src={p.thumbnail}
@@ -89,16 +93,21 @@ const MyBookmarkTab = ({ userInfo, storageCurrentUser }: any) => {
                   height={105}
                   alt="bookmark-thumbnail"
                 />
-              </Link>
+              </div>
             )}
             <div className="flex flex-col">
               <div className="flex space-x-1">
                 <span>#{p.animationTitle}</span>
                 <span>#{p.cookingTime}</span>
               </div>
-              <Link legacyBehavior href={`/detailRecipePage/${p.postId}`}>
-                <a className="text-[24px]">{p.foodTitle}</a>
-              </Link>
+              <div
+                className="cursor-pointer"
+                onClick={() => {
+                  location.href = `/detailRecipePage/${p.postId}`;
+                }}
+              >
+                <span className="text-[24px]">{p.foodTitle}</span>
+              </div>
             </div>
           </div>
           <div className="flex mt-9 ml-8 space-x-3 relative items-center">

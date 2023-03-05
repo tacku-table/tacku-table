@@ -10,13 +10,15 @@ import {
 } from "firebase/firestore";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import useGetCommunityPost from "@/hooks/useGetCommunityPost";
 
 const MyCommentTab = ({ userInfo }: any) => {
   const [commentPost, setCommentPost] = useState<any[]>([]);
   const [communityList, setCommunityList] = useState<any[]>([]);
+  const { communityPost } = useGetCommunityPost();
 
   useEffect(() => {
-    getCommunityList();
+    setCommunityList(communityPost);
     getCommunityComment(userInfo.userId);
   }, [commentPost]);
 
@@ -25,7 +27,7 @@ const MyCommentTab = ({ userInfo }: any) => {
     const q = query(
       commentsRef,
       where("uid", "==", `${userId}`),
-      orderBy("orderByDate", "desc")
+      orderBy("ordeyByDate", "desc")
     );
     onSnapshot(q, (snapshot) => {
       const myposts = snapshot.docs.map((doc) => {
@@ -39,26 +41,7 @@ const MyCommentTab = ({ userInfo }: any) => {
       setCommentPost(myposts);
     });
   };
-  const getCommunityList = () => {
-    const communityRef = collection(dbService, "communityPost");
-    const q = query(communityRef, orderBy("writtenDate", "desc"));
-    onSnapshot(q, (snapshot) => {
-      const newPosts = snapshot.docs.map((doc) => {
-        const newPost = {
-          id: doc.id,
-          category: doc.data().category,
-          title: doc.data().title,
-          editorText: doc.data().editorText,
-          writtenDate: convertTimestamp(doc.data().writtenDate),
-          thumbnail: doc.data().thumbnail,
-          nickname: doc.data().nickname,
-        };
-        return newPost;
-      });
-      setCommunityList(newPosts);
-      //   console.log(communityList);
-    });
-  };
+
   return (
     <Tab.Panel className="pb-6">
       {commentPost?.map((p) => (
@@ -71,7 +54,7 @@ const MyCommentTab = ({ userInfo }: any) => {
                   <a>{p.comment}</a>
                 </Link>
               </div>
-              {/* {communityList.map(
+              {communityList.map(
                 (item) =>
                   item.id === p.boardId && (
                     <div key={item.id}>
@@ -84,7 +67,7 @@ const MyCommentTab = ({ userInfo }: any) => {
                       <div className="text-mono70">{item.title}</div>
                     </div>
                   )
-              )} */}
+              )}
             </div>
           </div>
         </div>
