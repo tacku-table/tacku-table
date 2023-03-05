@@ -6,7 +6,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { dbService } from "@/config/firebase";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import EditorComponent from "../../components/write/TextEditor";
 import baseImg from "../../public/images/test1.png";
@@ -16,9 +16,16 @@ import { authService } from "../../config/firebase";
 import useGetUserProfileNickName from "../../hooks/useGetUserProfileNickName";
 import Comments from "../../components/community/Comments";
 import { toast } from "react-toastify";
+import { AppProps } from "next/app";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 
-export default function DetailPage(props) {
-  const [detailPageWholeData, setDetailPageWholeData] = useState({});
+interface propsType extends AppProps {
+  targetWholeData: communityPostType;
+  targetId: string;
+}
+
+export default function DetailPage(props: propsType) {
+  const [detailPageWholeData, setDetailPageWholeData]: any = useState({});
   const [isPostEdit, setIsPostEdit] = useState(false);
   const [uid, setUid] = useState("");
   const [commentWriterNickName, setCommentWriterNickName] = useState("");
@@ -41,11 +48,10 @@ export default function DetailPage(props) {
 
   useEffect(() => {
     const sessionStorageUser = sessionStorage.getItem("User") || "";
-
     if (sessionStorageUser) {
       const parsingUser = JSON.parse(sessionStorageUser);
       if (authService.currentUser) {
-        setCommentProfile(authService.currentUser.photoURL);
+        setCommentProfile(authService.currentUser.photoURL as string);
       }
       setUid(parsingUser?.uid);
       setCommentWriterNickName(parsingUser?.displayName);
@@ -53,8 +59,8 @@ export default function DetailPage(props) {
     if (!sessionStorageUser) {
       setUid("guest");
     }
-  }, []);
-  useEffect(() => {
+
+    //전체 데이터 set함수
     setDetailPageWholeData(props.targetWholeData);
   }, []);
 
@@ -67,7 +73,7 @@ export default function DetailPage(props) {
   }, [writterNickName, writterProfile]);
 
   // 글 수정
-  const updatePost = async (postId) => {
+  const updatePost = async (postId: string) => {
     setIsPostEdit(!isPostEdit);
     const docRef = doc(dbService, "communityPost", postId);
     await updateDoc(docRef, {
@@ -77,7 +83,7 @@ export default function DetailPage(props) {
     });
 
     getDoc(doc(dbService, "communityPost", postId)).then((doc) => {
-      const data = doc.data();
+      const data: any = doc.data();
       setDetailPageWholeData({
         title: data.title,
         editorText: data.editorText,
@@ -86,7 +92,7 @@ export default function DetailPage(props) {
     });
   };
 
-  const deletePost = async (postId) => {
+  const deletePost = async (postId: string) => {
     const userConfirm = window.confirm("해당 글을 삭제하시겠습니까?");
     if (userConfirm) {
       try {
@@ -118,7 +124,7 @@ export default function DetailPage(props) {
           </button>
         </div>
 
-        <hr class="mt-[15px] h-px my-2 bg-brand100 border-[2px] border-brand100"></hr>
+        <hr className="mt-[15px] h-px my-2 bg-brand100 border-[2px] border-brand100"></hr>
         <div>
           {isPostEdit ? (
             <>
@@ -172,7 +178,7 @@ export default function DetailPage(props) {
                   {detailPageWholeData.writtenDate}
                 </div>
               </div>
-              <hr class="h-px mt-5 mb-10 bg-mono50 border-[1px] border-mono50"></hr>
+              <hr className="h-px mt-5 mb-10 bg-mono50 border-[1px] border-mono50"></hr>
               <div className="mt-10 text-center">
                 {/* 대표사진 */}
                 {detailPageWholeData.thumbnail === "" ? (
@@ -218,7 +224,7 @@ export default function DetailPage(props) {
             </div>
           )}
         </div>
-        <hr class="h-px my-8 bg-brand100 border-[1px] border-brand100"></hr>
+        <hr className="h-px my-8 bg-brand100 border-[1px] border-brand100"></hr>
         <div>
           <Comments boardId={boardId} uid={uid} />
         </div>
@@ -227,9 +233,11 @@ export default function DetailPage(props) {
   );
 }
 
-export async function getServerSideProps(context) {
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
   const { params } = context;
-  const { id } = params;
+  const { id } = params as { [key: string]: string };
   const targetId = id;
   let targetWholeData;
   const snap = await getDoc(doc(dbService, "communityPost", targetId));
@@ -250,4 +258,4 @@ export async function getServerSideProps(context) {
       targetId,
     },
   };
-}
+};

@@ -13,40 +13,46 @@ import defaultImg from "../../public/images/test1.png";
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "react-toastify";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import type { AppProps } from "next/app";
 
-export default function DetailReciptPage(props: any) {
-  //회원 데이터
-  const [userData, setUserData] = useState<any>("");
-  //조회수
+interface propsType extends AppProps {
+  targetWholeData: targetWholeDataType;
+  postId: string;
+}
+
+interface parseUserType {
+  [key: string]: string;
+}
+
+export default function DetailReciptPage(props: propsType) {
+  const [userData, setUserData] = useState<UserType>({});
   let [views, setViews] = useState<number>(props.targetWholeData?.viewCount);
   const userUid = props.targetWholeData?.uid;
-  const [storageCurrentUser, setStorageCurrentUser]: any = useState({});
+  const [storageCurrentUser, setStorageCurrentUser] = useState<parseUserType>(
+    {}
+  );
+
   useEffect(() => {
+    //userData조회
     const user = sessionStorage.getItem("User") || "";
     if (user) {
-      const parseUser = JSON.parse(user);
+      const parseUser: parseUserType = JSON.parse(user);
       setStorageCurrentUser(parseUser);
     }
     if (!user) {
-      setStorageCurrentUser("guest");
+      setStorageCurrentUser({ user: "guest" });
     }
-  }, []);
-
-  //조회수
-  useEffect(() => {
+    //북마크
     setViews((views += 1));
     updateDoc(doc(dbService, "recipe", props.postId), {
       viewCount: views,
     });
-  }, []);
-
-  //레시피 데이터 불러오기
-  useEffect(() => {
-    //getRecipeData(props.targetWholeData);
+    //userData
     onSnapshot(doc(dbService, "user", userUid), (snapshot) => {
-      setUserData(snapshot.data());
+      setUserData(snapshot.data() as UserType);
     });
+    console.log("props.postID", props.postId);
   }, []);
 
   const toastAlert = (alertText: string) => {
@@ -65,12 +71,11 @@ export default function DetailReciptPage(props: any) {
   //삭제
   const deleteTargetRecipe = async () => {
     const userConfirm = window.confirm("해당 글을 삭제하시겠습니까?");
-    console.log("props.postId", props.postId);
+    console.log("props.postId가 삭제", props.postId);
     const targetBoardId = props.postId;
     if (userConfirm) {
       try {
         await deleteDoc(doc(dbService, "recipe", targetBoardId));
-        // toast.warn("🗑 게시글이 삭제되었습니다");
         toastAlert("🗑 게시글이 삭제되었습니다");
         setTimeout(() => {
           location.href = "/searchPage";
@@ -82,8 +87,8 @@ export default function DetailReciptPage(props: any) {
   };
 
   // post 시간 나타내는 함수
-  const getTimegap = (createdAt: any) => {
-    let data = createdAt;
+  const getTimegap = (createdAt: number | string) => {
+    let data: number | string = createdAt;
     const date = new Date(data);
     let year = date.getFullYear().toString().slice(-2); //년도
     let month = ("0" + (date.getMonth() + 1)).slice(-2); //월 2자리
@@ -112,7 +117,7 @@ export default function DetailReciptPage(props: any) {
               {props.targetWholeData?.foodTitle}
             </p>
 
-            {storageCurrentUser === "guest" ? null : (
+            {storageCurrentUser.user === "guest" ? null : (
               <p className="w-6 h-6 mr-2">
                 <Bookmark
                   postId={props.postId}
@@ -218,12 +223,14 @@ export default function DetailReciptPage(props: any) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
   let targetWholeData;
   const { params, res } = context;
-  const { id }: any = params;
-  //페이지 해당 id
+  const { id } = params as { [key: string]: string };
   const postId = id;
+
   const snap = await getDoc(doc(dbService, "recipe", postId));
   if (snap.exists()) {
     targetWholeData = snap.data();
@@ -234,21 +241,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { props: {} };
   }
 
-  // 해결한 코드
-  // 제이슨 전달할때 객체안의 객체 넣지말라고 오류났었음
-  // targetWholeData = JSON.parse(JSON.stringify(targetWholeData));
-
-  //--------------에러 2.22 ------
-  // SyntaxError: Unexpected token u in JSON at position 0 at JSON.parse
-  // 해결 : if문 안으로 넣음
-
   if (targetWholeData) {
     targetWholeData = JSON.parse(JSON.stringify(targetWholeData));
   }
 
-  //--------------에러 2.22 ------
-  //`undefined` cannot be serialized as JSON. Please use `null` or omit this value
-  // 해결 : or연산자로 null 을 달아줌
   return {
     props: {
       targetWholeData: targetWholeData || null,
