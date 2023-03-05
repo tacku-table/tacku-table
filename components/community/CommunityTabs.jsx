@@ -1,24 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Tab } from "@headlessui/react";
-import {
-  onSnapshot,
-  query,
-  collection,
-  orderBy,
-  getDoc,
-  doc,
-} from "firebase/firestore";
-import Link from "next/link";
-import { authService, dbService } from "../../config/firebase";
-import { convertTimestamp } from "../../util";
-import Image from "next/image";
-import defaultImg from "../../public/images/test1.png";
-import Pagination from "./Pagination";
 import RecipeTab from "./RecipeTab";
 import AnimeTab from "./AnimeTab";
 import GossipTab from "./GossipTab";
 import AllListTab from "./AllListTab";
-import useGetCommunityPost from "../../hooks/useGetCommunityPost";
+
 const CommunityTabs = () => {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -42,20 +28,20 @@ const CommunityTabs = () => {
     return <></>;
   }
 
-  const getUserInfoInUserCollection = async (uid) => {
-    const docRef = doc(dbService, "user", uid);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      const userData = docSnap.data();
-      const userInfo = {
-        userNickname: userData.userNickname,
-      };
-      return userInfo;
-    } else {
-      console.log("No such document!");
-    }
-    return userInfo;
-  };
+  // const getUserInfoInUserCollection = async (uid) => {
+  //   const docRef = doc(dbService, "user", uid);
+  //   const docSnap = await getDoc(docRef);
+  //   if (docSnap.exists()) {
+  //     const userData = docSnap.data();
+  //     const userInfo = {
+  //       userNickname: userData.userNickname,
+  //     };
+  //     return userInfo;
+  //   } else {
+  //     console.log("No such document!");
+  //   }
+  //   return userInfo;
+  // };
 
   return (
     <div className="w-[860px]">
