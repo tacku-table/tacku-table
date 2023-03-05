@@ -41,7 +41,9 @@ const Post = ({ p }: any) => {
         <div className="flex mt-3 text-mono70">
           <div className="border-r border-mono60 pr-3">{p.category}</div>
           <div className="border-r border-mono60 px-3">{p.writtenDate}</div>
-          <div className="pl-3 cursor-pointer">{writterNickname}</div>
+          <Link legacyBehavior href={`/myPage/${p.writterUid}`}>
+            <span className="pl-3 cursor-pointer">{writterNickname}</span>
+          </Link>
         </div>
       </div>
     </div>
