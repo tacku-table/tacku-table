@@ -18,9 +18,10 @@ import { useForm } from "react-hook-form";
 import { FieldErrors } from "react-hook-form/dist/types";
 import ShowPwBtn from "../button/signup/ShowPwBtn";
 import HidePwBtn from "../button/signup/HidePwBtn";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import ShowPwConfirmBtn from "../button/signup/ShowPwConfirmBtn";
 import HidePwConfirmBtn from "../button/signup/HidePwConfirmBtn";
+import Alert from "../toastify/Alert";
 
 interface RegisterForm {
     email: string;
@@ -47,11 +48,7 @@ const RegisterPage = () => {
     const [showPw, setShowPw] = useState(false);
     const [showPwConfirm, setShowPwConfirm] = useState(false);
     const [nicknameCheck, setNicknameCheck] = useState(false);
-    const [checkError, setCheckError] = useState("");
     const [tempNickname, setTempNickname] = useState("");
-
-    // 성공 알람 ( 초록색 창 )
-    const success = () => toast.success("Success!");
 
     // 회원가입
     const signUp = () => {
@@ -73,14 +70,15 @@ const RegisterPage = () => {
                     displayName: getValues("nickname"),
                     photoURL: "null",
                 });
-                // alert("회원가입성공! 로그인해주세요!");
-                toast.success("회원가입성공! 로그인해주세요");
+                toast.success("회원가입성공! 로그인해주세요", {
+                    hideProgressBar: true,
+                });
                 setTimeout(() => {
                     signOut(authService).then(() => {
                         sessionStorage.clear();
                         location.href = "/loginPage";
                     });
-                }, 2000);
+                }, 1500);
 
                 return data.user;
             })
@@ -105,29 +103,16 @@ const RegisterPage = () => {
         const querySnapshot = await getDocs(nickNameCheck);
         const newData = querySnapshot.docs;
         if (newData.length == 0 && value.length > 0) {
-            toastAlert("사용 가능한 닉네임입니다.");
+            Alert("사용 가능한 닉네임입니다.");
             setNicknameCheck(true);
         } else {
             if (value.length != 0) {
-                toastAlert("이미 다른 유저가 사용 중입니다.");
+                Alert("이미 다른 유저가 사용 중입니다.");
             } else {
                 toast.warn("알 수 없는 에러로 사용할 수 없습니다.");
             }
             setNicknameCheck(false);
         }
-    };
-
-    const toastAlert = (alertText: string) => {
-        toast(`${alertText}`, {
-            position: "top-right",
-            autoClose: 1300,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-        });
     };
 
     // 브라우저 뒤로가기 버튼시 confirm창과 함께 "확인"클릭시 로그인 페이지로 이동하는 함수입니다.
@@ -143,7 +128,6 @@ const RegisterPage = () => {
 
     return (
         <div className="w-[420px] mx-auto mb-20 text-mono100">
-            <ToastContainer position="top-right" autoClose={5000} />
             <form
                 onSubmit={handleSubmit(onValid, onInValid)}
                 className="flex flex-col relative"
