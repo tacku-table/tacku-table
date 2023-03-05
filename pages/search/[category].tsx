@@ -13,7 +13,7 @@ const ClassifiedRecipe: NextPage = () => {
     const [text, setText] = useState("");
     const [isBest, setIsBest] = useState("");
     const { register, handleSubmit, getValues } = useForm();
-    const [currentItems, setCurrentItems] = useState<RecipeProps[]>([]);
+    const [currentItems, setCurrentItems] = useState<TypeRecipe[]>([]);
     const router = useRouter();
 
     const onValid = () => {

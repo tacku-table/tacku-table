@@ -26,8 +26,8 @@ const SearchData: NextPage = () => {
     const [isBest, setIsBest] = useState("");
     const [filteredFood, setFilteredFood] = useState<string[]>([]);
     const [filteredTime, setFilteredTime] = useState<string[]>([]);
-    const [currentItems, setCurrentItems] = useState<RecipeProps[]>([]);
-    const [totalItems, setTotalItems] = useState<RecipeProps[]>([]);
+    const [currentItems, setCurrentItems] = useState<TypeRecipe[]>([]);
+    const [totalItems, setTotalItems] = useState<TypeRecipe[]>([]);
     const [lastDoc, setLastdoc] = useState(0);
 
     const { register, handleSubmit, getValues } = useForm();

@@ -4,7 +4,7 @@ import logo from "../../public/images/logo2-2.png";
 import { cls } from "@/util";
 
 interface TypeRecipeList {
-    dataResults: RecipeProps[];
+    dataResults: TypeRecipe[];
     filteredFood?: string[];
     filteredTime?: string[];
 }

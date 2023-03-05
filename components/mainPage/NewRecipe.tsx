@@ -7,7 +7,7 @@ import { clearStorage } from "../layout/Header";
 import RecipeList from "../searchPage/RecipeList";
 
 const NewRecipe: NextPage = () => {
-    const [dataResults, setDataResults] = useState<RecipeProps[]>([]);
+    const [dataResults, setDataResults] = useState<TypeRecipe[]>([]);
     const router = useRouter();
     const sortedBest = () => {
         router.push("/search");
