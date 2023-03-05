@@ -4,14 +4,10 @@ import RecipeTab from "./RecipeTab";
 import AnimeTab from "./AnimeTab";
 import GossipTab from "./GossipTab";
 import AllListTab from "./AllListTab";
-
+import { cls } from "../../util";
 const CommunityTabs = () => {
   const [isLoading, setIsLoading] = useState(true);
 
-  //   class css 함수
-  function classNames(...classes) {
-    return classes.filter(Boolean).join(" ");
-  }
   //   탭바 변경 state
   let [categories] = useState([
     "전체 글목록",
@@ -51,10 +47,10 @@ const CommunityTabs = () => {
             <Tab
               key={category}
               className={({ selected }) =>
-                classNames(
+                cls(
                   " w-full h-[55px] py-2.5 text-sm font-medium leading-5 border-y border-l border-mono50 last:border-r",
                   "ring-white focus:outline-none",
-                  selected ? " text-brand100" : "text-mono100"
+                  `${selected ? " text-brand100" : "text-mono100"}`
                 )
               }
             >

@@ -21,10 +21,6 @@ const MyCommunityTab = ({ userInfo }: any) => {
     getMyCommunityPost(userInfo.userId);
   }, [communityPost]);
 
-  function classNames(...classes: any[]) {
-    return classes.filter(Boolean).join(" ");
-  }
-
   const getMyCommunityPost = async (userId: any) => {
     const communityRef = collection(dbService, "communityPost");
     const q = query(

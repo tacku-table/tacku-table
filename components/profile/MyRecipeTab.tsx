@@ -18,10 +18,6 @@ const RecipeTab = ({ userInfo }: any) => {
     getMyRecipePost(userInfo.userId);
   }, [recipePost]);
 
-  function classNames(...classes: any[]) {
-    return classes.filter(Boolean).join(" ");
-  }
-
   // 내가 쓴 레시피
   const getMyRecipePost = async (userId: any) => {
     const recipeRef = collection(dbService, "recipe");
