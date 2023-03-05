@@ -3,6 +3,7 @@ import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { clearStorage } from "../layout/Header";
 import RecipeList from "../search/RecipeList";
 
 const NewRecipe: NextPage = () => {
@@ -10,6 +11,7 @@ const NewRecipe: NextPage = () => {
     const router = useRouter();
     const sortedBest = () => {
         router.push("/searchPage");
+        clearStorage();
         sessionStorage.setItem("userWatching", "createdAt");
     };
 
@@ -36,7 +38,7 @@ const NewRecipe: NextPage = () => {
             <div className="space-y-4 flex flex-col items-center mt-36 mb-7">
                 <p className="text-3xl font-extrabold">최신레시피</p>
                 <p className="text-lg font-medium text-slate-500">
-                    타쿠의 식탁에서 HOT한 실패없는 요즘유행요리
+                    갓 나온 요리처럼 따끈따끈한 레시피
                 </p>
             </div>
             <div className="flex flex-col items-end">
