@@ -64,7 +64,7 @@ const ClassifiedRecipe: NextPage = () => {
 
     // 검색
     const fuse = new Fuse(currentItems, {
-        keys: ["animationTitle", "foodTitle", "content"],
+        keys: ["animationTitle", "foodTitle"],
         includeScore: true,
     });
     const results = fuse.search(text);
@@ -91,12 +91,12 @@ const ClassifiedRecipe: NextPage = () => {
                 <input
                     {...register("searchText")}
                     type="text"
-                    className="w-[300px] h-[50px] text-sm font-medium pl-7 focus:outline-none rounded-[5px] rounded-r-none border border-slate-300"
+                    className="w-[300px] h-[50px] text-sm font-medium pl-7 focus:outline-none rounded-sm rounded-r-none border border-slate-300"
                     placeholder="하울의 움직이는 성 베이컨계란요리"
                 ></input>
                 <button
                     type="submit"
-                    className="bg-brand100 rounded-[5px] rounded-l-none w-[50px] h-[50px] text-center"
+                    className="bg-brand100 rounded-sm rounded-l-none w-[50px] h-[50px] text-center"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -122,7 +122,7 @@ const ClassifiedRecipe: NextPage = () => {
                 inactiveBestBtn={inactiveBestBtn}
             />
             <div className="w-4/5 border-b border-mono50 mb-[30px]"></div>
-            <div className="w-4/5 flex justify-between mb-20">
+            <div className="w-4/5 flex justify-between mb-10">
                 <div className="bg-mono30 rounded-[3px] w-auto h-9 px-6 mr-7 text-sm flex items-center text-brand100">
                     {router.query.category?.toString().replaceAll("&", "/")}
                 </div>

@@ -45,6 +45,9 @@ const RecipeListData = ({ item }: any) => {
                 {item.displayStatus === "회원 공개" && (
                     <>
                         <div className="w-full h-full bg-black opacity-40 absolute top-0 left-0"></div>
+                        <p className="absolute bottom-4 right-10 text-white text-sm">
+                            회원전용
+                        </p>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"

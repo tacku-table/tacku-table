@@ -14,15 +14,14 @@ import { getStorage } from "firebase/storage";
 //};
 
 // 채하
-// const firebaseConfig = {
-//     apiKey: "AIzaSyCs3OtP4bwHc4DzziKLIzM4vlJMhyuflEg",
-//     authDomain: "reactnative-dbdad.firebaseapp.com",
-//     databaseURL: "https://reactnative-dbdad-default-rtdb.firebaseio.com",
-//     projectId: "reactnative-dbdad",
-//     storageBucket: "reactnative-dbdad.appspot.com",
-//     messagingSenderId: "103307494325",
-//     appId: "1:103307494325:web:cb3f1b74c60ccc2bba8ffc",
-// };
+const firebaseConfig = {
+    apiKey: "AIzaSyANw6jE7NE7yF6F8TYYJalVwD2FuOLTqJ0",
+    authDomain: "taku-e9992.firebaseapp.com",
+    projectId: "taku-e9992",
+    storageBucket: "taku-e9992.appspot.com",
+    messagingSenderId: "139053130279",
+    appId: "1:139053130279:web:ae70760c52da59bb6b2402",
+};
 
 // 다경
 // const firebaseConfig = {

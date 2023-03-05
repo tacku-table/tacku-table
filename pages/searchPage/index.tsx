@@ -17,6 +17,7 @@ import SideFoodCate from "@/components/search/SideFoodCate";
 import SideCookingTime from "@/components/search/SideCookingTime";
 import { FieldErrors, useForm } from "react-hook-form";
 import { cls } from "@/util";
+import TopButton from "@/components/button/TopButton";
 
 const SearchData: NextPage = () => {
     const router = useRouter();
@@ -106,11 +107,7 @@ const SearchData: NextPage = () => {
     };
     // 검색
     const fuse = new Fuse(currentItems, {
-        keys: [
-            { name: "animationTitle", weight: 0.5 },
-            { name: "foodTitle", weight: 0.3 },
-            { name: "content", weight: 0.2 },
-        ],
+        keys: ["animationTitle", "foodTitle"],
         includeScore: true,
     });
     const results = fuse.search(text);
@@ -180,6 +177,7 @@ const SearchData: NextPage = () => {
     return (
         <>
             <div className="w-full mt-20 flex flex-col justify-center items-center">
+                <TopButton />
                 <form
                     onSubmit={handleSubmit(onValid, onInValid)}
                     className="relative mt-4 mb-16 flex"
@@ -187,12 +185,12 @@ const SearchData: NextPage = () => {
                     <input
                         {...register("searchText")}
                         type="text"
-                        className="w-[300px] h-[50px] text-sm font-medium pl-7 focus:outline-none rounded-[5px] rounded-r-none border border-slate-300"
+                        className="w-[300px] h-[50px] text-sm font-medium pl-7 focus:outline-none rounded-sm rounded-r-none border border-slate-300"
                         placeholder="하울의 움직이는 성 베이컨계란요리"
                     ></input>
                     <button
                         type="submit"
-                        className="bg-brand100 rounded-[5px] rounded-l-none w-[50px] h-[50px] text-center"
+                        className="bg-brand100 rounded-sm rounded-l-none w-[50px] h-[50px] text-center"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -222,7 +220,7 @@ const SearchData: NextPage = () => {
                     filteredTime={filteredTime}
                 />
                 <div className="w-4/5 border-b border-mono70 mb-[30px]"></div>
-                <div className="w-4/5 flex justify-between mb-20">
+                <div className="w-4/5 flex justify-between mb-10">
                     <div className="flex flex-col mr-3">
                         <SideFoodCate
                             onCheckedFood={onCheckedFood}
@@ -236,6 +234,8 @@ const SearchData: NextPage = () => {
                     </div>
                     <RecipeList
                         text={text}
+                        next={next}
+                        lastDoc={lastDoc}
                         currentItems={currentItems}
                         totalItems={totalItems}
                         dataResults={dataResults}
@@ -243,23 +243,6 @@ const SearchData: NextPage = () => {
                         filteredTime={filteredTime}
                     />
                 </div>
-            </div>
-            <div className="w-full flex justify-center items-center mb-[30px]">
-                <button
-                    type="button"
-                    onClick={next}
-                    className={cls(
-                        "border-[2px] text-brand100 border-brand100 px-7 py-1",
-                        !lastDoc ||
-                            text ||
-                            filteredFood?.length ||
-                            filteredTime?.length
-                            ? "hidden"
-                            : ""
-                    )}
-                >
-                    더보기
-                </button>
             </div>
         </>
     );

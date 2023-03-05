@@ -1,6 +1,7 @@
 import Image from "next/image";
 import RecipeListData from "./RecipeListData";
 import logo from "../../public/images/logo2-2.png";
+import { cls } from "@/util";
 
 interface TypeRecipeList {
     dataResults: RecipeProps[];
@@ -10,7 +11,9 @@ interface TypeRecipeList {
 
 // 전체레시피불러오기
 const RecipeList = ({
+    next,
     text,
+    lastDoc,
     currentItems,
     totalItems,
     dataResults,
@@ -25,7 +28,7 @@ const RecipeList = ({
     const filteredOnlyTime = filteredTime?.length;
 
     return (
-        <div className="grid grid-cols-3 gap-x-4 gap-y-9">
+        <div className="grid grid-cols-3 gap-x-4 gap-y-9 relative pb-24">
             {text && !dataResults.length ? (
                 <div>
                     <Image
@@ -75,6 +78,21 @@ const RecipeList = ({
             ) : (
                 <div>게시물이 존재하지 않습니다.</div>
             )}
+            <button
+                type="button"
+                onClick={next}
+                className={cls(
+                    "border-[2px] text-brand100 border-brand100 px-7 py-1 absolute bottom-0 -translate-x-1/2 left-1/2",
+                    !lastDoc ||
+                        text ||
+                        filteredFood?.length ||
+                        filteredTime?.length
+                        ? "hidden"
+                        : ""
+                )}
+            >
+                더보기
+            </button>
         </div>
     );
 };

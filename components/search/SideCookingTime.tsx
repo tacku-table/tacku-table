@@ -1,10 +1,3 @@
-// interface TypeTimeProps {
-//     onCheckedTime :{
-//         checked: boolean, newItem: string
-//     }
-//     filteredTime : string[]
-// }
-
 const categoryTimeList = [
     { name: "15분이하" },
     { name: "30분이하" },

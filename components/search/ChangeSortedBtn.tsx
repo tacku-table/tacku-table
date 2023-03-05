@@ -1,5 +1,4 @@
 import { cls } from "@/util";
-import TopButton from "../button/TopButton";
 
 const ChangeSortedBtn = ({
     text,
@@ -27,15 +26,14 @@ const ChangeSortedBtn = ({
         filteredTime?.length;
 
     return (
-        <div className="w-4/5 flex justify-end items-center mb-[20px]">
-            <TopButton />
-            <div
+        <div className="w-4/5 flex justify-center items-center relative mb-[20px]">
+            <p
                 className={cls(
-                    "text-mono100 mr-[330px] flex",
+                    "text-mono100 flex items-center",
                     text ? "" : "hidden"
                 )}
             >
-                <span className="text-red100 text-lg text-ellipsis overflow-hidden whitespace-nowrap">
+                <span className="text-red100 text-lg inline-block mr-1">
                     {text ? `"${text}"` : null}
                 </span>
                 <span className="text-mono100">
@@ -63,10 +61,10 @@ const ChangeSortedBtn = ({
                         : null}
                 </span>
                 건의 레시피가 준비되어 있습니다.
-            </div>
+            </p>
             <p
                 className={cls(
-                    "text-mono100 mr-[330px]",
+                    "text-mono100",
                     dataResults?.length || (text && !dataResults.length)
                         ? "hidden"
                         : ""
@@ -96,7 +94,7 @@ const ChangeSortedBtn = ({
                 </span>
                 건의 레시피가 준비되어 있습니다.
             </p>
-            <ul className="flex justify-end">
+            <ul className="flex justify-end absolute right-0">
                 <li
                     className={cls(
                         "sorted-btn",
