@@ -6,9 +6,8 @@ import { useRouter } from "next/router";
 
 const LoginPage = () => {
   const router = useRouter();
-  const [status, setStatus] = useState("login");
+  const [status, setStatus] = useState<string>("login");
   const { headerstatus } = router.query;
-  console.log(router.query);
   return (
     <div>
       {headerstatus ? (

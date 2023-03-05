@@ -4,7 +4,12 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { emailRegex, pwRegex } from "@/util";
 import { toast } from "react-toastify";
 
-const Login = ({ setStatus, status }: { setStatus: any; status: string }) => {
+interface LoginProps {
+  status: string;
+  setStatus: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const Login = ({ setStatus, status }: LoginProps) => {
   const emailRef = useRef<HTMLInputElement>(null);
   const pwRef = useRef<HTMLInputElement>(null);
   const [email, setEmail] = useState("");
