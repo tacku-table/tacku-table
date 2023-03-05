@@ -32,29 +32,29 @@ const Login = ({ setStatus, status }: { setStatus: any; status: string }) => {
     });
   };
 
-  // 구글 로그인
-  // const gooleLogin = () => {
-  //   const provider = new GoogleAuthProvider();
-  //   signInWithPopup(authService, provider)
-  //     .then(async (data) => {
-  //       await setDoc(doc(dbService, "user", data.user.uid), {
-  //         userId: data.user.uid,
-  //         userNickname: data.user.displayName,
-  //         userEmail: data.user.email,
-  //         userPw: "google",
-  //         userImg: "null",
-  //       });
-  //       await updateProfile(data.user, {
-  //         displayName: data.user.displayName,
-  //         photoURL: "null",
-  //       });
-  //       sessionStorage.setItem("User", JSON.stringify(authService.currentUser));
-  //       //location.href = "/mainPage";
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
+  //구글 로그인
+  const gooleLogin = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(authService, provider)
+      .then(async (data: any) => {
+        await setDoc(doc(dbService, "user", data.user.uid), {
+          userId: data.user.uid,
+          userNickname: data.user.displayName,
+          userEmail: data.user.email,
+          userPw: "social",
+          userImg: "null",
+        });
+        await updateProfile(data.user, {
+          displayName: data.user.displayName,
+          photoURL: "null",
+        });
+        sessionStorage.setItem("User", JSON.stringify(authService.currentUser));
+        location.href = "/mainPage";
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   // 유효성 검사
   const validateInputs = () => {
