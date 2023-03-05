@@ -13,16 +13,17 @@ import Link from "next/link";
 import Image from "next/image";
 import defaultImg from "../../public/images/test1.png";
 import Pagination from "./Pagination";
-
+import useGetCommunityPost from "@/hooks/useGetCommunityPost";
 const AnimeTab = ({ communityList, categories }: any) => {
   const [animePost, setAnimePost] = useState<any[]>([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1); //default=현재 페이지번호
   const offset = (page - 1) * limit;
 
+  const { communityPost } = useGetCommunityPost();
   useEffect(() => {
-    getAnimeCommunityPost(communityList, categories);
-  }, []);
+    getAnimeCommunityPost(communityPost, categories);
+  }, [communityPost]);
 
   const getAnimeCommunityPost = async (
     communityList: any,

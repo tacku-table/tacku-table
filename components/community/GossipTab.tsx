@@ -13,17 +13,17 @@ import Link from "next/link";
 import Image from "next/image";
 import defaultImg from "../../public/images/test1.png";
 import Pagination from "./Pagination";
+import useGetCommunityPost from "@/hooks/useGetCommunityPost";
 
-const GossipTab = ({ communityList, categories }: any) => {
+const GossipTab = ({ categories }: any) => {
   const [gossipPost, setGossipPost] = useState<any[]>([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1); //default=현재 페이지번호
   const offset = (page - 1) * limit;
-
+  const { communityPost } = useGetCommunityPost();
   useEffect(() => {
-    getGossipCommunityPost(communityList, categories);
-  }, []);
-
+    getGossipCommunityPost(communityPost, categories);
+  }, [communityPost]);
   const getGossipCommunityPost = async (
     communityList: any,
     categories: (string | any[])[]
@@ -31,7 +31,7 @@ const GossipTab = ({ communityList, categories }: any) => {
     let animeArr = communityList;
     // slice??
     const newArr = animeArr.filter((item: { category: (string | any[])[] }) =>
-      item.category.includes(categories[2].slice(0, 2))
+      item.category.includes(categories[3].slice(0, 2))
     );
     setGossipPost(newArr);
   };

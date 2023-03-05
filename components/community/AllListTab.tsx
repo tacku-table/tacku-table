@@ -9,36 +9,40 @@ import {
   doc,
 } from "firebase/firestore";
 import Link from "next/link";
+import { authService, dbService } from "../../config/firebase";
+import { convertTimestamp } from "../../util";
 import Image from "next/image";
 import defaultImg from "../../public/images/test1.png";
 import Pagination from "./Pagination";
 import useGetCommunityPost from "@/hooks/useGetCommunityPost";
-
-const RecipeTab = ({ categories }: any) => {
-  const [foodPost, setFoodPost] = useState<any[]>([]);
+const AllListTab = () => {
+  const [communityList, setCommunityList] = useState<any[]>([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1); //default=현재 페이지번호
   const offset = (page - 1) * limit;
 
   const { communityPost } = useGetCommunityPost();
   useEffect(() => {
-    getFoodCommunityPost(communityPost, categories);
+    setCommunityList(communityPost);
   }, [communityPost]);
 
-  const getFoodCommunityPost = async (
-    communityPost: any,
-    categories: (string | any[])[]
-  ) => {
-    let foodArr = communityPost;
-    const newArr = foodArr.filter((item: { category: (string | any[])[] }) =>
-      item.category.includes(categories[1].slice(0, 2))
-    );
-    setFoodPost(newArr);
+  const getUserInfoInUserCollection = async (uid: string) => {
+    const docRef = doc(dbService, "user", uid);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const userData = docSnap.data();
+      const userInfo = {
+        userNickname: userData.userNickname,
+      };
+      return userInfo;
+    } else {
+      console.log("No such document!");
+    }
   };
 
   return (
     <Tab.Panel>
-      {foodPost?.slice(offset, offset + limit).map((p) => (
+      {communityList?.slice(offset, offset + limit).map((p) => (
         <div
           key={p.id}
           className="border-b border-mono60 py-4 px-5 flex text-sm"
@@ -55,7 +59,7 @@ const RecipeTab = ({ categories }: any) => {
             />
           ) : (
             <Image
-              className="object-cover aspect-[4/3]"
+              className="object-cover aspect-[4/3]" //aspect-ratio 수정
               src={p.thumbnail}
               priority={true}
               loader={({ src }) => src}
@@ -77,7 +81,7 @@ const RecipeTab = ({ categories }: any) => {
         </div>
       ))}
       <Pagination
-        total={foodPost.length}
+        total={communityList.length}
         limit={limit}
         page={page}
         setPage={setPage}
@@ -86,4 +90,4 @@ const RecipeTab = ({ categories }: any) => {
   );
 };
 
-export default RecipeTab;
+export default AllListTab;
