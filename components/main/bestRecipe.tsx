@@ -4,12 +4,14 @@ import { query, collection, orderBy, limit, getDocs } from "firebase/firestore";
 import { dbService } from "@/config/firebase";
 import RecipeList from "../search/RecipeList";
 import { useRouter } from "next/router";
+import { clearStorage } from "../layout/Header";
 
 const BestRecipe: NextPage = () => {
     const [dataResults, setDataResults] = useState<RecipeProps[]>([]);
     const router = useRouter();
     const sortedBest = () => {
         router.push("/searchPage");
+        clearStorage();
         sessionStorage.setItem("userWatching", "viewCount");
     };
 
