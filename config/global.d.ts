@@ -19,7 +19,13 @@ declare global {
         showPw: boolean;
         setShowPw: (showPw: boolean) => void;
     }
-    interface TypeSearchPageElement {
+    interface TypeShowPwConfirm {
+        showPwConfirm: boolean;
+        setShowPwConfirm: (showPwConfirm: boolean) => void;
+    }
+    interface TypeSearchPageProps {
+        next?: () => void;
+        lastDoc?: number;
         text?: string;
         totalItems?: TypeRecipe[];
         currentItems?: TypeRecipe[];

@@ -1,3 +1,8 @@
+interface TypeTimeProps {
+    onCheckedTime: { checked: boolean; newItem?: string };
+    filteredTime?: string[];
+}
+
 const categoryTimeList = [
     { name: "15분이하" },
     { name: "30분이하" },
@@ -5,12 +10,12 @@ const categoryTimeList = [
     { name: "1시간이상" },
 ];
 
-const SideCookingTime = ({ onCheckedTime, filteredTime }: any) => {
+const SideCookingTime = ({ onCheckedTime, filteredTime }: TypeTimeProps) => {
     return (
         <div className="flex flex-col">
             <h4 className="mb-3 text-sm text-mono80">조리 시간</h4>
             <div className="flex flex-col justify-center gap-y-3 ml-5">
-                {categoryTimeList.map((item: any) => {
+                {categoryTimeList.map((item) => {
                     return (
                         <div key={item.name}>
                             <input
@@ -23,7 +28,7 @@ const SideCookingTime = ({ onCheckedTime, filteredTime }: any) => {
                                     );
                                 }}
                                 checked={
-                                    filteredTime.includes(item.name)
+                                    filteredTime?.includes(item.name)
                                         ? true
                                         : false
                                 }

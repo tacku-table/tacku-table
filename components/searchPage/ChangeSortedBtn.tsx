@@ -9,7 +9,7 @@ const ChangeSortedBtn = ({
     inactiveBestBtn,
     filteredFood,
     filteredTime,
-}: any) => {
+}: TypeSearchPageProps) => {
     // dataResults = 검색결과
     // totalItems = 전체레시피(6개씩)
     // currentItems = 전체레시피(총)
@@ -43,19 +43,19 @@ const ChangeSortedBtn = ({
                     {dataResults
                         ? filteredFoodAndTime
                             ? dataResults.filter(
-                                  (item: any) =>
+                                  (item) =>
                                       filteredFood.includes(
-                                          item.foodCategory
+                                          item.foodCategory!
                                       ) ||
-                                      filteredTime.includes(item.cookingTime)
+                                      filteredTime.includes(item.cookingTime!)
                               ).length
                             : filteredOnlyFood
-                            ? dataResults.filter((item: any) =>
-                                  filteredFood.includes(item.foodCategory)
+                            ? dataResults.filter((item) =>
+                                  filteredFood.includes(item.foodCategory!)
                               ).length
                             : filteredOnlyTime
-                            ? dataResults.filter((item: any) =>
-                                  filteredTime.includes(item.cookingTime)
+                            ? dataResults.filter((item) =>
+                                  filteredTime.includes(item.cookingTime!)
                               ).length
                             : dataResults.length
                         : null}
@@ -65,7 +65,7 @@ const ChangeSortedBtn = ({
             <p
                 className={cls(
                     "text-mono100",
-                    dataResults?.length || (text && !dataResults.length)
+                    dataResults?.length || (text && !dataResults?.length)
                         ? "hidden"
                         : ""
                 )}
@@ -75,19 +75,19 @@ const ChangeSortedBtn = ({
                     {currentItems?.length
                         ? filteredFoodAndTime
                             ? currentItems.filter(
-                                  (item: any) =>
+                                  (item) =>
                                       filteredFood.includes(
-                                          item.foodCategory
+                                          item.foodCategory!
                                       ) ||
-                                      filteredTime.includes(item.cookingTime)
+                                      filteredTime.includes(item.cookingTime!)
                               ).length
                             : filteredOnlyFood
-                            ? currentItems.filter((item: any) =>
-                                  filteredFood.includes(item.foodCategory)
+                            ? currentItems.filter((item) =>
+                                  filteredFood.includes(item.foodCategory!)
                               ).length
                             : filteredOnlyTime
-                            ? currentItems.filter((item: any) =>
-                                  filteredTime.includes(item.cookingTime)
+                            ? currentItems.filter((item) =>
+                                  filteredTime.includes(item.cookingTime!)
                               ).length
                             : currentItems.length
                         : 0}

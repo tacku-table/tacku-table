@@ -1,7 +1,10 @@
 import { cls } from "@/util";
 import React from "react";
 
-const HidePwBtn = ({ showPw, setShowPw }: TypeShowPw) => {
+const HidePwConfirmBtn = ({
+    showPwConfirm,
+    setShowPwConfirm,
+}: TypeShowPwConfirm) => {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -9,8 +12,13 @@ const HidePwBtn = ({ showPw, setShowPw }: TypeShowPw) => {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className={cls("w-5 h-5 cursor-pointer", showPw ? "hidden" : "")}
-            onClick={() => setShowPw(!showPw)}
+            className={cls(
+                "w-5 h-5 cursor-pointer",
+                showPwConfirm ? "hidden" : ""
+            )}
+            onClick={() => {
+                setShowPwConfirm(!showPwConfirm);
+            }}
         >
             <path
                 strokeLinecap="round"
@@ -21,4 +29,4 @@ const HidePwBtn = ({ showPw, setShowPw }: TypeShowPw) => {
     );
 };
 
-export default HidePwBtn;
+export default HidePwConfirmBtn;

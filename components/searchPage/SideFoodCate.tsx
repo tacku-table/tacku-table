@@ -1,3 +1,8 @@
+interface TypeFoodProps {
+    onCheckedFood: (checked: boolean, newItem?: string) => void;
+    filteredFood?: string[];
+}
+
 const categoryFoodList = [
     { name: "밥&도시락&면" },
     { name: "국&탕&찌개" },
@@ -8,7 +13,7 @@ const categoryFoodList = [
     { name: "식단&건강관리" },
 ];
 
-const SideFoodCate = ({ onCheckedFood, filteredFood }: any) => {
+const SideFoodCate = ({ onCheckedFood, filteredFood }: TypeFoodProps) => {
     return (
         <div className="flex flex-col">
             <h4 className="mb-3 text-sm text-mono80">음식 종류</h4>
@@ -26,7 +31,7 @@ const SideFoodCate = ({ onCheckedFood, filteredFood }: any) => {
                                     );
                                 }}
                                 checked={
-                                    filteredFood.includes(item.name)
+                                    filteredFood?.includes(item.name)
                                         ? true
                                         : false
                                 }

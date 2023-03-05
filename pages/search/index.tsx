@@ -209,7 +209,6 @@ const SearchData: NextPage = () => {
                     </button>
                 </form>
                 <ChangeSortedBtn
-                    deliverKeyword={deliverKeyword}
                     text={text}
                     currentItems={currentItems}
                     dataResults={dataResults}

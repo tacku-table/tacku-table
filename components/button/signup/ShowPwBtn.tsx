@@ -10,7 +10,9 @@ const ShowPwBtn = ({ showPw, setShowPw }: TypeShowPw) => {
             strokeWidth="1.5"
             stroke="currentColor"
             className={cls("w-5 h-5 cursor-pointer", showPw ? "" : "hidden")}
-            onClick={() => setShowPw(!showPw)}
+            onClick={() => {
+                setShowPw(!showPw);
+            }}
         >
             <path
                 strokeLinecap="round"

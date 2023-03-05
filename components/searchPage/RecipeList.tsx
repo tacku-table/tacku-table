@@ -3,12 +3,6 @@ import RecipeListData from "./RecipeListData";
 import logo from "../../public/images/logo2-2.png";
 import { cls } from "@/util";
 
-interface TypeRecipeList {
-    dataResults: TypeRecipe[];
-    filteredFood?: string[];
-    filteredTime?: string[];
-}
-
 // 전체레시피불러오기
 const RecipeList = ({
     next,
@@ -19,7 +13,7 @@ const RecipeList = ({
     dataResults,
     filteredFood,
     filteredTime,
-}: any) => {
+}: TypeSearchPageProps) => {
     // dataResults = 검색결과
     // currentItems = 전체레시피(총)
     // totalItems = 전체레시피(6개씩)
@@ -29,7 +23,7 @@ const RecipeList = ({
 
     return (
         <div className="grid grid-cols-3 gap-x-4 gap-y-9 relative pb-24">
-            {text && !dataResults.length ? (
+            {text && !dataResults?.length ? (
                 <div>
                     <Image
                         src={logo}
@@ -42,37 +36,33 @@ const RecipeList = ({
                     </p>
                 </div>
             ) : filteredFoodAndTime ? (
-                (text ? dataResults : currentItems)
+                (text ? dataResults! : currentItems!)
                     .filter(
-                        (item: any) =>
-                            filteredFood.includes(item.foodCategory) ||
-                            filteredTime.includes(item.cookingTime)
+                        (item) =>
+                            filteredFood.includes(item.foodCategory!) ||
+                            filteredTime.includes(item.cookingTime!)
                     )
-                    .map((item: any) => {
+                    .map((item) => {
                         return <RecipeListData key={item.id} item={item} />;
                     })
             ) : filteredOnlyFood ? (
-                (text ? dataResults : currentItems)
-                    .filter((item: any) =>
-                        filteredFood.includes(item.foodCategory)
-                    )
-                    .map((item: any) => {
+                (text ? dataResults! : currentItems!)
+                    .filter((item) => filteredFood.includes(item.foodCategory!))
+                    .map((item) => {
                         return <RecipeListData key={item.id} item={item} />;
                     })
             ) : filteredOnlyTime ? (
-                (text ? dataResults : currentItems)
-                    .filter((item: any) =>
-                        filteredTime.includes(item.cookingTime)
-                    )
-                    .map((item: any) => {
+                (text ? dataResults! : currentItems!)
+                    .filter((item) => filteredTime.includes(item.cookingTime!))
+                    .map((item) => {
                         return <RecipeListData key={item.id} item={item} />;
                     })
-            ) : dataResults.length ? (
-                dataResults.map((item: any) => {
+            ) : dataResults?.length ? (
+                dataResults.map((item) => {
                     return <RecipeListData key={item.id} item={item} />;
                 })
             ) : totalItems?.length ? (
-                totalItems.map((item: any) => {
+                totalItems.map((item) => {
                     return <RecipeListData key={item.id} item={item} />;
                 })
             ) : (

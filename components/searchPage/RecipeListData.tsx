@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-const RecipeListData = ({ item }: any) => {
+const RecipeListData = ({ item }: { item: TypeRecipe }) => {
     // 회원아니면 alert뜨게함. 추가 로직
     const [storageCurrentUser, setStorageCurrentUser] = useState("");
     // 상세페이지이동
