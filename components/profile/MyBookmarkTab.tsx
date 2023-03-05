@@ -19,9 +19,6 @@ import { toast } from "react-toastify";
 const MyBookmarkTab = ({ userInfo, storageCurrentUser }: any) => {
   const [bookmarkPost, setBookmarkPost] = useState<any[]>([]);
 
-  function classNames(...classes: any[]) {
-    return classes.filter(Boolean).join(" ");
-  }
   const toastAlert = (alertText: any) => {
     toast(`${alertText}`, {
       position: "top-right",

@@ -4,7 +4,7 @@ import MyBookmarkTab from "../profile/MyBookmarkTab";
 import MyRecipeTab from "../profile/MyRecipeTab";
 import MyCommunityTab from "../profile/MyCommunityTab";
 import MyCommentTab from "../profile/MyCommentTab";
-
+import { cls } from "../../util";
 const MyTabs = ({ userInfo, storageCurrentUser }) => {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
@@ -12,10 +12,6 @@ const MyTabs = ({ userInfo, storageCurrentUser }) => {
       setIsLoading(false);
     }, 300);
   });
-
-  function classNames(...classes) {
-    return classes.filter(Boolean).join(" ");
-  }
 
   let [categoriesOfmine] = useState([
     "즐겨찾기",
@@ -40,7 +36,7 @@ const MyTabs = ({ userInfo, storageCurrentUser }) => {
               <Tab
                 key={category}
                 className={({ selected }) =>
-                  classNames(
+                  cls(
                     "w-fit pt-7 pb-[15px] text-[18px] font-medium leading-5 text-mono100 border-[3px] border-x-0  border-white",
                     "ring-white ring-opacity-60 focus:outline-none focus:ring-2",
                     selected
@@ -59,7 +55,7 @@ const MyTabs = ({ userInfo, storageCurrentUser }) => {
               <Tab
                 key={category}
                 className={({ selected }) =>
-                  classNames(
+                  cls(
                     "w-fit pt-7 pb-[15px] text-[18px] font-medium leading-5 text-mono100 border-[3px] border-x-0  border-white",
                     "ring-white ring-opacity-60 focus:outline-none focus:ring-2",
                     selected
