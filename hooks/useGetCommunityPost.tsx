@@ -28,7 +28,7 @@ const useGetCommunityPost = () => {
     };
 
     getCommunityPost();
-  }, [communityPost]);
+  }, []);
 
   return { communityPost };
 };
