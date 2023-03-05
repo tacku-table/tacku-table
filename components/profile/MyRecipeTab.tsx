@@ -43,20 +43,22 @@ const RecipeTab = ({ userInfo }: any) => {
   };
 
   return (
-    <Tab.Panel>
+    <Tab.Panel className="pb-6">
       {recipePost?.map((p) => (
-        <div key={p.postId} className="px-6 mb-5">
-          <hr className="border-mono50 mx-8 mb-6 border-[1px]" />
+        <div key={p.postId} className="pt-6 px-6 mb-5">
+          <hr className="border-mono50 mx-8 my-6 border-[1px]" />
           <div className="pl-8 space-x-[20px] items-center flex">
-            <Image
-              className="object-cover aspect-[4/3]"
-              src={p.thumbnail}
-              priority={true}
-              loader={({ src }) => src}
-              width={180}
-              height={105}
-              alt="bookmark-thumbnail"
-            />
+            <Link legacyBehavior href={`/detailRecipePage/${p.postId}`}>
+              <Image
+                className="object-cover aspect-[4/3] cursor-pointer rounded-md"
+                src={p.thumbnail}
+                priority={true}
+                loader={({ src }) => src}
+                width={180}
+                height={105}
+                alt="bookmark-thumbnail"
+              />
+            </Link>
             <div className="flex flex-col">
               <div className="flex space-x-1">
                 <span>#{p.animationTitle}</span>
