@@ -14,6 +14,9 @@ import { convertTimestamp } from "../../util";
 import Image from "next/image";
 import defaultImg from "../../public/images/test1.png";
 import Pagination from "./Pagination";
+import RecipeTab from "./RecipeTab";
+import AnimeTab from "./AnimeTab";
+import GossipTab from "./GossipTab";
 const CommunityTabs = () => {
   // 전체글 state
   const [communityList, setCommunityList] = useState([]);
@@ -52,6 +55,14 @@ const CommunityTabs = () => {
     const q = query(communityRef, orderBy("writtenDate", "desc"));
     onSnapshot(q, (snapshot) => {
       const newPosts = snapshot.docs.map((doc) => {
+        let nickname;
+        getUserInfoInUserCollection(doc.data().uid)
+          .then((nick) => {
+            nickname = nick.userNickname;
+            // console.log(nickname);
+            return { nickname };
+          })
+          .then((res) => {});
         const newPost = {
           id: doc.id,
           category: doc.data().category,
@@ -59,43 +70,31 @@ const CommunityTabs = () => {
           editorText: doc.data().editorText,
           writtenDate: convertTimestamp(doc.data().writtenDate),
           thumbnail: doc.data().thumbnail,
-          nickname: doc.data().nickname,
+          // nickname: doc.data().nickname
+          nickname: nickname,
         };
         return newPost;
       });
       setCommunityList(newPosts);
       //   console.log(communityList);
     });
-    getFoodCommunityPost(communityList, categories);
-    getAnimeCommunityPost(communityList, categories);
-    getGossipCommunityPost(communityList, categories);
   };
-  // 요리 cate
-  const getFoodCommunityPost = async (communityList, categories) => {
-    let foodArr = communityList;
-    const newArr = foodArr.filter((item) =>
-      item.category.includes(categories[1].slice(0, 2))
-    );
-    setFoodPost(newArr);
+
+  const getUserInfoInUserCollection = async (uid) => {
+    const docRef = doc(dbService, "user", uid);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const userData = docSnap.data();
+      const userInfo = {
+        userNickname: userData.userNickname,
+      };
+      return userInfo;
+    } else {
+      console.log("No such document!");
+    }
+    return userInfo;
   };
-  // 애니
-  const getAnimeCommunityPost = async (communityList, categories) => {
-    let animeArr = communityList;
-    // slice??
-    const newArr = animeArr.filter((item) =>
-      item.category.includes(categories[2].slice(0, 2))
-    );
-    setAnimePost(newArr);
-  };
-  // 잡담
-  const getGossipCommunityPost = async (communityList, categories) => {
-    // let gossipArr = communityList;
-    const newArr = communityList.filter((item) =>
-      item.category.includes(categories[3].slice(0, 2))
-    );
-    setGossipPost(newArr);
-    // setTimeout(() => console.log(gossipPost), 1000);
-  };
+
   return (
     <div className="w-[860px]">
       <Tab.Group>
@@ -169,156 +168,10 @@ const CommunityTabs = () => {
               setPage={setPage}
             />
           </Tab.Panel>
-          <Tab.Panel>
-            {foodPost?.slice(offset, offset + limit).map((p) => (
-              <div
-                key={p.id}
-                className="border-b border-mono60 py-4 px-5 flex text-sm"
-              >
-                {p.thumbnail === "" ? (
-                  <Image
-                    className="object-cover aspect-[4/3]" //aspect-ratio 수정
-                    src={defaultImg}
-                    priority={true}
-                    // loader={({ src }) => src}
-                    width={70}
-                    height={41}
-                    alt="community-thumbnail-default"
-                  />
-                ) : (
-                  <Image
-                    className="object-cover aspect-[4/3]"
-                    src={p.thumbnail}
-                    priority={true}
-                    loader={({ src }) => src}
-                    width={70}
-                    height={41}
-                    alt="community-thumbnail"
-                  />
-                )}
-                <div className="pl-5">
-                  <Link legacyBehavior href={`/communityPage/${p.id}`}>
-                    <a>{p.title}</a>
-                  </Link>
-                  <div className="flex mt-3 text-mono70">
-                    <div className="border-r border-mono60 pr-3">
-                      {p.category}
-                    </div>
-                    <div className="border-r border-mono60 px-3">
-                      {p.writtenDate}
-                    </div>
-                    <div className="pl-3">{p.nickname}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-            <Pagination
-              total={foodPost.length}
-              limit={limit}
-              page={page}
-              setPage={setPage}
-            />
-          </Tab.Panel>
-          <Tab.Panel>
-            {animePost?.slice(offset, offset + limit).map((p) => (
-              <div
-                key={p.id}
-                className="border-b border-mono60 py-4 px-5 flex text-sm"
-              >
-                {p.thumbnail === "" ? (
-                  <Image
-                    className="object-cover aspect-[4/3]" //aspect-ratio 수정
-                    src={defaultImg}
-                    priority={true}
-                    // loader={({ src }) => src}
-                    width={70}
-                    height={41}
-                    alt="community-thumbnail-default"
-                  />
-                ) : (
-                  <Image
-                    className="object-cover aspect-[4/3]" //aspect-ratio 수정
-                    src={p.thumbnail}
-                    priority={true}
-                    loader={({ src }) => src}
-                    width={70}
-                    height={41}
-                    alt="community-thumbnail"
-                  />
-                )}
-                <div className="pl-5">
-                  <Link legacyBehavior href={`/communityPage/${p.id}`}>
-                    <a>{p.title}</a>
-                  </Link>
-                  <div className="flex mt-3 text-mono70">
-                    <div className="border-r border-mono60 pr-3">
-                      {p.category}
-                    </div>
-                    <div className="border-r border-mono60 px-3">
-                      {p.writtenDate}
-                    </div>
-                    <div className="pl-3">{p.nickname}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-            <Pagination
-              total={animePost.length}
-              limit={limit}
-              page={page}
-              setPage={setPage}
-            />
-          </Tab.Panel>
-          <Tab.Panel>
-            {gossipPost?.slice(offset, offset + limit).map((p) => (
-              <div
-                key={p.id}
-                className="border-b border-mono60 py-4 px-5 flex text-sm"
-              >
-                {p.thumbnail === "" ? (
-                  <Image
-                    className="object-cover aspect-[4/3]" //aspect-ratio 수정
-                    src={defaultImg}
-                    priority={true}
-                    // loader={({ src }) => src}
-                    width={70}
-                    height={41}
-                    alt="community-thumbnail-default"
-                  />
-                ) : (
-                  <Image
-                    className="object-cover aspect-[4/3]" //aspect-ratio 수정
-                    src={p.thumbnail}
-                    priority={true}
-                    loader={({ src }) => src}
-                    width={70}
-                    height={41}
-                    alt="community-thumbnail"
-                  />
-                )}
-                <div className="pl-5">
-                  <Link legacyBehavior href={`/communityPage/${p.id}`}>
-                    <a>{p.title}</a>
-                  </Link>
-                  <div className="flex mt-3 text-mono70">
-                    <div className="border-r border-mono60 pr-3">
-                      {p.category}
-                    </div>
-                    <div className="border-r border-mono60 px-3">
-                      {p.writtenDate}
-                    </div>
-                    <div className="pl-3">{p.nickname}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-            <Pagination
-              total={gossipPost.length}
-              limit={limit}
-              page={page}
-              setPage={setPage}
-            />
-          </Tab.Panel>
+          <RecipeTab communityList={communityList} categories={categories} />
+
+          <AnimeTab communityList={communityList} categories={categories} />
+          <GossipTab communityList={communityList} categories={categories} />
         </Tab.Panels>
       </Tab.Group>
     </div>
