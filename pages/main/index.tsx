@@ -1,11 +1,11 @@
 import TopButton from "@/components/button/TopButton";
-import BestRecipe from "@/components/main/BestRecipe";
-import GoToCommunity from "@/components/main/GoToCommunity";
-import NewRecipe from "@/components/main/NewRecipe";
-import SearchRecipeBar from "@/components/main/SearchRecipeBar";
-import Slider from "@/components/main/Slider";
-import Special from "@/components/main/Special";
-import Video from "@/components/main/Video";
+import BestRecipe from "@/components/mainPage/BestRecipe";
+import GoToCommunity from "@/components/mainPage/GoToCommunity";
+import NewRecipe from "@/components/mainPage/NewRecipe";
+import SearchRecipeBar from "@/components/mainPage/SearchRecipeBar";
+import Slider from "@/components/mainPage/Slider";
+import Special from "@/components/mainPage/Special";
+import Video from "@/components/mainPage/Video";
 
 const main = () => {
     return (
