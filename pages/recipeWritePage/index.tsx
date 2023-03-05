@@ -32,23 +32,23 @@ const RecipeWritePage = () => {
   const cookTimeRef = useRef<HTMLSelectElement>(null);
   const foodCategoryRef = useRef<HTMLSelectElement>(null);
   const thumbnailRef = useRef<HTMLInputElement>(null);
-  const [storageCurrentUser, setStorageCurrentUser]: any = useState({});
+  const [storageCurrentUser, setStorageCurrentUser] = useState<parseUserType>(
+    {}
+  );
+
   const [imgLoading, setImgLoading] = useState("");
 
   useEffect(() => {
     const user = sessionStorage.getItem("User") || "";
     if (user) {
-      const parseUser = JSON.parse(user);
+      const parseUser: parseUserType = JSON.parse(user);
       setStorageCurrentUser(parseUser);
-    } else {
-      setStorageCurrentUser("logout");
     }
-  }, []);
+    if (!user) {
+      setStorageCurrentUser({ user: "logout" });
+    }
 
-  // 브라우저 뒤로가기 버튼시 confirm창과 함께 "확인"클릭시 로그인 페이지로 이동하는 함수입니다.
-  useEffect(() => {
     window.history.pushState(null, "null", document.URL);
-    console.log("document.URL:", document.URL);
     window.addEventListener("popstate", function (event) {
       const result = window.confirm(
         "레시피 글쓰기 정보를 모두 잃을수 있습니다\n그래도 나가시겠습니까?"
@@ -63,7 +63,7 @@ const RecipeWritePage = () => {
   }, []);
 
   useEffect(() => {
-    if (storageCurrentUser == "logout") {
+    if (storageCurrentUser.user == "logout") {
       moveLoginPage();
     }
   }, [storageCurrentUser]);
@@ -74,7 +74,7 @@ const RecipeWritePage = () => {
     );
     location.href = "/loginPage";
   };
-  //----------------
+
   const { data, refetch } = useQuery(["tmdb"], () => {
     return searchMovieTitle(searchTitle);
   });
@@ -95,14 +95,14 @@ const RecipeWritePage = () => {
 
   const inputChangeSetFunc = (
     event: React.ChangeEvent<HTMLInputElement>,
-    setFunction: any
+    setFunction: React.Dispatch<React.SetStateAction<string>>
   ) => {
     setFunction(event.target.value);
   };
 
   const selectChangeSetFunc = (
     event: React.ChangeEvent<HTMLSelectElement>,
-    setFunction: any
+    setFunction: React.Dispatch<React.SetStateAction<string>>
   ) => {
     console.log(event.target.value);
     setFunction(event.target.value);
@@ -123,7 +123,7 @@ const RecipeWritePage = () => {
 
   const fbUser = authService?.currentUser;
 
-  const postNewRecipe = async (event: any) => {
+  const postNewRecipe = async (event: React.SyntheticEvent<EventTarget>) => {
     event.preventDefault();
     console.log("영화제목", targetTitle);
     console.log("음식명", foodTitle);
@@ -135,7 +135,6 @@ const RecipeWritePage = () => {
     console.log("텍스트 에디터 내용", editorText);
 
     const newRecipe = {
-      // uid = 레시피 작성자
       uid: storageCurrentUser?.uid,
       writerNickName: fbUser?.displayName, // auth.currentUser에 있는 id
       writerProfileImg: fbUser?.photoURL,
@@ -219,16 +218,16 @@ const RecipeWritePage = () => {
     }, 700);
   };
 
-  const onFileChange = (event: any) => {
-    const theFile = event.target.files[0];
-    const reader = new FileReader();
+  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const target = event.currentTarget;
+    const theFile = (target.files as FileList)[0];
+    const reader: FileReader = new FileReader();
     if (theFile && theFile.type.match("image.*")) {
       reader.readAsDataURL(theFile);
     }
-    reader.onloadend = (finishedEvent: any) => {
-      const imgDataUrl: any = finishedEvent.currentTarget.result;
+    reader.onloadend = (finishedEvent: ProgressEvent) => {
+      const imgDataUrl = reader.result as string;
       localStorage.setItem("imgDataUrl", imgDataUrl);
-      console.log("imgDataUrl", imgDataUrl);
       setImagePreview(imgDataUrl);
       addImageFirebase();
     };
@@ -238,16 +237,13 @@ const RecipeWritePage = () => {
     let randomID = Date.now();
     const imgRef = ref(storage, `newRecipeCoverPhoto${randomID}`);
     const imgDataUrl = localStorage.getItem("imgDataUrl");
-    let downloadUrl: any;
+    let downloadUrl: string;
 
     if (imgDataUrl) {
-      console.log("imgDataUrl", imgDataUrl);
       setImgLoading("loading");
-
       const response = await uploadString(imgRef, imgDataUrl, "data_url");
       setImgLoading("default");
       downloadUrl = await getDownloadURL(response.ref);
-      console.log(downloadUrl);
       setThumbnail(downloadUrl);
     }
   };
@@ -258,7 +254,6 @@ const RecipeWritePage = () => {
       <div className="mt-[75px] rounded-md p-7 container w-[1180px] mx-auto flex justify-center flex-col bg-white">
         <h3 className="text-4xl font-bold">레시피 글쓰기 </h3>
         <hr className="mt-[24px] h-px border-[1.5px] border-brand100"></hr>
-
         <form onSubmit={postNewRecipe} className="mt-[40px]">
           <div className="pb-7">
             <b className="text-[21px] font-semibold">애니메이션 제목 검색</b>

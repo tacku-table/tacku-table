@@ -12,7 +12,12 @@ import { toast } from "react-toastify";
 import { SiKakaotalk } from "react-icons/si";
 import { AiFillGoogleSquare } from "react-icons/ai";
 
-const Login = ({ setStatus, status }: { setStatus: any; status: string }) => {
+interface LoginProps {
+  status: string;
+  setStatus: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const Login = ({ setStatus, status }: LoginProps) => {
   const emailRef = useRef<HTMLInputElement>(null);
   const pwRef = useRef<HTMLInputElement>(null);
   const [email, setEmail] = useState("");

@@ -15,8 +15,33 @@ declare global {
     children?: JSX.Element | JSX.Element[];
     bookmarkCount?: string[];
   }
-  interface Window {
-    Kakao: any;
+
+  interface targetWholeDataType {
+    animationTitle: string;
+    content: string;
+    cookingTime: string;
+    createdAt: number;
+    displayStatus: string;
+    foodCategory: string;
+    foodTitle: string;
+    ingredient: string;
+    thumbnail: string;
+    uid: string;
+    viewCount: number;
+    writerNickName: string;
+    writerProfileImg: string;
+  }
+
+  interface UserType {
+    [key: string]: string;
+  }
+
+  interface parseUserType {
+    [key: string]: string;
+  }
+
+  interface communityPostType {
+    [key: string]: string;
   }
 }
 
