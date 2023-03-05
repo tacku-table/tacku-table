@@ -65,7 +65,7 @@ const Header = () => {
         sessionStorage.removeItem("filteredFoodData");
         sessionStorage.removeItem("filteredTimeData");
         sessionStorage.removeItem("searchData");
-        window.location.replace("/searchPage");
+        window.location.replace("/search");
     };
 
     useEffect(() => {
@@ -80,7 +80,7 @@ const Header = () => {
         >
             <ul className="flex justify-center items-center">
                 <li className="header-title">
-                    <Link href="/mainPage">
+                    <Link href="/main">
                         <Image
                             src={logo2}
                             alt="logo_web"

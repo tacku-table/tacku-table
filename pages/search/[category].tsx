@@ -4,19 +4,20 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Fuse from "fuse.js";
-import RecipeList from "@/components/search/RecipeList";
-import ChangeSortedBtn from "@/components/search/ChangeSortedBtn";
+import RecipeList from "@/components/searchPage/RecipeList";
+import ChangeSortedBtn from "@/components/searchPage/ChangeSortedBtn";
 import { FieldErrors, useForm } from "react-hook-form";
 
 // 카테고리별 불러오기
 const ClassifiedRecipe: NextPage = () => {
-    const [isBest, setIsBest] = useState("");
     const [text, setText] = useState("");
+    const [isBest, setIsBest] = useState("");
     const { register, handleSubmit, getValues } = useForm();
     const [currentItems, setCurrentItems] = useState<RecipeProps[]>([]);
     const router = useRouter();
 
     const onValid = () => {
+        sessionStorage.setItem("searchData", getValues("searchText"));
         setText(getValues("searchText"));
     };
     const onInValid = (errors: FieldErrors) => {
@@ -36,7 +37,6 @@ const ClassifiedRecipe: NextPage = () => {
     };
 
     // 목록불러오기
-
     const getList = async () => {
         const items = query(
             collection(dbService, "recipe"),
@@ -74,11 +74,9 @@ const ClassifiedRecipe: NextPage = () => {
 
     useEffect(() => {
         const result = sessionStorage.getItem("userWatching");
-        if (result) {
-            setIsBest(result);
-        } else {
-            setIsBest("createdAt");
-        }
+        const storeSearchText = sessionStorage.getItem("searchData");
+        result ? setIsBest(result) : setIsBest("createdAt");
+        storeSearchText && setText(storeSearchText);
         getList();
     }, [router.query.category, isBest]);
 

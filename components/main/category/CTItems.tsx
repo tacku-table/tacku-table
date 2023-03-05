@@ -19,7 +19,7 @@ const CTItems: NextPage = () => {
                     <Menu.Item>
                         <li>
                             <Link
-                                href={`/searchPage/15분이하`}
+                                href={`/search/15분이하`}
                                 className="menu-items"
                             >
                                 15분
@@ -29,7 +29,7 @@ const CTItems: NextPage = () => {
                     <Menu.Item>
                         <li>
                             <Link
-                                href={`/searchPage/30분이하`}
+                                href={`/search/30분이하`}
                                 className="menu-items"
                             >
                                 30분
@@ -39,7 +39,7 @@ const CTItems: NextPage = () => {
                     <Menu.Item>
                         <li>
                             <Link
-                                href={`/searchPage/1시간이하`}
+                                href={`/search/1시간이하`}
                                 className="menu-items"
                             >
                                 1시간
@@ -49,7 +49,7 @@ const CTItems: NextPage = () => {
                     <Menu.Item>
                         <li>
                             <Link
-                                href={`/searchPage/1시간이상`}
+                                href={`/search/1시간이상`}
                                 className="menu-items pb-5"
                             >
                                 1시간이상

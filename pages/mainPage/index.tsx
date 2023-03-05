@@ -1,13 +1,13 @@
 import TopButton from "@/components/button/TopButton";
-import BestRecipe from "@/components/main/bestRecipe";
-import GoToCommunity from "@/components/main/goToCommunity";
-import NewRecipe from "@/components/main/newRecipe";
+import BestRecipe from "@/components/main/BestRecipe";
+import GoToCommunity from "@/components/main/GoToCommunity";
+import NewRecipe from "@/components/main/NewRecipe";
 import SearchRecipeBar from "@/components/main/SearchRecipeBar";
 import Slider from "@/components/main/Slider";
 import Special from "@/components/main/Special";
-import Video from "@/components/main/video";
+import Video from "@/components/main/Video";
 
-const MainPage = () => {
+const main = () => {
     return (
         <div className="w-full">
             <Video />
@@ -26,4 +26,4 @@ const MainPage = () => {
     );
 };
 
-export default MainPage;
+export default main;

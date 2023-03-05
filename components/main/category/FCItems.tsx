@@ -19,7 +19,7 @@ const FCItems: NextPage = () => {
                     <Menu.Item>
                         <li>
                             <Link
-                                href={`/searchPage/밥&도시락&면`}
+                                href={`/search/밥&도시락&면`}
                                 className="menu-items"
                             >
                                 밥/도시락/면
@@ -29,7 +29,7 @@ const FCItems: NextPage = () => {
                     <Menu.Item>
                         <li>
                             <Link
-                                href={`/searchPage/국&탕&찌개`}
+                                href={`/search/국&탕&찌개`}
                                 className="menu-items"
                             >
                                 국/탕/찌개
@@ -39,7 +39,7 @@ const FCItems: NextPage = () => {
                     <Menu.Item>
                         <li>
                             <Link
-                                href={`/searchPage/구이&볶음&찜`}
+                                href={`/search/구이&볶음&찜`}
                                 className="menu-items"
                             >
                                 구이/볶음/찜
@@ -49,7 +49,7 @@ const FCItems: NextPage = () => {
                     <Menu.Item>
                         <li>
                             <Link
-                                href={`/searchPage/튀김류`}
+                                href={`/search/튀김류`}
                                 className="menu-items"
                             >
                                 튀김류
@@ -59,7 +59,7 @@ const FCItems: NextPage = () => {
                     <Menu.Item>
                         <li>
                             <Link
-                                href={`/searchPage/베이커리&디저트`}
+                                href={`/search/베이커리&디저트`}
                                 className="menu-items"
                             >
                                 베이커리/디저트
@@ -69,7 +69,7 @@ const FCItems: NextPage = () => {
                     <Menu.Item>
                         <li>
                             <Link
-                                href={`/searchPage/음료&주류`}
+                                href={`/search/음료&주류`}
                                 className="menu-items"
                             >
                                 음료/주류
@@ -79,7 +79,7 @@ const FCItems: NextPage = () => {
                     <Menu.Item>
                         <li>
                             <Link
-                                href={`/searchPage/식단&건강관리`}
+                                href={`/search/식단&건강관리`}
                                 className="menu-items pb-6"
                             >
                                 식단/건강관리

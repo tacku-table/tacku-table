@@ -4,13 +4,13 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { clearStorage } from "../layout/Header";
-import RecipeList from "../search/RecipeList";
+import RecipeList from "../searchPage/RecipeList";
 
 const NewRecipe: NextPage = () => {
     const [dataResults, setDataResults] = useState<RecipeProps[]>([]);
     const router = useRouter();
     const sortedBest = () => {
-        router.push("/searchPage");
+        router.push("/search");
         clearStorage();
         sessionStorage.setItem("userWatching", "createdAt");
     };
