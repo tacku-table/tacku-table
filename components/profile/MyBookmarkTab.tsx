@@ -68,7 +68,7 @@ const MyBookmarkTab = ({ userInfo, storageCurrentUser }: any) => {
           )
         );
         getMyBookmark(userInfo.userId);
-        toastAlert("🗑 삭제되었습니다");
+        toastAlert("삭제되었습니다");
       } catch (error: any) {
         toast.error("삭제에 실패하였습니다. 다시 시도해주세요.", error);
       }
@@ -76,21 +76,23 @@ const MyBookmarkTab = ({ userInfo, storageCurrentUser }: any) => {
   };
 
   return (
-    <Tab.Panel className="pt-[91px] pb-6">
+    <Tab.Panel className="pb-6">
       {bookmarkPost?.map((p) => (
-        <div key={p.postId} className="px-6 mb-5">
+        <div key={p.postId} className="p-6">
           <hr className="border-mono50 mx-8 mb-6 border-[1px]" />
           <div className="pl-8 space-x-[20px] items-center flex">
             {p.thumbnail && (
-              <Image
-                className="object-cover aspect-[4/3]"
-                src={p.thumbnail}
-                priority={true}
-                loader={({ src }) => src}
-                width={180}
-                height={105}
-                alt="bookmark-thumbnail"
-              />
+              <Link legacyBehavior href={`/detailRecipePage/${p.postId}`}>
+                <Image
+                  className="object-cover aspect-[4/3] rounded-md cursor-pointer"
+                  src={p.thumbnail}
+                  priority={true}
+                  loader={({ src }) => src}
+                  width={180}
+                  height={105}
+                  alt="bookmark-thumbnail"
+                />
+              </Link>
             )}
             <div className="flex flex-col">
               <div className="flex space-x-1">
