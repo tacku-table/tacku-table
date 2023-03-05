@@ -1,11 +1,69 @@
-import React from "react";
+import { Tab } from "@headlessui/react";
+import { dbService } from "@/config/firebase";
+import { convertTimestamp } from "../../util";
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
-const MyCommentTab = () => {
+const MyCommentTab = ({ userInfo }: any) => {
+  const [commentPost, setCommentPost] = useState<any[]>([]);
+  const [communityList, setCommunityList] = useState<any[]>([]);
+
+  useEffect(() => {
+    getCommunityList();
+    getCommunityComment(userInfo.userId);
+  }, [commentPost]);
+
+  const getCommunityComment = async (userId: any) => {
+    const commentsRef = collection(dbService, "comments");
+    const q = query(
+      commentsRef,
+      where("uid", "==", `${userId}`),
+      orderBy("orderByDate", "desc")
+    );
+    onSnapshot(q, (snapshot) => {
+      const myposts = snapshot.docs.map((doc) => {
+        const mypost = {
+          postId: doc.id,
+          boardId: doc.data().boardId,
+          comment: doc.data().comment,
+        };
+        return mypost;
+      });
+      setCommentPost(myposts);
+    });
+  };
+  const getCommunityList = () => {
+    const communityRef = collection(dbService, "communityPost");
+    const q = query(communityRef, orderBy("writtenDate", "desc"));
+    onSnapshot(q, (snapshot) => {
+      const newPosts = snapshot.docs.map((doc) => {
+        const newPost = {
+          id: doc.id,
+          category: doc.data().category,
+          title: doc.data().title,
+          editorText: doc.data().editorText,
+          writtenDate: convertTimestamp(doc.data().writtenDate),
+          thumbnail: doc.data().thumbnail,
+          nickname: doc.data().nickname,
+        };
+        return newPost;
+      });
+      setCommunityList(newPosts);
+      //   console.log(communityList);
+    });
+  };
   return (
-    <Tab.Panel>
+    <Tab.Panel className="pb-6">
       {commentPost?.map((p) => (
-        <div key={p.postId} className="px-6 mb-5">
-          <hr className="border-border mx-8 mb-6 border-[1px]" />
+        <div key={p.postId} className="p-6">
+          <hr className="border-border mx-8 my-6 border-[1px]" />
           <div className="pl-8 space-x-[20px] items-center flex">
             <div className="flex flex-col">
               <div className="text-2xl font-semibold mb-4">
@@ -13,7 +71,7 @@ const MyCommentTab = () => {
                   <a>{p.comment}</a>
                 </Link>
               </div>
-              {communityList.map(
+              {/* {communityList.map(
                 (item) =>
                   item.id === p.boardId && (
                     <div key={item.id}>
@@ -26,7 +84,7 @@ const MyCommentTab = () => {
                       <div className="text-mono70">{item.title}</div>
                     </div>
                   )
-              )}
+              )} */}
             </div>
           </div>
         </div>
