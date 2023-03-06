@@ -16,6 +16,7 @@ import Link from "next/link";
 import { toast } from "react-toastify";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import type { AppProps } from "next/app";
+import Head from "next/head";
 
 interface propsType extends AppProps {
   targetWholeData: targetWholeDataType;
@@ -98,136 +99,151 @@ export default function DetailReciptPage(props: propsType) {
   };
 
   return (
-    <div className="xl:w-full sm:w-fit h-full flex flex-col items-center bg-mono40 mx-auto">
-      <div className="sm:w-[1180px] w-full sm:my-4 my-0 bg-white sm:pb-[131px] pb-10 sm:pt-[52px] pt-5 sm:px-[200px] px-3">
-        <div className="bg-slate-100 w-full sm:h-[440px] h-[250px] overflow-hidden relative">
-          <Image
-            src={`${props.targetWholeData?.thumbnail}`}
-            alt="thumbnail"
-            className="image-detail"
-            fill
-            unoptimized
-            style={{ objectFit: "cover", objectPosition: "center" }}
-          />
-        </div>
-        <div className="flex-col my-5">
-          <div className="flex justify-between my-5">
-            <p className="text-2xl font-semibold">
-              {props.targetWholeData?.foodTitle}
-            </p>
-            <div className="flex items-center">
-              <p className="sm:mr-5 mr-3">
-                <SocialShared targetWholeData={props.targetWholeData} />
+    <>
+      <Head>
+        <meta
+          property="og:url"
+          content="tacku-table-799b.vercel.app
+        "
+        />
+        <meta property="og:title" content={props.targetWholeData?.foodTitle} />
+        <meta
+          property="og:description"
+          content={props.targetWholeData?.animationTitle}
+        />
+        <meta property="og:image" content={props.targetWholeData?.thumbnail} />
+      </Head>
+      <div className="xl:w-full sm:w-fit h-full flex flex-col items-center bg-mono40 mx-auto">
+        <div className="sm:w-[1180px] w-full sm:my-4 my-0 bg-white sm:pb-[131px] pb-10 sm:pt-[52px] pt-5 sm:px-[200px] px-3">
+          <div className="bg-slate-100 w-full sm:h-[440px] h-[250px] overflow-hidden relative">
+            <Image
+              src={`${props.targetWholeData?.thumbnail}`}
+              alt="thumbnail"
+              className="image-detail"
+              fill
+              unoptimized
+              style={{ objectFit: "cover", objectPosition: "center" }}
+            />
+          </div>
+          <div className="flex-col my-5">
+            <div className="flex justify-between my-5">
+              <p className="text-2xl font-semibold">
+                {props.targetWholeData?.foodTitle}
               </p>
-              {storageCurrentUser.user === "guest" ? null : (
-                <p className="w-6 h-6 mr-2">
-                  <Bookmark
-                    postId={props.postId}
-                    targetWholeData={props.targetWholeData}
-                    storageCurrentUser={storageCurrentUser}
-                    userData={userData}
-                  />
+              <div className="flex items-center">
+                <p className="sm:mr-5 mr-3">
+                  <SocialShared targetWholeData={props.targetWholeData} />
                 </p>
-              )}
-            </div>
-          </div>
-          <div className="flex items-center">
-            <span className="float-left mr-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="3"
-                stroke="currentColor"
-                className="w-4 h-4 text-red100"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </span>
-            <p>{props.targetWholeData?.cookingTime}</p>
-          </div>
-          <div className="sm:flex justify-between  border-b-2 border-border-500 sm:pb-8 pb-3 my-5 text-center">
-            <p> {props.targetWholeData?.animationTitle}</p>
-            <p>{props.targetWholeData?.foodCategory.replaceAll("&", "/")}</p>
-            <p>{getTimegap(props.targetWholeData?.createdAt)}</p>
-          </div>
-        </div>
-        <div>
-          <div className="flex items-center justify-between ">
-            <div
-              className="flex items-center cursor-pointer"
-              onClick={() => {
-                location.href = `/profile/${userData?.userId}`;
-              }}
-            >
-              {userData?.userImg === "null" ? (
-                <Image
-                  src={defaultImg}
-                  width={50}
-                  height={50}
-                  alt="default_img"
-                  className="rounded-md hover:opacity-50"
-                  unoptimized
-                />
-              ) : (
-                <Image
-                  src={`${userData?.userImg}`}
-                  priority={true}
-                  width={50}
-                  height={50}
-                  alt="user_img"
-                  className="rounded-md hover:opacity-50"
-                  unoptimized
-                />
-              )}
-              <p className="pl-5 font-semibold">{userData.userNickname}</p>
-            </div>
-            {/* 수정/ 삭제 */}
-            {props.targetWholeData?.uid == storageCurrentUser.uid ? (
-              <div className="flex sm:mt-0 mt-5">
-                <Link
-                  href={`/recipeEdit/${props.postId}`}
-                  className="recipepage-edit-button pt-1"
-                >
-                  <p>수정하기</p>
-                </Link>
-                <button
-                  className="recipepage-del-button  ml-2"
-                  type="button"
-                  onClick={deleteTargetRecipe}
-                >
-                  삭제하기
-                </button>
+                {storageCurrentUser.user === "guest" ? null : (
+                  <p className="w-6 h-6 mr-2">
+                    <Bookmark
+                      postId={props.postId}
+                      targetWholeData={props.targetWholeData}
+                      storageCurrentUser={storageCurrentUser}
+                      userData={userData}
+                    />
+                  </p>
+                )}
               </div>
-            ) : null}
+            </div>
+            <div className="flex items-center">
+              <span className="float-left mr-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="3"
+                  stroke="currentColor"
+                  className="w-4 h-4 text-red100"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </span>
+              <p>{props.targetWholeData?.cookingTime}</p>
+            </div>
+            <div className="sm:flex justify-between  border-b-2 border-border-500 sm:pb-8 pb-3 my-5 text-center">
+              <p> {props.targetWholeData?.animationTitle}</p>
+              <p>{props.targetWholeData?.foodCategory.replaceAll("&", "/")}</p>
+              <p>{getTimegap(props.targetWholeData?.createdAt)}</p>
+            </div>
           </div>
-        </div>
-        <div>
-          <p className="text-[24px] border-b-2 border-border-500 pb-3 mt-12 font-semibold">
-            재료
-          </p>
-          <p className="mt-8"> {props.targetWholeData?.ingredient}</p>
-        </div>
-        <div className="text-[24px] border-b-2 border-border-500 pb-3 mt-16 mb-8 font-semibold">
-          <p>레시피</p>
-        </div>
-        <div className="w-4/5 m-auto text-center items-center">
-          <div
-            dangerouslySetInnerHTML={{
-              __html: props.targetWholeData?.content,
-            }}
-          />
-        </div>
-        <div className=" flex justify-between items-center border-b-2 border-border-500 pb-4 mt-11 sm:mb-8 mb-0">
-          <div>조회수 : {views}</div>
-          <TopButton className="border-2 border-border-500 px-4 py-2 " />
+          <div>
+            <div className="flex items-center justify-between ">
+              <div
+                className="flex items-center cursor-pointer"
+                onClick={() => {
+                  location.href = `/profile/${userData?.userId}`;
+                }}
+              >
+                {userData?.userImg === "null" ? (
+                  <Image
+                    src={defaultImg}
+                    width={50}
+                    height={50}
+                    alt="default_img"
+                    className="rounded-md hover:opacity-50"
+                    unoptimized
+                  />
+                ) : (
+                  <Image
+                    src={`${userData?.userImg}`}
+                    priority={true}
+                    width={50}
+                    height={50}
+                    alt="user_img"
+                    className="rounded-md hover:opacity-50"
+                    unoptimized
+                  />
+                )}
+                <p className="pl-5 font-semibold">{userData.userNickname}</p>
+              </div>
+              {/* 수정/ 삭제 */}
+              {props.targetWholeData?.uid == storageCurrentUser.uid ? (
+                <div className="flex sm:mt-0 mt-5">
+                  <Link
+                    href={`/recipeEdit/${props.postId}`}
+                    className="recipepage-edit-button pt-1"
+                  >
+                    <p>수정하기</p>
+                  </Link>
+                  <button
+                    className="recipepage-del-button  ml-2"
+                    type="button"
+                    onClick={deleteTargetRecipe}
+                  >
+                    삭제하기
+                  </button>
+                </div>
+              ) : null}
+            </div>
+          </div>
+          <div>
+            <p className="text-[24px] border-b-2 border-border-500 pb-3 mt-12 font-semibold">
+              재료
+            </p>
+            <p className="mt-8"> {props.targetWholeData?.ingredient}</p>
+          </div>
+          <div className="text-[24px] border-b-2 border-border-500 pb-3 mt-16 mb-8 font-semibold">
+            <p>레시피</p>
+          </div>
+          <div className="w-4/5 m-auto text-center items-center">
+            <div
+              dangerouslySetInnerHTML={{
+                __html: props.targetWholeData?.content,
+              }}
+            />
+          </div>
+          <div className=" flex justify-between items-center border-b-2 border-border-500 pb-4 mt-11 sm:mb-8 mb-0">
+            <div>조회수 : {views}</div>
+            <TopButton className="border-2 border-border-500 px-4 py-2 " />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

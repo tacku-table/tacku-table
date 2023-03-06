@@ -18,7 +18,7 @@ function SocialShared(props: socialSharedType) {
     const title = props.targetWholeData.foodTitle;
     const sharedLink = encodeURIComponent(window.location.href);
     window.open(
-      `https://www.facebook.com/sharer/sharer.php?u=${sharedLink}&t=${title}`
+      `https://www.facebook.com/sharer/sharer.php?u=${sharedLink}&t=${title}&src=sdkpreparse`
     );
   };
   const kakaoShare = () => {
