@@ -55,8 +55,11 @@ const Login = ({ setStatus, status }: LoginProps) => {
           displayName: data.user.displayName,
           photoURL: "null",
         });
+        toastAlert("🎉 로그인 성공 ");
         sessionStorage.setItem("User", JSON.stringify(authService.currentUser));
-        location.href = "/mainPage";
+        setTimeout(() => {
+          location.href = "/mainPage";
+        }, 2000);
       })
       .catch((err) => {
         console.log(err);
@@ -79,8 +82,11 @@ const Login = ({ setStatus, status }: LoginProps) => {
           displayName: data.user.displayName,
           photoURL: "null",
         });
+        toastAlert("🎉 로그인 성공 ");
         sessionStorage.setItem("User", JSON.stringify(authService.currentUser));
-        location.href = "/mainPage";
+        setTimeout(() => {
+          location.href = "/mainPage";
+        }, 2000);
       })
       .catch((err) => {
         console.log(err);
