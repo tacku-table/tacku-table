@@ -34,6 +34,7 @@ const RegisterPage = () => {
     register,
     handleSubmit,
     getValues,
+    setError,
     formState: { errors },
   } = useForm<RegisterForm>({ mode: "onChange" });
   const onValid = (data: RegisterForm) => {
@@ -44,7 +45,9 @@ const RegisterPage = () => {
   };
   const [showPw, setShowPw] = useState(false);
   const [nicknameCheck, setNicknameCheck] = useState(false);
-  const [checkError, setCheckError] = useState("");
+  const [notNicknameDuplicateCheck, setNotNicknameDuplicateCheck] =
+    useState(true);
+  const [saveNickname, setSaveNickname] = useState<any>("");
   const [tempNickname, setTempNickname] = useState("");
 
   // 성공 알람 ( 초록색 창 )
@@ -91,26 +94,28 @@ const RegisterPage = () => {
   };
 
   // 닉네임 중복체크
-  const nicknameDuplicate = async (event: any) => {
-    event.preventDefault();
-
-    const value = tempNickname;
+  const nicknameDuplicate = async () => {
+    const { nickname } = getValues();
     const nickNameCheck = query(
       collection(dbService, "user"),
-      where("userNickname", "==", value)
+      where("userNickname", "==", nickname)
     );
     const querySnapshot = await getDocs(nickNameCheck);
     const newData = querySnapshot.docs;
-    if (newData.length == 0 && value.length > 0) {
+
+    if (newData.length == 0 && nickname.length > 0) {
       toastAlert("사용 가능한 닉네임입니다.");
+      setSaveNickname(nickname);
       setNicknameCheck(true);
+      return setNotNicknameDuplicateCheck(false);
     } else {
-      if (value.length != 0) {
+      if (nickname.length != 0) {
         toastAlert("이미 다른 유저가 사용 중입니다.");
       } else {
         toast.warn("알 수 없는 에러로 사용할 수 없습니다.");
       }
       setNicknameCheck(false);
+      return setNotNicknameDuplicateCheck(true);
     }
   };
 
@@ -246,16 +251,17 @@ const RegisterPage = () => {
                   message: "최대 8자까지 입력가능합니다",
                   value: 8,
                 },
-                onChange: (event) => {
-                  setTempNickname(event.target.value);
+                onChange: () => {
+                  setNotNicknameDuplicateCheck(true);
                 },
                 pattern: {
                   value: nickRegex,
                   message: "8자 이하의 영어, 숫자, 한글로만 입력해주세요.",
                 },
                 validate: {
-                  val: (value) =>
-                    (nicknameCheck && tempNickname === value) || "",
+                  value: () =>
+                    nicknameCheck ||
+                    "닉네임 중복 체크 후 고유한 닉네임으로 설정해주세요",
                 },
               })}
               id="nickname"
