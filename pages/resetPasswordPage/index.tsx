@@ -3,7 +3,6 @@ import { authService } from "@/config/firebase";
 import { useSearchParams } from "next/navigation";
 import { confirmPasswordReset } from "firebase/auth";
 import { emailRegex, pwRegex } from "@/util";
-import oobCodeType from "@/config/global";
 import { toast } from "react-toastify";
 
 const ResetPassword = () => {
@@ -17,10 +16,6 @@ const ResetPassword = () => {
 
   //oobCode: 요청을 식별하고 확인하는 데 사용되는 일회성 코드
   let oobCode: any = searchParams.get("oobCode");
-
-  if (!oobCode) {
-    throw new Error("No saved todos");
-  }
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
