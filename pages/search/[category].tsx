@@ -21,11 +21,11 @@ const ClassifiedRecipe: NextPage = () => {
     const router = useRouter();
     const [text, setText] = useState("");
     const [isBest, setIsBest] = useState("");
-    const { register, handleSubmit, getValues } = useForm();
     const [currentItems, setCurrentItems] = useState<TypeRecipe[]>([]);
     const [totalItems, setTotalItems] = useState<TypeRecipe[]>([]);
     const [lastDoc, setLastdoc] = useState(0);
 
+    const { register, handleSubmit, getValues } = useForm();
     const onValid = () => {
         sessionStorage.setItem("searchData", getValues("searchText"));
         setText(getValues("searchText"));
@@ -91,7 +91,10 @@ const ClassifiedRecipe: NextPage = () => {
         const querySnapshot = await getDocs(
             query(
                 collection(dbService, "recipe"),
-                orderBy("createdAt", "desc"),
+                orderBy(
+                    isBest === "viewCount" ? "viewCount" : "createdAt",
+                    "desc"
+                ),
                 where(
                     `${
                         router.query.category === "15분이하" ||
