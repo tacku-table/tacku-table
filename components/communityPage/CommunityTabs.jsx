@@ -33,9 +33,6 @@ const CommunityTabs = () => {
             </Tab>
           ))}
         </Tab.List>
-        <h4 className="w-full text-2xl font-bold pb-4 border-b-2 border-brand100">
-          커뮤니티
-        </h4>
         <Tab.Panels>
           <AllListTab />
           <RecipeTab categories={categories} />
