@@ -14,16 +14,9 @@ const ChangeSortedBtn = ({
     // totalItems = 전체레시피(6개씩)
     // currentItems = 전체레시피(총)
 
-    const filteredFoodAndTime =
-        (!dataResults?.length ? currentItems?.length : dataResults?.length) &&
-        filteredFood?.length &&
-        filteredTime?.length;
-    const filteredOnlyFood =
-        (!dataResults?.length ? currentItems?.length : dataResults?.length) &&
-        filteredFood?.length;
-    const filteredOnlyTime =
-        (!dataResults?.length ? currentItems?.length : dataResults?.length) &&
-        filteredTime?.length;
+    const filteredFoodAndTime = filteredFood?.length && filteredTime?.length;
+    const filteredOnlyFood = filteredFood?.length;
+    const filteredOnlyTime = filteredTime?.length;
 
     return (
         <div className="w-4/5 flex justify-center items-center relative mb-[20px]">
