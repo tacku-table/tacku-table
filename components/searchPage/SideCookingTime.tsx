@@ -1,6 +1,6 @@
 interface TypeTimeProps {
-    onCheckedTime: { checked: boolean; newItem?: string };
-    filteredTime?: string[];
+    onCheckedTime: (checked: boolean, newItem: string) => void;
+    filteredTime: string[];
 }
 
 const categoryTimeList = [

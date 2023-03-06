@@ -10,7 +10,9 @@ const RecipeListData = ({ item }: { item: TypeRecipe }) => {
     const router = useRouter();
     const goToDetail = (item: TypeRecipe) => {
         item.displayStatus === "회원 공개" && storageCurrentUser === "guest"
-            ? toast.warning("멤버공개 레시피글입니다. 로그인을 진행해주세요.")
+            ? toast.warning("멤버공개 레시피글입니다. 로그인을 진행해주세요.", {
+                  autoClose: 2000,
+              })
             : router.push(`/detailRecipePage/${item.id}`);
     };
 

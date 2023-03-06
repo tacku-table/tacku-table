@@ -16,7 +16,6 @@ import ChangeSortedBtn from "@/components/searchPage/ChangeSortedBtn";
 import SideFoodCate from "@/components/searchPage/SideFoodCate";
 import SideCookingTime from "@/components/searchPage/SideCookingTime";
 import { FieldErrors, useForm } from "react-hook-form";
-import { cls } from "@/util";
 import TopButton from "@/components/button/TopButton";
 
 const SearchData: NextPage = () => {
@@ -109,6 +108,8 @@ const SearchData: NextPage = () => {
     const fuse = new Fuse(currentItems, {
         keys: ["animationTitle", "foodTitle"],
         includeScore: true,
+        includeMatches: true,
+        ignoreLocation: true,
     });
     const results = fuse.search(text);
     const dataResults = results.map((recipe) => recipe.item);

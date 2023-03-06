@@ -1,6 +1,6 @@
 interface TypeFoodProps {
-    onCheckedFood: (checked: boolean, newItem?: string) => void;
-    filteredFood?: string[];
+    onCheckedFood: (checked: boolean, newItem: string) => void;
+    filteredFood: string[];
 }
 
 const categoryFoodList = [

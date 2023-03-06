@@ -104,14 +104,12 @@ const Header = () => {
                 </li>
             </ul>
             <div className="flex justify-center items-center">
-                {storageCurrentUser ? (
-                    <Link
-                        href="/recipeWritePage"
-                        className="mr-6 hover:text-mono80 hover:transition hover:ease-out hover:duration-300"
-                    >
-                        레시피글쓰기
-                    </Link>
-                ) : null}
+                <Link
+                    href="/recipeWritePage"
+                    className="mr-6 hover:text-mono80 hover:transition hover:ease-out hover:duration-300"
+                >
+                    레시피글쓰기
+                </Link>
                 {storageCurrentUser ? (
                     <button
                         type="button"
