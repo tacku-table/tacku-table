@@ -2,8 +2,8 @@ import { authService } from "@/config/firebase";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { signOut } from "firebase/auth";
-import FoodCategory from "../main/category/FoodCategory";
-import CookingTime from "../main/category/CookingTime";
+import FoodCategory from "../mainPage/category/FoodCategory";
+import CookingTime from "../mainPage/category/CookingTime";
 import logo2 from "../../public/images/logo2.png";
 import Image from "next/image";
 import { toast } from "react-toastify";
@@ -45,27 +45,20 @@ const Header = () => {
             });
     };
     const moveLoginPage = () => {
-        location.href = "/loginPage";
+        location.href = "/login";
     };
     // 마이페이지
     const router = useRouter();
     const moveMyPage = (currentUser: any) => {
         const { uid } = JSON.parse(currentUser);
-        location.href = `/myPage/${uid}`;
-        // router.push(
-        //   {
-        //     pathname: `/myPage/${uid}`,
-        //     query: { id: uid },
-        //   },
-        //   `myPage/${uid}`
-        // );
+        location.href = `/profile/${uid}`;
     };
 
     const clearStorageAndShowTotal = () => {
         sessionStorage.removeItem("filteredFoodData");
         sessionStorage.removeItem("filteredTimeData");
         sessionStorage.removeItem("searchData");
-        window.location.replace("/searchPage");
+        window.location.replace("/search");
     };
 
     useEffect(() => {
@@ -80,7 +73,7 @@ const Header = () => {
         >
             <ul className="flex justify-center items-center">
                 <li className="header-title">
-                    <Link href="/mainPage">
+                    <Link href="/main">
                         <Image
                             src={logo2}
                             alt="logo_web"
@@ -98,20 +91,18 @@ const Header = () => {
                 <FoodCategory />
                 <CookingTime />
                 <li>
-                    <Link href="/communityPage" className="header-title">
+                    <Link href="/community" className="header-title">
                         커뮤니티
                     </Link>
                 </li>
             </ul>
             <div className="flex justify-center items-center">
-                {storageCurrentUser ? (
-                    <Link
-                        href="/recipeWritePage"
-                        className="mr-6 hover:text-mono80 hover:transition hover:ease-out hover:duration-300"
-                    >
-                        레시피글쓰기
-                    </Link>
-                ) : null}
+                <Link
+                    href="/recipeWrite"
+                    className="mr-6 hover:text-mono80 hover:transition hover:ease-out hover:duration-300"
+                >
+                    레시피글쓰기
+                </Link>
                 {storageCurrentUser ? (
                     <button
                         type="button"
@@ -139,7 +130,7 @@ const Header = () => {
                 ) : (
                     <Link
                         href={{
-                            pathname: "/loginPage",
+                            pathname: "/login",
                             query: { headerstatus: "headerstatus" }, // array라 문자화
                         }}
                         className="sorted-btn"
