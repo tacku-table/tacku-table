@@ -36,12 +36,12 @@ import { getStorage } from "firebase/storage";
 
 // 희진
 // const firebaseConfig = {
-//   apiKey: "AIzaSyDKVOAQVuHCId2KTKdPFbzNvLpp8TXrLsU",
-//   authDomain: "tacku-table-private.firebaseapp.com",
-//   projectId: "tacku-table-private",
-//   storageBucket: "tacku-table-private.appspot.com",
-//   messagingSenderId: "351669114811",
-//   appId: "1:351669114811:web:769e3f58dc6fd33b9d169e",
+//   apiKey: "AIzaSyBFhi7Jmsk4k6am9YVgAbX1kXT9lP1DbXE",
+//   authDomain: "tackus-table.firebaseapp.com",
+//   projectId: "tackus-table",
+//   storageBucket: "tackus-table.appspot.com",
+//   messagingSenderId: "805590679974",
+//   appId: "1:805590679974:web:b7c7f1e094518b712b8f67",
 // };
 
 let firebase;

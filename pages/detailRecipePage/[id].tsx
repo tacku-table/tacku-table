@@ -155,14 +155,19 @@ export default function DetailReciptPage(props: propsType) {
         </div>
         <div>
           <div className="flex items-center justify-between ">
-            <div className="flex items-center">
+            <div
+              className="flex items-center cursor-pointer"
+              onClick={() => {
+                location.href = `/myPage/${userData?.userId}`;
+              }}
+            >
               {userData?.userImg === "null" ? (
                 <Image
                   src={defaultImg}
                   width={50}
                   height={50}
                   alt="default_img"
-                  className="rounded-md"
+                  className="rounded-md hover:opacity-50"
                   unoptimized
                 />
               ) : (
@@ -172,13 +177,11 @@ export default function DetailReciptPage(props: propsType) {
                   width={50}
                   height={50}
                   alt="user_img"
-                  className="rounded-md"
+                  className="rounded-md hover:opacity-50"
                   unoptimized
                 />
               )}
-              <Link href={`/myPage/${userData?.userId}`}>
-                <p className="pl-5 font-semibold">{userData.userNickname}</p>
-              </Link>
+              <p className="pl-5 font-semibold">{userData.userNickname}</p>
             </div>
             {/* 수정/ 삭제 */}
             {props.targetWholeData?.uid == storageCurrentUser.uid ? (
