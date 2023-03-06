@@ -7,19 +7,18 @@ interface socialSharedType {
 }
 function SocialShared(props: socialSharedType) {
   const shareToTwitter = () => {
-    const sharedLink =
-      "text=" +
-      encodeURIComponent(props.targetWholeData.foodTitle + " \n ") +
-      encodeURIComponent(location.href);
+    const sharedLink = `text=
+      ${encodeURIComponent(
+        props.targetWholeData.foodTitle + " \n "
+      )}${encodeURIComponent(location.href)}`;
     window.open(`https://twitter.com/intent/tweet?${sharedLink}`);
   };
 
   const shareToFacebook = () => {
+    const title = props.targetWholeData.foodTitle;
     const sharedLink = encodeURIComponent(window.location.href);
     window.open(
-      // `https://www.facebook.com/sharer/sharer.php?u=${sharedLink};src=sdkpreparse`
-      `https://www.facebook.com/sharer/sharer.php?u=${sharedLink}%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse`,
-      "width=486, height=286"
+      `https://www.facebook.com/sharer/sharer.php?u=${sharedLink}&t=${title}`
     );
   };
   const kakaoShare = () => {
