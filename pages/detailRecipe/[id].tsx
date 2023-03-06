@@ -10,6 +10,7 @@ import { dbService } from "@/config/firebase";
 import Bookmark from "@/components/detailPage/Bookmark";
 import SocialShared from "@/components/detailPage/SocialShared";
 import TopButton from "@/components/button/TopButton";
+import Kakaoshared from "@/components/detail/Kakaoshared";
 import defaultImg from "../../public/images/test1.png";
 import Image from "next/image";
 import Link from "next/link";
@@ -117,7 +118,7 @@ export default function DetailReciptPage(props: propsType) {
             </p>
             <div className="flex items-center">
               <p className="sm:mr-5 mr-3">
-                <SocialShared targetWholeData={props.targetWholeData} />
+                <Kakaoshared />
               </p>
               {storageCurrentUser.user === "guest" ? null : (
                 <p className="w-6 h-6 mr-2">
@@ -131,7 +132,7 @@ export default function DetailReciptPage(props: propsType) {
               )}
             </div>
           </div>
-          <div className="flex">
+          <div className="flex items-center">
             <span className="float-left mr-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -188,7 +189,7 @@ export default function DetailReciptPage(props: propsType) {
             </div>
             {/* 수정/ 삭제 */}
             {props.targetWholeData?.uid == storageCurrentUser.uid ? (
-              <div className="flex">
+              <div className="flex sm:mt-0 mt-5">
                 <Link
                   href={`/recipeEdit/${props.postId}`}
                   className="recipepage-edit-button pt-1"

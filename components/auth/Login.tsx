@@ -10,6 +10,7 @@ import {
 import { setDoc, doc } from "firebase/firestore";
 import { emailRegex, pwRegex } from "@/util";
 import { toast } from "react-toastify";
+import socialLoginType from "@/config/global";
 import { AiFillGoogleSquare, AiFillFacebook } from "react-icons/ai";
 
 interface LoginProps {
@@ -207,7 +208,6 @@ const Login = ({ setStatus, status }: LoginProps) => {
       ) : (
         <div className="mt-[32px] h-[24px]"></div>
       )}
-
       {status === "login" ? (
         <>
           <div className="mt-10 m-auto text-center">
@@ -228,11 +228,11 @@ const Login = ({ setStatus, status }: LoginProps) => {
           <div className="my-5 flex justify-around">
             <button onClick={gooleLogin}>
               <AiFillGoogleSquare
-                style={{ fontSize: "55px", color: "#777777" }}
+                style={{ fontSize: "55px", color: "#F16C34" }}
               />
             </button>
             <button onClick={fackbookLogin}>
-              <AiFillFacebook style={{ fontSize: "55px", color: "#777777" }} />
+              <AiFillFacebook style={{ fontSize: "55px", color: "#F16C34" }} />
             </button>
           </div>
         </>
