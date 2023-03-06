@@ -12,7 +12,7 @@ const GoToCommunity: NextPage = () => {
                     애니메이션과 애니에 나오는 요리 등 다양한 주제로<br></br>
                     다양한 사람들과 소통해보세요!
                 </p>
-                <Link legacyBehavior href="/communityPage">
+                <Link legacyBehavior href="/community">
                     <button
                         type="button"
                         className="w-56 rounded-sm border-slate-50 border-[1px] border-opacity-40 font-medium text-sm px-5 py-4 text-center flex justify-center items-center mt-11 mb-[126px] hover:scale-105 hover:border-opacity-90 transition-transform z-50"

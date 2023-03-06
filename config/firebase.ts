@@ -14,14 +14,14 @@ import { getStorage } from "firebase/storage";
 //};
 
 // 채하
-const firebaseConfig = {
-    apiKey: "AIzaSyANw6jE7NE7yF6F8TYYJalVwD2FuOLTqJ0",
-    authDomain: "taku-e9992.firebaseapp.com",
-    projectId: "taku-e9992",
-    storageBucket: "taku-e9992.appspot.com",
-    messagingSenderId: "139053130279",
-    appId: "1:139053130279:web:ae70760c52da59bb6b2402",
-};
+// const firebaseConfig = {
+//     apiKey: "AIzaSyANw6jE7NE7yF6F8TYYJalVwD2FuOLTqJ0",
+//     authDomain: "taku-e9992.firebaseapp.com",
+//     projectId: "taku-e9992",
+//     storageBucket: "taku-e9992.appspot.com",
+//     messagingSenderId: "139053130279",
+//     appId: "1:139053130279:web:ae70760c52da59bb6b2402",
+// };
 
 // 다경
 // const firebaseConfig = {
@@ -34,14 +34,14 @@ const firebaseConfig = {
 //   };
 
 // 희진
-// const firebaseConfig = {
-//   apiKey: "AIzaSyBFhi7Jmsk4k6am9YVgAbX1kXT9lP1DbXE",
-//   authDomain: "tackus-table.firebaseapp.com",
-//   projectId: "tackus-table",
-//   storageBucket: "tackus-table.appspot.com",
-//   messagingSenderId: "805590679974",
-//   appId: "1:805590679974:web:b7c7f1e094518b712b8f67",
-// };
+const firebaseConfig = {
+    apiKey: "AIzaSyBFhi7Jmsk4k6am9YVgAbX1kXT9lP1DbXE",
+    authDomain: "tackus-table.firebaseapp.com",
+    projectId: "tackus-table",
+    storageBucket: "tackus-table.appspot.com",
+    messagingSenderId: "805590679974",
+    appId: "1:805590679974:web:b7c7f1e094518b712b8f67",
+};
 
 let firebase;
 if (!getApps().length) firebase = initializeApp(firebaseConfig);

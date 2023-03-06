@@ -1,6 +1,7 @@
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React from "react";
 import deletePageImg from "../../public/images/deletePage.png";
+
 const deletePage = () => {
     return (
         <div className="flex flex-col my-auto items-center">
@@ -29,15 +30,6 @@ const deletePage = () => {
                 >
                     메인으로
                 </button>
-                {/* <button
-          onClick={() => {
-            history.back();
-          }}
-          type="button"
-          className="ml-[10px] w-[100px] h-[36px] text-brand100 text-center text-[16px] border border-brand100 "
-        >
-          이전페이지
-        </button> */}
             </div>
         </div>
     );

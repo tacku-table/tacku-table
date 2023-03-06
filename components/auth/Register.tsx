@@ -83,7 +83,7 @@ const RegisterPage = () => {
                 setTimeout(() => {
                     signOut(authService).then(() => {
                         sessionStorage.clear();
-                        location.href = "/loginPage";
+                        location.href = "/login";
                     });
                 }, 1500);
 
@@ -130,7 +130,7 @@ const RegisterPage = () => {
         window.addEventListener("popstate", function () {
             const result = window.confirm("회원가입을 취소하시겠습니까?");
             if (result) {
-                window.location.replace(`/loginPage`);
+                window.location.replace(`/login`);
             }
         });
     }, []);

@@ -7,7 +7,7 @@ import {
     deleteDoc,
 } from "firebase/firestore";
 import { dbService } from "@/config/firebase";
-import Bookmark from "@/components/detail/Bookmark";
+import Bookmark from "@/components/detailPage/Bookmark";
 import TopButton from "@/components/button/TopButton";
 import defaultImg from "../../public/images/test1.png";
 import Image from "next/image";
@@ -52,7 +52,6 @@ export default function DetailReciptPage(props: propsType) {
         onSnapshot(doc(dbService, "user", userUid), (snapshot) => {
             setUserData(snapshot.data() as UserType);
         });
-        console.log("props.postID", props.postId);
     }, []);
 
     const toastAlert = (alertText: string) => {
@@ -71,7 +70,6 @@ export default function DetailReciptPage(props: propsType) {
     //삭제
     const deleteTargetRecipe = async () => {
         const userConfirm = window.confirm("해당 글을 삭제하시겠습니까?");
-        console.log("props.postId가 삭제", props.postId);
         const targetBoardId = props.postId;
         if (userConfirm) {
             try {
@@ -163,7 +161,7 @@ export default function DetailReciptPage(props: propsType) {
                         <div
                             className="flex items-center cursor-pointer"
                             onClick={() => {
-                                location.href = `/myPage/${userData?.userId}`;
+                                location.href = `/profile/${userData?.userId}`;
                             }}
                         >
                             {userData?.userImg === "null" ? (
@@ -195,7 +193,7 @@ export default function DetailReciptPage(props: propsType) {
                         storageCurrentUser.uid ? (
                             <div className="flex">
                                 <Link
-                                    href={`/recipeEditPage/${props.postId}`}
+                                    href={`/recipeEdit/${props.postId}`}
                                     className="recipepage-edit-button pt-1"
                                 >
                                     <p>수정하기</p>
@@ -249,7 +247,7 @@ export const getServerSideProps: GetServerSideProps = async (
         targetWholeData = snap.data();
     } else {
         console.log("가져올 문서가 없습니다.");
-        res.setHeader("Location", "/deletePage");
+        res.setHeader("Location", "/delete");
         res.statusCode = 302;
         return { props: {} };
     }

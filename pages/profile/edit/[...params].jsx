@@ -11,7 +11,7 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, listAll, uploadBytes } from "firebase/storage";
 import Image from "next/image";
 import defaultImg from "../../../public/images/test1.png";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { storage } from "../../../config/firebase";
 import { pwRegex, nickRegex, cls } from "../../../util";
 import { useRouter } from "next/router";
@@ -67,7 +67,7 @@ export default function ProfileEdit(props) {
     }, []);
     useEffect(() => {
         if (storageCurrentUser == "logout") {
-            location.href = "/loginPage";
+            location.href = "/login";
         }
     }, [storageCurrentUser]);
 
@@ -140,7 +140,6 @@ export default function ProfileEdit(props) {
     const handleChangePassword = useCallback(
         (event) => {
             const changedPw = event.target.value;
-            // console.log(changedPw);
             setChangeUserPw(changedPw);
             if (!pwRegex.test(changedPw)) {
                 setPasswordMessage(
@@ -217,7 +216,7 @@ export default function ProfileEdit(props) {
                         displayName: changeUserNickname,
                     })
                         .then(() => {
-                            location.href = `/myPage/${userInfo?.userId}`;
+                            location.href = `/profile/${userInfo?.userId}`;
                         })
                         .catch((error) =>
                             toast.error(
@@ -246,7 +245,6 @@ export default function ProfileEdit(props) {
                     userImg: url,
                 }).then(() => {
                     setImgPreview("uploading");
-                    console.log("컬렉션 업데이트 성공!");
                 });
                 // setImgPreview(url);
                 setShowUserUpdateImg(url);

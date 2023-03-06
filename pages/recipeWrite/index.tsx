@@ -1,46 +1,31 @@
-import { dbService } from "@/config/firebase";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { searchMovieTitle } from "@/api/tmdb";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
-import { storage } from "@/config/firebase";
+import { authService, storage } from "@/config/firebase";
 import EditorComponent from "@/components/write/TextEditor";
+import { collection, addDoc } from "firebase/firestore";
+import { dbService } from "../../config/firebase";
+import baseImg from "/public/images/test1.png";
 import { toast, ToastContainer } from "react-toastify";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
 
 interface TitleType {
     title: string;
 }
 
-const RecipeEditPage = ({
-    targetWholeData,
-    postId,
-}: {
-    targetWholeData: targetWholeDataType;
-    postId: string;
-}) => {
-    const [searchTitle, setSeachTitle] = useState(
-        targetWholeData.animationTitle
-    );
+const RecipeWritePage = () => {
+    const [searchTitle, setSeachTitle] = useState("");
     const [titleArr, setTitleArr] = useState<TitleType[]>([]);
-    const [targetTitle, setTargetTitle] = useState(
-        targetWholeData.animationTitle
-    );
-    const [foodTitle, setFoodTitle] = useState(targetWholeData.foodTitle);
-    const [ingredient, setIngredient] = useState(targetWholeData.ingredient);
-    const [selectCookTime, setSelectCookTime] = useState(
-        targetWholeData.cookingTime
-    );
-    const [foodCategory, setFoodCategory] = useState(
-        targetWholeData.foodCategory
-    );
+    const [targetTitle, setTargetTitle] = useState("");
+    const [foodTitle, setFoodTitle] = useState("");
+    const [ingredient, setIngredient] = useState("");
+    const [selectCookTime, setSelectCookTime] = useState("");
+    const [foodCategory, setFoodCategory] = useState("");
     const [displayStatus, setDisplayStatus] = useState("");
-    const [imagePreview, setImagePreview] = useState(targetWholeData.thumbnail);
-    const [thumbnail, setThumbnail] = useState(targetWholeData.thumbnail);
-    const [editorText, setEditorText] = useState(targetWholeData.content);
-    const [uid, setUid] = useState("");
+    const [imagePreview, setImagePreview] = useState("");
+    const [thumbnail, setThumbnail] = useState("");
+    const [editorText, setEditorText] = useState("");
     const movieTitleRef = useRef<HTMLInputElement>(null);
     const foodTitleRef = useRef<HTMLInputElement>(null);
     const ingredientRef = useRef<HTMLInputElement>(null);
@@ -50,15 +35,45 @@ const RecipeEditPage = ({
     const [storageCurrentUser, setStorageCurrentUser] = useState<parseUserType>(
         {}
     );
-    const [originImgThumbNail, setOriginImgThumbNail] = useState("");
-    const [imgLoading, setImgLoading] = useState("default");
+
+    const [imgLoading, setImgLoading] = useState("");
 
     useEffect(() => {
         const user = sessionStorage.getItem("User") || "";
-        const parseUser = JSON.parse(user);
-        setStorageCurrentUser(parseUser);
-        setOriginImgThumbNail(targetWholeData?.thumbnail);
+        if (user) {
+            const parseUser: parseUserType = JSON.parse(user);
+            setStorageCurrentUser(parseUser);
+        }
+        if (!user) {
+            setStorageCurrentUser({ user: "logout" });
+        }
+
+        window.history.pushState(null, "null", document.URL);
+        window.addEventListener("popstate", function (event) {
+            const result = window.confirm(
+                "레시피 글쓰기 정보를 모두 잃을수 있습니다\n그래도 나가시겠습니까?"
+            );
+            if (result) {
+                window.location.replace(`/search`);
+            }
+            if (!result) {
+                return false;
+            }
+        });
     }, []);
+
+    useEffect(() => {
+        if (storageCurrentUser.user == "logout") {
+            moveLoginPage();
+        }
+    }, [storageCurrentUser]);
+
+    const moveLoginPage = () => {
+        alert(
+            "해당 페이지는 로그인 유저만 작성할 수 있습니다.\n 로그인 페이지로 돌아갑니다."
+        );
+        location.href = "/login";
+    };
 
     const { data, refetch } = useQuery(["tmdb"], () => {
         return searchMovieTitle(searchTitle);
@@ -67,6 +82,7 @@ const RecipeEditPage = ({
     useEffect(() => {
         if (searchTitle) {
             refetch();
+            setTargetTitle("");
         }
         setTitleArr([]);
     }, [refetch, searchTitle]);
@@ -76,6 +92,20 @@ const RecipeEditPage = ({
             setTitleArr(data.results);
         }
     }, [data]);
+
+    const inputChangeSetFunc = (
+        event: React.ChangeEvent<HTMLInputElement>,
+        setFunction: React.Dispatch<React.SetStateAction<string>>
+    ) => {
+        setFunction(event.target.value);
+    };
+
+    const selectChangeSetFunc = (
+        event: React.ChangeEvent<HTMLSelectElement>,
+        setFunction: React.Dispatch<React.SetStateAction<string>>
+    ) => {
+        setFunction(event.target.value);
+    };
 
     const toastAlert = (alertText: string) => {
         toast(`${alertText}`, {
@@ -90,36 +120,15 @@ const RecipeEditPage = ({
         });
     };
 
-    const inputChangeSetFunc = (
-        event: React.ChangeEvent<HTMLInputElement>,
-        setFunction: React.Dispatch<React.SetStateAction<string>>
-    ) => {
-        setFunction(event.target.value);
-    };
+    const fbUser = authService?.currentUser;
 
-    const selectChangeSetFunc = (
-        event: React.ChangeEvent<HTMLSelectElement>,
-        setFunction: React.Dispatch<React.SetStateAction<string>>
-    ) => {
-        console.log(event.target.value);
-        setFunction(event.target.value);
-    };
-
-    const editPost = async (event: React.SyntheticEvent<EventTarget>) => {
+    const postNewRecipe = async (event: React.SyntheticEvent<EventTarget>) => {
         event.preventDefault();
-        console.log("영화제목", targetTitle);
-        console.log("음식명", foodTitle);
-        console.log("재료명", ingredient);
-        console.log("소요시간", selectCookTime);
-        console.log("음식종류", foodCategory);
-        console.log("게시물 공개여부", displayStatus);
-        console.log("대표사진 url", thumbnail);
-        console.log("텍스트 에디터 내용", editorText);
-        console.log("uid", uid);
 
-        const newEditRecipe = {
+        const newRecipe = {
             uid: storageCurrentUser?.uid,
-            writerNickName: storageCurrentUser?.displayName, // auth.currentUser에 있는 id
+            writerNickName: fbUser?.displayName, // auth.currentUser에 있는 id
+            writerProfileImg: fbUser?.photoURL,
             animationTitle: targetTitle,
             foodTitle,
             ingredient,
@@ -130,8 +139,8 @@ const RecipeEditPage = ({
             createdAt: Date.now(),
             content: editorText,
             viewCount: 0,
-            bookmarkCount: 0,
         };
+
         if (
             !targetTitle ||
             !foodTitle ||
@@ -188,31 +197,15 @@ const RecipeEditPage = ({
                 toastAlert("🥺 게시글 공개여부를 체크해주세요! 🥺");
                 return false;
             }
-            alert("게시글 본문이 채워지지 않았어요 😥");
+
+            toastAlert("🥺 게시글 본문이 채워지지 않았어요🥺");
             return false;
         }
-
-        //---------update하는 함수-------------------
-        const docRef = doc(dbService, "recipe", postId);
-        await updateDoc(docRef, {
-            writerNickName: storageCurrentUser?.displayName, // auth.currentUser에 있는 id
-            animationTitle: targetTitle,
-            foodTitle,
-            ingredient,
-            cookingTime: selectCookTime,
-            foodCategory: foodCategory,
-            displayStatus,
-            thumbnail,
-            createdAt: Date.now(),
-            content: editorText,
-        });
-
-        //---------------------------------------
-        console.log("newEditRecipe", newEditRecipe);
-        toastAlert("게시물 수정이 완료되었습니다.");
+        await addDoc(collection(dbService, "recipe"), newRecipe);
+        toast.success("레시피 저장 성공!");
         setTimeout(() => {
             location.href = "/search";
-        }, 1200);
+        }, 700);
     };
 
     const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -226,7 +219,6 @@ const RecipeEditPage = ({
             const imgDataUrl = reader.result as string;
             localStorage.setItem("imgDataUrl", imgDataUrl);
             setImagePreview(imgDataUrl);
-            setOriginImgThumbNail(imgDataUrl);
             addImageFirebase();
         };
     };
@@ -240,33 +232,24 @@ const RecipeEditPage = ({
         if (imgDataUrl) {
             setImgLoading("loading");
             const response = await uploadString(imgRef, imgDataUrl, "data_url");
+            setImgLoading("default");
             downloadUrl = await getDownloadURL(response.ref);
-            toastAlert("대표 이미지 업데이트 성공~!");
-            await setImgLoading("loaded");
-
             setThumbnail(downloadUrl);
         }
-    };
-
-    const movemain = () => {
-        location.href = "/main";
     };
 
     return (
         <div className="bg-white p-10">
             <ToastContainer position="top-right" autoClose={1000} />
             <div className="mt-[75px] rounded-md p-7 container w-[1180px] mx-auto flex justify-center flex-col bg-white">
-                <h3 className="text-4xl font-bold">레시피 수정하기</h3>
+                <h3 className="text-4xl font-bold">레시피 글쓰기 </h3>
                 <hr className="mt-[24px] h-px border-[1.5px] border-brand100"></hr>
-
-                <form onSubmit={editPost} className="mt-[40px]">
+                <form onSubmit={postNewRecipe} className="mt-[40px]">
                     <div className="pb-7">
                         <b className="text-[21px] font-semibold">
-                            {" "}
-                            애니메이션 제목 검색{" "}
+                            애니메이션 제목 검색
                         </b>
                         <input
-                            value={searchTitle}
                             className="p-2 ml-[15px] w-[280px] h-[45px] border border-mono60 rounded-[2px] "
                             ref={movieTitleRef}
                             name="targetTitle"
@@ -274,7 +257,7 @@ const RecipeEditPage = ({
                             onChange={(event) =>
                                 inputChangeSetFunc(event, setSeachTitle)
                             }
-                            placeholder="새로운 영화제목을 검색하세요"
+                            placeholder=" 원하는 제목을 검색해주세요!"
                         />
 
                         {searchTitle ? (
@@ -312,8 +295,8 @@ const RecipeEditPage = ({
                                 레시피 제목
                             </div>
                             <input
+                                placeholder="제목을 입력해주세요"
                                 className="p-2 lg:w-[580px] sm:w-[280px] md:w-[280px] ml-[97px] text-mono70 h-[45px] border border-mono60 rounded-[2px]"
-                                value={foodTitle}
                                 ref={foodTitleRef}
                                 name="footTitle"
                                 type="text"
@@ -353,8 +336,7 @@ const RecipeEditPage = ({
                         </div>
                         <div className="pb-[40px]">
                             <b className="text-[21px] font-semibold ">
-                                {" "}
-                                소요시간{" "}
+                                소요시간
                             </b>
                             <select
                                 className="p-2 ml-[115px] text-mono70 w-[280px] h-[40px] border border-mono60 rounded-[2px]"
@@ -367,8 +349,7 @@ const RecipeEditPage = ({
                                 }}
                             >
                                 <option value="none">
-                                    {" "}
-                                    요리 소요 시간 선택{" "}
+                                    요리 소요 시간 선택
                                 </option>
                                 <option value="15분이하">15분이하</option>
                                 <option value="30분이하">30분이하</option>
@@ -382,19 +363,19 @@ const RecipeEditPage = ({
                                 주재료
                             </div>
                             <input
-                                value={ingredient}
+                                placeholder="레시피에서 메인이 되는 재료를 작성해주세요."
+                                className="pb-[80px] p-2 ml-[135px] w-[580px] h-[117px] border border-mono60 rounded-[2px]"
                                 type="text"
                                 ref={ingredientRef}
                                 name="ingredient"
                                 onChange={(event) =>
                                     inputChangeSetFunc(event, setIngredient)
                                 }
-                                className="pb-[80px] p-2 ml-[135px] w-[580px] h-[117px] border border-mono60 rounded-[2px]"
                             />
                         </div>
                     </div>
                     <hr className="mt-[40px] border-[1px] border-mono60"></hr>
-                    <div className="pt-[40px] relative">
+                    <div className="pt-[40px]">
                         <div className="text-[21px] pb-[40px] font-semibold">
                             레시피 작성
                         </div>
@@ -405,10 +386,10 @@ const RecipeEditPage = ({
                             />
                         </div>
                         {imgLoading == "loading" && (
-                            <div className="flex items-center justify-center">
-                                <div className="text-center absolute rounded-lg flex bg-brand100 w-[500px] h-[200px]">
+                            <div className="flex items-center justify-center fixed top-1/2 left-0 right-0">
+                                <div className="text-center absolute  rounded-lg flex bg-brand100 w-[500px] h-[200px]">
                                     <div className="text-xl text-white m-auto">
-                                        사진을 서버에 열심히 로딩하고 있어요{" "}
+                                        사진을 서버에 열심히 로딩하고 있어요
                                         <br />
                                         잠시만 기다려주세요 !!!!
                                     </div>
@@ -418,7 +399,7 @@ const RecipeEditPage = ({
                         <div className="bg-mono40 h-[210px] mt-[40px]">
                             <div className="mt-[12px] float-right flex items-stretch">
                                 <div className="mt-2 text-mono80 text-[16px]">
-                                    대표 이미지
+                                    대표 이미지 별도 등록
                                 </div>
                                 <label htmlFor="ex_file">
                                     <div className="rounded-[2px] border border-mono60 ml-[20px] text-[16px] text-center pt-1 hover:cursor-pointer w-[100px] h-[35px] bg-mono40 text-mono100">
@@ -426,8 +407,8 @@ const RecipeEditPage = ({
                                     </div>
                                 </label>
                                 <input
-                                    id="ex_file"
                                     className="hidden"
+                                    id="ex_file"
                                     ref={thumbnailRef}
                                     name="thumbnail"
                                     onChange={(event) => {
@@ -440,14 +421,23 @@ const RecipeEditPage = ({
                             <div className="ml-[16px] pt-[20px] text-mono100 text-[16px]">
                                 등록된 대표 이미지
                             </div>
-                            <Image
-                                className="ml-[16px] w-[82px] h-[49px] pt-[16px]"
-                                loader={() => originImgThumbNail}
-                                src={originImgThumbNail}
-                                width={100}
-                                height={100}
-                                alt="기존 게시물 대표 섬네일 이미지입니다."
-                            />
+                            {imagePreview ? (
+                                <Image
+                                    className="ml-[16px] w-[82px] h-[49px]"
+                                    src={imagePreview}
+                                    width={100}
+                                    height={100}
+                                    alt="대표 이미지가 없습니다."
+                                />
+                            ) : (
+                                <Image
+                                    className="ml-[16px] w-[82px] h-[49px] pt-[16px]"
+                                    src={baseImg}
+                                    width={100}
+                                    height={100}
+                                    alt="대표 이미지가 없습니다."
+                                />
+                            )}
                             <div className="ml-[16px] pt-[28px] text-[16px] text-mono100">
                                 공개 설정
                             </div>
@@ -462,10 +452,6 @@ const RecipeEditPage = ({
                                         onClick={(event) => {
                                             const target =
                                                 event.target as HTMLInputElement;
-                                            console.log(
-                                                "target.value",
-                                                target.value
-                                            );
                                             setDisplayStatus(target.value);
                                         }}
                                     />
@@ -481,10 +467,6 @@ const RecipeEditPage = ({
                                         onClick={(event) => {
                                             const target =
                                                 event.target as HTMLInputElement;
-                                            console.log(
-                                                "target.value",
-                                                target.value
-                                            );
                                             setDisplayStatus(target.value);
                                         }}
                                     />
@@ -498,12 +480,9 @@ const RecipeEditPage = ({
                             className="text-white w-[180px] h-[48px] bg-brand100 border border-mono60"
                             type="submit"
                         >
-                            완료
+                            등록
                         </button>
                         <button
-                            onClick={() => {
-                                movemain();
-                            }}
                             type="button"
                             className="ml-[12px] w-[180px] h-[48px] border border-mono60"
                         >
@@ -516,32 +495,4 @@ const RecipeEditPage = ({
     );
 };
 
-export default RecipeEditPage;
-
-export const getServerSideProps: GetServerSideProps = async (
-    context: GetServerSidePropsContext
-) => {
-    let targetWholeData;
-    const { params } = context;
-    const { id } = params as { [key: string]: string };
-    const postId = id;
-
-    const snap = await getDoc(doc(dbService, "recipe", postId));
-    if (snap.exists()) {
-        targetWholeData = snap.data();
-    } else {
-        console.log("가져올 문서가 없습니다.");
-        return { props: {} };
-    }
-
-    if (targetWholeData) {
-        targetWholeData = JSON.parse(JSON.stringify(targetWholeData));
-    }
-
-    return {
-        props: {
-            targetWholeData: targetWholeData || null,
-            postId: postId || null,
-        },
-    };
-};
+export default RecipeWritePage;

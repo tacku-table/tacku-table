@@ -13,7 +13,7 @@ const RecipeListData = ({ item }: { item: TypeRecipe }) => {
             ? toast.warning("멤버공개 레시피글입니다. 로그인을 진행해주세요.", {
                   autoClose: 2000,
               })
-            : router.push(`/detailRecipePage/${item.id}`);
+            : router.push(`/detailRecipe/${item.id}`);
     };
 
     useEffect(() => {

@@ -14,7 +14,7 @@ import Image from "next/image";
 import { convertTimestamp } from "../../util";
 import { authService } from "../../config/firebase";
 import useGetUserProfileNickName from "../../hooks/useGetUserProfileNickName";
-import Comments from "../../components/community/Comments";
+import Comments from "../../components/communityPage/Comments";
 import { toast } from "react-toastify";
 import { AppProps } from "next/app";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
@@ -104,8 +104,8 @@ export default function DetailPage(props: propsType) {
         }
     };
 
-    const movemain = () => {
-        location.href = "/communityPage";
+    const moveMain = () => {
+        location.href = "/community";
     };
 
     return (
@@ -116,7 +116,7 @@ export default function DetailPage(props: propsType) {
                 </h3>
                 <div className=" flex justify-end">
                     <button
-                        onClick={movemain}
+                        onClick={moveMain}
                         type="button"
                         className="bg-brand100 text-white h-[35px]  w-[100px]"
                     >

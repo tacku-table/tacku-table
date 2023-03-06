@@ -45,20 +45,13 @@ const Header = () => {
             });
     };
     const moveLoginPage = () => {
-        location.href = "/loginPage";
+        location.href = "/login";
     };
     // 마이페이지
     const router = useRouter();
     const moveMyPage = (currentUser: any) => {
         const { uid } = JSON.parse(currentUser);
-        location.href = `/myPage/${uid}`;
-        // router.push(
-        //   {
-        //     pathname: `/myPage/${uid}`,
-        //     query: { id: uid },
-        //   },
-        //   `myPage/${uid}`
-        // );
+        location.href = `/profile/${uid}`;
     };
 
     const clearStorageAndShowTotal = () => {
@@ -98,14 +91,14 @@ const Header = () => {
                 <FoodCategory />
                 <CookingTime />
                 <li>
-                    <Link href="/communityPage" className="header-title">
+                    <Link href="/community" className="header-title">
                         커뮤니티
                     </Link>
                 </li>
             </ul>
             <div className="flex justify-center items-center">
                 <Link
-                    href="/recipeWritePage"
+                    href="/recipeWrite"
                     className="mr-6 hover:text-mono80 hover:transition hover:ease-out hover:duration-300"
                 >
                     레시피글쓰기
@@ -137,7 +130,7 @@ const Header = () => {
                 ) : (
                     <Link
                         href={{
-                            pathname: "/loginPage",
+                            pathname: "/login",
                             query: { headerstatus: "headerstatus" }, // array라 문자화
                         }}
                         className="sorted-btn"

@@ -7,7 +7,7 @@ import Slider from "@/components/mainPage/Slider";
 import Special from "@/components/mainPage/Special";
 import Video from "@/components/mainPage/Video";
 
-const main = () => {
+const Main = () => {
     return (
         <div className="w-full">
             <Video />
@@ -26,4 +26,4 @@ const main = () => {
     );
 };
 
-export default main;
+export default Main;
