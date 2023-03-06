@@ -4,7 +4,7 @@ import Pagination from "./Pagination";
 import useGetCommunityPost from "@/hooks/useGetCommunityPost";
 import Post from "./Post";
 
-const AnimeTab = ({ communityList, categories }: any) => {
+const AnimeTab = ({ categories }: any) => {
   const [animePost, setAnimePost] = useState<any[]>([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1); //default=현재 페이지번호

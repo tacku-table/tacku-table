@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { SiFacebook, SiKakaotalk, SiTwitter } from "react-icons/si";
 import { kakaoInit } from "@/util";
 
-interface kakaosharedType {
+interface socialSharedType {
   targetWholeData: targetWholeDataType;
 }
-function SocialShared(props: kakaosharedType) {
+function SocialShared(props: socialSharedType) {
   const shareToTwitter = () => {
     const sharedLink =
       "text=" +
