@@ -49,7 +49,6 @@ const SearchData: NextPage = () => {
         sessionStorage.setItem("userWatching", "createdAt");
         setIsBest("createdAt");
     };
-
     // 전체목록(6개씩)
     const first = async () => {
         const querySnapshot = await getDocs(

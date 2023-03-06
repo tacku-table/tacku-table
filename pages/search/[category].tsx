@@ -1,5 +1,13 @@
 import { dbService } from "@/config/firebase";
-import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+import {
+    collection,
+    getDocs,
+    limit,
+    orderBy,
+    query,
+    startAfter,
+    where,
+} from "firebase/firestore";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -10,11 +18,13 @@ import { FieldErrors, useForm } from "react-hook-form";
 
 // 카테고리별 불러오기
 const ClassifiedRecipe: NextPage = () => {
+    const router = useRouter();
     const [text, setText] = useState("");
     const [isBest, setIsBest] = useState("");
     const { register, handleSubmit, getValues } = useForm();
     const [currentItems, setCurrentItems] = useState<TypeRecipe[]>([]);
-    const router = useRouter();
+    const [totalItems, setTotalItems] = useState<TypeRecipe[]>([]);
+    const [lastDoc, setLastdoc] = useState(0);
 
     const onValid = () => {
         sessionStorage.setItem("searchData", getValues("searchText"));
@@ -34,6 +44,71 @@ const ClassifiedRecipe: NextPage = () => {
     const inactiveBestBtn = () => {
         sessionStorage.setItem("userWatching", "createdAt");
         setIsBest("createdAt");
+    };
+    // 전체목록(6개씩)
+    const first = async () => {
+        const querySnapshot = await getDocs(
+            query(
+                collection(dbService, "recipe"),
+                orderBy(
+                    isBest === "viewCount" ? "viewCount" : "createdAt",
+                    "desc"
+                ),
+                where(
+                    `${
+                        router.query.category === "15분이하" ||
+                        router.query.category === "30분이하" ||
+                        router.query.category === "1시간이하" ||
+                        router.query.category === "1시간이상"
+                            ? "cookingTime"
+                            : "foodCategory"
+                    }`,
+                    "==",
+                    `${router.query.category}`
+                ),
+                limit(6)
+            )
+        );
+        const newData = querySnapshot.docs.map((doc: any) => ({
+            ...doc.data(),
+            id: doc.id,
+        }));
+        setTotalItems(newData);
+        const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+        lastDoc ? setLastdoc(lastDoc as any) : null;
+    };
+    const updateState = (querySnapshot: any) => {
+        const newData = querySnapshot.docs.map((doc: any) => ({
+            ...doc.data(),
+            id: doc.id,
+        }));
+        const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+        setTotalItems((prev) => [...prev, ...newData]);
+        setLastdoc(lastDoc);
+    };
+    // 더보기event
+    const next = async () => {
+        const querySnapshot = await getDocs(
+            query(
+                collection(dbService, "recipe"),
+                orderBy("createdAt", "desc"),
+                where(
+                    `${
+                        router.query.category === "15분이하" ||
+                        router.query.category === "30분이하" ||
+                        router.query.category === "1시간이하" ||
+                        router.query.category === "1시간이상"
+                            ? "cookingTime"
+                            : "foodCategory"
+                    }`,
+                    "==",
+                    `${router.query.category}`
+                ),
+                startAfter(lastDoc),
+                limit(6)
+            )
+        );
+        updateState(querySnapshot);
     };
 
     // 목록불러오기
@@ -68,15 +143,14 @@ const ClassifiedRecipe: NextPage = () => {
         includeScore: true,
     });
     const results = fuse.search(text);
-    const dataResults = text
-        ? results.map((recipe) => recipe.item)
-        : currentItems;
+    const dataResults = results.map((recipe) => recipe.item);
 
     useEffect(() => {
         const result = sessionStorage.getItem("userWatching");
         const storeSearchText = sessionStorage.getItem("searchData");
         result ? setIsBest(result) : setIsBest("createdAt");
         storeSearchText && setText(storeSearchText);
+        first();
         getList();
     }, [router.query.category, isBest]);
 
@@ -115,6 +189,7 @@ const ClassifiedRecipe: NextPage = () => {
             <ChangeSortedBtn
                 text={text}
                 dataResults={dataResults}
+                currentItems={currentItems}
                 isBest={isBest}
                 activeBestBtn={activeBestBtn}
                 inactiveBestBtn={inactiveBestBtn}
@@ -124,7 +199,14 @@ const ClassifiedRecipe: NextPage = () => {
                 <div className="bg-mono30 rounded-[3px] w-auto h-9 px-6 mr-7 text-sm flex items-center text-brand100">
                     {router.query.category?.toString().replaceAll("&", "/")}
                 </div>
-                <RecipeList dataResults={dataResults} />
+                <RecipeList
+                    text={text}
+                    next={next}
+                    lastDoc={lastDoc}
+                    currentItems={currentItems}
+                    totalItems={totalItems}
+                    dataResults={dataResults}
+                />
             </div>
         </div>
     );
