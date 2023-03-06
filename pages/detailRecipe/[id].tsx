@@ -8,7 +8,7 @@ import {
 } from "firebase/firestore";
 import { dbService } from "@/config/firebase";
 import Bookmark from "@/components/detailPage/Bookmark";
-import Kakaoshared from "@/components/detailPage/Kakaoshared";
+import SocialShared from "@/components/detailPage/SocialShared";
 import TopButton from "@/components/button/TopButton";
 import defaultImg from "../../public/images/test1.png";
 import Image from "next/image";
@@ -117,7 +117,7 @@ export default function DetailReciptPage(props: propsType) {
             </p>
             <div className="flex items-center">
               <p className="sm:mr-5 mr-3">
-                <Kakaoshared targetWholeData={props.targetWholeData} />
+                <SocialShared targetWholeData={props.targetWholeData} />
               </p>
               {storageCurrentUser.user === "guest" ? null : (
                 <p className="w-6 h-6 mr-2">

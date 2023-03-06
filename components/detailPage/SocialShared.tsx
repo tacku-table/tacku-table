@@ -5,21 +5,23 @@ import { kakaoInit } from "@/util";
 interface kakaosharedType {
   targetWholeData: targetWholeDataType;
 }
+function SocialShared(props: kakaosharedType) {
+  const shareToTwitter = () => {
+    const sharedLink =
+      "text=" +
+      encodeURIComponent(props.targetWholeData.foodTitle + " \n ") +
+      encodeURIComponent(location.href);
+    window.open(`https://twitter.com/intent/tweet?${sharedLink}`);
+  };
 
-function Kakaoshared(props: kakaosharedType) {
-  // const shareToFacebook = () => {
-  //   const sharedLink = encodeURIComponent(window.location.href);
-  //   window.open(
-  //     `https://www.facebook.com/sharer/sharer.php?u=${sharedLink}%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse`
-  //   );
-  // };
-  // const shareTwitter = () => {
-  //   const sharedLink = encodeURIComponent(window.location.href);
-  //   const sendText = props.targetWholeData.foodTitle;
-  //   window.open(
-  //     `https://twitter.com/intent/tweet?text= ${sendText}&url=${sharedLink}`
-  //   );
-  // };
+  const shareToFacebook = () => {
+    const sharedLink = encodeURIComponent(window.location.href);
+    window.open(
+      // `https://www.facebook.com/sharer/sharer.php?u=${sharedLink};src=sdkpreparse`
+      `https://www.facebook.com/sharer/sharer.php?u=${sharedLink}%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse`,
+      "width=486, height=286"
+    );
+  };
   const kakaoShare = () => {
     const { Kakao, location } = window;
     Kakao.Link.sendDefault({
@@ -53,14 +55,14 @@ function Kakaoshared(props: kakaosharedType) {
       <button onClick={kakaoShare} className="w-6 h-6 mr-2">
         <SiKakaotalk style={{ fontSize: "36px", color: "#AFAFAF" }} />
       </button>
-      {/* <button onClick={shareToFacebook} className="w-6 h-6 mr-2">
+      <button onClick={shareToFacebook} className="w-6 h-6 mr-2">
         <SiFacebook style={{ fontSize: "36px", color: "#AFAFAF" }} />
       </button>
-      <button onClick={shareTwitter} className="w-6 h-6 mr-2">
+      <button onClick={shareToTwitter} className="w-6 h-6 mr-2">
         <SiTwitter style={{ fontSize: "36px", color: "#AFAFAF" }} />
-      </button> */}
+      </button>
     </>
   );
 }
 
-export default Kakaoshared;
+export default SocialShared;
