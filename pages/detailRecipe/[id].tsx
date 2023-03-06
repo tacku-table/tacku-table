@@ -98,9 +98,9 @@ export default function DetailReciptPage(props: propsType) {
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center bg-mono40 ">
-      <div className=" w-[1180px] my-4 bg-white pb-[131px] pt-[52px] px-[200px]">
-        <div className="bg-slate-100 w-full h-[440px] overflow-hidden relative">
+    <div className="xl:w-full sm:w-fit h-full flex flex-col items-center bg-mono40 mx-auto">
+      <div className="sm:w-[1180px] w-full sm:my-4 my-0 bg-white sm:pb-[131px] pb-10 sm:pt-[52px] pt-5 sm:px-[200px] px-3">
+        <div className="bg-slate-100 w-full sm:h-[440px] h-[250px] overflow-hidden relative">
           <Image
             src={`${props.targetWholeData?.thumbnail}`}
             alt="thumbnail"
@@ -150,7 +150,7 @@ export default function DetailReciptPage(props: propsType) {
             </span>
             <p>{props.targetWholeData?.cookingTime}</p>
           </div>
-          <div className="flex justify-between border-b-2 border-border-500 pb-8 my-5">
+          <div className="sm:flex justify-between  border-b-2 border-border-500 sm:pb-8 pb-3 my-5 text-center">
             <p> {props.targetWholeData?.animationTitle}</p>
             <p>{props.targetWholeData?.foodCategory.replaceAll("&", "/")}</p>
             <p>{getTimegap(props.targetWholeData?.createdAt)}</p>
@@ -222,7 +222,7 @@ export default function DetailReciptPage(props: propsType) {
             }}
           />
         </div>
-        <div className=" flex justify-between items-center border-b-2 border-border-500 pb-4 mt-11 mb-8 ">
+        <div className=" flex justify-between items-center border-b-2 border-border-500 pb-4 mt-11 sm:mb-8 mb-0">
           <div>조회수 : {views}</div>
           <TopButton className="border-2 border-border-500 px-4 py-2 " />
         </div>
