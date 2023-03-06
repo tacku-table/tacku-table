@@ -112,6 +112,18 @@ export default function DetailReciptPage(props: propsType) {
           content={props.targetWholeData?.animationTitle}
         />
         <meta property="og:image" content={props.targetWholeData?.thumbnail} />
+        <meta name="twitter:title" content={props.targetWholeData?.foodTitle} />
+        <meta
+          name="twitter:description"
+          content={props.targetWholeData?.animationTitle}
+        />
+        <meta name="twitter:card" content="photo" />
+        <meta
+          name="twitter:url"
+          content="tacku-table-799b.vercel.app
+        "
+        />
+        <meta name="twitter:image" content={props.targetWholeData?.thumbnail} />
       </Head>
       <div className="xl:w-full sm:w-fit h-full flex flex-col items-center bg-mono40 mx-auto">
         <div className="sm:w-[1180px] w-full sm:my-4 my-0 bg-white sm:pb-[131px] pb-10 sm:pt-[52px] pt-5 sm:px-[200px] px-3">
