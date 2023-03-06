@@ -56,7 +56,7 @@ const Login = ({ setStatus, status }: LoginProps) => {
           photoURL: "null",
         });
         sessionStorage.setItem("User", JSON.stringify(authService.currentUser));
-        //location.href = "/mainPage";
+        location.href = "/mainPage";
       })
       .catch((err) => {
         console.log(err);
