@@ -117,17 +117,21 @@ export default function DetailReciptPage(props: propsType) {
             <p className="text-2xl font-semibold">
               {props.targetWholeData?.foodTitle}
             </p>
-
-            {storageCurrentUser.user === "guest" ? null : (
-              <p className="w-6 h-6 mr-2">
-                <Bookmark
-                  postId={props.postId}
-                  targetWholeData={props.targetWholeData}
-                  storageCurrentUser={storageCurrentUser}
-                  userData={userData}
-                />
+            <div className="flex items-center">
+              <p className="sm:mr-5 mr-3">
+                <Kakaoshared />
               </p>
-            )}
+              {storageCurrentUser.user === "guest" ? null : (
+                <p className="w-6 h-6 mr-2">
+                  <Bookmark
+                    postId={props.postId}
+                    targetWholeData={props.targetWholeData}
+                    storageCurrentUser={storageCurrentUser}
+                    userData={userData}
+                  />
+                </p>
+              )}
+            </div>
           </div>
           <div className="flex items-center">
             <span className="float-left mr-2">

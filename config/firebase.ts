@@ -14,14 +14,14 @@ import { getStorage } from "firebase/storage";
 // };
 
 // 재희 firebase
-//const firebaseConfig = {
-// apiKey: "AIzaSyDwf81KBJ6rlKDJRts_oq2aPPDfH8LL8aQ",
-// authDomain: "test-3a207.firebaseapp.com",
-// projectId: "test-3a207",
-// storageBucket: "test-3a207.appspot.com",
-//messagingSenderId: "713080381754",
-// appId: "1:713080381754:web:3719f1abfc305e5b08b003",
-//};
+const firebaseConfig = {
+  apiKey: "AIzaSyDwf81KBJ6rlKDJRts_oq2aPPDfH8LL8aQ",
+  authDomain: "test-3a207.firebaseapp.com",
+  projectId: "test-3a207",
+  storageBucket: "test-3a207.appspot.com",
+  messagingSenderId: "713080381754",
+  appId: "1:713080381754:web:3719f1abfc305e5b08b003",
+};
 
 // 채하
 // const firebaseConfig = {
@@ -53,7 +53,6 @@ import { getStorage } from "firebase/storage";
 //   messagingSenderId: "351669114811",
 //   appId: "1:351669114811:web:769e3f58dc6fd33b9d169e",
 // };
->>>>>>> 1a9baf2313f2f9b40a98a8f3fb86f41c5ea40e3e
 
 let firebase;
 if (!getApps().length) firebase = initializeApp(firebaseConfig);

@@ -8,14 +8,15 @@ function Kakaoshared() {
     Kakao.Share?.sendScrap({
       requestUrl: location.href,
     });
+    console.log(typeof Kakao);
   };
+
   useEffect(() => {
     kakaoInit();
   }, []);
-
   return (
-    <button onClick={kakaoShare}>
-      <SiKakaotalk />
+    <button onClick={kakaoShare} className="w-6 h-6 mr-2">
+      <SiKakaotalk style={{ fontSize: "40px", color: "#F16C34" }} />
     </button>
   );
 }

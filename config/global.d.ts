@@ -43,6 +43,9 @@ declare global {
   interface communityPostType {
     [key: string]: string;
   }
+  interface Window {
+    Kakao: any;
+  }
 }
 
 export {};
