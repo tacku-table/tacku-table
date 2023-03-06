@@ -16,6 +16,7 @@ import Image from "next/image";
 import defaultImg from "../../public/images/test1.png";
 import { toast } from "react-toastify";
 import Post from "./Post";
+import EmptyPost from "./EmptyPost";
 const MyBookmarkTab = ({ userInfo, storageCurrentUser }: any) => {
   const [bookmarkPost, setBookmarkPost] = useState<any[]>([]);
 
@@ -74,6 +75,7 @@ const MyBookmarkTab = ({ userInfo, storageCurrentUser }: any) => {
 
   return (
     <Tab.Panel className="pb-6">
+      {bookmarkPost.length === 0 && <EmptyPost />}
       {bookmarkPost?.map((p) => (
         <div key={p.postId} className="p-6">
           <hr className="border-mono50 mx-8 mb-6 border-[1px]" />
