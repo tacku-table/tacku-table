@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import kakaoShared from "../../public/images/kakaoShare.png";
+import { SiKakaotalk } from "react-icons/si";
 import { kakaoInit } from "@/util";
-import Image from "next/image";
 
 function Kakaoshared() {
   const kakaoShare = () => {
@@ -9,21 +8,15 @@ function Kakaoshared() {
     Kakao.Share?.sendScrap({
       requestUrl: location.href,
     });
+    console.log(typeof Kakao);
   };
+
   useEffect(() => {
     kakaoInit();
   }, []);
-
   return (
-    <button onClick={kakaoShare}>
-      <Image
-        src={kakaoShared}
-        width={36}
-        height={36}
-        alt="default_img"
-        className="rounded-md object-cover aspect-[4/3]"
-        unoptimized
-      />
+    <button onClick={kakaoShare} className="w-6 h-6 mr-2">
+      <SiKakaotalk style={{ fontSize: "40px", color: "#F16C34" }} />
     </button>
   );
 }

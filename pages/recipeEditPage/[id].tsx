@@ -8,6 +8,7 @@ import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import { storage } from "@/config/firebase";
 import EditorComponent from "@/components/write/TextEditor";
 import { toast, ToastContainer } from "react-toastify";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 
 interface TitleType {
   title: string;
@@ -17,7 +18,7 @@ const RecipeEditPage = ({
   targetWholeData,
   postId,
 }: {
-  targetWholeData: any;
+  targetWholeData: targetWholeDataType;
   postId: string;
 }) => {
   const [searchTitle, setSeachTitle] = useState(targetWholeData.animationTitle);
@@ -44,23 +45,18 @@ const RecipeEditPage = ({
   const cookTimeRef = useRef<HTMLSelectElement>(null);
   const foodCategoryRef = useRef<HTMLSelectElement>(null);
   const thumbnailRef = useRef<HTMLInputElement>(null);
-  const displayStatusRef = useRef<HTMLSelectElement>(null);
-
-  const [storageCurrentUser, setStorageCurrentUser]: any = useState({});
+  const [storageCurrentUser, setStorageCurrentUser] = useState<parseUserType>(
+    {}
+  );
   const [originImgThumbNail, setOriginImgThumbNail] = useState("");
-
   const [imgLoading, setImgLoading] = useState("default");
 
   useEffect(() => {
     const user = sessionStorage.getItem("User") || "";
     const parseUser = JSON.parse(user);
     setStorageCurrentUser(parseUser);
-
-    //----------이미지 미리보기 해겨중-------
     setOriginImgThumbNail(targetWholeData?.thumbnail);
   }, []);
-  // console.log("storageCurrentUser:", storageCurrentUser?.uid);
-  // console.log("storageCurrentUser:", storageCurrentUser?.displayName);
 
   const { data, refetch } = useQuery(["tmdb"], () => {
     return searchMovieTitle(searchTitle);
@@ -79,11 +75,6 @@ const RecipeEditPage = ({
     }
   }, [data]);
 
-  // 기존 thumbNail 셋팅하는 것 ----------------
-  // let originImgThumbNail = targetWholeData?.thumbnail;
-  // console.log(originImgThumbNail);
-
-  // 체인지 이벤트 발생시 실행되는 함수-----------------
   const toastAlert = (alertText: string) => {
     toast(`${alertText}`, {
       position: "top-right",
@@ -99,20 +90,20 @@ const RecipeEditPage = ({
 
   const inputChangeSetFunc = (
     event: React.ChangeEvent<HTMLInputElement>,
-    setFunction: any
+    setFunction: React.Dispatch<React.SetStateAction<string>>
   ) => {
     setFunction(event.target.value);
   };
 
   const selectChangeSetFunc = (
     event: React.ChangeEvent<HTMLSelectElement>,
-    setFunction: any
+    setFunction: React.Dispatch<React.SetStateAction<string>>
   ) => {
     console.log(event.target.value);
     setFunction(event.target.value);
   };
 
-  const editPost = async (event: any) => {
+  const editPost = async (event: React.SyntheticEvent<EventTarget>) => {
     event.preventDefault();
     console.log("영화제목", targetTitle);
     console.log("음식명", foodTitle);
@@ -123,9 +114,6 @@ const RecipeEditPage = ({
     console.log("대표사진 url", thumbnail);
     console.log("텍스트 에디터 내용", editorText);
     console.log("uid", uid);
-    // console.log(currentUser.displayName);
-
-    //new가 아니고 해당 게시물의 uid를 기준으로 updateDoc을 해줘야지
 
     const newEditRecipe = {
       uid: storageCurrentUser?.uid,
@@ -225,14 +213,16 @@ const RecipeEditPage = ({
     }, 1200);
   };
 
-  const onFileChange = (event: any) => {
-    const theFile = event.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(theFile);
-    reader.onloadend = (finishedEvent: any) => {
-      const imgDataUrl: any = finishedEvent.currentTarget.result;
+  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const target = event.currentTarget;
+    const theFile = (target.files as FileList)[0];
+    const reader: FileReader = new FileReader();
+    if (theFile && theFile.type.match("image.*")) {
+      reader.readAsDataURL(theFile);
+    }
+    reader.onloadend = (finishedEvent: ProgressEvent) => {
+      const imgDataUrl = reader.result as string;
       localStorage.setItem("imgDataUrl", imgDataUrl);
-      console.log("imgDataUrl", imgDataUrl);
       setImagePreview(imgDataUrl);
       setOriginImgThumbNail(imgDataUrl);
       addImageFirebase();
@@ -243,7 +233,7 @@ const RecipeEditPage = ({
     let randomID = Date.now();
     const imgRef = ref(storage, `newRecipeCoverPhoto${randomID}`);
     const imgDataUrl = localStorage.getItem("imgDataUrl");
-    let downloadUrl: any;
+    let downloadUrl: string;
 
     if (imgDataUrl) {
       setImgLoading("loading");
@@ -484,21 +474,30 @@ const RecipeEditPage = ({
 
 export default RecipeEditPage;
 
-export const getServerSideProps: any = async (context: any) => {
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
   let targetWholeData;
   const { params } = context;
-  const { id } = params;
+  const { id } = params as { [key: string]: string };
   const postId = id;
 
   const snap = await getDoc(doc(dbService, "recipe", postId));
-
   if (snap.exists()) {
     targetWholeData = snap.data();
   } else {
-    console.log("No such document");
+    console.log("가져올 문서가 없습니다.");
+    return { props: {} };
   }
 
-  targetWholeData = JSON.parse(JSON.stringify(targetWholeData));
+  if (targetWholeData) {
+    targetWholeData = JSON.parse(JSON.stringify(targetWholeData));
+  }
 
-  return { props: { targetWholeData, postId } };
+  return {
+    props: {
+      targetWholeData: targetWholeData || null,
+      postId: postId || null,
+    },
+  };
 };

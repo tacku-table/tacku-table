@@ -30,7 +30,6 @@ const Comments = ({ boardId, uid }) => {
     getComments();
   }, []);
 
-  console.log("boardId : ", boardId);
   let commentsListArray = [];
 
   const toastAlert = (alertText) => {
@@ -72,7 +71,6 @@ const Comments = ({ boardId, uid }) => {
             commentWriterNickName: res.userNickname,
             ...doc.data(),
           };
-          console.log("comments", comments);
           commentsListArray.push(comments);
           setBoardComments(commentsListArray);
           setComment("");
@@ -85,7 +83,6 @@ const Comments = ({ boardId, uid }) => {
 
   //User 컬랙션에셔 실시간 유저 정보 가져오는 함수
   const getUserInfoInUserCollection = async (commentsWritterUID) => {
-    console.log("commentsWritterUID:", commentsWritterUID);
     const docRef = doc(dbService, "user", commentsWritterUID);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
@@ -101,15 +98,6 @@ const Comments = ({ boardId, uid }) => {
     }
     return commentUserInfo;
   };
-
-  //   function checkExistData(value, dataName) {
-  //     if (value == "") {
-  //         alert("공백 안된다능");
-  //         return false;
-  //     }
-  //     return true;
-  // }
-  console.log("comment", comment);
 
   // 댓글 add
   const addComment = async (event) => {

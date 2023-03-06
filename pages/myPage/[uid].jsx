@@ -13,12 +13,12 @@ const MyPage = () => {
   const [storageCurrentUser, setStorageCurrentUser] = useState({});
   const [isOwner, setIsOwner] = useState({});
   const [imgPreview, setImgPreview] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   const router = useRouter();
 
   useEffect(() => {
     if (!router.isReady) return;
-    console.log(router);
     const { uid } = router.query;
     const res = {
       uid,
@@ -37,6 +37,11 @@ const MyPage = () => {
       setUserInfo(user);
     });
   };
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+  });
 
   useEffect(() => {
     const currentUser = JSON.parse(sessionStorage.getItem("User"));
@@ -64,6 +69,9 @@ const MyPage = () => {
     }
     setImgPreview(userImg);
   };
+  if (isLoading) {
+    return <></>;
+  }
 
   return (
     <>
@@ -119,19 +127,12 @@ const MyPage = () => {
           </div>
         </div>
       </div>
-      <MyTabs userInfo={userInfo} setUserInfo={setUserInfo} />
+      <MyTabs
+        userInfo={userInfo}
+        setUserInfo={setUserInfo}
+        storageCurrentUser={storageCurrentUser}
+      />
     </>
   );
 };
 export default MyPage;
-// export async function getServerSideProps(context) {
-//   console.log(context);
-//   const { query } = context;
-//   console.log(query);
-//   // const { currentUserState } = query;
-//   // const res = JSON.parse(currentUserState);
-//   // console.log(res);
-//   return {
-//     props: {},
-//   };
-// }
