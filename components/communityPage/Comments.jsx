@@ -251,6 +251,7 @@ const Comments = ({ boardId, uid }) => {
                         className="text-[12px] ml-1 mr-1 text-mono80"
                         type="button"
                         onClick={() => {
+                          setEditComment(item.comment);
                           // 댓글 id
                           commentEdit(item.id, index);
                         }}
