@@ -6,8 +6,6 @@ import GossipTab from "./GossipTab";
 import AllListTab from "./AllListTab";
 import { cls } from "../../util";
 const CommunityTabs = () => {
-  const [isLoading, setIsLoading] = useState(true);
-
   //   탭바 변경 state
   let [categories] = useState([
     "전체 글목록",
@@ -15,15 +13,6 @@ const CommunityTabs = () => {
     "애니게시판",
     "잡담게시판",
   ]);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 100);
-  });
-  if (isLoading) {
-    return <></>;
-  }
 
   return (
     <div className="w-[860px]">
