@@ -37,7 +37,6 @@ const RegisterPage = () => {
         register,
         handleSubmit,
         getValues,
-        setError,
         formState: { errors },
     } = useForm<RegisterForm>({ mode: "onChange" });
     const onValid = (data: RegisterForm) => {
@@ -51,8 +50,7 @@ const RegisterPage = () => {
     const [nicknameCheck, setNicknameCheck] = useState(false);
     const [notNicknameDuplicateCheck, setNotNicknameDuplicateCheck] =
         useState(true);
-    const [saveNickname, setSaveNickname] = useState<any>("");
-    const [tempNickname, setTempNickname] = useState("");
+    const [saveNickname, setSaveNickname] = useState("");
 
     // 회원가입
     const signUp = () => {
@@ -60,39 +58,38 @@ const RegisterPage = () => {
             authService,
             getValues("email"),
             getValues("pw")
-        )
-            .then(async (data) => {
-                console.log("회원 데이터", data.user.uid);
-                await setDoc(doc(dbService, "user", data.user.uid), {
+        ).then(async (data) => {
+            Promise.all([
+                setDoc(doc(dbService, "user", data.user.uid), {
                     userId: data.user.uid,
                     userNickname: getValues("nickname"),
                     userEmail: getValues("email"),
                     userPw: getValues("pw"),
                     userImg: "null",
-                });
-                await updateProfile(data.user, {
+                }),
+                updateProfile(data.user, {
                     displayName: getValues("nickname"),
                     photoURL: "null",
-                });
+                }),
                 toast.success("회원가입성공! 로그인해주세요", {
                     hideProgressBar: true,
-                });
-                setTimeout(() => {
-                    signOut(authService).then(() => {
-                        sessionStorage.clear();
-                        location.href = "/login";
-                    });
-                }, 1500);
-
-                return data.user;
-            })
-            .catch((error) => {
+                }),
+            ]).catch((error) => {
                 console.log(error.message);
                 if (error.message.includes("already-in-use")) {
                     toast.error("이미 가입한 회원입니다");
                     return;
                 }
             });
+            setTimeout(() => {
+                signOut(authService).then(() => {
+                    sessionStorage.clear();
+                    location.href = "/login";
+                });
+            }, 1000);
+
+            return data.user;
+        });
     };
 
     // 닉네임 중복체크
