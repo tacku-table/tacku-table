@@ -83,7 +83,10 @@ const SearchData: NextPage = () => {
         const querySnapshot = await getDocs(
             query(
                 collection(dbService, "recipe"),
-                orderBy("createdAt", "desc"),
+                orderBy(
+                    isBest === "viewCount" ? "viewCount" : "createdAt",
+                    "desc"
+                ),
                 startAfter(lastDoc),
                 limit(6)
             )
@@ -109,6 +112,7 @@ const SearchData: NextPage = () => {
         includeScore: true,
         includeMatches: true,
         ignoreLocation: true,
+        threshold: 0.5,
     });
     const results = fuse.search(text);
     const dataResults = results.map((recipe) => recipe.item);

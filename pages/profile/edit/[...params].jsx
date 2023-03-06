@@ -334,85 +334,91 @@ export default function ProfileEdit(props) {
               className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10"
             />
           </div>
-          <div>
-            <div className="flex gap-14 items-center">
-              <span className="text-base min-w-[120px] ">비밀번호 변경</span>
-              {!togglePwChange && (
-                <div className="px-2 py-1 text-center w-fit border-mono60 border-[1px] text-base">
-                  <button onClick={() => setTogglePwChange(true)}>
-                    변경하기
+          {userInfo?.userPw !== "social" && (
+            <>
+              <div>
+                <div className="flex gap-14 items-center">
+                  <span className="text-base min-w-[120px] ">
+                    비밀번호 변경
+                  </span>
+                  {!togglePwChange && (
+                    <div className="px-2 py-1 text-center w-fit border-mono60 border-[1px] text-base">
+                      <button onClick={() => setTogglePwChange(true)}>
+                        변경하기
+                      </button>
+                    </div>
+                  )}
+                  {togglePwChange && (
+                    <div>
+                      <input
+                        type="password"
+                        placeholder="변경할 비밀번호를 입력해주세요."
+                        onChange={handleChangePassword}
+                        className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10 focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
+                      />
+                      <div className="h-[16px]">
+                        {changeUserPw?.length > 0 && (
+                          <span
+                            className={cls(
+                              "text-xs",
+                              `${
+                                isPassword
+                                  ? "text-xs text-blue100"
+                                  : "text-brand100"
+                              }`
+                            )}
+                          >
+                            {passwordMessage}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+              {togglePwChange && (
+                <div className="relative">
+                  <div className="flex flex-col">
+                    <label className="flex gap-14 items-center">
+                      <span className="text-base min-w-[120px]">
+                        비밀번호 변경 확인
+                      </span>
+                      <div>
+                        <input
+                          type="password"
+                          placeholder="확인을 위해 비밀번호를 재입력해주세요."
+                          onChange={handleChangePasswordConfirm}
+                          className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10  focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
+                        />
+                        <div className="h-[16px]">
+                          {confirmChangeUserPw?.length > 0 && (
+                            <span
+                              className={cls(
+                                "text-xs",
+                                `${
+                                  isPasswordConfirm
+                                    ? "text-blue-600"
+                                    : "text-orange-500"
+                                }`
+                              )}
+                            >
+                              {passwordConfirmMessage}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+                  <button
+                    className="absolute -translate-x-1/2 left-3/4 ml-4 w-fit cursor-pointer  disabled:bg-mono30 disabled:text-mono100 valid:bg-brand100 valid:text-white hover:bg-brand100/80 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-sm text-sm px-2 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mb-2"
+                    disabled={!(isPassword && isPasswordConfirm)}
+                    onClick={() => handleUpdatePassword(userInfo?.userId)}
+                  >
+                    수정하기
                   </button>
                 </div>
               )}
-              {togglePwChange && (
-                <div>
-                  <input
-                    type="password"
-                    placeholder="변경할 비밀번호를 입력해주세요."
-                    onChange={handleChangePassword}
-                    className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10 focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
-                  />
-                  <div className="h-[16px]">
-                    {changeUserPw?.length > 0 && (
-                      <span
-                        className={cls(
-                          "text-xs",
-                          `${
-                            isPassword
-                              ? "text-xs text-blue100"
-                              : "text-brand100"
-                          }`
-                        )}
-                      >
-                        {passwordMessage}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-          {togglePwChange && (
-            <div className="relative">
-              <div className="flex flex-col">
-                <label className="flex gap-14 items-center">
-                  <span className="text-base min-w-[120px]">
-                    비밀번호 변경 확인
-                  </span>
-                  <div>
-                    <input
-                      type="password"
-                      placeholder="확인을 위해 비밀번호를 재입력해주세요."
-                      onChange={handleChangePasswordConfirm}
-                      className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10  focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
-                    />
-                    <div className="h-[16px]">
-                      {confirmChangeUserPw?.length > 0 && (
-                        <span
-                          className={cls(
-                            "text-xs",
-                            `${
-                              isPasswordConfirm
-                                ? "text-blue-600"
-                                : "text-orange-500"
-                            }`
-                          )}
-                        >
-                          {passwordConfirmMessage}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </label>
-              </div>
-              <button
-                className="absolute -translate-x-1/2 left-3/4 ml-4 w-fit cursor-pointer  disabled:bg-mono30 disabled:text-mono100 valid:bg-brand100 valid:text-white hover:bg-brand100/80 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-sm text-sm px-2 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mb-2"
-                disabled={!(isPassword && isPasswordConfirm)}
-                onClick={() => handleUpdatePassword(userInfo?.userId)}
-              >
-                수정하기
-              </button>
-            </div>
+            </>
           )}
           <div className="flex flex-col">
             <label
