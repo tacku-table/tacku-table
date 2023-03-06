@@ -54,9 +54,6 @@ const RegisterPage = () => {
     const [saveNickname, setSaveNickname] = useState<any>("");
     const [tempNickname, setTempNickname] = useState("");
 
-    // 성공 알람 ( 초록색 창 )
-    const success = () => toast.success("Success!");
-
     // 회원가입
     const signUp = () => {
         createUserWithEmailAndPassword(
