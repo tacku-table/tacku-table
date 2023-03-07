@@ -81,7 +81,7 @@ const MyBookmarkTab = ({
                 }}
               >
                 <Image
-                  className="object-cover aspect-[4/3] rounded-md cursor-pointer"
+                  className="w-[180px] h-[105px] object-cover aspect-[4/3] rounded-md cursor-pointer"
                   src={p.thumbnail}
                   priority={true}
                   loader={({ src }) => src}
