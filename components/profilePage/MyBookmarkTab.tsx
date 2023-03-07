@@ -16,11 +16,17 @@ import Image from "next/image";
 import { toast } from "react-toastify";
 import Post from "./Post";
 import EmptyPost from "./EmptyPost";
-
 import { getMyBookmark } from "../../api/firedb";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { User } from "firebase/auth";
 
-const MyBookmarkTab = ({ userInfo, storageCurrentUser }: any) => {
+const MyBookmarkTab = ({
+  userInfo,
+  storageCurrentUser,
+}: {
+  userInfo: TUserInfo;
+  storageCurrentUser: User;
+}) => {
   const queryClient = useQueryClient();
 
   const [isLoadings, setIsLoadings] = useState(true);
@@ -39,8 +45,8 @@ const MyBookmarkTab = ({ userInfo, storageCurrentUser }: any) => {
     isLoading,
     data: bookmarkPost,
     refetch,
-  } = useQuery(["bookmark", userInfo.userId], () =>
-    getMyBookmark(userInfo.userId)
+  } = useQuery(["bookmark", userInfo?.userId], () =>
+    getMyBookmark(userInfo?.userId as string)
   );
 
   const toastAlert = (alertText: any) => {
@@ -67,7 +73,7 @@ const MyBookmarkTab = ({ userInfo, storageCurrentUser }: any) => {
             p.postId
           )
         );
-        getMyBookmark(userInfo.userId);
+        getMyBookmark(userInfo?.userId as string);
         toastAlert("삭제되었습니다");
       } catch (error: any) {
         toast.error("삭제에 실패하였습니다. 다시 시도해주세요.", error);
