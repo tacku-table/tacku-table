@@ -43,10 +43,10 @@ const FindPassword = () => {
       return;
     }
     sendPasswordResetEmail(authService, email)
-      .then((data: any) => {
+      .then((data) => {
         toast.success("이메일을 발송했습니다.");
       })
-      .catch((error: any) => {
+      .catch((error) => {
         if (error.message.includes("auth/user-not-found")) {
           toast.warn("회원이 아닙니다. 회원가입을 먼저 진행해 주세요.");
           return;
