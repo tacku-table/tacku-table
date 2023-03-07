@@ -13,12 +13,34 @@ import {
 } from "firebase/firestore";
 import Link from "next/link";
 import Image from "next/image";
-import defaultImg from "../../public/images/test1.png";
 import { toast } from "react-toastify";
 import Post from "./Post";
 import EmptyPost from "./EmptyPost";
+import { getMyBookmark } from "../../api/firedb";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+
 const MyBookmarkTab = ({ userInfo, storageCurrentUser }: any) => {
-  const [bookmarkPost, setBookmarkPost] = useState<any[]>([]);
+  const queryClient = useQueryClient();
+
+  const [isLoadings, setIsLoadings] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoadings(false);
+    }, 500);
+  });
+
+  // const [bookmarkPost, setBookmarkPost] = useState<any[]>([]);
+  // const [isLoadings, setIsLoadings]= useState(false)
+
+  // const queryClient = useQueryClient();
+
+  const {
+    isLoading,
+    data: bookmarkPost,
+    refetch,
+  } = useQuery(["bookmark", userInfo.userId], () =>
+    getMyBookmark(userInfo.userId)
+  );
 
   const toastAlert = (alertText: any) => {
     toast(`${alertText}`, {
@@ -33,27 +55,6 @@ const MyBookmarkTab = ({ userInfo, storageCurrentUser }: any) => {
     });
   };
 
-  useEffect(() => {
-    getMyBookmark(userInfo.userId);
-  }, [bookmarkPost]);
-
-  const getMyBookmark = async (userId: any) => {
-    const q = query(collection(dbService, `user/${userId}/bookmarkPost`));
-
-    onSnapshot(q, async (snapshots) => {
-      const myposts = snapshots.docs.map((doc) => {
-        const mypost = {
-          postId: doc.id,
-          writerUid: doc.data().uid,
-          writerdisplayName: doc.data().writerNickName,
-          writerImg: doc.data().writerProfileImg,
-          ...doc.data(),
-        };
-        return mypost;
-      });
-      setBookmarkPost(myposts);
-    });
-  };
   const handleDeleteBookmark = async (p: any) => {
     const userConfirm = window.confirm("즐겨찾기 레시피를 삭제하시겠습니까?");
     if (userConfirm) {
@@ -75,7 +76,7 @@ const MyBookmarkTab = ({ userInfo, storageCurrentUser }: any) => {
 
   return (
     <Tab.Panel className="pb-6">
-      {bookmarkPost.length === 0 && <EmptyPost />}
+      {bookmarkPost?.length === 0 && <EmptyPost />}
       {bookmarkPost?.map((p) => (
         <div key={p.postId} className="p-6">
           <hr className="border-mono50 mx-8 mb-6 border-[1px]" />
@@ -140,5 +141,4 @@ const MyBookmarkTab = ({ userInfo, storageCurrentUser }: any) => {
     </Tab.Panel>
   );
 };
-
 export default MyBookmarkTab;
