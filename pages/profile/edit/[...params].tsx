@@ -323,7 +323,7 @@ export default function ProfileEdit(props: ProfileEditProp) {
                     src={
                       showUserUpdateImg as unknown as string | StaticImageData
                     }
-                    className="rounded-md aspect-square"
+                    className="w-[150px] h-[150px] rounded-md aspect-square"
                     loader={({ src }) => src}
                     priority={true}
                     width={150}

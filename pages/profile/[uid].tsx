@@ -78,7 +78,7 @@ const MyPage = () => {
             {imgPreview && (
               <Image
                 src={imgPreview}
-                className="rounded-md aspect-square"
+                className="w-[100px] h-[100px] rounded-md aspect-square"
                 loader={({ src }) => src}
                 unoptimized
                 priority={true}
