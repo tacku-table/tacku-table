@@ -8,11 +8,25 @@ import {
   signOut,
   User,
 } from "firebase/auth";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { getDownloadURL, ref, listAll, uploadBytes } from "firebase/storage";
 import Image, { StaticImageData } from "next/image";
 import defaultImg from "../../../public/images/test1.png";
-import { SetStateAction, useCallback, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { storage } from "../../../config/firebase";
 import { pwRegex, nickRegex, cls } from "../../../util";
 import { useRouter } from "next/router";
@@ -56,6 +70,13 @@ export default function ProfileEdit(props: ProfileEditProp) {
   const [changeUserNickname, setChangeUserNickname] = useState<
     string | undefined
   >();
+  // 닉네임 중복확인
+  const [notNicknameDuplicateCheck, setNotNicknameDuplicateCheck] =
+    useState(true);
+  const [saveNickname, setSaveNickname] = useState<any>("");
+  const [nicknameCheck, setNicknameCheck] = useState(false);
+  // const [error, setError] = useState("");
+  // const [nicknameErrorMsg, setNicknameErrorMsg] = useState("");
   // 이용약관 체크
   const [agree, setAgree] = useState(false);
 
@@ -180,19 +201,41 @@ export default function ProfileEdit(props: ProfileEditProp) {
     },
     [changeUserPw]
   );
-  const handleChangeNickname = (
+  const handleChangeNickname = async (
     event: React.ChangeEvent<HTMLInputElement>,
     setFunction: React.Dispatch<SetStateAction<string | undefined>>
   ) => {
     setFunction(event.target.value);
+
+    const nickname = event.target.value;
+    const nickNameCheck = query(
+      collection(dbService, "user"),
+      where("userNickname", "==", nickname)
+    );
+    const querySnapshot = await getDocs(nickNameCheck);
+    const newData = querySnapshot.docs;
+
     if (!nickRegex.test(event.target.value)) {
       setNicknameMessage(
         "2자 이상 8자 이하로 입력해주세요.(영어 또는 숫자 또는 한글만 가능)"
       );
       setIsNickname(false);
     } else {
-      setNicknameMessage("올바른 닉네임 형식입니다.");
-      setIsNickname(true);
+      if (newData.length == 0 && nickname.length > 0) {
+        setNicknameMessage("사용가능");
+        setSaveNickname(nickname);
+        return setIsNickname(true);
+        // return setNotNicknameDuplicateCheck(false);
+      } else {
+        if (nickname.length != 0) {
+          setNicknameMessage("이미 다른 유저가 사용 중입니다.");
+          setIsNickname(false);
+        } else {
+          setNicknameMessage("알 수 없는 에러로 사용할 수 없습니다.");
+          setIsNickname(false);
+          return;
+        }
+      }
     }
   };
 
@@ -236,52 +279,38 @@ export default function ProfileEdit(props: ProfileEditProp) {
       })
       .catch((error) => toast.error("재로그인이 필요합니다.", error));
   };
-  const handleUpdateUserDocs = async (uid: string) => {
-    // 비밀번호 변경했을때랑 아닐때
-    const docId = uid;
-    const docRef = doc(dbService, "user", docId);
-    const userProvidedPassword = userInfo?.userPw;
-    const credential = EmailAuthProvider.credential(
-      storageCurrentUser?.email as unknown as string,
-      userProvidedPassword as unknown as string
-    );
-    if (!togglePwChange) {
-      setChangeUserPw(userInfo?.userPw as unknown as string);
-      await updateDoc(docRef, {
-        userNickname: changeUserNickname,
-      });
-    } else {
-      await updateDoc(docRef, {
-        userNickname: changeUserNickname,
-        userPw: changeUserPw,
-      });
-    }
-    setTimeout(() => {
-      reauthenticateWithCredential(
-        authService?.currentUser as unknown as User,
-        credential
-      )
-        .then(async () => {
-          await updatePassword(
-            authService?.currentUser as unknown as User,
-            changeUserPw as unknown as string
-          ).catch((error) =>
-            toast.error("비밀번호 변경에 실패하였습니다.\n", error)
-          );
-          await updateProfile(authService?.currentUser as unknown as User, {
-            displayName: changeUserNickname,
-          })
-            .then(() => {
-              location.href = `/myPage/${userInfo?.userId}`;
-            })
-            .catch((error) =>
-              toast.error("닉네임 변경에 실패하였습니다.\n", error)
-            );
-        })
-        .catch((error) => toast.error("재로그인이 필요합니다.", error));
-    }, 500);
-  };
 
+  const nicknameDuplicate = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const nickname = event.target.value;
+
+    if (!nickRegex.test(nickname)) {
+      setNicknameMessage("2자 이상 8자 이하로 입력해주세요");
+      return;
+    }
+    const nickNameCheck = query(
+      collection(dbService, "user"),
+      where("userNickname", "==", nickname)
+    );
+    const querySnapshot = await getDocs(nickNameCheck);
+    const newData = querySnapshot.docs;
+
+    if (newData.length == 0 && nickname.length > 0) {
+      setNicknameMessage("사용가능");
+      setSaveNickname(nickname);
+      setNicknameCheck(true);
+      // return setNotNicknameDuplicateCheck(false);
+    } else {
+      if (nickname.length != 0) {
+        setNicknameMessage("이미 다른 유저가 사용 중입니다.");
+      } else {
+        setNicknameMessage("알 수 없는 에러로 사용할 수 없습니다.");
+      }
+      setNicknameCheck(false);
+      // return setNotNicknameDuplicateCheck(true);
+    }
+  };
   // 이미지 변경
   const handleUpdateProfile = async (id: string) => {
     if (imageUpload === null) return;
@@ -481,11 +510,7 @@ export default function ProfileEdit(props: ProfileEditProp) {
                     <span
                       className={cls(
                         "text-xs",
-                        `${
-                          isPasswordConfirm
-                            ? "text-blue-600"
-                            : "text-orange-500"
-                        }`
+                        `${isNickname ? "text-blue-600" : "text-orange-500"}`
                       )}
                     >
                       {nicknameMessage}
@@ -506,13 +531,6 @@ export default function ProfileEdit(props: ProfileEditProp) {
           </div>
         </div>
         <div className="space-x-5">
-          <button
-            className="disabled:bg-mono30 disabled:text-mono100 valid:bg-brand100 valid:text-white hover:bg-brand100/80 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-sm text-sm px-28 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mb-2"
-            onClick={() => handleUpdateUserDocs(userInfo?.userId as string)}
-            disabled={!((isPassword && isPasswordConfirm) || isNickname)}
-          >
-            수정하기
-          </button>
           <button
             onClick={() => router.back()}
             className="text-mono100 bg-mono30 hover:bg-brand100 hover:text-white focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-sm text-sm px-28 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mb-2"
