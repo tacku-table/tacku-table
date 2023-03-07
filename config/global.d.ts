@@ -19,7 +19,9 @@ declare global {
     userNickname?: string | undefined;
     userPw?: string | undefined;
   }
-
+  interface MyTabProp {
+    userInfo: TUserInfo | undefined;
+  }
   interface TypeRecipe {
     id?: string;
     uid?: string;
