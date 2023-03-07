@@ -22,7 +22,7 @@ const RecipeList = ({
     const filteredOnlyTime = filteredTime?.length;
 
     return (
-        <div className="grid grid-cols-3 gap-x-4 gap-y-9 relative pb-24">
+        <div className="grid grid-cols-3 gap-x-7 gap-y-9 relative pb-24">
             {text && !dataResults?.length ? (
                 <div>
                     <Image

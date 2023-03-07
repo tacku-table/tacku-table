@@ -18,10 +18,9 @@ import { useForm } from "react-hook-form";
 import { FieldErrors } from "react-hook-form/dist/types";
 import ShowPwBtn from "../button/signup/ShowPwBtn";
 import HidePwBtn from "../button/signup/HidePwBtn";
-import { toast } from "react-toastify";
 import ShowPwConfirmBtn from "../button/signup/ShowPwConfirmBtn";
 import HidePwConfirmBtn from "../button/signup/HidePwConfirmBtn";
-import Alert from "../toastify/Alert";
+import { Success, Warn, Error } from "../toastify/Alert";
 
 interface RegisterForm {
     email: string;
@@ -51,6 +50,7 @@ const RegisterPage = () => {
     const [notNicknameDuplicateCheck, setNotNicknameDuplicateCheck] =
         useState(true);
     const [saveNickname, setSaveNickname] = useState("");
+    const [isUsing, setIsUsing] = useState([]);
 
     // 회원가입
     const signUp = () => {
@@ -71,13 +71,11 @@ const RegisterPage = () => {
                     displayName: getValues("nickname"),
                     photoURL: "null",
                 }),
-                toast.success("회원가입성공! 로그인해주세요", {
-                    hideProgressBar: true,
-                }),
+                Success("회원가입성공! 로그인해주세요"),
             ]).catch((error) => {
                 console.log(error.message);
                 if (error.message.includes("already-in-use")) {
-                    toast.error("이미 가입한 회원입니다");
+                    Warn("이미 가입한 회원입니다");
                     return;
                 }
             });
@@ -92,6 +90,22 @@ const RegisterPage = () => {
         });
     };
 
+    // 이메일 중복확인
+    // const emailConfirm = async () => {
+    //     const items = query(
+    //         collection(dbService, "user"),
+    //         where("userEmail", "==", getValues("email"))
+    //     );
+    //     const querySnapshot = await getDocs(items);
+    //     // const newData = querySnapshot.docs;
+    //     const newData = querySnapshot.docs.map((doc) => ({
+    //         ...doc.data(),
+    //     }));
+    //     // @ts-ignore
+    //     setIsUsing(newData);
+    //     console.log(isUsing);
+    // };
+
     // 닉네임 중복체크
     const nicknameDuplicate = async () => {
         const { nickname } = getValues();
@@ -103,15 +117,15 @@ const RegisterPage = () => {
         const newData = querySnapshot.docs;
 
         if (newData.length == 0 && nickname.length > 0) {
-            Alert("사용 가능한 닉네임입니다.");
+            Success("사용 가능한 닉네임입니다.");
             setSaveNickname(nickname);
             setNicknameCheck(true);
             return setNotNicknameDuplicateCheck(false);
         } else {
             if (nickname.length != 0) {
-                Alert("이미 다른 유저가 사용 중입니다.");
+                Warn("이미 다른 유저가 사용 중입니다.");
             } else {
-                toast.warn("알 수 없는 에러로 사용할 수 없습니다.");
+                Error("알 수 없는 에러로 사용할 수 없습니다.");
             }
             setNicknameCheck(false);
             return setNotNicknameDuplicateCheck(true);
@@ -127,6 +141,7 @@ const RegisterPage = () => {
                 window.location.replace(`/login`);
             }
         });
+        // emailConfirm();
     }, []);
 
     return (

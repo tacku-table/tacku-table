@@ -28,17 +28,17 @@ const RecipeListData = ({ item }: { item: TypeRecipe }) => {
     return (
         <div
             key={item.id}
-            className="w-[316px] aspect-[1/0.7] cursor-pointer"
+            className="w-72 aspect-[1/0.7] cursor-pointer"
             onClick={() => {
                 goToDetail(item);
             }}
         >
-            <div className="w-[316px] h-[188px] overflow-hidden mx-auto relative">
+            <div className="w-72 aspect-[1/0.65] overflow-hidden mx-auto relative">
                 <Image
                     src={`${item.thumbnail}`}
-                    className="aspect-[1/0.7] object-cover rounded-sm"
+                    className="aspect-[1/0.65] object-cover rounded-sm w-auto h-auto"
                     alt="recipe_picture"
-                    width={316}
+                    width={288}
                     height={188}
                     loader={({ src }) => src}
                     unoptimized
@@ -73,7 +73,7 @@ const RecipeListData = ({ item }: { item: TypeRecipe }) => {
                 </li>
                 <li className="whitespace-nowrap">&#35;{item.cookingTime}</li>
             </ul>
-            <p className="text-lg text-slate-900 font-semibold mt-1">
+            <p className="text-lg text-slate-900 font-semibold">
                 {item.foodTitle}
             </p>
         </div>

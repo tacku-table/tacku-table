@@ -36,7 +36,7 @@ const BestRecipe: NextPage = () => {
     return (
         <>
             <div className="space-y-4 flex flex-col items-center mb-7">
-                <p className="text-3xl font-extrabold">인기레시피</p>
+                <p className="text-3xl font-semibold">인기레시피</p>
                 <p className="text-lg font-medium text-slate-500">
                     타쿠의 식탁에서 HOT한 요즘유행요리
                 </p>
