@@ -10,7 +10,6 @@ import {
 import { setDoc, doc } from "firebase/firestore";
 import { emailRegex, pwRegex } from "@/util";
 import { toast } from "react-toastify";
-import socialLoginType from "@/config/global";
 import { AiFillGoogleSquare, AiFillFacebook } from "react-icons/ai";
 
 interface LoginProps {
