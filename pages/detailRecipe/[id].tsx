@@ -101,6 +101,7 @@ export default function DetailReciptPage(props: propsType) {
   return (
     <>
       <Head>
+        {/* 페북 미리보기 */}
         <meta
           property="og:url"
           content="tacku-table-799b.vercel.app
@@ -113,6 +114,9 @@ export default function DetailReciptPage(props: propsType) {
         />
         <meta property="og:image" content={props.targetWholeData?.thumbnail} />
         <meta name="twitter:title" content={props.targetWholeData?.foodTitle} />
+      </Head>
+      <Head>
+        {/* 트위터 미리보기 */}
         <meta
           name="twitter:description"
           content={props.targetWholeData?.animationTitle}
@@ -178,9 +182,15 @@ export default function DetailReciptPage(props: propsType) {
               <p>{props.targetWholeData?.cookingTime}</p>
             </div>
             <div className="sm:flex justify-between  border-b-2 border-border-500 sm:pb-8 pb-3 my-5 text-center">
-              <p> {props.targetWholeData?.animationTitle}</p>
-              <p>{props.targetWholeData?.foodCategory.replaceAll("&", "/")}</p>
-              <p>{getTimegap(props.targetWholeData?.createdAt)}</p>
+              <p className="flex-1 sm:text-left sm:font-normal font-semibold">
+                {props.targetWholeData?.animationTitle}
+              </p>
+              <div className="flex justify-between sm:flex-1 flex-none sm:mt-0 mt-3">
+                <p>
+                  {props.targetWholeData?.foodCategory.replaceAll("&", "/")}
+                </p>
+                <p>{getTimegap(props.targetWholeData?.createdAt)}</p>
+              </div>
             </div>
           </div>
           <div>

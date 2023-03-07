@@ -7,12 +7,12 @@ interface socialSharedType {
 }
 function SocialShared(props: socialSharedType) {
   const shareToTwitter = () => {
+    const sharedLink = encodeURIComponent(window.location.href);
     let title = props.targetWholeData.foodTitle;
-    const sharedLink = `text=
-      ${encodeURIComponent(
-        props.targetWholeData.foodTitle + " \n "
-      )}${encodeURIComponent(location.href)}`;
-    window.open(`https://twitter.com/intent/tweet?${sharedLink}`, "popup제목");
+    window.open(
+      `https://twitter.com/intent/tweet?url=${sharedLink}&text=${title}`,
+      "popup제목"
+    );
   };
 
   const shareToFacebook = () => {
@@ -52,17 +52,17 @@ function SocialShared(props: socialSharedType) {
     kakaoInit();
   }, []);
   return (
-    <>
-      <button onClick={kakaoShare} className="w-6 h-6 mr-2">
+    <div className="">
+      <button onClick={kakaoShare} className="w-6 h-6 mr-8">
         <SiKakaotalk style={{ fontSize: "36px", color: "#AFAFAF" }} />
       </button>
-      <button onClick={shareToFacebook} className="w-6 h-6 mr-2">
+      <button onClick={shareToFacebook} className="w-6 h-6 mr-8">
         <SiFacebook style={{ fontSize: "36px", color: "#AFAFAF" }} />
       </button>
-      <button onClick={shareToTwitter} className="w-6 h-6 mr-2">
+      <button onClick={shareToTwitter} className="w-6 h-6">
         <SiTwitter style={{ fontSize: "36px", color: "#AFAFAF" }} />
       </button>
-    </>
+    </div>
   );
 }
 
