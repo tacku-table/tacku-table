@@ -11,6 +11,7 @@ interface MyTabsProp {
   userInfo: TUserInfo | undefined;
   storageCurrentUser: User | undefined;
 }
+
 const MyTabs = ({ userInfo, storageCurrentUser }: MyTabsProp) => {
   //   const [isLoading, setIsLoading] = useState(true);
   //   useEffect(() => {

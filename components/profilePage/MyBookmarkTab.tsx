@@ -24,8 +24,8 @@ const MyBookmarkTab = ({
   userInfo,
   storageCurrentUser,
 }: {
-  userInfo: TUserInfo;
-  storageCurrentUser: User;
+  userInfo: TUserInfo | undefined;
+  storageCurrentUser: User | undefined;
 }) => {
   const queryClient = useQueryClient();
 
@@ -69,7 +69,7 @@ const MyBookmarkTab = ({
         await deleteDoc(
           doc(
             dbService,
-            `user/${storageCurrentUser.uid}/bookmarkPost`,
+            `user/${storageCurrentUser?.uid}/bookmarkPost`,
             p.postId
           )
         );
@@ -123,7 +123,7 @@ const MyBookmarkTab = ({
           </div>
           <div className="flex mt-9 ml-8 space-x-3 relative items-center">
             <Post writerUid={p.writerUid} />
-            {storageCurrentUser.uid === userInfo.userId && (
+            {storageCurrentUser?.uid === userInfo?.userId && (
               <svg
                 className="w-6 h-6 absolute right-8 cursor-pointer hover:text-brand100"
                 onClick={() => {
