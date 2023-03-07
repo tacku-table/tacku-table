@@ -1,5 +1,16 @@
 // global.d.ts
 declare global {
+  interface TBookmark {
+    postId: string;
+    writerUid: string;
+    writerdisplayName: string;
+    writerImg: string;
+    viewCount: number;
+    animationTitle: string;
+    cookingTime: string;
+    foodTitle: string;
+    thumbnail: string;
+  }
   interface TypeRecipe {
     id?: string;
     uid?: string;
