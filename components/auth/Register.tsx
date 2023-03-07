@@ -85,7 +85,7 @@ const RegisterPage = () => {
             });
           }, 1500);
 
-          resolve("하 ㅋㅋ 해줘잉 ");
+          resolve("resolve되었습니다.");
         } catch (error: any) {
           console.log(error.message);
           if (error.message.includes("already-in-use")) {
@@ -95,8 +95,8 @@ const RegisterPage = () => {
         }
       }),
       {
-        pending: "회원가입중입니다!!!!!!!!!",
-        success: "회원가입성공! 로그인해주세요",
+        pending: "회원 가입중입니다.",
+        success: "회원 가입성공! 로그인해주세요",
         error: `"이미 가입한 회원입니다"`,
       },
       {
@@ -106,44 +106,6 @@ const RegisterPage = () => {
         },
       }
     );
-
-    // createUserWithEmailAndPassword(
-    //   authService,
-    //   getValues("email"),
-    //   getValues("pw")
-    // )
-    //   .then(async (data) => {
-    //     console.log("회원 데이터", data.user.uid);
-    //     await setDoc(doc(dbService, "user", data.user.uid), {
-    //       userId: data.user.uid,
-    //       userNickname: getValues("nickname"),
-    //       userEmail: getValues("email"),
-    //       userPw: getValues("pw"),
-    //       userImg: "null",
-    //     });
-    //     await updateProfile(data.user, {
-    //       displayName: getValues("nickname"),
-    //       photoURL: "null",
-    //     });
-    //     toast.success("회원가입성공! 로그인해주세요", {
-    //       hideProgressBar: true,
-    //     });
-    //     setTimeout(() => {
-    //       signOut(authService).then(() => {
-    //         sessionStorage.clear();
-    //         location.href = "/login";
-    //       });
-    //     }, 1500);
-
-    //     return data.user;
-    //   })
-    //   .catch((error) => {
-    //     console.log(error.message);
-    //     if (error.message.includes("already-in-use")) {
-    //       toast.error("이미 가입한 회원입니다");
-    //       return;
-    //     }
-    //   });
   };
 
   // 닉네임 중복체크
@@ -185,27 +147,6 @@ const RegisterPage = () => {
 
   return (
     <div className="w-[420px] mx-auto mb-20 text-mono100">
-      <button
-        onClick={() => {
-          toast.promise(
-            new Promise(async (resolve, reject) => {
-              resolve("하 ㅋㅋ 해줘잉");
-            }),
-            {
-              pending: "!!!!!!!야펜딩하라고",
-              success: `Successfully saved`,
-              error: `This just happened: `,
-            },
-            {
-              style: {
-                minWidth: "250px",
-              },
-            }
-          );
-        }}
-      >
-        나는 테스트란다 ㅎㅎ
-      </button>
       <form
         onSubmit={handleSubmit(onValid, onInValid)}
         className="flex flex-col relative"
