@@ -17,7 +17,7 @@ const SideFoodCate = ({ onCheckedFood, filteredFood }: TypeFoodProps) => {
     return (
         <div className="flex flex-col">
             <h4 className="mb-3 text-sm text-mono80">음식 종류</h4>
-            <div className="flex flex-col justify-center gap-y-3 ml-5">
+            <div className="flex flex-col justify-center gap-y-3">
                 {categoryFoodList.map((item) => {
                     return (
                         <div key={item.name}>

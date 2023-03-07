@@ -51,7 +51,6 @@ const RegisterPage = () => {
     const [notNicknameDuplicateCheck, setNotNicknameDuplicateCheck] =
         useState(true);
     const [saveNickname, setSaveNickname] = useState<any>("");
-    const [tempNickname, setTempNickname] = useState("");
 
     // 회원가입
     const signUp = () => {

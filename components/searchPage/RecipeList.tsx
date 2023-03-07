@@ -22,17 +22,19 @@ const RecipeList = ({
     const filteredOnlyTime = filteredTime?.length;
 
     return (
-        <div className="grid grid-cols-3 gap-x-7 gap-y-9 relative pb-24">
-            {text && !dataResults?.length ? (
-                <div>
+        <div className="grid mx-auto lg:mx-0 lg:grid-cols-2 xl:grid-cols-3 gap-x-7 gap-y-9 relative pb-24">
+            {(text && !dataResults?.length) || currentItems?.length === 0 ? (
+                <div className="">
                     <Image
                         src={logo}
                         width={200}
                         height={200}
                         alt="logo_image"
                     />
-                    <p className="text-[#cf8c36] mt-4">
-                        해당 게시물이 존재하지 않습니다.
+                    <p className="flex justify-center items-center relative">
+                        <span className="font-medium mt-4">
+                            첫번째 레시피의 주인공이 되어주세요!
+                        </span>
                     </p>
                 </div>
             ) : filteredFoodAndTime ? (
@@ -66,7 +68,19 @@ const RecipeList = ({
                     return <RecipeListData key={item.id} item={item} />;
                 })
             ) : (
-                <div>게시물이 존재하지 않습니다.</div>
+                <div className="">
+                    <Image
+                        src={logo}
+                        width={200}
+                        height={200}
+                        alt="logo_image"
+                    />
+                    <p className="flex justify-center items-center relative">
+                        <span className="font-medium mt-4">
+                            첫번째 레시피의 주인공이 되어주세요!
+                        </span>
+                    </p>
+                </div>
             )}
             <button
                 type="button"
@@ -76,7 +90,9 @@ const RecipeList = ({
                     !lastDoc ||
                         text ||
                         filteredFood?.length ||
-                        filteredTime?.length
+                        filteredTime?.length ||
+                        !currentItems?.length ||
+                        (currentItems || dataResults).length < 6
                         ? "hidden"
                         : ""
                 )}
