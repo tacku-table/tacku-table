@@ -1,11 +1,15 @@
 import Image from "next/image";
 import defaultImg from "../../public/images/test1.png";
 import useGetUserProfileNickName from "@/hooks/useGetUserProfileNickName";
+import { useEffect, useState } from "react";
 
 const Post = ({ writerUid }: any) => {
   const { userNickName: writerdisplayName, userProfileURL: writerImg } =
     useGetUserProfileNickName(writerUid);
 
+  if (!(writerdisplayName && writerImg)) {
+    return <></>;
+  }
   return (
     <>
       {writerImg === "null" ? (
