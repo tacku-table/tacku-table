@@ -22,8 +22,8 @@ const Video = () => {
                             },
                         },
                     }}
-                    width="100%"
-                    height="650px"
+                    width="110vh"
+                    height="62vh"
                     playing={true} // 자동 재생 on
                     muted={true} // 음소거 on
                     controls={false} // 플레이어 컨트롤 노출 여부

@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { VscEye } from "react-icons/vsc";
 
 const RecipeListData = ({ item }: { item: TypeRecipe }) => {
     // 회원아니면 alert뜨게함. 추가 로직
@@ -28,17 +29,17 @@ const RecipeListData = ({ item }: { item: TypeRecipe }) => {
     return (
         <div
             key={item.id}
-            className="w-[316px] aspect-[1/0.7] cursor-pointer"
+            className="w-72 aspect-[1/0.7] cursor-pointer"
             onClick={() => {
                 goToDetail(item);
             }}
         >
-            <div className="w-[316px] h-[188px] overflow-hidden mx-auto relative">
+            <div className="w-72 aspect-[1/0.65] overflow-hidden mx-auto relative">
                 <Image
                     src={`${item.thumbnail}`}
-                    className="aspect-[1/0.7] object-cover rounded-sm"
+                    className="aspect-[1/0.65] object-cover rounded-sm w-auto h-auto"
                     alt="recipe_picture"
-                    width={316}
+                    width={288}
                     height={188}
                     loader={({ src }) => src}
                     unoptimized
@@ -67,13 +68,21 @@ const RecipeListData = ({ item }: { item: TypeRecipe }) => {
                     </>
                 )}
             </div>
-            <ul className="text-sm text-slate-500 space-x-4 mt-1 flex">
-                <li className="text-ellipsis overflow-hidden whitespace-nowrap text-blue100">
-                    &#35;{item.animationTitle}
-                </li>
-                <li className="whitespace-nowrap">&#35;{item.cookingTime}</li>
-            </ul>
-            <p className="text-lg text-slate-900 font-semibold mt-1">
+            <div className="text-sm text-slate-500 mt-1 flex justify-between">
+                <div className="flex text-ellipsis overflow-hidden whitespace-nowrap">
+                    <p className="text-ellipsis overflow-hidden whitespace-nowrap text-blue100">
+                        &#35;{item.animationTitle}
+                    </p>
+                    <p className="whitespace-nowrap ml-4">
+                        &#35;{item.cookingTime}
+                    </p>
+                </div>
+                <p className="whitespace-nowrap flex justify-center items-center gap-x-1 ml-4">
+                    <VscEye></VscEye>
+                    {item.viewCount}
+                </p>
+            </div>
+            <p className="text-lg text-slate-900 font-semibold">
                 {item.foodTitle}
             </p>
         </div>
