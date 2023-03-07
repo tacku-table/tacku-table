@@ -56,6 +56,9 @@
   .recipepage-del-button {
     @apply sm:w-[100px] w-1/2 h-[35px] border-2 border-mono60 font-medium text-center rounded;
   }
+  .recipepage-share-button {
+    @apply sm:mr-5 last:mr-0 mr-4 sm:text-4xl text-3xl text-mono70;
+  }
 }
 @keyframes messageFadeIn {
   0% {

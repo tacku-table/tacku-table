@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { SiFacebook, SiKakaotalk, SiTwitter } from "react-icons/si";
 import { kakaoInit } from "@/util";
 
@@ -52,15 +52,15 @@ function SocialShared(props: socialSharedType) {
     kakaoInit();
   }, []);
   return (
-    <div className="">
-      <button onClick={kakaoShare} className="w-6 h-6 mr-8">
-        <SiKakaotalk style={{ fontSize: "36px", color: "#AFAFAF" }} />
+    <div className="flex items-center justify-center">
+      <button onClick={kakaoShare} className="recipepage-share-button">
+        <SiKakaotalk />
       </button>
-      <button onClick={shareToFacebook} className="w-6 h-6 mr-8">
-        <SiFacebook style={{ fontSize: "36px", color: "#AFAFAF" }} />
+      <button onClick={shareToFacebook} className="recipepage-share-button">
+        <SiFacebook />
       </button>
-      <button onClick={shareToTwitter} className="w-6 h-6">
-        <SiTwitter style={{ fontSize: "36px", color: "#AFAFAF" }} />
+      <button onClick={shareToTwitter} className="recipepage-share-button">
+        <SiTwitter />
       </button>
     </div>
   );

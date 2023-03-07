@@ -147,11 +147,11 @@ export default function DetailReciptPage(props: propsType) {
                 {props.targetWholeData?.foodTitle}
               </p>
               <div className="flex items-center">
-                <p className="sm:mr-5 mr-3">
+                <p className="sm:mr-3 mr-2">
                   <SocialShared targetWholeData={props.targetWholeData} />
                 </p>
                 {storageCurrentUser.user === "guest" ? null : (
-                  <p className="w-6 h-6 mr-2">
+                  <p className="w-10 h-10 mr-2">
                     <Bookmark
                       postId={props.postId}
                       targetWholeData={props.targetWholeData}
@@ -225,7 +225,7 @@ export default function DetailReciptPage(props: propsType) {
               </div>
               {/* 수정/ 삭제 */}
               {props.targetWholeData?.uid == storageCurrentUser.uid ? (
-                <div className="flex sm:mt-0 mt-5">
+                <div className="flex items-center mt-0 w-[160px]">
                   <Link
                     href={`/recipeEdit/${props.postId}`}
                     className="recipepage-edit-button pt-1"
@@ -233,7 +233,7 @@ export default function DetailReciptPage(props: propsType) {
                     <p>수정하기</p>
                   </Link>
                   <button
-                    className="recipepage-del-button  ml-2"
+                    className="recipepage-del-button ml-2"
                     type="button"
                     onClick={deleteTargetRecipe}
                   >
