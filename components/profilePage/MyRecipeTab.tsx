@@ -14,7 +14,7 @@ const RecipeTab = ({ userInfo }: MyTabProp) => {
     setRecipeList(() => {
       return recipePost.filter((p) => p?.uid === userInfo?.userId);
     });
-  }, [recipeList]);
+  }, [recipePost]);
 
   return (
     <Tab.Panel className="pb-6">

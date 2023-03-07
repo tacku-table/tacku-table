@@ -5,7 +5,7 @@ import EmptyPost from "./EmptyPost";
 import useGetCommunityPost from "@/hooks/useGetCommunityPost";
 
 const MyCommunityTab = ({ userInfo }: MyTabProp) => {
-  const [communityList, setCommunityList] = useState<any[]>([]);
+  const [communityList, setCommunityList] = useState<TCommunity[]>([]);
 
   const { communityPost } = useGetCommunityPost();
 
@@ -13,13 +13,13 @@ const MyCommunityTab = ({ userInfo }: MyTabProp) => {
     setCommunityList(() => {
       return communityPost.filter((p) => p?.writterUid === userInfo?.userId);
     });
-  }, [communityList]);
+  }, [communityPost]);
 
   return (
     <Tab.Panel className="pb-6">
       {communityList.length === 0 && <EmptyPost />}
       {communityList?.map((p) => (
-        <div key={p.postId} className="p-6">
+        <div key={p.id} className="p-6">
           <hr className="border-mono50 mx-8 mb-6 border-[1px]" />
           <div className="pl-8 space-x-[20px] items-center flex">
             <div className="flex flex-col">
@@ -28,7 +28,7 @@ const MyCommunityTab = ({ userInfo }: MyTabProp) => {
                 <span>|</span>
                 <span>{p.writtenDate}</span>
               </div>
-              <Link legacyBehavior href={`/community/${p.postId}`}>
+              <Link legacyBehavior href={`/community/${p.id}`}>
                 <a className="text-2xl font-semibold">{p.title}</a>
               </Link>
             </div>
