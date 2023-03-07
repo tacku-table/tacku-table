@@ -35,7 +35,7 @@ declare global {
     createdAt?: string | number;
     content?: string;
     children?: JSX.Element | JSX.Element[];
-    bookmarkCount?: string[];
+    viewCount?: number;
   }
   interface TypeShowPw {
     showPw: boolean;
