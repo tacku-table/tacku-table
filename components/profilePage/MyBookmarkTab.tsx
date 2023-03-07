@@ -16,6 +16,7 @@ import Image from "next/image";
 import { toast } from "react-toastify";
 import Post from "./Post";
 import EmptyPost from "./EmptyPost";
+
 import { getMyBookmark } from "../../api/firedb";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -76,6 +77,7 @@ const MyBookmarkTab = ({ userInfo, storageCurrentUser }: any) => {
 
   return (
     <Tab.Panel className="pb-6">
+      {bookmarkPost?.length === 0 && <EmptyPost />}
       {bookmarkPost?.length === 0 && <EmptyPost />}
       {bookmarkPost?.map((p) => (
         <div key={p.postId} className="p-6">
