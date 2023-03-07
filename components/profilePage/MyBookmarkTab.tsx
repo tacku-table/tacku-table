@@ -1,17 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Tab } from "@headlessui/react";
-import { authService, dbService } from "@/config/firebase";
-import {
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  where,
-  doc,
-  getDoc,
-  deleteDoc,
-} from "firebase/firestore";
-import Link from "next/link";
+import { dbService } from "@/config/firebase";
+import { doc, deleteDoc } from "firebase/firestore";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import Post from "./Post";
@@ -35,11 +25,6 @@ const MyBookmarkTab = ({
       setIsLoadings(false);
     }, 500);
   });
-
-  // const [bookmarkPost, setBookmarkPost] = useState<any[]>([]);
-  // const [isLoadings, setIsLoadings]= useState(false)
-
-  // const queryClient = useQueryClient();
 
   const {
     isLoading,
