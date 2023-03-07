@@ -19,6 +19,16 @@ declare global {
     userNickname?: string | undefined;
     userPw?: string | undefined;
   }
+
+  interface TCommunity {
+    id: string;
+    writterUid: string;
+    category: string;
+    title?: string;
+    editorText?: string;
+    writtenDate?: string;
+    thumbnail?: string;
+  }
   interface MyTabProp {
     userInfo: TUserInfo | undefined;
   }
