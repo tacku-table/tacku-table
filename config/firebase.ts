@@ -3,15 +3,25 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
+//배포용
+// const firebaseConfig = {
+//   apiKey: process.env.NEXT_PUBLIC_KEY,
+//   authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+//   projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+//   storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
+//   messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
+//   appId: process.env.NEXT_PUBLIC_APP_ID,
+// };
+
 // 재희 firebase
-//const firebaseConfig = {
-// apiKey: "AIzaSyDwf81KBJ6rlKDJRts_oq2aPPDfH8LL8aQ",
-// authDomain: "test-3a207.firebaseapp.com",
-// projectId: "test-3a207",
-// storageBucket: "test-3a207.appspot.com",
-//messagingSenderId: "713080381754",
-// appId: "1:713080381754:web:3719f1abfc305e5b08b003",
-//};
+// const firebaseConfig = {
+//   apiKey: "AIzaSyDwf81KBJ6rlKDJRts_oq2aPPDfH8LL8aQ",
+//   authDomain: "test-3a207.firebaseapp.com",
+//   projectId: "test-3a207",
+//   storageBucket: "test-3a207.appspot.com",
+//   messagingSenderId: "713080381754",
+//   appId: "1:713080381754:web:3719f1abfc305e5b08b003",
+// };
 
 // 채하
 const firebaseConfig = {
