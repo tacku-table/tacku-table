@@ -1,15 +1,15 @@
 // global.d.ts
 declare global {
   interface TBookmark {
-    postId: string;
-    writerUid: string;
-    writerdisplayName: string;
-    writerImg: string;
-    viewCount: number;
-    animationTitle: string;
-    cookingTime: string;
-    foodTitle: string;
-    thumbnail: string;
+    postId?: string;
+    writerUid?: string;
+    writerdisplayName?: string;
+    writerImg?: string;
+    viewCount?: number;
+    animationTitle?: string;
+    cookingTime?: string;
+    foodTitle?: string;
+    thumbnail?: string;
   }
   interface TUserInfo {
     uid?: string | undefined;

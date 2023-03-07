@@ -1,11 +1,10 @@
 import Image from "next/image";
 import defaultImg from "../../public/images/test1.png";
 import useGetUserProfileNickName from "@/hooks/useGetUserProfileNickName";
-import { useEffect, useState } from "react";
 
-const Post = ({ writerUid }: any) => {
+const Post = ({ writerUid }: TBookmark) => {
   const { userNickName: writerdisplayName, userProfileURL: writerImg } =
-    useGetUserProfileNickName(writerUid);
+    useGetUserProfileNickName(writerUid as string);
 
   if (!(writerdisplayName && writerImg)) {
     return <></>;
