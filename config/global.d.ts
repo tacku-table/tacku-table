@@ -11,6 +11,15 @@ declare global {
     foodTitle: string;
     thumbnail: string;
   }
+  interface TUserInfo {
+    uid?: string | undefined;
+    userId?: string | undefined;
+    userEmail?: string | undefined;
+    userImg?: string | undefined;
+    userNickname?: string | undefined;
+    userPw?: string | undefined;
+  }
+
   interface TypeRecipe {
     id?: string;
     uid?: string;

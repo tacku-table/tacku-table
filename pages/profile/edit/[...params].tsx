@@ -6,25 +6,37 @@ import {
   EmailAuthProvider,
   deleteUser,
   signOut,
+  User,
 } from "firebase/auth";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, listAll, uploadBytes } from "firebase/storage";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import defaultImg from "../../../public/images/test1.png";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { SetStateAction, useCallback, useEffect, useState } from "react";
 import { storage } from "../../../config/firebase";
 import { pwRegex, nickRegex, cls } from "../../../util";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 
-export default function ProfileEdit(props) {
-  const [userInfo, setUserInfo] = useState();
-  const [storageCurrentUser, setStorageCurrentUser] = useState({});
+interface ProfileEditProp {
+  id: string;
+  userData: TUserInfo;
+  userImg: string;
+}
+
+export default function ProfileEdit(props: ProfileEditProp) {
+  const [userInfo, setUserInfo] = useState<TUserInfo>();
+  const [storageCurrentUser, setStorageCurrentUser] = useState<User>();
 
   // 프로필이미지 변경
   // const [photoImgURL, setPhotoImgURL] = useState();
-  const [imageUpload, setImageUpload] = useState(null);
-  const [showUserUpdateImg, setShowUserUpdateImg] = useState();
+  const [imageUpload, setImageUpload] = useState<
+    File | Blob | ArrayBuffer | Uint8Array
+  >();
+  const [showUserUpdateImg, setShowUserUpdateImg] = useState<
+    StaticImageData | string | ArrayBuffer | null
+  >();
   const [imgPreview, setImgPreview] = useState("default");
   // 오류메세지
   const [passwordMessage, setPasswordMessage] = useState("");
@@ -32,8 +44,7 @@ export default function ProfileEdit(props) {
   const [nicknameMessage, setNicknameMessage] = useState("");
   // 비밀번호 변경
   const [togglePwChange, setTogglePwChange] = useState(false);
-  // 초기값을 기존 비밀번호로 설정
-  const [changeUserPw, setChangeUserPw] = useState();
+  const [changeUserPw, setChangeUserPw] = useState<string | undefined>("");
   // 비밀번호 확인
   const [confirmChangeUserPw, setConfirmChangeUserPw] = useState("");
   // 비밀번호 일치
@@ -42,7 +53,9 @@ export default function ProfileEdit(props) {
   const [isNickname, setIsNickname] = useState(false);
 
   // 닉네임 변경
-  const [changeUserNickname, setChangeUserNickname] = useState([]);
+  const [changeUserNickname, setChangeUserNickname] = useState<
+    string | undefined
+  >();
   // 이용약관 체크
   const [agree, setAgree] = useState(false);
 
@@ -51,25 +64,25 @@ export default function ProfileEdit(props) {
   useEffect(() => {
     setUserInfo(props.userData);
     if (userInfo) {
-      getUserProfileImg(userInfo?.userImg);
+      getUserProfileImg(userInfo?.userImg as unknown as string);
     }
   }, [userInfo]);
 
   useEffect(() => {
-    const currentUser = JSON.parse(sessionStorage.getItem("User"));
+    const currentUser = JSON.parse(sessionStorage.getItem("User") || "");
     if (currentUser) {
       setStorageCurrentUser(currentUser);
     } else {
-      setStorageCurrentUser("logout");
+      setStorageCurrentUser("logout" as unknown as undefined);
     }
   }, []);
   useEffect(() => {
-    if (storageCurrentUser == "logout") {
+    if (storageCurrentUser == ("logout" as unknown as undefined)) {
       location.href = "/loginPage";
     }
   }, [storageCurrentUser]);
 
-  const toastAlert = (alertText) => {
+  const toastAlert = (alertText: string) => {
     toast(`${alertText}`, {
       position: "top-right",
       autoClose: 1300,
@@ -108,7 +121,7 @@ export default function ProfileEdit(props) {
     }
   };
 
-  const getUserProfileImg = async (userImg) => {
+  const getUserProfileImg = async (userImg: string) => {
     if (userImg === "null") {
       return setShowUserUpdateImg(defaultImg);
     }
@@ -124,11 +137,11 @@ export default function ProfileEdit(props) {
     });
   };
 
-  const handleImageFile = (event) => {
+  const handleImageFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     setImageUpload(file);
     const reader = new FileReader();
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(file as unknown as Blob);
     reader.onload = () => {
       const selectedImgUrl = reader.result;
       setShowUserUpdateImg(selectedImgUrl);
@@ -136,7 +149,7 @@ export default function ProfileEdit(props) {
   };
 
   const handleChangePassword = useCallback(
-    (event) => {
+    (event: React.ChangeEvent<HTMLInputElement>) => {
       const changedPw = event.target.value;
       // console.log(changedPw);
       setChangeUserPw(changedPw);
@@ -153,7 +166,7 @@ export default function ProfileEdit(props) {
     [changeUserPw]
   );
   const handleChangePasswordConfirm = useCallback(
-    (event) => {
+    (event: React.ChangeEvent<HTMLInputElement>) => {
       const confirmedPW = event.target.value;
       setConfirmChangeUserPw(confirmedPW);
 
@@ -167,7 +180,10 @@ export default function ProfileEdit(props) {
     },
     [changeUserPw]
   );
-  const handleChangeNickname = (event, setFunction) => {
+  const handleChangeNickname = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    setFunction: React.Dispatch<SetStateAction<string | undefined>>
+  ) => {
     setFunction(event.target.value);
     if (!nickRegex.test(event.target.value)) {
       setNicknameMessage(
@@ -181,12 +197,12 @@ export default function ProfileEdit(props) {
   };
 
   // 닉네임 변경 함수
-  const handleUpdateNickname = async (uid) => {
+  const handleUpdateNickname = async (uid: string) => {
     const docRef = doc(dbService, "user", uid);
     await updateDoc(docRef, {
       userNickname: changeUserNickname,
     });
-    await updateProfile(authService?.currentUser, {
+    await updateProfile(authService?.currentUser as unknown as User, {
       displayName: changeUserNickname,
     })
       .then(() => {
@@ -195,36 +211,42 @@ export default function ProfileEdit(props) {
       .catch((error) => toast.error("닉네임 변경에 실패하였습니다.\n", error));
   };
   // 비밀번호 변경
-  const handleUpdatePassword = async (uid) => {
+  const handleUpdatePassword = async (uid: string) => {
     if (!togglePwChange) return;
     const docRef = doc(dbService, "user", uid);
     const userProvidedPassword = userInfo?.userPw;
     const credential = EmailAuthProvider.credential(
-      authService?.currentUser.email,
-      userProvidedPassword
+      storageCurrentUser?.email as unknown as string,
+      userProvidedPassword as unknown as string
     );
     await updateDoc(docRef, {
       userPw: changeUserPw,
     });
-    reauthenticateWithCredential(authService?.currentUser, credential)
+    reauthenticateWithCredential(
+      authService?.currentUser as unknown as User,
+      credential
+    )
       .then(async () => {
-        await updatePassword(authService?.currentUser, changeUserPw).catch(
-          (error) => toast.error("비밀번호 변경에 실패하였습니다.\n", error)
+        await updatePassword(
+          authService?.currentUser as unknown as User,
+          changeUserPw as unknown as string
+        ).catch((error) =>
+          toast.error("비밀번호 변경에 실패하였습니다.\n", error)
         );
       })
       .catch((error) => toast.error("재로그인이 필요합니다.", error));
   };
-  const handleUpdateUserDocs = async (uid) => {
+  const handleUpdateUserDocs = async (uid: string) => {
     // 비밀번호 변경했을때랑 아닐때
     const docId = uid;
     const docRef = doc(dbService, "user", docId);
     const userProvidedPassword = userInfo?.userPw;
     const credential = EmailAuthProvider.credential(
-      authService?.currentUser.email,
-      userProvidedPassword
+      storageCurrentUser?.email as unknown as string,
+      userProvidedPassword as unknown as string
     );
     if (!togglePwChange) {
-      setChangeUserPw(userInfo.pw);
+      setChangeUserPw(userInfo?.userPw as unknown as string);
       await updateDoc(docRef, {
         userNickname: changeUserNickname,
       });
@@ -235,12 +257,18 @@ export default function ProfileEdit(props) {
       });
     }
     setTimeout(() => {
-      reauthenticateWithCredential(authService?.currentUser, credential)
+      reauthenticateWithCredential(
+        authService?.currentUser as unknown as User,
+        credential
+      )
         .then(async () => {
-          await updatePassword(authService?.currentUser, changeUserPw).catch(
-            (error) => toast.error("비밀번호 변경에 실패하였습니다.\n", error)
+          await updatePassword(
+            authService?.currentUser as unknown as User,
+            changeUserPw as unknown as string
+          ).catch((error) =>
+            toast.error("비밀번호 변경에 실패하였습니다.\n", error)
           );
-          await updateProfile(authService?.currentUser, {
+          await updateProfile(authService?.currentUser as unknown as User, {
             displayName: changeUserNickname,
           })
             .then(() => {
@@ -255,14 +283,17 @@ export default function ProfileEdit(props) {
   };
 
   // 이미지 변경
-  const handleUpdateProfile = async (id) => {
+  const handleUpdateProfile = async (id: string) => {
     if (imageUpload === null) return;
     const imageRef = ref(storage, `profileImage/${id}`);
     // setImgPreview("uploading");
 
-    await uploadBytes(imageRef, imageUpload).then((snapshot) => {
+    await uploadBytes(
+      imageRef,
+      imageUpload as unknown as Blob | ArrayBuffer | Uint8Array
+    ).then((snapshot) => {
       getDownloadURL(snapshot.ref).then(async (url) => {
-        await updateProfile(authService?.currentUser, {
+        await updateProfile(authService?.currentUser as unknown as User, {
           photoURL: url,
         });
         const docRef = doc(dbService, "user", id);
@@ -289,7 +320,9 @@ export default function ProfileEdit(props) {
               {showUserUpdateImg && (
                 <div>
                   <Image
-                    src={showUserUpdateImg}
+                    src={
+                      showUserUpdateImg as unknown as string | StaticImageData
+                    }
                     className="rounded-md aspect-square"
                     loader={({ src }) => src}
                     priority={true}
@@ -315,8 +348,9 @@ export default function ProfileEdit(props) {
 
                 {imageUpload && (
                   <div
-                    onClick={() => handleUpdateProfile(userInfo.userId)}
-                    disabled={!imageUpload}
+                    onClick={() =>
+                      handleUpdateProfile(userInfo?.userId as unknown as string)
+                    }
                     className="cursor-pointer text-white disabled:opacity-50 bg-brand100 hover:bg-brand100 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-sm text-sm px-2 py-2 text-center inline-flex justify-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 "
                   >
                     <span>저장하기</span>
@@ -357,7 +391,7 @@ export default function ProfileEdit(props) {
                         className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10 focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
                       />
                       <div className="h-[16px]">
-                        {changeUserPw?.length > 0 && (
+                        {(changeUserPw?.length as number) > 0 && (
                           <span
                             className={cls(
                               "text-xs",
@@ -412,7 +446,11 @@ export default function ProfileEdit(props) {
                   <button
                     className="absolute -translate-x-1/2 left-3/4 ml-4 w-fit cursor-pointer  disabled:bg-mono30 disabled:text-mono100 valid:bg-brand100 valid:text-white hover:bg-brand100/80 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-sm text-sm px-2 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mb-2"
                     disabled={!(isPassword && isPasswordConfirm)}
-                    onClick={() => handleUpdatePassword(userInfo?.userId)}
+                    onClick={() =>
+                      handleUpdatePassword(
+                        userInfo?.userId as unknown as string
+                      )
+                    }
                   >
                     수정하기
                   </button>
@@ -439,7 +477,7 @@ export default function ProfileEdit(props) {
                   />
                 </div>
                 <div className="h-[16px]">
-                  {changeUserNickname.length > 0 && (
+                  {(changeUserNickname?.length as number) > 0 && (
                     <span
                       className={cls(
                         "text-xs",
@@ -457,7 +495,9 @@ export default function ProfileEdit(props) {
                 <button
                   className="w-fit ml-4 cursor-pointer disabled:bg-mono30 disabled:text-mono100 valid:bg-brand100 valid:text-white hover:bg-brand100/80 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-sm text-sm px-2 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mb-2"
                   disabled={!isNickname}
-                  onClick={() => handleUpdateNickname(userInfo?.userId)}
+                  onClick={() =>
+                    handleUpdateNickname(userInfo?.userId as string)
+                  }
                 >
                   수정하기
                 </button>
@@ -468,7 +508,7 @@ export default function ProfileEdit(props) {
         <div className="space-x-5">
           <button
             className="disabled:bg-mono30 disabled:text-mono100 valid:bg-brand100 valid:text-white hover:bg-brand100/80 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-sm text-sm px-28 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mb-2"
-            onClick={() => handleUpdateUserDocs(userInfo.userId)}
+            onClick={() => handleUpdateUserDocs(userInfo?.userId as string)}
             disabled={!((isPassword && isPasswordConfirm) || isNickname)}
           >
             수정하기
@@ -487,7 +527,7 @@ export default function ProfileEdit(props) {
               id="terms"
               type="checkbox"
               onClick={(event) => {
-                const target = event.target;
+                const target = event.target as HTMLInputElement;
                 setAgree(target.checked);
               }}
             />
@@ -509,16 +549,19 @@ export default function ProfileEdit(props) {
   );
 }
 
-export const getServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
   const { query } = context;
-  const { id, userImg } = query;
+  const { id, userImg } = query as { [key: string]: string };
   const docId = id;
   let userData;
   const snapshot = await getDoc(doc(dbService, "user", docId));
   if (snapshot.exists()) {
     userData = snapshot.data();
+    console.log(typeof userData);
   } else {
-    toastAlert("회원 정보가 없습니다.");
+    console.log("회원 정보가 없습니다.");
   }
 
   return {

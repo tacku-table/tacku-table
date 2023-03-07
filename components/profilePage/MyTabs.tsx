@@ -5,7 +5,13 @@ import MyRecipeTab from "./MyRecipeTab";
 import MyCommunityTab from "./MyCommunityTab";
 import MyCommentTab from "./MyCommentTab";
 import { cls } from "../../util";
-const MyTabs = ({ userInfo, storageCurrentUser }) => {
+import { User } from "firebase/auth";
+
+interface MyTabsProp {
+  userInfo: TUserInfo | undefined;
+  storageCurrentUser: User | undefined;
+}
+const MyTabs = ({ userInfo, storageCurrentUser }: MyTabsProp) => {
   //   const [isLoading, setIsLoading] = useState(true);
   //   useEffect(() => {
   //     setTimeout(() => {
@@ -30,7 +36,7 @@ const MyTabs = ({ userInfo, storageCurrentUser }) => {
   return (
     <Tab.Group>
       <Tab.List className="flex space-x-16 ml-[370px] bg-white">
-        {storageCurrentUser.uid === userInfo.userId ? (
+        {storageCurrentUser?.uid === userInfo?.userId ? (
           <>
             {categoriesOfmine.map((category) => (
               <Tab
