@@ -129,7 +129,7 @@ export default function DetailReciptPage(props: propsType) {
         />
         <meta name="twitter:image" content={props.targetWholeData?.thumbnail} />
       </Head>
-      <div className="xl:w-full sm:w-fit h-full flex flex-col items-center bg-mono40 mx-auto">
+      <div className="xl:w-full sm:w-fit h-full flex flex-col items-center sm:mt-0 mt-20 bg-mono40 mx-auto">
         <div className="sm:w-[1180px] w-full sm:my-4 my-0 bg-white sm:pb-[131px] pb-10 sm:pt-[52px] pt-5 sm:px-[200px] px-3">
           <div className="bg-slate-100 w-full sm:h-[440px] h-[250px] overflow-hidden relative">
             <Image
