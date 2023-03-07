@@ -223,7 +223,7 @@ const SearchData: NextPage = () => {
                 />
                 <div className="w-4/5 border-b border-mono70 mb-[30px]"></div>
                 <div className="w-4/5 flex flex-col md:flex-row md:justify-between mb-10">
-                    <div className="flex justify-center md:justify-start mb-9 md:flex-col mr-3">
+                    <div className="flex justify-center md:justify-start mb-9 md:flex-col md:ml-7 2xl:ml-10 mr-3">
                         <SideFoodCate
                             onCheckedFood={onCheckedFood}
                             filteredFood={filteredFood}
@@ -234,16 +234,18 @@ const SearchData: NextPage = () => {
                             filteredTime={filteredTime}
                         />
                     </div>
-                    <RecipeList
-                        text={text}
-                        next={next}
-                        lastDoc={lastDoc}
-                        currentItems={currentItems}
-                        totalItems={totalItems}
-                        dataResults={dataResults}
-                        filteredFood={filteredFood}
-                        filteredTime={filteredTime}
-                    />
+                    <div className="grid mx-auto lg:mx-0 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-7 gap-y-9 relative pb-24">
+                        <RecipeList
+                            text={text}
+                            next={next}
+                            lastDoc={lastDoc}
+                            currentItems={currentItems}
+                            totalItems={totalItems}
+                            dataResults={dataResults}
+                            filteredFood={filteredFood}
+                            filteredTime={filteredTime}
+                        />
+                    </div>
                 </div>
             </div>
         </>

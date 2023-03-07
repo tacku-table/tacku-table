@@ -22,7 +22,7 @@ const RecipeList = ({
     const filteredOnlyTime = filteredTime?.length;
 
     return (
-        <div className="grid mx-auto lg:mx-0 lg:grid-cols-2 xl:grid-cols-3 gap-x-7 gap-y-9 relative pb-24">
+        <>
             {(text && !dataResults?.length) || currentItems?.length === 0 ? (
                 <div className="">
                     <Image
@@ -99,7 +99,7 @@ const RecipeList = ({
             >
                 더보기
             </button>
-        </div>
+        </>
     );
 };
 

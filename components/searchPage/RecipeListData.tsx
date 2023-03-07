@@ -27,7 +27,7 @@ const RecipeListData = ({ item }: { item: TypeRecipe }) => {
     }, [storageCurrentUser]);
 
     return (
-        <div key={item.id} className="w-72 aspect-[1/0.7]">
+        <div key={item.id} className="aspect-[1/0.7]">
             <div className="w-full aspect-[1/0.65] overflow-hidden mx-auto relative">
                 <Image
                     src={`${item.thumbnail}`}
