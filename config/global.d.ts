@@ -1,5 +1,14 @@
 // global.d.ts
 declare global {
+  interface Community {
+    id: string;
+    writterUid: string;
+    category: string;
+    title: string;
+    editorText: string;
+    writtenDate: string;
+    thumbnail: string;
+  }
   interface TypeRecipe {
     id?: string;
     uid?: string;

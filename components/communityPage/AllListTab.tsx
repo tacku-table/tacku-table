@@ -3,8 +3,9 @@ import { Tab } from "@headlessui/react";
 import Pagination from "./Pagination";
 import Post from "./Post";
 import useGetCommunityPost from "@/hooks/useGetCommunityPost";
+
 const AllListTab = () => {
-  const [communityList, setCommunityList] = useState<any[]>([]);
+  const [communityList, setCommunityList] = useState<Community[]>([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const offset = (page - 1) * limit;
@@ -16,8 +17,8 @@ const AllListTab = () => {
 
   return (
     <Tab.Panel>
-      {communityList?.slice(offset, offset + limit).map((p) => (
-        <Post p={p} key={p.id} />
+      {communityList?.slice(offset, offset + limit).map((post) => (
+        <Post post={post} key={post.id} />
       ))}
       <Pagination
         total={communityList.length}

@@ -5,7 +5,7 @@ import useGetCommunityPost from "@/hooks/useGetCommunityPost";
 import Post from "./Post";
 
 const AnimeTab = ({ categories }: any) => {
-  const [animePost, setAnimePost] = useState<any[]>([]);
+  const [animePost, setAnimePost] = useState<Community[]>([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1); //default=현재 페이지번호
   const offset = (page - 1) * limit;
@@ -16,19 +16,19 @@ const AnimeTab = ({ categories }: any) => {
   }, [communityPost]);
 
   const getAnimeCommunityPost = async (
-    communityList: any,
-    categories: (string | any[])[]
+    communityList: Community[],
+    categories: string[]
   ) => {
     let animeArr = communityList;
-    const newArr = animeArr.filter((item: { category: (string | any[])[] }) =>
+    const newArr = animeArr.filter((item: { category: string }) =>
       item.category.includes(categories[2].slice(0, 2))
     );
     setAnimePost(newArr);
   };
   return (
     <Tab.Panel>
-      {animePost?.slice(offset, offset + limit).map((p) => (
-        <Post p={p} key={p.id} />
+      {animePost?.slice(offset, offset + limit).map((post) => (
+        <Post post={post} key={post.id} />
       ))}
       <Pagination
         total={animePost.length}

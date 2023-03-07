@@ -5,7 +5,7 @@ import useGetCommunityPost from "@/hooks/useGetCommunityPost";
 import Post from "./Post";
 
 const GossipTab = ({ categories }: any) => {
-  const [gossipPost, setGossipPost] = useState<any[]>([]);
+  const [gossipPost, setGossipPost] = useState<Community[]>([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const offset = (page - 1) * limit;
@@ -14,19 +14,19 @@ const GossipTab = ({ categories }: any) => {
     getGossipCommunityPost(communityPost, categories);
   }, [communityPost]);
   const getGossipCommunityPost = async (
-    communityList: any,
-    categories: (string | any[])[]
+    communityList: Community[],
+    categories: string[]
   ) => {
     let animeArr = communityList;
-    const newArr = animeArr.filter((item: { category: (string | any[])[] }) =>
+    const newArr = animeArr.filter((item: { category: string }) =>
       item.category.includes(categories[3].slice(0, 2))
     );
     setGossipPost(newArr);
   };
   return (
     <Tab.Panel>
-      {gossipPost?.slice(offset, offset + limit).map((p) => (
-        <Post p={p} key={p.id} />
+      {gossipPost?.slice(offset, offset + limit).map((post) => (
+        <Post post={post} key={post.id} />
       ))}
       <Pagination
         total={gossipPost.length}

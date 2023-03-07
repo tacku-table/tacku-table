@@ -5,9 +5,10 @@ import AnimeTab from "./AnimeTab";
 import GossipTab from "./GossipTab";
 import AllListTab from "./AllListTab";
 import { cls } from "../../util";
+
 const CommunityTabs = () => {
   //   탭바 변경 state
-  let [categories] = useState([
+  let [categories] = useState<string[]>([
     "전체 글목록",
     "요리게시판",
     "애니게시판",
