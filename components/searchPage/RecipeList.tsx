@@ -27,8 +27,8 @@ const RecipeList = ({
                 <div className="">
                     <Image
                         src={logo}
-                        width={200}
-                        height={200}
+                        width={100}
+                        height={75}
                         alt="logo_image"
                     />
                     <p className="flex justify-center items-center relative">

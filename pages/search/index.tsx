@@ -234,7 +234,7 @@ const SearchData: NextPage = () => {
                             filteredTime={filteredTime}
                         />
                     </div>
-                    <div className="grid mx-auto lg:mx-0 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-7 gap-y-9 relative pb-24">
+                    <div className="grid mx-auto sm:mx-0 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-x-7 gap-y-9 relative pb-24">
                         <RecipeList
                             text={text}
                             next={next}
