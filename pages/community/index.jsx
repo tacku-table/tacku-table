@@ -16,17 +16,16 @@ const Community = () => {
   }, []);
 
   return (
-    <div className="flex w-[860px] m-auto flex-col items-center font-medium ">
-      <div>
-        <h4 className="w-full text-2xl font-bold mx-4 my-5">커뮤니티</h4>
+    <div className="flex min-w-[860px]  m-auto flex-col items-center font-medium ">
+      <div className="mt-4">
         <SliderScreen />
       </div>
       <CommunityTabs />
       {storageCurrentUser !== "logout" && (
-        <div className="flex w-full justify-end ">
+        <div className="flex w-full justify-end">
           <Link
             href="/community/new"
-            className="flex w-[100px] h-[35px] text-white bg-brand100 px-4 my-10 items-center justify-center rounded-sm"
+            className="flex w-[100px] h-[35px] text-white bg-brand100 px-4 mt-4 mb-10 items-center justify-center rounded-sm"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

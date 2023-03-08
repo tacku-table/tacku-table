@@ -55,7 +55,9 @@ const Post = ({ p }: any) => {
             {p.writtenDate}
           </div>
           <Link legacyBehavior href={`/profile/${p.writterUid}`}>
-            <span className="pl-3 cursor-pointer">{writterNickname}</span>
+            <span className="pl-3 cursor-pointer hover:font-semibold hover:text-mono80">
+              {writterNickname}
+            </span>
           </Link>
         </div>
       </div>

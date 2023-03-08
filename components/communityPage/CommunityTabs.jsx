@@ -8,30 +8,31 @@ import { cls } from "../../util";
 const CommunityTabs = () => {
   //   탭바 변경 state
   let [categories] = useState([
-    "전체 글목록",
-    "요리게시판",
-    "애니게시판",
-    "잡담게시판",
+    "전체",
+    "요리 게시판",
+    "애니 게시판",
+    "잡담 게시판",
   ]);
 
   return (
-    <div className="w-[860px]">
+    <div className="min-w-[860px]">
       <Tab.Group>
-        <Tab.List className="flex w-[780px] rounded-sm p-1 mx-auto my-6">
-          {categories.map((category) => (
-            <Tab
-              key={category}
-              className={({ selected }) =>
-                cls(
-                  " w-full h-[55px] py-2.5 text-sm font-medium leading-5 border-y border-l border-mono50 last:border-r",
-                  "ring-white focus:outline-none",
-                  `${selected ? " text-brand100" : "text-mono100"}`
-                )
-              }
-            >
-              {category}
-            </Tab>
-          ))}
+        <Tab.List className="text-base font-medium text-center text-gray-500 border-b border-mono60">
+          <div className="flex flex-wrap -mb-px">
+            {categories.map((category) => (
+              <Tab
+                key={category}
+                className={({ selected }) =>
+                  cls(
+                    "mr-2 inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-gray-300 hover:text-brand100 ring-white focus:outline-none",
+                    `${selected ? " text-brand100" : "text-mono100"}`
+                  )
+                }
+              >
+                {category}
+              </Tab>
+            ))}
+          </div>
         </Tab.List>
         <Tab.Panels>
           <AllListTab />
