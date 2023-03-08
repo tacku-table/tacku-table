@@ -16,9 +16,11 @@ import {
 } from "firebase/firestore";
 import { useForm } from "react-hook-form";
 import { FieldErrors } from "react-hook-form/dist/types";
-import ShowPwBtn from "../button/ShowPwBtn";
-import HidePwBtn from "../button/HidePwBtn";
-import { toast, ToastContainer } from "react-toastify";
+import ShowPwBtn from "../button/signup/ShowPwBtn";
+import HidePwBtn from "../button/signup/HidePwBtn";
+import ShowPwConfirmBtn from "../button/signup/ShowPwConfirmBtn";
+import HidePwConfirmBtn from "../button/signup/HidePwConfirmBtn";
+import { Success, Warn, Error } from "../toastify/Alert";
 
 interface RegisterForm {
   email: string;
@@ -34,6 +36,7 @@ const RegisterPage = () => {
     register,
     handleSubmit,
     getValues,
+    setError,
     formState: { errors },
   } = useForm<RegisterForm>({ mode: "onChange" });
   const onValid = (data: RegisterForm) => {
@@ -43,12 +46,12 @@ const RegisterPage = () => {
     console.log(errors);
   };
   const [showPw, setShowPw] = useState(false);
+  const [showPwConfirm, setShowPwConfirm] = useState(false);
   const [nicknameCheck, setNicknameCheck] = useState(false);
-  const [checkError, setCheckError] = useState("");
+  const [notNicknameDuplicateCheck, setNotNicknameDuplicateCheck] =
+    useState(true);
+  const [saveNickname, setSaveNickname] = useState<any>("");
   const [tempNickname, setTempNickname] = useState("");
-
-  // 성공 알람 ( 초록색 창 )
-  const success = () => toast.success("Success!");
 
   // 회원가입
   const signUp = () => {
@@ -56,75 +59,82 @@ const RegisterPage = () => {
       authService,
       getValues("email"),
       getValues("pw")
-    )
-      .then(async (data) => {
-        console.log("회원 데이터", data.user.uid);
-        await setDoc(doc(dbService, "user", data.user.uid), {
+    ).then(async (data) => {
+      Promise.all([
+        setDoc(doc(dbService, "user", data.user.uid), {
           userId: data.user.uid,
           userNickname: getValues("nickname"),
           userEmail: getValues("email"),
           userPw: getValues("pw"),
           userImg: "null",
-        });
-        await updateProfile(data.user, {
+        }),
+        updateProfile(data.user, {
           displayName: getValues("nickname"),
           photoURL: "null",
-        });
-        // alert("회원가입성공! 로그인해주세요!");
-        toast.success("회원가입성공! 로그인해주세요");
-        setTimeout(() => {
-          signOut(authService).then(() => {
-            sessionStorage.clear();
-            location.href = "/loginPage";
-          });
-        }, 2000);
-
-        return data.user;
-      })
-      .catch((error) => {
+        }),
+        Success("회원가입성공! 로그인해주세요"),
+      ]).catch((error) => {
         console.log(error.message);
         if (error.message.includes("already-in-use")) {
-          toast.error("이미 가입한 회원입니다");
+          Warn("이미 가입한 회원입니다");
           return;
         }
       });
+      setTimeout(() => {
+        signOut(authService).then(() => {
+          sessionStorage.clear();
+          location.href = "/login";
+        });
+      }, 1000);
+
+      return data.user;
+    });
   };
 
-  // 닉네임 중복체크
-  const nicknameDuplicate = async (event: any) => {
-    event.preventDefault();
+  // 이메일 중복확인
+  // const emailConfirm = async () => {
+  //     const items = query(
+  //         collection(dbService, "user"),
+  //         where("userEmail", "==", getValues("email"))
+  //     );
+  //     const querySnapshot = await getDocs(items);
+  //     // const newData = querySnapshot.docs;
+  //     const newData = querySnapshot.docs.map((doc) => ({
+  //         ...doc.data(),
+  //     }));
+  //     // @ts-ignore
+  //     setIsUsing(newData);
+  //     console.log(isUsing);
+  // };
 
-    const value = tempNickname;
+  // 닉네임 중복체크
+  const nicknameDuplicate = async () => {
+    const { nickname } = getValues();
+    if (!nickRegex.test(nickname)) {
+      Warn("닉네임 규칙을 지켜는지 확인해주세요.");
+      return;
+    }
     const nickNameCheck = query(
       collection(dbService, "user"),
-      where("userNickname", "==", value)
+      where("userNickname", "==", nickname)
     );
     const querySnapshot = await getDocs(nickNameCheck);
     const newData = querySnapshot.docs;
-    if (newData.length == 0 && value.length > 0) {
-      toastAlert("사용 가능한 닉네임입니다.");
+
+    if (newData.length == 0 && nickname.length > 0) {
+      Success("사용 가능한 닉네임입니다.");
+      setSaveNickname(nickname);
       setNicknameCheck(true);
+      return setNotNicknameDuplicateCheck(false);
     } else {
-      if (value.length != 0) {
-        toastAlert("이미 다른 유저가 사용 중입니다.");
+      if (nickname.length != 0) {
+        Warn("이미 다른 유저가 사용 중입니다.");
       } else {
-        toast.warn("알 수 없는 에러로 사용할 수 없습니다.");
+        Error("알 수 없는 에러로 사용할 수 없습니다.");
       }
       setNicknameCheck(false);
+      return setNotNicknameDuplicateCheck(true);
     }
-  };
-
-  const toastAlert = (alertText: string) => {
-    toast(`${alertText}`, {
-      position: "top-right",
-      autoClose: 1300,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
   };
 
   // 브라우저 뒤로가기 버튼시 confirm창과 함께 "확인"클릭시 로그인 페이지로 이동하는 함수입니다.
@@ -133,14 +143,14 @@ const RegisterPage = () => {
     window.addEventListener("popstate", function () {
       const result = window.confirm("회원가입을 취소하시겠습니까?");
       if (result) {
-        window.location.replace(`/loginPage`);
+        window.location.replace(`/login`);
       }
     });
+    // emailConfirm();
   }, []);
 
   return (
     <div className="w-[420px] mx-auto mb-20 text-mono100">
-      <ToastContainer position="top-right" autoClose={5000} />
       <form
         onSubmit={handleSubmit(onValid, onInValid)}
         className="flex flex-col relative"
@@ -216,13 +226,19 @@ const RegisterPage = () => {
               },
             })}
             id="pwConfirm"
-            type={showPw ? "text" : "password"}
+            type={showPwConfirm ? "text" : "password"}
             placeholder="비밀번호 확인"
             className="register-input w-full"
           ></input>
           <div className="absolute top-[18px] right-7">
-            <ShowPwBtn showPw={showPw} setShowPw={setShowPw} />
-            <HidePwBtn showPw={showPw} setShowPw={setShowPw} />
+            <ShowPwConfirmBtn
+              showPwConfirm={showPwConfirm}
+              setShowPwConfirm={setShowPwConfirm}
+            />
+            <HidePwConfirmBtn
+              showPwConfirm={showPwConfirm}
+              setShowPwConfirm={setShowPwConfirm}
+            />
           </div>
         </div>
         <p
@@ -246,17 +262,17 @@ const RegisterPage = () => {
                   message: "최대 8자까지 입력가능합니다",
                   value: 8,
                 },
-                onChange: (event) => {
-                  setTempNickname(event.target.value);
+                onChange: () => {
+                  setNotNicknameDuplicateCheck(true);
                 },
                 pattern: {
                   value: nickRegex,
                   message: "8자 이하의 영어, 숫자, 한글로만 입력해주세요.",
                 },
                 validate: {
-                  val: (value) =>
-                    (nicknameCheck && tempNickname === value) ||
-                    "고유한 닉네임을 입력해주세요",
+                  value: () =>
+                    nicknameCheck ||
+                    "닉네임 중복 체크 후 고유한 닉네임으로 설정해주세요",
                 },
               })}
               id="nickname"

@@ -24,8 +24,8 @@
         "global.d.ts",
         "**/*.ts",
         "**/*.tsx",
-        "components/search/SideCategory.jsx",
-        "components/search/CheckBoxContext.jsx"
+        "components/searchPage/SideCategory.jsx",
+        "components/searchPage/CheckBoxContext.jsx"
     ],
     "exclude": ["node_modules"]
 }
