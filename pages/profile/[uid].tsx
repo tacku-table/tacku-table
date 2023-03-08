@@ -42,23 +42,17 @@ const MyPage = () => {
   });
 
   useEffect(() => {
-    const currentUser = JSON.parse(sessionStorage.getItem("User") || "");
+    const currentUser = sessionStorage.getItem("User") || "";
     if (currentUser) {
-      setStorageCurrentUser(currentUser);
-    } else {
-      setStorageCurrentUser("logout" as unknown as undefined);
+      const parseUser = JSON.parse(currentUser);
+      return setStorageCurrentUser(parseUser);
     }
+    setStorageCurrentUser("guest" as unknown as undefined);
   }, []);
 
   useEffect(() => {
     getUserProfileImg(userInfo?.userImg);
   }, [userInfo?.userImg]);
-
-  useEffect(() => {
-    if (storageCurrentUser === ("logout" as unknown as undefined)) {
-      location.href = "/login";
-    }
-  }, [storageCurrentUser]);
 
   const getUserProfileImg = (userImg: string | undefined) => {
     if (userImg === "null") {
