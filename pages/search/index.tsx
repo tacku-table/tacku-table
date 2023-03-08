@@ -183,7 +183,6 @@ const SearchData: NextPage = () => {
                 <SearchTextBar setText={setText} />
                 <ChangeSortedBtn
                     text={text}
-                    setText={setText}
                     currentItems={currentItems}
                     dataResults={dataResults}
                     isBest={isBest}

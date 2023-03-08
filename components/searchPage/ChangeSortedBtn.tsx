@@ -2,7 +2,6 @@ import { cls } from "@/util";
 
 const ChangeSortedBtn = ({
     text,
-    setText,
     currentItems,
     dataResults,
     isBest,
@@ -55,7 +54,11 @@ const ChangeSortedBtn = ({
                 <span className="text-mono100 lg:text-white">
                     Results&nbsp;:&nbsp;
                 </span>
-                <span className="text-white lg:text-red100 text-lg inline-block mr-1">
+                <span
+                    className={cls(
+                        `text-white lg:text-red100 text-lg inline-block mr-1`
+                    )}
+                >
                     {text ? `"${text}"` : null}
                 </span>
                 <span className="text-white lg:text-mono100">

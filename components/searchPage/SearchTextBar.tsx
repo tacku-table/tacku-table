@@ -1,7 +1,11 @@
-import type { NextPage } from "next";
 import { FieldErrors, useForm } from "react-hook-form";
 
-const SearchTextBar: NextPage = ({ setText }: any) => {
+interface TypeSearchProps {
+    text?: string;
+    setText: (text: string) => void;
+}
+
+const SearchTextBar = ({ setText }: TypeSearchProps) => {
     const { register, handleSubmit, getValues } = useForm();
     const onValid = () => {
         sessionStorage.setItem("searchData", getValues("searchText"));
@@ -17,7 +21,7 @@ const SearchTextBar: NextPage = ({ setText }: any) => {
             className="relative mt-4 mb-16 flex"
         >
             <input
-                {...register("searchText", { maxLength: 5 })}
+                {...register("searchText")}
                 type="text"
                 className="w-[300px] h-[50px] text-sm font-medium pl-7 focus:outline-none rounded-sm rounded-r-none border border-slate-300"
                 placeholder="하울의 움직이는 성 베이컨계란요리"
