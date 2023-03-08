@@ -17,7 +17,7 @@ const RecipeList = ({
 }: TypeSearchPageProps) => {
     // dataResults = 검색결과
     // currentItems = 전체레시피(총)
-    // totalItems = 전체레시피(6개씩)
+    // totalItems = 전체레시피(8개씩)
     const filteredFoodAndTime = filteredFood?.length && filteredTime?.length;
     const filteredOnlyFood = filteredFood?.length;
     const filteredOnlyTime = filteredTime?.length;
@@ -104,7 +104,7 @@ const RecipeList = ({
                         filteredFood?.length ||
                         filteredTime?.length ||
                         !currentItems?.length ||
-                        (currentItems || dataResults).length < 6
+                        (currentItems || dataResults).length < 8
                         ? "hidden"
                         : ""
                 )}

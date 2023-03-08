@@ -2,6 +2,7 @@ import { cls } from "@/util";
 
 const ChangeSortedBtn = ({
     text,
+    setText,
     currentItems,
     dataResults,
     isBest,

@@ -1,19 +1,16 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import { VscEye } from "react-icons/vsc";
+import { Warn } from "../toastify/Alert";
 
 const RecipeListData = ({ item }: { item: TypeRecipe }) => {
-    // 회원아니면 alert뜨게함. 추가 로직
     const [storageCurrentUser, setStorageCurrentUser] = useState("");
     // 상세페이지이동
     const router = useRouter();
     const goToDetail = (item: TypeRecipe) => {
         item.displayStatus === "회원 공개" && storageCurrentUser === "guest"
-            ? toast.warning("멤버공개 레시피글입니다. 로그인을 진행해주세요.", {
-                  autoClose: 2000,
-              })
+            ? Warn("멤버공개 레시피글입니다. 로그인을 진행해주세요.")
             : router.push(`/detailRecipe/${item.id}`);
     };
 
@@ -72,20 +69,20 @@ const RecipeListData = ({ item }: { item: TypeRecipe }) => {
             </div>
             <div className="text-sm text-slate-500 mt-1 flex justify-between">
                 <div className="flex text-ellipsis overflow-hidden whitespace-nowrap">
-                    <p className="text-ellipsis overflow-hidden whitespace-nowrap text-blue100">
+                    <p className="text-ellipsis overflow-hidden whitespace-nowrap text-blue100 ml-2">
                         &#35;{item.animationTitle}
                     </p>
                     <p className="whitespace-nowrap ml-4">
                         &#35;{item.cookingTime}
                     </p>
                 </div>
-                <p className="whitespace-nowrap flex justify-center items-center gap-x-1 ml-4">
+                <p className="whitespace-nowrap flex justify-center items-center gap-x-1 ml-4 mr-1">
                     <VscEye></VscEye>
                     {item.viewCount}
                 </p>
             </div>
             <p
-                className="text-lg text-slate-900 font-semibold cursor-pointer inline-block"
+                className="text-lg text-slate-900 font-semibold cursor-pointer inline-block ml-2"
                 onClick={() => {
                     goToDetail(item);
                 }}
