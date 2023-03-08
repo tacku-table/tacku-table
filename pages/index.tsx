@@ -1,10 +1,10 @@
 import { NextPage } from "next";
-import MainPage from "./mainPage";
+import Main from "./main";
 
 const index: NextPage = () => {
     return (
         <div>
-            <MainPage />
+            <Main />
         </div>
     );
 };

@@ -1,10 +1,24 @@
 import React, { useRef, useState } from "react";
-import { authService } from "@/config/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { authService, dbService } from "@/config/firebase";
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+  updateProfile,
+} from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore";
 import { emailRegex, pwRegex } from "@/util";
 import { toast } from "react-toastify";
+import socialLoginType from "@/config/global";
+import { AiFillGoogleSquare, AiFillFacebook } from "react-icons/ai";
 
-const Login = ({ setStatus, status }: { setStatus: any; status: string }) => {
+interface LoginProps {
+  status: string;
+  setStatus: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const Login = ({ setStatus, status }: LoginProps) => {
   const emailRef = useRef<HTMLInputElement>(null);
   const pwRef = useRef<HTMLInputElement>(null);
   const [email, setEmail] = useState("");
@@ -23,6 +37,62 @@ const Login = ({ setStatus, status }: { setStatus: any; status: string }) => {
       theme: "light",
     });
   };
+
+  //구글 로그인
+  const gooleLogin = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(authService, provider)
+      .then(async (data) => {
+        console.log("data", data);
+        await setDoc(doc(dbService, "user", data.user.uid), {
+          userId: data.user.uid,
+          userNickname: data.user.displayName,
+          userEmail: data.user.email,
+          userPw: "social",
+          userImg: "null",
+        });
+        await updateProfile(data.user, {
+          displayName: data.user.displayName,
+          photoURL: "null",
+        });
+        toastAlert("🎉 로그인 성공 ");
+        sessionStorage.setItem("User", JSON.stringify(authService.currentUser));
+        setTimeout(() => {
+          location.href = "/main";
+        }, 2000);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  //페이스북 로그인
+  const fackbookLogin = () => {
+    const provider = new FacebookAuthProvider();
+    signInWithPopup(authService, provider)
+      .then(async (data) => {
+        await setDoc(doc(dbService, "user", data.user.uid), {
+          userId: data.user.uid,
+          userNickname: data.user.displayName,
+          userEmail: data.user.email,
+          userPw: "social",
+          userImg: "null",
+        });
+        await updateProfile(data.user, {
+          displayName: data.user.displayName,
+          photoURL: "null",
+        });
+        toastAlert("🎉 로그인 성공 ");
+        sessionStorage.setItem("User", JSON.stringify(authService.currentUser));
+        setTimeout(() => {
+          location.href = "/main";
+        }, 2000);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   // 유효성 검사
   const validateInputs = () => {
     if (!email) {
@@ -67,7 +137,7 @@ const Login = ({ setStatus, status }: { setStatus: any; status: string }) => {
         setPw("");
         sessionStorage.setItem("User", JSON.stringify(authService.currentUser));
         setTimeout(() => {
-          location.href = "/mainPage";
+          location.href = "/main";
         }, 2000);
       })
       .catch((err) => {
@@ -138,22 +208,34 @@ const Login = ({ setStatus, status }: { setStatus: any; status: string }) => {
       ) : (
         <div className="mt-[32px] h-[24px]"></div>
       )}
-
       {status === "login" ? (
-        <div className="mt-10 m-auto text-center">
-          <span className="text-[16px]">
-            아직 <b className="text-blue100">타쿠의 식탁</b> 계정이 없으신가요?
-          </span>
-          <button
-            className="ml-2 text-[18px] text-blue100 relative font-light"
-            type="button"
-            onClick={() => {
-              setStatus("signUp");
-            }}
-          >
-            지금 가입하기
-          </button>
-        </div>
+        <>
+          <div className="mt-10 m-auto text-center">
+            <span className="text-[16px]">
+              아직 <b className="text-blue100">타쿠의 식탁</b> 계정이
+              없으신가요?
+            </span>
+            <button
+              className="ml-2 text-[18px] text-blue100 relative font-light"
+              type="button"
+              onClick={() => {
+                setStatus("signUp");
+              }}
+            >
+              지금 가입하기
+            </button>
+          </div>
+          <div className="my-5 flex justify-around">
+            <button onClick={gooleLogin}>
+              <AiFillGoogleSquare
+                style={{ fontSize: "55px", color: "#F16C34" }}
+              />
+            </button>
+            <button onClick={fackbookLogin}>
+              <AiFillFacebook style={{ fontSize: "55px", color: "#F16C34" }} />
+            </button>
+          </div>
+        </>
       ) : (
         <div></div>
       )}

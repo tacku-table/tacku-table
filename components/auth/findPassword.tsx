@@ -13,11 +13,10 @@ const FindPassword = () => {
   //뒤로가기 누르면 로그인 창으로 이동
   useEffect(() => {
     window.history.pushState(null, "null", document.URL);
-    console.log("document.URL:", document.URL);
     window.addEventListener("popstate", function (event) {
       const result = window.confirm("정말 나가시겠습니까?");
       if (result) {
-        window.location.replace(`/loginPage`);
+        window.location.replace(`/login`);
       }
       if (!result) {
         return false;
@@ -38,16 +37,16 @@ const FindPassword = () => {
   };
 
   // 비밀번호 재설정 메일 보내기
-  const handleResetPassword = (e: any) => {
+  const handleResetPassword = (e: React.MouseEvent) => {
     e.preventDefault();
     if (changePassword()) {
       return;
     }
     sendPasswordResetEmail(authService, email)
-      .then((data: any) => {
+      .then((data) => {
         toast.success("이메일을 발송했습니다.");
       })
-      .catch((error: any) => {
+      .catch((error) => {
         if (error.message.includes("auth/user-not-found")) {
           toast.warn("회원이 아닙니다. 회원가입을 먼저 진행해 주세요.");
           return;
