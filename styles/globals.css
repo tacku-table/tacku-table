@@ -59,6 +59,12 @@
     .recipepage-share-button {
         @apply sm:mr-5 last:mr-0 mr-4 sm:text-4xl text-3xl text-mono70;
     }
+    .side-cate-title {
+        @apply bg-mono30 rounded-sm w-36 h-9 flex justify-center items-center text-sm text-brand100 mb-4;
+    }
+    .side-checkbox {
+        @apply w-4 h-4 accent-orange-600;
+    }
 }
 @keyframes messageFadeIn {
     0% {

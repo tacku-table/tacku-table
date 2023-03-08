@@ -17,7 +17,7 @@ const SearchTextBar: NextPage = ({ setText }: any) => {
             className="relative mt-4 mb-16 flex"
         >
             <input
-                {...register("searchText")}
+                {...register("searchText", { maxLength: 5 })}
                 type="text"
                 className="w-[300px] h-[50px] text-sm font-medium pl-7 focus:outline-none rounded-sm rounded-r-none border border-slate-300"
                 placeholder="하울의 움직이는 성 베이컨계란요리"

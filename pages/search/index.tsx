@@ -194,19 +194,11 @@ const SearchData: NextPage = () => {
                 />
                 <div className="w-4/5 border-b border-mono70 mb-[30px]"></div>
                 <div className="w-4/5 flex flex-col items-center md:items-start md:flex-row md:justify-between mb-10">
-                    <button
-                        onClick={clearChecked}
-                        type="button"
-                        className="sorted-btn mb-4 md:invisible md:w-0"
-                    >
-                        선택초기화<GrRotateLeft></GrRotateLeft>
-                    </button>
-                    <div className="flex justify-center mx-auto md:justify-start mb-9 md:flex-col md:ml-7 2xl:ml-10 mr-3">
+                    <div className="w-full flex justify-center gap-x-4 mx-auto mb-9 md:justify-start md:flex-col md:ml-1 md:mr-3">
                         <SideFoodCate
                             onCheckedFood={onCheckedFood}
                             filteredFood={filteredFood}
                         />
-                        <div className="w-36 md:border md:border-mono50 my-4"></div>
                         <SideCookingTime
                             onCheckedTime={onCheckedTime}
                             filteredTime={filteredTime}
@@ -214,7 +206,7 @@ const SearchData: NextPage = () => {
                         <button
                             onClick={clearChecked}
                             type="button"
-                            className="sorted-btn mt-7 invisible md:visible"
+                            className="sorted-btn md:mt-7"
                         >
                             선택초기화<GrRotateLeft></GrRotateLeft>
                         </button>
