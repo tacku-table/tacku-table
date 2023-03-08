@@ -68,10 +68,10 @@ const Header = () => {
 
   return (
     <div
-      className="fixed top-0 z-50 w-full sm:h-[84px] h-36  sm:px-10 px-0 bg-white border-b-[1.5px] border-mono50 items-center text-sm"
+      className="fixed top-0 z-50 w-full sm:h-[84px] h-36 xl:px-10 px-0 bg-white border-b-[1.5px] border-mono50 items-center text-sm"
       onClick={clearStorage}
     >
-      <div className="2xl:w-[1700px] sm:w-[1200px] w-full sm:h-full flex sm:justify-between justify-center sm:mx-auto mx-2 sm:flex-nowrap flex-wrap items-center">
+      <div className="xl:w-11/12 md:w-max w-full sm:h-full flex sm:justify-between justify-center sm:mx-auto mx-2 sm:flex-nowrap flex-wrap items-center">
         <ul className="flex justify-center items-center ">
           <li className="header-title">
             <Link href="/main">
