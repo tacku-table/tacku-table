@@ -17,6 +17,7 @@ import SideFoodCate from "@/components/searchPage/SideFoodCate";
 import SideCookingTime from "@/components/searchPage/SideCookingTime";
 import { FieldErrors, useForm } from "react-hook-form";
 import TopButton from "@/components/button/TopButton";
+import { GrRotateLeft } from "react-icons/gr";
 
 const SearchData: NextPage = () => {
     const router = useRouter();
@@ -158,6 +159,13 @@ const SearchData: NextPage = () => {
         },
         [filteredTime]
     );
+    // 체크박스 리셋
+    const clearChecked = () => {
+        setFilteredFood([]);
+        setFilteredTime([]);
+        sessionStorage.removeItem("filteredFoodData");
+        sessionStorage.removeItem("filteredTimeData");
+    };
 
     useEffect(() => {
         const result = sessionStorage.getItem("userWatching");
@@ -233,8 +241,15 @@ const SearchData: NextPage = () => {
                             onCheckedTime={onCheckedTime}
                             filteredTime={filteredTime}
                         />
+                        <button
+                            onClick={clearChecked}
+                            type="button"
+                            className="sorted-btn mt-7"
+                        >
+                            선택초기화<GrRotateLeft></GrRotateLeft>
+                        </button>
                     </div>
-                    <div className="grid mx-auto sm:mx-0 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-x-7 gap-y-9 relative pb-24">
+                    <div className="grid mx-auto sm:mx-0 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-3 gap-x-7 gap-y-9 relative pb-24">
                         <RecipeList
                             text={text}
                             next={next}

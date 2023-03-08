@@ -44,7 +44,12 @@ const RecipeListData = ({ item }: { item: TypeRecipe }) => {
                 />
                 {item.displayStatus === "회원 공개" && (
                     <>
-                        <div className="w-full h-full bg-black opacity-40 absolute top-0 left-0"></div>
+                        <div
+                            className="w-full aspect-[1/0.65] bg-black opacity-40 absolute top-0 left-0 cursor-pointer"
+                            onClick={() => {
+                                goToDetail(item);
+                            }}
+                        ></div>
                         <p className="absolute bottom-4 right-10 text-white text-sm">
                             회원전용
                         </p>

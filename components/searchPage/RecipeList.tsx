@@ -63,7 +63,10 @@ const RecipeList = ({
             ) : dataResults?.length ? (
                 isBest === "viewCount" ? (
                     dataResults
-                        .sort((a: any, b: any) => b.viewCount - a.viewCount)
+                        .sort(
+                            (a: TypeRecipe, b: TypeRecipe) =>
+                                b.viewCount! - a.viewCount!
+                        )
                         .map((item) => {
                             return <RecipeListData key={item.id} item={item} />;
                         })
@@ -80,8 +83,8 @@ const RecipeList = ({
                 <div className="">
                     <Image
                         src={logo}
-                        width={200}
-                        height={200}
+                        width={100}
+                        height={75}
                         alt="logo_image"
                     />
                     <p className="flex justify-center items-center relative">
