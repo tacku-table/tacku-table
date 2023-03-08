@@ -5,10 +5,10 @@ import { signOut } from "firebase/auth";
 import FoodCategory from "../mainPage/category/FoodCategory";
 import CookingTime from "../mainPage/category/CookingTime";
 import logo2 from "../../public/images/logo2.png";
+import logo22 from "../../public/images/logo2-2.png";
 import Image from "next/image";
-import { toast } from "react-toastify";
 import { setTimeout } from "timers";
-import { useRouter } from "next/router";
+import Sidebar from "./Sidebar";
 import { Success } from "../toastify/Alert";
 
 export const clearStorage = () => {
@@ -19,6 +19,7 @@ export const clearStorage = () => {
 };
 
 const Header = () => {
+    const [headerSideBar, setHeaderSideBar] = useState<boolean>(false);
     const [storageCurrentUser, setStorageCurrentUser] = useState("");
     const logoutAction = () => {
         signOut(authService)
@@ -48,7 +49,6 @@ const Header = () => {
         sessionStorage.removeItem("searchData");
         window.location.replace("/search");
     };
-
     useEffect(() => {
         const user = sessionStorage.getItem("User") || "";
         setStorageCurrentUser(user);
@@ -56,31 +56,69 @@ const Header = () => {
 
     return (
         <div
-            className="fixed top-0 z-50 w-full sm:h-[84px] h-36 xl:px-10 px-0 bg-white border-b-[1.5px] border-mono50 items-center text-sm"
+            className="fixed top-0 z-50 w-full h-[84px] xl:px-10 px-0 bg-white border-b-[1.5px] border-mono50 items-center text-sm"
             onClick={clearStorage}
         >
-            <div className="xl:w-11/12 md:w-max w-full sm:h-full flex sm:justify-between justify-center sm:mx-auto mx-2 sm:flex-nowrap flex-wrap items-center">
+            <div className="xl:w-11/12 md:w-max w-full sm:h-full flex justify-between  sm:mx-auto mx-2 items-center">
                 <ul className="flex justify-center items-center ">
                     <li className="header-title">
+                        <button
+                            onClick={() => {
+                                setHeaderSideBar(!headerSideBar);
+                            }}
+                            className="md:hidden"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="1.5"
+                                stroke="currentColor"
+                                className="w-6 h-6"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                                />
+                            </svg>
+                        </button>
+                    </li>
+                    <li className="header-title">
                         <Link href="/main">
-                            <Image
-                                src={logo2}
-                                alt="logo_web"
-                                width={155}
-                                height={38}
-                                priority
-                            />
+                            <div className="md:block hidden">
+                                <Image
+                                    src={logo2}
+                                    alt="logo_web"
+                                    width={155}
+                                    height={38}
+                                    priority
+                                />
+                            </div>
+                            <div className="md:hidden">
+                                <Image
+                                    src={logo22}
+                                    alt="logo_web"
+                                    width={60}
+                                    height={80}
+                                    priority
+                                />
+                            </div>
                         </Link>
                     </li>
                     <li
                         onClick={clearStorageAndShowTotal}
-                        className="header-title cursor-pointer"
+                        className="header-title cursor-pointer md:block hidden"
                     >
                         전체 레시피
                     </li>
-                    <FoodCategory />
-                    <CookingTime />
-                    <li className="header-title cursor-pointer ">
+                    <div className=" md:block hidden">
+                        <FoodCategory />
+                    </div>
+                    <div className=" md:block hidden">
+                        <CookingTime />
+                    </div>
+                    <li className="header-title cursor-pointer md:block hidden">
                         <Link href="/community">커뮤니티</Link>
                     </li>
                 </ul>
@@ -126,6 +164,7 @@ const Header = () => {
                             회원가입
                         </Link>
                     )}
+                    {headerSideBar ? <Sidebar /> : null}
                 </div>
             </div>
         </div>

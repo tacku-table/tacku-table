@@ -26,8 +26,8 @@ const MyCommentTab = ({ userInfo }: MyTabProp) => {
 
   useEffect(() => {
     setCommunityList(communityPost);
-    getCommunityComment(userInfo?.userId as string);
-  }, []);
+    getCommunityComment(userInfo?.userId as unknown as string);
+  }, [commentPost]);
 
   // uid 기반으로 가져오는 함수
   const getCommunityComment = async (userId: string) => {
