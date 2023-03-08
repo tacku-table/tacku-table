@@ -13,6 +13,7 @@ const RecipeList = ({
     dataResults,
     filteredFood,
     filteredTime,
+    isBest,
 }: TypeSearchPageProps) => {
     // dataResults = 검색결과
     // currentItems = 전체레시피(총)
@@ -22,17 +23,19 @@ const RecipeList = ({
     const filteredOnlyTime = filteredTime?.length;
 
     return (
-        <div className="grid grid-cols-3 gap-x-7 gap-y-9 relative pb-24">
-            {text && !dataResults?.length ? (
-                <div>
+        <>
+            {(text && !dataResults?.length) || currentItems?.length === 0 ? (
+                <div className="">
                     <Image
                         src={logo}
-                        width={200}
-                        height={200}
+                        width={100}
+                        height={75}
                         alt="logo_image"
                     />
-                    <p className="text-[#cf8c36] mt-4">
-                        해당 게시물이 존재하지 않습니다.
+                    <p className="flex justify-center items-center relative">
+                        <span className="font-medium mt-4">
+                            첫번째 레시피의 주인공이 되어주세요!
+                        </span>
                     </p>
                 </div>
             ) : filteredFoodAndTime ? (
@@ -58,15 +61,35 @@ const RecipeList = ({
                         return <RecipeListData key={item.id} item={item} />;
                     })
             ) : dataResults?.length ? (
-                dataResults.map((item) => {
-                    return <RecipeListData key={item.id} item={item} />;
-                })
+                isBest === "viewCount" ? (
+                    dataResults
+                        .sort((a: any, b: any) => b.viewCount - a.viewCount)
+                        .map((item) => {
+                            return <RecipeListData key={item.id} item={item} />;
+                        })
+                ) : (
+                    dataResults.map((item) => {
+                        return <RecipeListData key={item.id} item={item} />;
+                    })
+                )
             ) : totalItems?.length ? (
                 totalItems.map((item) => {
                     return <RecipeListData key={item.id} item={item} />;
                 })
             ) : (
-                <div>게시물이 존재하지 않습니다.</div>
+                <div className="">
+                    <Image
+                        src={logo}
+                        width={200}
+                        height={200}
+                        alt="logo_image"
+                    />
+                    <p className="flex justify-center items-center relative">
+                        <span className="font-medium mt-4">
+                            첫번째 레시피의 주인공이 되어주세요!
+                        </span>
+                    </p>
+                </div>
             )}
             <button
                 type="button"
@@ -76,14 +99,16 @@ const RecipeList = ({
                     !lastDoc ||
                         text ||
                         filteredFood?.length ||
-                        filteredTime?.length
+                        filteredTime?.length ||
+                        !currentItems?.length ||
+                        (currentItems || dataResults).length < 6
                         ? "hidden"
                         : ""
                 )}
             >
                 더보기
             </button>
-        </div>
+        </>
     );
 };
 
