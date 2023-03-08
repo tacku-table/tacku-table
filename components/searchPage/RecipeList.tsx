@@ -13,6 +13,7 @@ const RecipeList = ({
     dataResults,
     filteredFood,
     filteredTime,
+    isBest,
 }: TypeSearchPageProps) => {
     // dataResults = 검색결과
     // currentItems = 전체레시피(총)
@@ -60,9 +61,17 @@ const RecipeList = ({
                         return <RecipeListData key={item.id} item={item} />;
                     })
             ) : dataResults?.length ? (
-                dataResults.map((item) => {
-                    return <RecipeListData key={item.id} item={item} />;
-                })
+                isBest === "viewCount" ? (
+                    dataResults
+                        .sort((a: any, b: any) => b.viewCount - a.viewCount)
+                        .map((item) => {
+                            return <RecipeListData key={item.id} item={item} />;
+                        })
+                ) : (
+                    dataResults.map((item) => {
+                        return <RecipeListData key={item.id} item={item} />;
+                    })
+                )
             ) : totalItems?.length ? (
                 totalItems.map((item) => {
                     return <RecipeListData key={item.id} item={item} />;

@@ -48,7 +48,7 @@ const BestRecipe: NextPage = () => {
                 >
                     더보기
                 </button>
-                <div className="grid mx-auto lg:mx-0 lg:grid-cols-2 xl:grid-cols-3 gap-x-7 gap-y-9 relative pb-24">
+                <div className="grid mx-auto md:grid-cols-2 lg:mx-0 lg:grid-cols-3 gap-x-7 gap-y-9 relative pb-24">
                     <RecipeList dataResults={dataResults} />
                 </div>
             </div>

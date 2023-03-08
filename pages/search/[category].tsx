@@ -212,6 +212,7 @@ const ClassifiedRecipe: NextPage = () => {
                         currentItems={currentItems}
                         totalItems={totalItems}
                         dataResults={dataResults}
+                        isBest={isBest}
                     />
                 </div>
             </div>

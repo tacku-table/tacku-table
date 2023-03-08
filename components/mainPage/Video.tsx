@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ReactPlayer from "react-player/lazy";
+import Slider from "./Slider";
 
 const Video = () => {
     const [hasWindow, setHasWindow] = useState(false);
@@ -10,7 +11,7 @@ const Video = () => {
     }, [hasWindow]);
 
     return (
-        <div className="w-full flex justify-center">
+        <div className="w-full  mx-auto flex flex-col justify-center mt-4">
             {hasWindow && (
                 <ReactPlayer
                     className="react-player"
@@ -22,8 +23,8 @@ const Video = () => {
                             },
                         },
                     }}
-                    width="110vh"
-                    height="62vh"
+                    width="100%"
+                    height="100%"
                     playing={true} // 자동 재생 on
                     muted={true} // 음소거 on
                     controls={false} // 플레이어 컨트롤 노출 여부
@@ -32,6 +33,7 @@ const Video = () => {
                     loop={true} // 반복재생
                 />
             )}
+            <Slider />
         </div>
     );
 };
