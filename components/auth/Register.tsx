@@ -109,6 +109,10 @@ const RegisterPage = () => {
     // 닉네임 중복체크
     const nicknameDuplicate = async () => {
         const { nickname } = getValues();
+        if (!nickRegex.test(nickname)) {
+            Warn("닉네임 규칙을 지켜는지 확인해주세요.");
+            return;
+        }
         const nickNameCheck = query(
             collection(dbService, "user"),
             where("userNickname", "==", nickname)
