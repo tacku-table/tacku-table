@@ -222,10 +222,9 @@ export default function ProfileEdit(props: ProfileEditProp) {
       setIsNickname(false);
     } else {
       if (newData.length == 0 && nickname.length > 0) {
-        setNicknameMessage("사용가능");
+        setNicknameMessage("사용 가능한 닉네임입니다.");
         setSaveNickname(nickname);
         return setIsNickname(true);
-        // return setNotNicknameDuplicateCheck(false);
       } else {
         if (nickname.length != 0) {
           setNicknameMessage("이미 다른 유저가 사용 중입니다.");
@@ -280,37 +279,6 @@ export default function ProfileEdit(props: ProfileEditProp) {
       .catch((error) => toast.error("재로그인이 필요합니다.", error));
   };
 
-  const nicknameDuplicate = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const nickname = event.target.value;
-
-    if (!nickRegex.test(nickname)) {
-      setNicknameMessage("2자 이상 8자 이하로 입력해주세요");
-      return;
-    }
-    const nickNameCheck = query(
-      collection(dbService, "user"),
-      where("userNickname", "==", nickname)
-    );
-    const querySnapshot = await getDocs(nickNameCheck);
-    const newData = querySnapshot.docs;
-
-    if (newData.length == 0 && nickname.length > 0) {
-      setNicknameMessage("사용가능");
-      setSaveNickname(nickname);
-      setNicknameCheck(true);
-      // return setNotNicknameDuplicateCheck(false);
-    } else {
-      if (nickname.length != 0) {
-        setNicknameMessage("이미 다른 유저가 사용 중입니다.");
-      } else {
-        setNicknameMessage("알 수 없는 에러로 사용할 수 없습니다.");
-      }
-      setNicknameCheck(false);
-      // return setNotNicknameDuplicateCheck(true);
-    }
-  };
   // 이미지 변경
   const handleUpdateProfile = async (id: string) => {
     if (imageUpload === null) return;
@@ -340,9 +308,28 @@ export default function ProfileEdit(props: ProfileEditProp) {
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center my-[86px]">
-        <span className="text-4xl font-bold">회원정보 수정</span>
-        <div className="flex flex-col min-w-[532px] py-10 space-y-7">
+      <div className="flex flex-col justify-center items-center my-20 lg:my-[86px]">
+        <div className="flex pb-10">
+          <span className="text-4xl text-center font-bold">회원정보 수정</span>
+          <button className="ml-12" onClick={() => router.back()}>
+            <svg
+              className="w-8 h-8 rounded-full text-mono100  hover:text-white hover:bg-brand100 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium text-sm text-center inline-flex items-center mb-2"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path>
+            </svg>
+          </button>
+        </div>
+        <div className="flex flex-col justify-center space-y-10">
           <div className="flex gap-14 items-start">
             <span className="text-base  min-w-[120px]">프로필 이미지</span>
             <div className="flex flex-col">
@@ -401,166 +388,161 @@ export default function ProfileEdit(props: ProfileEditProp) {
             <>
               <div>
                 <div className="flex gap-14 items-center">
-                  <span className="text-base min-w-[120px] ">
-                    비밀번호 변경
-                  </span>
                   {!togglePwChange && (
-                    <div className="px-2 py-1 text-center w-fit border-mono60 border-[1px] text-base">
-                      <button onClick={() => setTogglePwChange(true)}>
-                        변경하기
-                      </button>
-                    </div>
+                    <>
+                      <span className="text-base min-w-[120px] ">
+                        비밀번호 변경
+                      </span>
+                      <div className="px-2 py-1 text-center w-fit border-mono60 border-[1px] text-base">
+                        <button onClick={() => setTogglePwChange(true)}>
+                          변경하기
+                        </button>
+                      </div>
+                    </>
                   )}
                   {togglePwChange && (
-                    <div>
-                      <input
-                        type="password"
-                        placeholder="변경할 비밀번호를 입력해주세요."
-                        onChange={handleChangePassword}
-                        className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10 focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
-                      />
-                      <div className="h-[16px]">
-                        {(changeUserPw?.length as number) > 0 && (
-                          <span
-                            className={cls(
-                              "text-xs",
-                              `${
-                                isPassword
-                                  ? "text-xs text-blue100"
-                                  : "text-brand100"
-                              }`
-                            )}
-                          >
-                            {passwordMessage}
-                          </span>
-                        )}
+                    <div className="">
+                      <div className="flex gap-14 items-center">
+                        <span className="text-base min-w-[120px] ">
+                          비밀번호 변경
+                        </span>
+                        <input
+                          type="password"
+                          placeholder="변경할 비밀번호를 입력해주세요."
+                          onChange={handleChangePassword}
+                          className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10 focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
+                        />
+                      </div>
+                      <div className="grid-cols-2 items-end">
+                        <div className="h-[16px] ml-[176px] mt-1">
+                          {(changeUserPw?.length as number) > 0 && (
+                            <span
+                              className={cls(
+                                "text-xs",
+                                `${
+                                  isPassword
+                                    ? "text-xs text-blue100"
+                                    : "text-brand100"
+                                }`
+                              )}
+                            >
+                              {passwordMessage}
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
                   )}
                 </div>
               </div>
               {togglePwChange && (
-                <div className="relative">
-                  <div className="flex flex-col">
-                    <label className="flex gap-14 items-center">
-                      <span className="text-base min-w-[120px]">
-                        비밀번호 변경 확인
-                      </span>
-                      <div>
-                        <input
-                          type="password"
-                          placeholder="확인을 위해 비밀번호를 재입력해주세요."
-                          onChange={handleChangePasswordConfirm}
-                          className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10  focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
-                        />
-                        <div className="h-[16px]">
-                          {confirmChangeUserPw?.length > 0 && (
-                            <span
-                              className={cls(
-                                "text-xs",
-                                `${
-                                  isPasswordConfirm
-                                    ? "text-blue-600"
-                                    : "text-orange-500"
-                                }`
-                              )}
-                            >
-                              {passwordConfirmMessage}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </label>
+                <div>
+                  <div className="flex gap-14 items-center">
+                    <span className="text-base min-w-[120px]">
+                      비밀번호 변경 확인
+                    </span>
+                    <input
+                      type="password"
+                      placeholder="확인을 위해 비밀번호를 재입력해주세요."
+                      onChange={handleChangePasswordConfirm}
+                      className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10  focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
+                    />
                   </div>
-                  <button
-                    className="absolute -translate-x-1/2 left-3/4 ml-4 w-fit cursor-pointer  disabled:bg-mono30 disabled:text-mono100 valid:bg-brand100 valid:text-white hover:bg-brand100/80 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-sm text-sm px-2 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mb-2"
-                    disabled={!(isPassword && isPasswordConfirm)}
-                    onClick={() =>
-                      handleUpdatePassword(
-                        userInfo?.userId as unknown as string
-                      )
-                    }
-                  >
-                    수정하기
-                  </button>
+                  <div className="grid-cols-2 items-end">
+                    <div className="h-[16px] ml-[176px] mt-1">
+                      {confirmChangeUserPw?.length > 0 && (
+                        <span
+                          className={cls(
+                            "text-xs",
+                            `${
+                              isPasswordConfirm
+                                ? "text-blue-600"
+                                : "text-orange-500"
+                            }`
+                          )}
+                        >
+                          {passwordConfirmMessage}
+                        </span>
+                      )}
+                    </div>
+                    <button
+                      className="float-right mt-4 w-fit cursor-pointer  disabled:bg-mono30 disabled:text-mono100 valid:bg-brand100 valid:text-white hover:bg-brand100/80 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-sm text-sm px-2 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mb-2"
+                      disabled={!(isPassword && isPasswordConfirm)}
+                      onClick={() =>
+                        handleUpdatePassword(
+                          userInfo?.userId as unknown as string
+                        )
+                      }
+                    >
+                      수정하기
+                    </button>
+                  </div>
                 </div>
               )}
             </>
           )}
-          <div className="flex flex-col">
-            <label
-              className={cls(
-                "flex gap-14 items-center",
-                `${togglePwChange && "mt-8"}`
-              )}
-            >
-              <span className="text-base min-w-[120px]">닉네임 변경</span>
-              <div className="relative">
-                <div className="flex">
-                  <input
-                    type="text"
-                    onChange={(event) =>
-                      handleChangeNickname(event, setChangeUserNickname)
-                    }
-                    className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10  focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
-                  />
-                </div>
-                <div className="h-[16px]">
-                  {(changeUserNickname?.length as number) > 0 && (
-                    <span
-                      className={cls(
-                        "text-xs",
-                        `${isNickname ? "text-blue-600" : "text-orange-500"}`
-                      )}
-                    >
-                      {nicknameMessage}
-                    </span>
-                  )}
-                </div>
-                <button
-                  className="w-fit ml-4 cursor-pointer disabled:bg-mono30 disabled:text-mono100 valid:bg-brand100 valid:text-white hover:bg-brand100/80 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-sm text-sm px-2 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mb-2"
-                  disabled={!isNickname}
-                  onClick={() =>
-                    handleUpdateNickname(userInfo?.userId as string)
-                  }
-                >
-                  수정하기
-                </button>
+
+          <div className={cls(`${togglePwChange && "mt-8"}`)}>
+            <div className="flex gap-14 items-center">
+              <span className="text-bases w-[120px]">닉네임 변경</span>
+              <input
+                type="text"
+                onChange={(event) =>
+                  handleChangeNickname(event, setChangeUserNickname)
+                }
+                className="w-[300px] pl-3 border-mono60 border-[1px] h-10  focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
+              />
+            </div>
+
+            <div className="grid-cols-2 items-end">
+              <div className="h-[16px] ml-[176px] mt-1">
+                {(changeUserNickname?.length as number) > 0 && (
+                  <span
+                    className={cls(
+                      "text-xs",
+                      `${isNickname ? "text-blue-600" : "text-orange-500"}`
+                    )}
+                  >
+                    {nicknameMessage}
+                  </span>
+                )}
               </div>
-            </label>
+              <button
+                className="w-fit float-right mt-4 cursor-pointer disabled:bg-mono30 disabled:text-mono100 valid:bg-brand100 valid:text-white hover:bg-brand100/80 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-sm text-sm px-2 py-2.5 text-center  dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mb-2"
+                disabled={!isNickname}
+                onClick={() => handleUpdateNickname(userInfo?.userId as string)}
+              >
+                수정하기
+              </button>
+            </div>
           </div>
-        </div>
-        <div className="space-x-5">
-          <button
-            onClick={() => router.back()}
-            className="text-mono100 bg-mono30 hover:bg-brand100 hover:text-white focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-sm text-sm px-28 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mb-2"
-          >
-            취소하기
-          </button>
-        </div>
-        <hr className="border-[1px] w-[580px] border-mono70 mb-4" />
-        <div className="flex justify-between items-center">
-          <label htmlFor="terms">
-            <input
-              id="terms"
-              type="checkbox"
-              onClick={(event) => {
-                const target = event.target as HTMLInputElement;
-                setAgree(target.checked);
-              }}
-            />
-            <span className="ml-1 text-blue-500">이용약관</span>
-            과&nbsp;
-            <span className="ml-1 text-blue-500">개인정보취급방침</span>
-            에&nbsp;동의합니다.
-          </label>
-          <button
-            onClick={deleteCurrentUser}
-            className="disabled:text-mono100 bg-mono30 valid:hover:bg-brand100 hover:text-white focus:ring-4 focus:outline-none focus:ring-brand100/50 font-normal rounded-r-sm text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mb-2"
-            disabled={!agree}
-          >
-            회원탈퇴
-          </button>
+          <div>
+            <div className="flex gap-14 items-center">
+              <span className="text-bases w-[120px]">회원탈퇴</span>
+              <div className="max-w-[300px]">
+                <label htmlFor="terms">
+                  <input
+                    id="terms"
+                    type="checkbox"
+                    onClick={(event) => {
+                      const target = event.target as HTMLInputElement;
+                      setAgree(target.checked);
+                    }}
+                  />
+                  <span className="ml-1 text-blue-500">이용약관</span> 과&nbsp;
+                  <span className="ml-1 text-blue-500">개인정보취급방침</span>
+                  에&nbsp;동의합니다.
+                </label>
+              </div>
+            </div>
+            <button
+              onClick={deleteCurrentUser}
+              className="float-right mt-4 max-w-fit disabled:bg-mono30 disabled:text-mono100 valid:bg-brand100 valid:text-white hover:bg-brand100/80 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-sm text-sm px-2 py-2.5 text-center inline-flex items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 mb-2"
+              disabled={!agree}
+            >
+              회원탈퇴
+            </button>
+          </div>
         </div>
       </div>
     </>

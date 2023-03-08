@@ -13,13 +13,6 @@ interface MyTabsProp {
 }
 
 const MyTabs = ({ userInfo, storageCurrentUser }: MyTabsProp) => {
-  //   const [isLoading, setIsLoading] = useState(true);
-  //   useEffect(() => {
-  //     setTimeout(() => {
-  //       setIsLoading(false);
-  //     }, 500);
-  //   });
-
   let [categoriesOfmine] = useState([
     "즐겨찾기",
     "내가 쓴 레시피",
@@ -36,7 +29,7 @@ const MyTabs = ({ userInfo, storageCurrentUser }: MyTabsProp) => {
   //   }
   return (
     <Tab.Group>
-      <Tab.List className="flex space-x-16 ml-[370px] bg-white">
+      <Tab.List className="min-w-full flex space-x-16 justify-center items-center bg-white">
         {storageCurrentUser?.uid === userInfo?.userId ? (
           <>
             {categoriesOfmine.map((category) => (
