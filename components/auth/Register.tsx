@@ -49,7 +49,7 @@ const RegisterPage = () => {
     const [nicknameCheck, setNicknameCheck] = useState(false);
     const [notNicknameDuplicateCheck, setNotNicknameDuplicateCheck] =
         useState(true);
-    const [saveNickname, setSaveNickname] = useState<any>("");
+    const [saveNickname, setSaveNickname] = useState("");
 
     // 회원가입
     const signUp = () => {
@@ -119,13 +119,13 @@ const RegisterPage = () => {
         const querySnapshot = await getDocs(nickNameCheck);
         const newData = querySnapshot.docs;
 
-        if (newData.length == 0 && nickname.length > 0) {
+        if (newData.length === 0 && nickname.length > 0) {
             Success("사용 가능한 닉네임입니다.");
             setSaveNickname(nickname);
             setNicknameCheck(true);
             return setNotNicknameDuplicateCheck(false);
         } else {
-            if (nickname.length != 0) {
+            if (nickname.length !== 0) {
                 Warn("이미 다른 유저가 사용 중입니다.");
             } else {
                 Error("알 수 없는 에러로 사용할 수 없습니다.");
