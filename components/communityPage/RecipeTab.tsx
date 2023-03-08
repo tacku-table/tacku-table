@@ -5,7 +5,7 @@ import useGetCommunityPost from "@/hooks/useGetCommunityPost";
 import Post from "./Post";
 
 const RecipeTab = ({ categories }: any) => {
-  const [foodPost, setFoodPost] = useState<any[]>([]);
+  const [foodPost, setFoodPost] = useState<TCommunity[]>([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const offset = (page - 1) * limit;
@@ -16,11 +16,11 @@ const RecipeTab = ({ categories }: any) => {
   }, [communityPost]);
 
   const getFoodCommunityPost = async (
-    communityPost: any,
-    categories: (string | any[])[]
+    communityPost: TCommunity[],
+    categories: string[]
   ) => {
     let foodArr = communityPost;
-    const newArr = foodArr.filter((item: { category: (string | any[])[] }) =>
+    const newArr = foodArr.filter((item: { category: string }) =>
       item.category.includes(categories[1].slice(0, 2))
     );
     setFoodPost(newArr);
@@ -28,8 +28,8 @@ const RecipeTab = ({ categories }: any) => {
 
   return (
     <Tab.Panel>
-      {foodPost?.slice(offset, offset + limit).map((p) => (
-        <Post p={p} key={p.id} />
+      {foodPost?.slice(offset, offset + limit).map((post) => (
+        <Post post={post} key={post.id} />
       ))}
       <Pagination
         total={foodPost.length}
