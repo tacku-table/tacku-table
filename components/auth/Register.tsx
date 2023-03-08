@@ -36,7 +36,6 @@ const RegisterPage = () => {
         register,
         handleSubmit,
         getValues,
-        setError,
         formState: { errors },
     } = useForm<RegisterForm>({ mode: "onChange" });
     const onValid = (data: RegisterForm) => {
@@ -58,36 +57,36 @@ const RegisterPage = () => {
             authService,
             getValues("email"),
             getValues("pw")
-        ).then(async (data) => {
-            Promise.all([
-                setDoc(doc(dbService, "user", data.user.uid), {
-                    userId: data.user.uid,
-                    userNickname: getValues("nickname"),
-                    userEmail: getValues("email"),
-                    userPw: getValues("pw"),
-                    userImg: "null",
-                }),
-                updateProfile(data.user, {
-                    displayName: getValues("nickname"),
-                    photoURL: "null",
-                }),
-                Success("회원가입성공! 로그인해주세요"),
-            ]).catch((error) => {
+        )
+            .then(async (data) => {
+                Promise.all([
+                    setDoc(doc(dbService, "user", data.user.uid), {
+                        userId: data.user.uid,
+                        userNickname: getValues("nickname"),
+                        userEmail: getValues("email"),
+                        userPw: getValues("pw"),
+                        userImg: "null",
+                    }),
+                    updateProfile(data.user, {
+                        displayName: getValues("nickname"),
+                        photoURL: "null",
+                    }),
+                    Success("회원가입성공! 로그인해주세요"),
+                ]);
+                setTimeout(() => {
+                    signOut(authService).then(() => {
+                        sessionStorage.clear();
+                        location.href = "/login";
+                    });
+                }, 1000);
+            })
+            .catch((error) => {
                 console.log(error.message);
                 if (error.message.includes("already-in-use")) {
-                    Warn("이미 가입한 회원입니다");
+                    Error("이미 가입한 회원입니다");
                     return;
                 }
             });
-            setTimeout(() => {
-                signOut(authService).then(() => {
-                    sessionStorage.clear();
-                    location.href = "/login";
-                });
-            }, 1000);
-
-            return data.user;
-        });
     };
 
     // 이메일 중복확인
