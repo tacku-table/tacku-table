@@ -9,7 +9,7 @@ import Video from "@/components/mainPage/Video";
 const Main = () => {
     return (
         <div className="w-full">
-            <div className="w-4/5 mx-auto flex flex-col justify-center items-center md:items-start md:flex-row gap-x-7">
+            <div className="w-4/5 mx-auto flex flex-col justify-center items-center xl:flex-row xl:gap-x-7">
                 <Video />
                 <Special />
             </div>

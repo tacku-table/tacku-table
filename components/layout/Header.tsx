@@ -86,7 +86,7 @@ const Header = () => {
                     </li>
                     <li className="header-title">
                         <Link href="/main">
-                            <div className="md:block hidden">
+                            <div className="lg:block hidden">
                                 <Image
                                     src={logo2}
                                     alt="logo_web"
@@ -95,7 +95,7 @@ const Header = () => {
                                     priority
                                 />
                             </div>
-                            <div className="md:hidden">
+                            <div className="lg:hidden">
                                 <Image
                                     src={logo22}
                                     alt="logo_web"

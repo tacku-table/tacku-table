@@ -161,8 +161,6 @@ const SearchData: NextPage = () => {
 
     useEffect(() => {
         const result = sessionStorage.getItem("userWatching");
-        console.log("result:", result);
-        console.log("isBest:", isBest);
         const storeSearchText = sessionStorage.getItem("searchData");
         const storeFilteredFood = JSON.parse(
             sessionStorage.getItem("filteredFoodData")!
