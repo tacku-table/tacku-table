@@ -5,7 +5,7 @@ import useGetCommunityPost from "@/hooks/useGetCommunityPost";
 import Post from "./Post";
 
 const GossipTab = ({ categories }: any) => {
-  const [gossipPost, setGossipPost] = useState<Community[]>([]);
+  const [gossipPost, setGossipPost] = useState<TCommunity[]>([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const offset = (page - 1) * limit;
@@ -14,7 +14,7 @@ const GossipTab = ({ categories }: any) => {
     getGossipCommunityPost(communityPost, categories);
   }, [communityPost]);
   const getGossipCommunityPost = async (
-    communityList: Community[],
+    communityList: TCommunity[],
     categories: string[]
   ) => {
     let animeArr = communityList;

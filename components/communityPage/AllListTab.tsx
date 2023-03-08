@@ -5,7 +5,7 @@ import Post from "./Post";
 import useGetCommunityPost from "@/hooks/useGetCommunityPost";
 
 const AllListTab = () => {
-  const [communityList, setCommunityList] = useState<Community[]>([]);
+  const [communityList, setCommunityList] = useState<TCommunity[]>([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const offset = (page - 1) * limit;

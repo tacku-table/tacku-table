@@ -5,7 +5,7 @@ import useGetCommunityPost from "@/hooks/useGetCommunityPost";
 import Post from "./Post";
 
 const RecipeTab = ({ categories }: any) => {
-  const [foodPost, setFoodPost] = useState<Community[]>([]);
+  const [foodPost, setFoodPost] = useState<TCommunity[]>([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const offset = (page - 1) * limit;
@@ -16,7 +16,7 @@ const RecipeTab = ({ categories }: any) => {
   }, [communityPost]);
 
   const getFoodCommunityPost = async (
-    communityPost: Community[],
+    communityPost: TCommunity[],
     categories: string[]
   ) => {
     let foodArr = communityPost;

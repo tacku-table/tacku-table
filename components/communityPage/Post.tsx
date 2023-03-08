@@ -5,7 +5,7 @@ import defaultImg from "../../public/images/test1.png";
 import useGetUserProfileNickName from "@/hooks/useGetUserProfileNickName";
 
 interface PostProp {
-  post: Community;
+  post: TCommunity;
 }
 
 const Post = ({ post }: PostProp) => {
@@ -40,7 +40,7 @@ const Post = ({ post }: PostProp) => {
         ) : (
           <Image
             className="object-cover aspect-[4/3] rounded-md cursor-pointer"
-            src={post.thumbnail}
+            src={post?.thumbnail as string}
             priority={true}
             loader={({ src }) => src}
             width={70}

@@ -35,8 +35,8 @@ const NewRecipe: NextPage = () => {
 
     return (
         <>
-            <div className="space-y-4 flex flex-col items-center mt-36 mb-7">
-                <p className="text-3xl font-extrabold">최신레시피</p>
+            <div className="space-y-4 flex flex-col items-center my-7">
+                <p className="text-3xl font-semibold">최신레시피</p>
                 <p className="text-lg font-medium text-slate-500">
                     갓 나온 요리처럼 따끈따끈한 레시피
                 </p>

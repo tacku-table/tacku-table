@@ -5,7 +5,7 @@ import useGetCommunityPost from "@/hooks/useGetCommunityPost";
 import Post from "./Post";
 
 const AnimeTab = ({ categories }: any) => {
-  const [animePost, setAnimePost] = useState<Community[]>([]);
+  const [animePost, setAnimePost] = useState<TCommunity[]>([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1); //default=현재 페이지번호
   const offset = (page - 1) * limit;
@@ -16,7 +16,7 @@ const AnimeTab = ({ categories }: any) => {
   }, [communityPost]);
 
   const getAnimeCommunityPost = async (
-    communityList: Community[],
+    communityList: TCommunity[],
     categories: string[]
   ) => {
     let animeArr = communityList;

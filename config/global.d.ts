@@ -1,13 +1,36 @@
 // global.d.ts
 declare global {
-  interface Community {
+  interface TBookmark {
+    postId?: string;
+    writerUid?: string;
+    writerdisplayName?: string;
+    writerImg?: string;
+    viewCount?: number;
+    animationTitle?: string;
+    cookingTime?: string;
+    foodTitle?: string;
+    thumbnail?: string;
+  }
+  interface TUserInfo {
+    uid?: string | undefined;
+    userId?: string | undefined;
+    userEmail?: string | undefined;
+    userImg?: string | undefined;
+    userNickname?: string | undefined;
+    userPw?: string | undefined;
+  }
+
+  interface TCommunity {
     id: string;
     writterUid: string;
     category: string;
-    title: string;
-    editorText: string;
-    writtenDate: string;
-    thumbnail: string;
+    title?: string;
+    editorText?: string;
+    writtenDate?: string;
+    thumbnail?: string;
+  }
+  interface MyTabProp {
+    userInfo: TUserInfo | undefined;
   }
   interface TypeRecipe {
     id?: string;
@@ -22,7 +45,7 @@ declare global {
     createdAt?: string | number;
     content?: string;
     children?: JSX.Element | JSX.Element[];
-    bookmarkCount?: string[];
+    viewCount?: number;
   }
   interface TypeShowPw {
     showPw: boolean;

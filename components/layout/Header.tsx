@@ -68,71 +68,77 @@ const Header = () => {
 
   return (
     <div
-      className="fixed top-0 z-50 w-full h-20 px-24 py-7 bg-white border-b-[1.5px] border-mono50 flex justify-between items-center text-sm"
+      className="fixed top-0 z-50 w-full sm:h-[84px] h-36 xl:px-10 px-0 bg-white border-b-[1.5px] border-mono50 items-center text-sm"
       onClick={clearStorage}
     >
-      <ul className="flex justify-center items-center">
-        <li className="header-title">
-          <Link href="/main">
-            <Image src={logo2} alt="logo_web" width={155} height={38} />
-          </Link>
-        </li>
-        <li
-          onClick={clearStorageAndShowTotal}
-          className="header-title cursor-pointer"
-        >
-          전체 레시피
-        </li>
-        <FoodCategory />
-        <CookingTime />
-        <li>
-          <Link href="/community" className="header-title">
-            커뮤니티
-          </Link>
-        </li>
-      </ul>
-      <div className="flex justify-center items-center">
-        <Link
-          href="/recipeWrite"
-          className="mr-6 hover:text-mono80 hover:transition hover:ease-out hover:duration-300"
-        >
-          레시피글쓰기
-        </Link>
-        {storageCurrentUser ? (
-          <button
-            type="button"
-            onClick={logoutAction}
+      <div className="xl:w-11/12 md:w-max w-full sm:h-full flex sm:justify-between justify-center sm:mx-auto mx-2 sm:flex-nowrap flex-wrap items-center">
+        <ul className="flex justify-center items-center ">
+          <li className="header-title">
+            <Link href="/main">
+              <Image
+                src={logo2}
+                alt="logo_web"
+                width={155}
+                height={38}
+                priority
+              />
+            </Link>
+          </li>
+          <li
+            onClick={clearStorageAndShowTotal}
+            className="header-title cursor-pointer"
+          >
+            전체 레시피
+          </li>
+          <FoodCategory />
+          <CookingTime />
+          <li className="header-title cursor-pointer ">
+            <Link href="/community">커뮤니티</Link>
+          </li>
+        </ul>
+        <div className="flex justify-center items-center">
+          <Link
+            href="/recipeWrite"
             className="mr-6 hover:text-mono80 hover:transition hover:ease-out hover:duration-300"
           >
-            로그아웃
-          </button>
-        ) : (
-          <button
-            type="button"
-            onClick={moveLoginPage}
-            className="sorted-btn mr-2"
-          >
-            로그인
-          </button>
-        )}
-        {storageCurrentUser ? (
-          <button
-            onClick={() => moveMyPage(storageCurrentUser)}
-            className="hover:text-mono80 hover:transition hover:ease-out hover:duration-300"
-          >
-            마이페이지
-          </button>
-        ) : (
-          <Link
-            href={{
-              pathname: "/login",
-              query: { headerstatus: "headerstatus" }, // array라 문자화
-            }}
-            className="sorted-btn"
-          >
-            회원가입
+            레시피글쓰기
           </Link>
-        )}
+          {storageCurrentUser ? (
+            <button
+              type="button"
+              onClick={logoutAction}
+              className="mr-6 hover:text-mono80 hover:transition hover:ease-out hover:duration-300"
+            >
+              로그아웃
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={moveLoginPage}
+              className="sorted-btn mr-2"
+            >
+              로그인
+            </button>
+          )}
+          {storageCurrentUser ? (
+            <button
+              onClick={() => moveMyPage(storageCurrentUser)}
+              className="hover:text-mono80 hover:transition hover:ease-out hover:duration-300"
+            >
+              마이페이지
+            </button>
+          ) : (
+            <Link
+              href={{
+                pathname: "/login",
+                query: { headerstatus: "headerstatus" }, // array라 문자화
+              }}
+              className="sorted-btn"
+            >
+              회원가입
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   );
