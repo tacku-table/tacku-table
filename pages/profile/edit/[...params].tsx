@@ -309,9 +309,9 @@ export default function ProfileEdit(props: ProfileEditProp) {
   return (
     <>
       <div className="flex flex-col justify-center items-center my-20 lg:my-[86px]">
-        <div className="flex pb-10">
+        <div className="flex items-center relative w-full justify-center pb-10">
           <span className="text-4xl text-center font-bold">회원정보 수정</span>
-          <button className="ml-12" onClick={() => router.back()}>
+          <button className="absolute right-0" onClick={() => router.back()}>
             <svg
               className="w-8 h-8 rounded-full text-mono100  hover:text-white hover:bg-brand100 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium text-sm text-center inline-flex items-center mb-2"
               fill="none"
