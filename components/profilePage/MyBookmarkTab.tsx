@@ -1,24 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { Tab } from "@headlessui/react";
-import { authService, dbService } from "@/config/firebase";
-import {
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  where,
-  doc,
-  getDoc,
-  deleteDoc,
-} from "firebase/firestore";
-import Link from "next/link";
+import { dbService } from "@/config/firebase";
+import { doc, deleteDoc } from "firebase/firestore";
 import Image from "next/image";
-import defaultImg from "../../public/images/test1.png";
 import { toast } from "react-toastify";
 import Post from "./Post";
 import EmptyPost from "./EmptyPost";
-const MyBookmarkTab = ({ userInfo, storageCurrentUser }: any) => {
-  const [bookmarkPost, setBookmarkPost] = useState<any[]>([]);
+import { getMyBookmark } from "../../api/firedb";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { User } from "firebase/auth";
+
+const MyBookmarkTab = ({
+  userInfo,
+  storageCurrentUser,
+}: {
+  userInfo: TUserInfo | undefined;
+  storageCurrentUser: User | undefined;
+}) => {
+  const queryClient = useQueryClient();
+
+  const [isLoadings, setIsLoadings] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoadings(false);
+    }, 500);
+  });
+
+  const {
+    isLoading,
+    data: bookmarkPost,
+    refetch,
+  } = useQuery(["bookmark", userInfo?.userId], () =>
+    getMyBookmark(userInfo?.userId as string)
+  );
 
   const toastAlert = (alertText: any) => {
     toast(`${alertText}`, {
@@ -33,27 +47,6 @@ const MyBookmarkTab = ({ userInfo, storageCurrentUser }: any) => {
     });
   };
 
-  useEffect(() => {
-    getMyBookmark(userInfo.userId);
-  }, [bookmarkPost]);
-
-  const getMyBookmark = async (userId: any) => {
-    const q = query(collection(dbService, `user/${userId}/bookmarkPost`));
-
-    onSnapshot(q, async (snapshots) => {
-      const myposts = snapshots.docs.map((doc) => {
-        const mypost = {
-          postId: doc.id,
-          writerUid: doc.data().uid,
-          writerdisplayName: doc.data().writerNickName,
-          writerImg: doc.data().writerProfileImg,
-          ...doc.data(),
-        };
-        return mypost;
-      });
-      setBookmarkPost(myposts);
-    });
-  };
   const handleDeleteBookmark = async (p: any) => {
     const userConfirm = window.confirm("즐겨찾기 레시피를 삭제하시겠습니까?");
     if (userConfirm) {
@@ -61,11 +54,11 @@ const MyBookmarkTab = ({ userInfo, storageCurrentUser }: any) => {
         await deleteDoc(
           doc(
             dbService,
-            `user/${storageCurrentUser.uid}/bookmarkPost`,
+            `user/${storageCurrentUser?.uid}/bookmarkPost`,
             p.postId
           )
         );
-        getMyBookmark(userInfo.userId);
+        getMyBookmark(userInfo?.userId as string);
         toastAlert("삭제되었습니다");
       } catch (error: any) {
         toast.error("삭제에 실패하였습니다. 다시 시도해주세요.", error);
@@ -75,7 +68,8 @@ const MyBookmarkTab = ({ userInfo, storageCurrentUser }: any) => {
 
   return (
     <Tab.Panel className="pb-6">
-      {bookmarkPost.length === 0 && <EmptyPost />}
+      {bookmarkPost?.length === 0 && <EmptyPost />}
+      {bookmarkPost?.length === 0 && <EmptyPost />}
       {bookmarkPost?.map((p) => (
         <div key={p.postId} className="p-6">
           <hr className="border-mono50 mx-8 mb-6 border-[1px]" />
@@ -87,12 +81,12 @@ const MyBookmarkTab = ({ userInfo, storageCurrentUser }: any) => {
                 }}
               >
                 <Image
-                  className="object-cover aspect-[4/3] rounded-md cursor-pointer"
+                  className="w-[180px] h-[135px] object-cover aspect-[4/3] rounded-md cursor-pointer"
                   src={p.thumbnail}
                   priority={true}
                   loader={({ src }) => src}
                   width={180}
-                  height={105}
+                  height={135}
                   alt="bookmark-thumbnail"
                 />
               </div>
@@ -114,7 +108,7 @@ const MyBookmarkTab = ({ userInfo, storageCurrentUser }: any) => {
           </div>
           <div className="flex mt-9 ml-8 space-x-3 relative items-center">
             <Post writerUid={p.writerUid} />
-            {storageCurrentUser.uid === userInfo.userId && (
+            {storageCurrentUser?.uid === userInfo?.userId && (
               <svg
                 className="w-6 h-6 absolute right-8 cursor-pointer hover:text-brand100"
                 onClick={() => {
@@ -140,5 +134,4 @@ const MyBookmarkTab = ({ userInfo, storageCurrentUser }: any) => {
     </Tab.Panel>
   );
 };
-
 export default MyBookmarkTab;

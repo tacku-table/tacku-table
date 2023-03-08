@@ -16,18 +16,6 @@ const EmptyPost = () => {
         <h3 className="text-[24px] font-semibold mt-[29px]">
           게시글이 존재하지 않습니다.
         </h3>
-        {/* <p className="font-normal mt-[20px] leading-[30px]">
-          메인페이지로 돌아가 새로운 레시피를 찾아볼까요?
-        </p>
-        <button
-          onClick={() => {
-            location.href = "/main";
-          }}
-          type="button"
-          className="mt-[24px] w-[100px] h-[36px] text-brand100 text-center text-[16px] border border-brand100 "
-        >
-          메인으로
-        </button> */}
       </div>
     </div>
   );

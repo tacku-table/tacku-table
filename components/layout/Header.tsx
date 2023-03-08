@@ -75,7 +75,13 @@ const Header = () => {
         <ul className="flex justify-center items-center ">
           <li className="header-title">
             <Link href="/main">
-              <Image src={logo2} alt="logo_web" width={155} height={38} />
+              <Image
+                src={logo2}
+                alt="logo_web"
+                width={155}
+                height={38}
+                priority
+              />
             </Link>
           </li>
           <li

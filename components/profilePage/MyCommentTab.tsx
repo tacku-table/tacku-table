@@ -12,17 +12,25 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import useGetCommunityPost from "@/hooks/useGetCommunityPost";
 import EmptyPost from "./EmptyPost";
-const MyCommentTab = ({ userInfo }: any) => {
-  const [commentPost, setCommentPost] = useState<any[]>([]);
-  const [communityList, setCommunityList] = useState<any[]>([]);
+
+interface CommentProp {
+  postId: string;
+  boardId: string;
+  comment: string;
+}
+
+const MyCommentTab = ({ userInfo }: MyTabProp) => {
+  const [commentPost, setCommentPost] = useState<CommentProp[]>([]);
+  const [communityList, setCommunityList] = useState<TCommunity[]>([]);
   const { communityPost } = useGetCommunityPost();
 
   useEffect(() => {
     setCommunityList(communityPost);
-    getCommunityComment(userInfo.userId);
-  }, [commentPost]);
+    getCommunityComment(userInfo?.userId as string);
+  }, []);
 
-  const getCommunityComment = async (userId: any) => {
+  // uid 기반으로 가져오는 함수
+  const getCommunityComment = async (userId: string) => {
     const commentsRef = collection(dbService, "comments");
     const q = query(
       commentsRef,
@@ -44,7 +52,7 @@ const MyCommentTab = ({ userInfo }: any) => {
 
   return (
     <Tab.Panel className="pb-6">
-      {commentPost.length === 0 && <EmptyPost></EmptyPost>}
+      {commentPost?.length === 0 && <EmptyPost></EmptyPost>}
       {commentPost?.map((p) => (
         <div key={p.postId} className="p-6">
           <hr className="border-border mx-8 my-6 border-[1px]" />
