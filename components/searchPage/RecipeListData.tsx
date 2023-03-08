@@ -27,23 +27,20 @@ const RecipeListData = ({ item }: { item: TypeRecipe }) => {
     }, [storageCurrentUser]);
 
     return (
-        <div
-            key={item.id}
-            className="w-72 aspect-[1/0.7] cursor-pointer"
-            onClick={() => {
-                goToDetail(item);
-            }}
-        >
-            <div className="w-72 aspect-[1/0.65] overflow-hidden mx-auto relative">
+        <div key={item.id} className="aspect-[1/0.7]">
+            <div className="w-full aspect-[1/0.65] overflow-hidden mx-auto relative">
                 <Image
                     src={`${item.thumbnail}`}
-                    className="aspect-[1/0.65] object-cover rounded-sm w-auto h-auto"
+                    className="aspect-[1/0.65] object-cover rounded-sm w-auto h-auto cursor-pointer"
                     alt="recipe_picture"
                     width={288}
                     height={188}
                     loader={({ src }) => src}
                     unoptimized
                     priority={true}
+                    onClick={() => {
+                        goToDetail(item);
+                    }}
                 />
                 {item.displayStatus === "회원 공개" && (
                     <>
@@ -82,7 +79,12 @@ const RecipeListData = ({ item }: { item: TypeRecipe }) => {
                     {item.viewCount}
                 </p>
             </div>
-            <p className="text-lg text-slate-900 font-semibold">
+            <p
+                className="text-lg text-slate-900 font-semibold cursor-pointer inline-block"
+                onClick={() => {
+                    goToDetail(item);
+                }}
+            >
                 {item.foodTitle}
             </p>
         </div>

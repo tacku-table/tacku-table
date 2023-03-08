@@ -24,14 +24,14 @@ import { getStorage } from "firebase/storage";
 // };
 
 // 채하
-// const firebaseConfig = {
-//     apiKey: "AIzaSyANw6jE7NE7yF6F8TYYJalVwD2FuOLTqJ0",
-//     authDomain: "taku-e9992.firebaseapp.com",
-//     projectId: "taku-e9992",
-//     storageBucket: "taku-e9992.appspot.com",
-//     messagingSenderId: "139053130279",
-//     appId: "1:139053130279:web:ae70760c52da59bb6b2402",
-// };
+const firebaseConfig = {
+    apiKey: "AIzaSyANw6jE7NE7yF6F8TYYJalVwD2FuOLTqJ0",
+    authDomain: "taku-e9992.firebaseapp.com",
+    projectId: "taku-e9992",
+    storageBucket: "taku-e9992.appspot.com",
+    messagingSenderId: "139053130279",
+    appId: "1:139053130279:web:ae70760c52da59bb6b2402",
+};
 
 // 다경
 // const firebaseConfig = {

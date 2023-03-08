@@ -48,7 +48,9 @@ const NewRecipe: NextPage = () => {
                 >
                     더보기
                 </button>
-                <RecipeList dataResults={dataResults} />
+                <div className="grid mx-auto md:grid-cols-2 lg:mx-0 lg:grid-cols-3 gap-x-7 gap-y-9 relative pb-24">
+                    <RecipeList dataResults={dataResults} />
+                </div>
             </div>
         </>
     );
