@@ -110,9 +110,8 @@ const SearchData: NextPage = () => {
     const fuse = new Fuse(currentItems, {
         keys: ["animationTitle", "foodTitle"],
         includeScore: true,
-        includeMatches: true,
-        ignoreLocation: true,
-        threshold: 0.5,
+        threshold: 0.5, //일치정도(0~1.0)
+        minMatchCharLength: text.length,
     });
     const results = fuse.search(text);
     const dataResults = results.map((recipe) => recipe.item);

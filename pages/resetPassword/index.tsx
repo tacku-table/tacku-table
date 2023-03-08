@@ -16,6 +16,7 @@ const ResetPassword = () => {
 
   //oobCode: 요청을 식별하고 확인하는 데 사용되는 일회성 코드
   let oobCode: any = searchParams.get("oobCode");
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -34,7 +35,7 @@ const ResetPassword = () => {
       return;
     }
     confirmPasswordReset(authService, oobCode, newPassword)
-      .then((data) => {
+      .then(() => {
         toast.success("비밀번호를 변경했습니다. 다시 로그인해주세요.");
         window.location.href = "/login";
       })
