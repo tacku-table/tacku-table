@@ -20,7 +20,10 @@ const SideFoodCate = ({ onCheckedFood, filteredFood }: TypeFoodProps) => {
             <div className="flex flex-col justify-center gap-y-3">
                 {categoryFoodList.map((item) => {
                     return (
-                        <div key={item.name}>
+                        <div
+                            key={item.name}
+                            className="text-mono80 text-sm hover:transition-all hover:text-brand100 hover:font-medium"
+                        >
                             <input
                                 type="checkbox"
                                 id={item.name}

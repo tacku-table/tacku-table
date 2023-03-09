@@ -25,18 +25,14 @@ const RecipeList = ({
     return (
         <>
             {(text && !dataResults?.length) || currentItems?.length === 0 ? (
-                <div className="">
+                <div className="flex flex-col items-center font-medium text-[#eea546]">
                     <Image
                         src={logo}
                         width={100}
                         height={75}
                         alt="logo_image"
                     />
-                    <p className="flex justify-center items-center relative">
-                        <span className="font-medium mt-4">
-                            첫번째 레시피의 주인공이 되어주세요!
-                        </span>
-                    </p>
+                    <p className="pt-4">게시물이 존재하지 않습니다</p>
                 </div>
             ) : filteredFoodAndTime ? (
                 (text ? dataResults! : currentItems!)
@@ -80,18 +76,14 @@ const RecipeList = ({
                     return <RecipeListData key={item.id} item={item} />;
                 })
             ) : (
-                <div className="">
+                <div className="flex flex-col items-center font-medium text-[#eea546]">
                     <Image
                         src={logo}
                         width={100}
                         height={75}
                         alt="logo_image"
                     />
-                    <p className="flex justify-center items-center relative">
-                        <span className="font-medium mt-4">
-                            첫번째 레시피의 주인공이 되어주세요!
-                        </span>
-                    </p>
+                    <p className="pt-4">게시물이 존재하지 않습니다</p>
                 </div>
             )}
             <button

@@ -24,7 +24,7 @@ const SearchRecipeBar: NextPage = () => {
                 {...register("text")}
                 type="text"
                 className="w-4/5 sm:w-3/5 md:w-1/2 lg:w-1/3 h-12 text-sm font-medium pl-7 focus:outline-none rounded-sm rounded-r-none border border-slate-300"
-                placeholder="타쿠들의 레시피를 찾아 볼까요?"
+                placeholder="타쿠들의 멋진 레시피들이 기다리고 있어요!"
             ></input>
             <button
                 type="submit"
