@@ -500,7 +500,7 @@ export default function ProfileEdit(props: ProfileEditProp) {
             </div>
           </div>
           <div>
-            <div className="flex justify-start items-center">
+            <div className="flex justify-start items-center h-[40px]">
               <span className="text-base w-[130px]">회원탈퇴</span>
               <div className="w-[calc(100%_-_130px)] sm:w-[300px]">
                 <label htmlFor="terms">
