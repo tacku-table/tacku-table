@@ -7,6 +7,7 @@ import Image, { StaticImageData } from "next/image";
 import MyTabs from "../../components/profilePage/MyTabs";
 import { useRouter } from "next/router";
 import { User } from "firebase/auth";
+import Seo from "../../components/layout/Seo";
 
 const MyPage = () => {
   const [userInfo, setUserInfo] = useState<TUserInfo>();
@@ -66,9 +67,9 @@ const MyPage = () => {
 
   return (
     <div className="mx-auto my-0 sm:w-full">
+      <Seo title="마이페이지" />
       <div className="bg-coverBg bg-cover bg-center h-[200px] sm:h-[250px] bg-no-repeat relative">
         <div className="flex justify-center items-center space-x-4 sm:space-x-8 absolute sm:left-[28%] left-[20%] sm:top-[120px] top-1/3 text-white">
-          {/* <div className="flex justify-center items-center space-x-8 absolute left-[50px] top-1/3 sm:left-[300px] sm:top-[120px] xl:left-[380px] text-white"> */}
           {imgPreview && (
             <Image
               src={imgPreview}

@@ -18,6 +18,7 @@ import Comments from "../../components/communityPage/Comments";
 import { toast } from "react-toastify";
 import { AppProps } from "next/app";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import Seo from "../../components/layout/Seo";
 
 interface propsType extends AppProps {
   targetWholeData: communityPostType;
@@ -110,6 +111,7 @@ export default function DetailPage(props: propsType) {
 
   return (
     <div className="bg-[#FFF5F5] ">
+      <Seo title="커뮤니티" />
       <div className="pt-[75px] rounded-md p-7 container w-[780px] mx-auto flex justify-center flex-col bg-white">
         <h3 className="text-4xl pt-[24px]">
           {detailPageWholeData.category}게시판

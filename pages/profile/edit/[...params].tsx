@@ -32,6 +32,8 @@ import { pwRegex, nickRegex, cls } from "../../../util";
 import { useRouter } from "next/router";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { Success, Error, Warn } from "@/components/toastify/Alert";
+import Seo from "../../../components/layout/Seo";
+
 interface ProfileEditProp {
   id: string;
   userData: TUserInfo;
@@ -291,6 +293,7 @@ export default function ProfileEdit(props: ProfileEditProp) {
 
   return (
     <>
+      <Seo title="회원정보수정" />
       <div className="flex flex-col justify-center items-center my-20 lg:my-[86px]">
         <div className="flex items-center relative justify-center pb-10">
           <span className="text-4xl text-center font-bold text-mono100">
