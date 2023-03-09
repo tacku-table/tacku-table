@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import Fuse from "fuse.js";
 import RecipeList from "@/components/searchPage/RecipeList";
 import ChangeSortedBtn from "@/components/searchPage/ChangeSortedBtn";
-import { FieldErrors, useForm } from "react-hook-form";
+import SearchTextBar from "@/components/searchPage/SearchTextBar";
 
 // 카테고리별 불러오기
 const ClassifiedRecipe: NextPage = () => {
@@ -24,15 +24,6 @@ const ClassifiedRecipe: NextPage = () => {
     const [currentItems, setCurrentItems] = useState<TypeRecipe[]>([]);
     const [totalItems, setTotalItems] = useState<TypeRecipe[]>([]);
     const [lastDoc, setLastdoc] = useState(0);
-
-    const { register, handleSubmit, getValues } = useForm();
-    const onValid = () => {
-        sessionStorage.setItem("searchData", getValues("searchText"));
-        setText(getValues("searchText"));
-    };
-    const onInValid = (errors: FieldErrors) => {
-        console.log(errors);
-    };
 
     // 인기순
     const activeBestBtn = () => {
@@ -66,7 +57,7 @@ const ClassifiedRecipe: NextPage = () => {
                     "==",
                     `${router.query.category}`
                 ),
-                limit(6)
+                limit(8)
             )
         );
         const newData = querySnapshot.docs.map((doc: any) => ({
@@ -108,7 +99,7 @@ const ClassifiedRecipe: NextPage = () => {
                     `${router.query.category}`
                 ),
                 startAfter(lastDoc),
-                limit(6)
+                limit(8)
             )
         );
         updateState(querySnapshot);
@@ -142,7 +133,7 @@ const ClassifiedRecipe: NextPage = () => {
 
     // 검색
     const fuse = new Fuse(currentItems, {
-        keys: ["animationTitle", "foodTitle"],
+        keys: ["animationTitle", "foodTitle", "cookingTime"],
         includeScore: true,
         threshold: 0.5, //일치정도(0~1.0)
         minMatchCharLength: text.length,
@@ -161,36 +152,7 @@ const ClassifiedRecipe: NextPage = () => {
 
     return (
         <div className="w-full mt-20 flex flex-col justify-center items-center">
-            <form
-                className="relative mt-4 mb-16 flex"
-                onSubmit={handleSubmit(onValid, onInValid)}
-            >
-                <input
-                    {...register("searchText")}
-                    type="text"
-                    className="w-[300px] h-[50px] text-sm font-medium pl-7 focus:outline-none rounded-sm rounded-r-none border border-slate-300"
-                    placeholder="하울의 움직이는 성 베이컨계란요리"
-                ></input>
-                <button
-                    type="submit"
-                    className="bg-brand100 rounded-sm rounded-l-none w-[50px] h-[50px] text-center"
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        className="w-6 h-6 text-white absolute top-3 ml-3 pointer-events-none"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                        />
-                    </svg>
-                </button>
-            </form>
+            <SearchTextBar setText={setText} />
             <ChangeSortedBtn
                 text={text}
                 dataResults={dataResults}

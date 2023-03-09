@@ -36,7 +36,6 @@ const RegisterPage = () => {
         register,
         handleSubmit,
         getValues,
-        setError,
         formState: { errors },
     } = useForm<RegisterForm>({ mode: "onChange" });
     const onValid = (data: RegisterForm) => {
@@ -50,7 +49,7 @@ const RegisterPage = () => {
     const [nicknameCheck, setNicknameCheck] = useState(false);
     const [notNicknameDuplicateCheck, setNotNicknameDuplicateCheck] =
         useState(true);
-    const [saveNickname, setSaveNickname] = useState<any>("");
+    const [saveNickname, setSaveNickname] = useState("");
 
     // 회원가입
     const signUp = () => {
@@ -58,36 +57,36 @@ const RegisterPage = () => {
             authService,
             getValues("email"),
             getValues("pw")
-        ).then(async (data) => {
-            Promise.all([
-                setDoc(doc(dbService, "user", data.user.uid), {
-                    userId: data.user.uid,
-                    userNickname: getValues("nickname"),
-                    userEmail: getValues("email"),
-                    userPw: getValues("pw"),
-                    userImg: "null",
-                }),
-                updateProfile(data.user, {
-                    displayName: getValues("nickname"),
-                    photoURL: "null",
-                }),
-                Success("회원가입성공! 로그인해주세요"),
-            ]).catch((error) => {
+        )
+            .then(async (data) => {
+                Promise.all([
+                    setDoc(doc(dbService, "user", data.user.uid), {
+                        userId: data.user.uid,
+                        userNickname: getValues("nickname"),
+                        userEmail: getValues("email"),
+                        userPw: getValues("pw"),
+                        userImg: "null",
+                    }),
+                    updateProfile(data.user, {
+                        displayName: getValues("nickname"),
+                        photoURL: "null",
+                    }),
+                    Success("회원가입성공! 로그인해주세요"),
+                ]);
+                setTimeout(() => {
+                    signOut(authService).then(() => {
+                        sessionStorage.clear();
+                        location.href = "/login";
+                    });
+                }, 1000);
+            })
+            .catch((error) => {
                 console.log(error.message);
                 if (error.message.includes("already-in-use")) {
-                    Warn("이미 가입한 회원입니다");
+                    Error("이미 가입한 회원입니다");
                     return;
                 }
             });
-            setTimeout(() => {
-                signOut(authService).then(() => {
-                    sessionStorage.clear();
-                    location.href = "/login";
-                });
-            }, 1000);
-
-            return data.user;
-        });
     };
 
     // 이메일 중복확인
@@ -120,13 +119,13 @@ const RegisterPage = () => {
         const querySnapshot = await getDocs(nickNameCheck);
         const newData = querySnapshot.docs;
 
-        if (newData.length == 0 && nickname.length > 0) {
+        if (newData.length === 0 && nickname.length > 0) {
             Success("사용 가능한 닉네임입니다.");
             setSaveNickname(nickname);
             setNicknameCheck(true);
             return setNotNicknameDuplicateCheck(false);
         } else {
-            if (nickname.length != 0) {
+            if (nickname.length !== 0) {
                 Warn("이미 다른 유저가 사용 중입니다.");
             } else {
                 Error("알 수 없는 에러로 사용할 수 없습니다.");
@@ -284,10 +283,10 @@ const RegisterPage = () => {
                             id="nickname"
                             type="text"
                             placeholder="닉네임 입력"
-                            className="register-input"
+                            className="register-input w-4/5"
                         ></input>
                         <div
-                            className="mt-2 ml-10 cursor-pointer text-brand100 hover:text-white border border-brand100 hover:bg-brand100 font-medium text-sm px-2 py-2 text-center"
+                            className="mt-2 ml-10 cursor-pointer text-brand100 hover:text-white border border-brand100 hover:bg-brand100 font-medium text-sm px-2 py-2 text-center w-1/5"
                             onClick={nicknameDuplicate}
                         >
                             중복 체크

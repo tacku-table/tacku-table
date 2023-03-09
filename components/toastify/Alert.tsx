@@ -17,7 +17,7 @@ export const Warn = (alertText: string) => {
 export const Error = (alertText: string) => {
     toast.error(`${alertText}`, {
         position: "top-right",
-        autoClose: 1300,
+        autoClose: 2000,
     });
     return;
 };
