@@ -17,7 +17,7 @@ const RecipeList = ({
 }: TypeSearchPageProps) => {
     // dataResults = 검색결과
     // currentItems = 전체레시피(총)
-    // totalItems = 전체레시피(6개씩)
+    // totalItems = 전체레시피(8개씩)
     const filteredFoodAndTime = filteredFood?.length && filteredTime?.length;
     const filteredOnlyFood = filteredFood?.length;
     const filteredOnlyTime = filteredTime?.length;
@@ -63,7 +63,10 @@ const RecipeList = ({
             ) : dataResults?.length ? (
                 isBest === "viewCount" ? (
                     dataResults
-                        .sort((a: any, b: any) => b.viewCount - a.viewCount)
+                        .sort(
+                            (a: TypeRecipe, b: TypeRecipe) =>
+                                b.viewCount! - a.viewCount!
+                        )
                         .map((item) => {
                             return <RecipeListData key={item.id} item={item} />;
                         })
@@ -80,8 +83,8 @@ const RecipeList = ({
                 <div className="">
                     <Image
                         src={logo}
-                        width={200}
-                        height={200}
+                        width={100}
+                        height={75}
                         alt="logo_image"
                     />
                     <p className="flex justify-center items-center relative">
@@ -101,7 +104,7 @@ const RecipeList = ({
                         filteredFood?.length ||
                         filteredTime?.length ||
                         !currentItems?.length ||
-                        (currentItems || dataResults).length < 6
+                        (currentItems || dataResults).length < 8
                         ? "hidden"
                         : ""
                 )}
