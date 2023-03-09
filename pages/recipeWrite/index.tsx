@@ -39,30 +39,6 @@ const RecipeWritePage = () => {
   const [imgLoading, setImgLoading] = useState("");
 
   useEffect(() => {
-    const user = sessionStorage.getItem("User") || "";
-    if (user) {
-      const parseUser: parseUserType = JSON.parse(user);
-      setStorageCurrentUser(parseUser);
-    }
-    if (!user) {
-      setStorageCurrentUser({ user: "logout" });
-    }
-
-    window.history.pushState(null, "null", document.URL);
-    window.addEventListener("popstate", function (event) {
-      const result = window.confirm(
-        "레시피 글쓰기 정보를 모두 잃을수 있습니다\n그래도 나가시겠습니까?"
-      );
-      if (result) {
-        window.location.replace(`/search`);
-      }
-      if (!result) {
-        return false;
-      }
-    });
-  }, []);
-
-  useEffect(() => {
     if (storageCurrentUser.user == "logout") {
       moveLoginPage();
     }
@@ -239,69 +215,75 @@ const RecipeWritePage = () => {
   };
 
   return (
-    <div className="xl:w-full sm:w-fit h-full flex flex-col items-center pt-2 mx-auto p-10">
+    <div className="mt-10 xl:w-full sm:w-fit h-full flex flex-col items-center pt-2 mx-auto sm:p-10">
       <ToastContainer position="top-right" autoClose={1000} />
-      <div className="mt-[75px] rounded-md p-7 container w-[1180px] mx-auto flex justify-center flex-col bg-white">
-        <h3 className="text-4xl font-bold">레시피 글쓰기 </h3>
+      <div className="mt-[75px] rounded-md p-7 container max-w-[1180px] mx-auto flex justify-center flex-col">
+        <h3 className="sm:text-4xl text-2xl font-bold">레시피 글쓰기 </h3>
         <hr className="mt-[24px] h-px border-[1.5px] border-brand100"></hr>
         <form onSubmit={postNewRecipe} className="mt-[40px]">
-          <div className="pb-7">
-            <b className="text-[21px] font-semibold">애니메이션 제목 검색</b>
-            <input
-              className="p-2 ml-[15px] w-[280px] h-[45px] border border-mono60 rounded-[2px] "
-              ref={movieTitleRef}
-              name="targetTitle"
-              type="text"
-              onChange={(event) => inputChangeSetFunc(event, setSeachTitle)}
-              placeholder=" 원하는 제목을 검색해주세요!"
-            />
-
+          <div className="pb-5">
+            <div className="flex sm:flex-row flex-col ">
+              <b className="text-[21px] font-semibold mb-2 sm:mb-0">
+                애니메이션 제목 검색
+              </b>
+              <input
+                className="p-2  sm:ml-[17px] sm:w-[280px] h-[45px] border border-mono60 rounded-[2px] "
+                ref={movieTitleRef}
+                name="targetTitle"
+                type="text"
+                onChange={(event) => inputChangeSetFunc(event, setSeachTitle)}
+                placeholder=" 원하는 제목을 검색해주세요!"
+              />
+            </div>
+            {/* 데스크탑일땐 sm , 모바일일땐 그냥 */}
             {searchTitle ? (
-              <div className="ml-[5px] rounded-lg w-[450px]  text-center mt-1">
-                <select
-                  className="ml-[185px] w-[280px] h-[40px] mt-[16px] border border-mono60 rounded-[2px] text-center"
-                  onChange={(event) => {
-                    selectChangeSetFunc(event, setTargetTitle);
-                  }}
-                >
-                  <option
-                    value="defaultValue"
-                    selected
-                    style={{ display: "none" }}
+              <div className="flex sm:flex-row bg-blue-200 ">
+                <div className="sm:ml-[5px] rounded-lg w-[450px] sm:text-center mt-1">
+                  <select
+                    className="sm:ml-[185px] w-[280px] h-[40px] mt-[16px] border border-mono60 rounded-[2px] text-center"
+                    onChange={(event) => {
+                      selectChangeSetFunc(event, setTargetTitle);
+                    }}
                   >
-                    🎬 {searchTitle} 로 검색된 영화 선택 🎬
-                  </option>
-                  {titleArr?.map((item, index) => (
-                    <option value={item.title} key={index}>
-                      {item.title}
+                    <option
+                      value="defaultValue"
+                      selected
+                      style={{ display: "none" }}
+                    >
+                      🎬 {searchTitle} 로 검색된 영화 선택 🎬
                     </option>
-                  ))}
-                </select>
+                    {titleArr?.map((item, index) => (
+                      <option value={item.title} key={index}>
+                        {item.title}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
             ) : (
               <div></div>
             )}
           </div>
           <div className="space-y-3 mt-[20px]">
-            <div className="pb-7">
+            <div className="pb-7 flex sm:flex-row flex-col">
               <div className="text-[21px] float-left font-semibold">
                 레시피 제목
               </div>
               <input
                 placeholder="제목을 입력해주세요"
-                className="p-2 lg:w-[580px] sm:w-[280px] md:w-[280px] ml-[97px] text-mono70 h-[45px] border border-mono60 rounded-[2px]"
+                className="p-2 lg:w-[580px] sm:w-[280px] md:w-[280px] sm:ml-[97px] text-mono70 h-[45px] border border-mono60 rounded-[2px]"
                 ref={foodTitleRef}
                 name="footTitle"
                 type="text"
                 onChange={(event) => inputChangeSetFunc(event, setFoodTitle)}
               />
             </div>
-            <div className="pb-[40px]">
+            <div className="pb-[40px] flex sm:flex-row flex-col">
               <div className="text-[21px] float-left font-semibold">
                 음식 종류
               </div>
               <select
-                className="p-2 ml-[115px] text-mono70 w-[280px] h-[40px] border border-mono60 rounded-[2px]"
+                className="p-2 sm:ml-[115px] ml-0 text-mono70 sm:w-[280px] h-[40px] border border-mono60 rounded-[2px]"
                 ref={foodCategoryRef}
                 onChange={(event) => {
                   selectChangeSetFunc(event, setFoodCategory);
@@ -317,10 +299,10 @@ const RecipeWritePage = () => {
                 <option value="식단&건강관리">식단/건강관리</option>
               </select>
             </div>
-            <div className="pb-[40px]">
+            <div className="pb-[40px] flex sm:flex-row flex-col">
               <b className="text-[21px] font-semibold ">소요시간</b>
               <select
-                className="p-2 ml-[115px] text-mono70 w-[280px] h-[40px] border border-mono60 rounded-[2px]"
+                className="p-2 ml-0 sm:ml-[115px] text-mono70 sm:w-[280px] h-[40px] border border-mono60 rounded-[2px]"
                 ref={cookTimeRef}
                 onChange={(event) => {
                   selectChangeSetFunc(event, setSelectCookTime);
@@ -334,11 +316,11 @@ const RecipeWritePage = () => {
               </select>
             </div>
             <hr className="h-px my-7 border-[1px] border-mono60"></hr>
-            <div className="flex items-stretch pt-7">
+            <div className="flex items-stretch pt-7 sm:flex-row flex-col">
               <div className="text-[21px] font-semibold">주재료</div>
               <input
                 placeholder="레시피에서 메인이 되는 재료를 작성해주세요."
-                className="pb-[80px] p-2 ml-[135px] w-[580px] h-[117px] border border-mono60 rounded-[2px]"
+                className="pb-[80px] p-2 ml-0 sm:ml-[135px] sm:w-[580px] sm:h-[117px] h-[150px] border border-mono60 rounded-[2px]"
                 type="text"
                 ref={ingredientRef}
                 name="ingredient"
@@ -368,7 +350,7 @@ const RecipeWritePage = () => {
                 </div>
               </div>
             )}
-            <div className="bg-mono40 h-[210px] mt-[40px]">
+            <div className="bg-mono40 h-[210px] sm:mt-[42px] mt-[70px] ">
               <div className="mt-[12px] float-right flex items-stretch">
                 <div className="mt-2 text-mono80 text-[16px]">
                   대표 이미지 별도 등록
@@ -417,7 +399,7 @@ const RecipeWritePage = () => {
               <div className="ml-[16px] flex items-stretch mt-[16px]">
                 <div className="flex items-stretch">
                   <input
-                    className="accent-brand100"
+                    className="accent-brand100 "
                     name="samename"
                     type="radio"
                     value="전체 공개"
@@ -447,14 +429,14 @@ const RecipeWritePage = () => {
           </div>
           <div className="mt-[40px] float-right">
             <button
-              className="text-white w-[180px] h-[48px] bg-brand100 border border-mono60"
+              className="text-white w-[80px] sm:w-[180px] sm:h-[48px] bg-brand100 border border-mono60"
               type="submit"
             >
               등록
             </button>
             <button
               type="button"
-              className="ml-[12px] w-[180px] h-[48px] border border-mono60"
+              className="ml-[12px] w-[80px] sm:w-[180px] sm:h-[48px] border border-mono60"
             >
               취소
             </button>

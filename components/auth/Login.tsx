@@ -10,7 +10,6 @@ import {
 import { setDoc, doc } from "firebase/firestore";
 import { emailRegex, pwRegex } from "@/util";
 import { toast } from "react-toastify";
-import socialLoginType from "@/config/global";
 import { AiFillGoogleSquare, AiFillFacebook } from "react-icons/ai";
 
 interface LoginProps {
@@ -151,11 +150,13 @@ const Login = ({ setStatus, status }: LoginProps) => {
       });
   };
   return (
-    <div className="w-[440px] m-auto">
-      <h3 className="text-4xl font-bold text-center">로그인</h3>
-      <div className="mt-[40px]">
+    <div className="max-w-[420px] m-auto mt-10">
+      <h3 className="text-4xl font-bold text-center text-mono100">로그인</h3>
+      <div className="mt-[40px] p-4">
         <div className="text-center">
-          <h6 className="font-semibold text-base float-left ml-4">이메일</h6>
+          <h6 className="font-semibold text-base float-left ml-1 text-mono100">
+            이메일
+          </h6>
           <input
             id="email"
             type="email"
@@ -163,9 +164,9 @@ const Login = ({ setStatus, status }: LoginProps) => {
             ref={emailRef}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="register-input w-[420px] h-[40px] mt-[10px]"
+            className="register-input max-w-[390px] w-full h-[40px] mt-[10px]"
           />
-          <h6 className="font-semibold mt-[20px] text-base float-left ml-4">
+          <h6 className="text-mono100 font-semibold mt-[20px] text-base float-left ml-1">
             비밀번호
           </h6>
           <input
@@ -175,7 +176,7 @@ const Login = ({ setStatus, status }: LoginProps) => {
             ref={pwRef}
             value={pw}
             onChange={(e) => setPw(e.target.value)}
-            className="register-input w-[420px] h-[40px] mt-[10px]"
+            className="register-input  max-w-[390px] w-full h-[40px] mt-[10px]"
           />
         </div>
 
@@ -183,7 +184,7 @@ const Login = ({ setStatus, status }: LoginProps) => {
           <button
             type="button"
             onClick={handleLogin}
-            className="bg-brand100 text-white h-[40px]  w-[420px]"
+            className="bg-brand100 text-white h-[40px]   max-w-[390px] w-full"
           >
             로그인
           </button>
