@@ -85,12 +85,13 @@ const MyPage = () => {
             <Link
               legacyBehavior
               href={{
-                pathname: `/profile/edit/${userInfo?.userId}`,
+                pathname: `/profile/edit/${userInfo?.userNickname}`,
                 query: {
                   id: userInfo?.userId,
                   userImg: userInfo?.userImg,
                 },
               }}
+              as={`/profile/edit/${userInfo?.userNickname}`}
             >
               <svg
                 className="w-9 h-9 cursor-pointer"

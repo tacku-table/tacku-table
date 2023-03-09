@@ -69,7 +69,6 @@ const MyBookmarkTab = ({
   return (
     <Tab.Panel className="pb-6">
       {bookmarkPost?.length === 0 && <EmptyPost />}
-      {bookmarkPost?.length === 0 && <EmptyPost />}
       {bookmarkPost?.map((p) => (
         <div key={p.postId} className="p-6">
           <hr className="border-mono50 mx-8 mb-6 border-[1px]" />
