@@ -1,13 +1,13 @@
 const Special = () => {
     return (
-        <div className="flex flex-col">
-            <h3 className="font-extrabold text-transparent text-3xl bg-clip-text bg-gradient-to-r from-[#e95318f7] to-[#fce343] pt-4">
+        <div className="flex flex-col mb-4 sm:mb-7 md:mb-12 lg:mb-14">
+            <h3 className="mt-7 w-full flex font-extrabold text-transparent text-3xl bg-clip-text bg-gradient-to-r from-[#e95318f7] to-[#fce343] pt-4">
                 #SHOW US YOUR RECIPE
             </h3>
             <h4 className="pt-7 text-3xl font-semibold">
                 당신만의 특별한 레시피를 보여 주세요!
             </h4>
-            <p className="mt-7 mb-14 text-mono80">
+            <p className="mt-7 text-mono80">
                 애니메이션을 보다가 여기 나오는 음식 한 번 먹어보고 싶다! 생각한
                 적 있으신가요?
                 <br />

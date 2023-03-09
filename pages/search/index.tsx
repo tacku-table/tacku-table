@@ -179,9 +179,8 @@ const SearchData: NextPage = () => {
 
     return (
         <>
-            <div className="w-full mt-20 flex flex-col justify-center items-center">
+            <div className="w-full flex flex-col justify-center items-center">
                 <Seo title="타쿠의 식탁" />
-
                 <TopButton />
                 <SearchTextBar setText={setText} />
                 <ChangeSortedBtn
@@ -196,19 +195,21 @@ const SearchData: NextPage = () => {
                 />
                 <div className="w-4/5 border-b border-mono70 mb-8"></div>
                 <div className="w-4/5 flex flex-col items-center md:items-start md:flex-row md:justify-between mb-10">
-                    <div className="w-full flex justify-center gap-x-4 mx-auto mb-9 md:justify-start md:flex-col md:ml-1 md:mr-3">
-                        <SideFoodCate
-                            onCheckedFood={onCheckedFood}
-                            filteredFood={filteredFood}
-                        />
-                        <SideCookingTime
-                            onCheckedTime={onCheckedTime}
-                            filteredTime={filteredTime}
-                        />
+                    <div className="w-full flex flex-col justify-center items-center gap-x-4 mx-auto mb-9 md:justify-start md:ml-1 md:mr-3">
+                        <div className="w-full flex justify-between sm:justify-center sm:gap-x-10 md:flex-col">
+                            <SideFoodCate
+                                onCheckedFood={onCheckedFood}
+                                filteredFood={filteredFood}
+                            />
+                            <SideCookingTime
+                                onCheckedTime={onCheckedTime}
+                                filteredTime={filteredTime}
+                            />
+                        </div>
                         <button
                             onClick={clearChecked}
                             type="button"
-                            className="sorted-btn md:mt-7"
+                            className="sorted-btn mt-4 md:mt-7 md:self-start"
                         >
                             선택초기화<GrRotateLeft></GrRotateLeft>
                         </button>

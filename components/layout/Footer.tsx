@@ -19,17 +19,19 @@ const Footer = () => {
                     copyright © 타쿠의 식당. All rights reserved.
                 </li>
             </ul>
-            <ul className="bottom-0 pt-4 pb-20 flex gap-7 text-xs w-4/6 mx-auto">
-                <li className="">
-                    <Link href="/intro">사이트소개</Link>
-                </li>
-                <li className="">
-                    <Link href="/intro/termsOfService">이용약관</Link>
-                </li>
-                <li className="">
-                    <Link href="/intro/privacy">개인정보 처리방침</Link>
-                </li>
-                <li className="">v{version}</li>
+            <ul className="bottom-0 pt-4 pb-20 flex gap-7 text-xs w-4/6 mx-auto justify-between">
+                <div className="space-y-1 md:flex md:items-center md:space-y-0 md:gap-x-10 xl:gap-x-16">
+                    <li>
+                        <Link href="/intro">사이트소개</Link>
+                    </li>
+                    <li>
+                        <Link href="/intro/termsOfService">이용약관</Link>
+                    </li>
+                    <li>
+                        <Link href="/intro/privacy">개인정보 처리방침</Link>
+                    </li>
+                </div>
+                <li>v{version}</li>
             </ul>
         </div>
     );
