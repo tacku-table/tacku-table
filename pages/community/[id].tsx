@@ -18,7 +18,6 @@ import Comments from "../../components/communityPage/Comments";
 import { toast } from "react-toastify";
 import { AppProps } from "next/app";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import Link from "next/link";
 
 interface propsType extends AppProps {
   targetWholeData: communityPostType;
@@ -153,19 +152,10 @@ export default function DetailPage(props: propsType) {
                 {detailPageWholeData.title}
               </div>
               <div className="flex justify-between items-center">
-                <Link
-                  className="h-[60px] flex"
-                  href={{
-                    pathname: `/profile/${writterNickName}`,
-                    query: {
-                      id: writterUID,
-                    },
-                  }}
-                  as={`/profile/${writterNickName}`}
-                >
+                <div className="h-[60px] flex">
                   {writterProfile === "null" ? (
                     <Image
-                      className="w-[40px] h-[40px] object-cover object-center float-left m-2 hover:opacity-50 rounded-md"
+                      className="w-[40px] h-[40px] object-cover object-center float-left m-2"
                       src={baseImg}
                       width={780}
                       height={270}
@@ -178,14 +168,12 @@ export default function DetailPage(props: propsType) {
                       width={100}
                       height={100}
                       alt="writterProfile"
-                      className="w-[40px] h-[40px] object-cover object-center float-left m-2 hover:opacity-50 rounded-md"
+                      className="w-[40px] h-[40px] object-cover object-center float-left m-2"
                     />
                   )}
 
-                  <span className="relative text-base top-[15px] cursor-pointer hover:font-semibold hover:text-mono80">
-                    {writterNickName}
-                  </span>
-                </Link>
+                  <h3 className="relative top-[15px]">{writterNickName}</h3>
+                </div>
                 <div className="text-[16px] text-mono80">
                   {detailPageWholeData.writtenDate}
                 </div>

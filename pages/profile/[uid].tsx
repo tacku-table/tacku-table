@@ -16,18 +16,15 @@ const MyPage = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const router = useRouter();
-  // console.log(router);
-  // console.log(router.query);
-  // console.log(id);
 
   useEffect(() => {
     if (!router.isReady) return;
-    const { id } = router.query;
+    const { uid } = router.query;
     const res = {
-      id,
+      uid,
     };
     setIsOwner(res);
-    getCurrentUserInfo(id);
+    getCurrentUserInfo(uid);
   }, [router.isReady]);
 
   const getCurrentUserInfo = async (uid: string | string[] | undefined) => {
