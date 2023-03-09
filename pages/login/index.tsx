@@ -3,6 +3,7 @@ import Login from "@/components/auth/Login";
 import Register from "@/components/auth/Register";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
+import Seo from "../../components/layout/Seo";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -10,6 +11,8 @@ const LoginPage = () => {
   const { headerstatus } = router.query;
   return (
     <div>
+      <Seo title="로그인" />
+
       {headerstatus ? (
         <div className="grid items-center mx-auto mt-14">
           <Register />

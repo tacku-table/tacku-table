@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import Seo from "../../components/layout/Seo";
 
 interface propsType extends AppProps {
   targetWholeData: targetWholeDataType;
@@ -100,6 +101,7 @@ export default function DetailReciptPage(props: propsType) {
 
   return (
     <>
+      <Seo title="레시피" />
       <Head>
         {/* 페북 미리보기 */}
         <meta
