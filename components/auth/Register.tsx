@@ -47,11 +47,11 @@ const RegisterPage = () => {
     };
     const [showPw, setShowPw] = useState(false);
     const [showPwConfirm, setShowPwConfirm] = useState(false);
+    const [isUsing, setIsUsing] = useState([]);
     const [nicknameCheck, setNicknameCheck] = useState(false);
     const [notNicknameDuplicateCheck, setNotNicknameDuplicateCheck] =
         useState(true);
     const [saveNickname, setSaveNickname] = useState("");
-    const [isUsing, setIsUsing] = useState([]);
 
     // 회원가입
     const signUp = () => {
@@ -162,14 +162,6 @@ const RegisterPage = () => {
                     placeholder="Example@example.com"
                     className="register-input"
                 ></input>
-                {/* <p
-                    className={cls(
-                        "mt-1",
-                        errors.email ? "text-red100 text-xs" : ""
-                    )}
-                >
-                    {errors.email?.message}
-                </p> */}
                 {errors.email ? (
                     <p className="text-red100 text-xs mt-1">
                         {errors.email?.message}
