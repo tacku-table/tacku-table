@@ -13,16 +13,6 @@ import { getStorage } from "firebase/storage";
 //   appId: process.env.NEXT_PUBLIC_APP_ID,
 // };
 
-// 재희 firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyDwf81KBJ6rlKDJRts_oq2aPPDfH8LL8aQ",
-  authDomain: "test-3a207.firebaseapp.com",
-  projectId: "test-3a207",
-  storageBucket: "test-3a207.appspot.com",
-  messagingSenderId: "713080381754",
-  appId: "1:713080381754:web:3719f1abfc305e5b08b003",
-};
-
 let firebase;
 if (!getApps().length) firebase = initializeApp(firebaseConfig);
 
