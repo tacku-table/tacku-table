@@ -18,6 +18,7 @@ import SideCookingTime from "@/components/searchPage/SideCookingTime";
 import TopButton from "@/components/button/TopButton";
 import { GrRotateLeft } from "react-icons/gr";
 import SearchTextBar from "@/components/searchPage/SearchTextBar";
+import Seo from "../../components/layout/Seo";
 
 const SearchData: NextPage = () => {
     const router = useRouter();
@@ -178,7 +179,9 @@ const SearchData: NextPage = () => {
 
     return (
         <>
-            <div className="w-full flex flex-col justify-center items-center">
+            <div className="w-full mt-20 flex flex-col justify-center items-center">
+                <Seo title="타쿠의 식탁" />
+
                 <TopButton />
                 <SearchTextBar setText={setText} />
                 <ChangeSortedBtn
@@ -191,7 +194,7 @@ const SearchData: NextPage = () => {
                     filteredFood={filteredFood}
                     filteredTime={filteredTime}
                 />
-                <div className="w-4/5 border-b border-mono70 mb-8"></div>
+                <div className="w-4/5 border-b border-mono70 mb-[30px]"></div>
                 <div className="w-4/5 flex flex-col items-center md:items-start md:flex-row md:justify-between mb-10">
                     <div className="w-full flex justify-center gap-x-4 mx-auto mb-9 md:justify-start md:flex-col md:ml-1 md:mr-3">
                         <SideFoodCate

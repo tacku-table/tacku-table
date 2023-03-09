@@ -7,6 +7,7 @@ import Image, { StaticImageData } from "next/image";
 import MyTabs from "../../components/profilePage/MyTabs";
 import { useRouter } from "next/router";
 import { User } from "firebase/auth";
+import Seo from "../../components/layout/Seo";
 
 const MyPage = () => {
   const [userInfo, setUserInfo] = useState<TUserInfo>();
@@ -66,6 +67,8 @@ const MyPage = () => {
 
   return (
     <div className="min-w-full mx-auto my-0 justify-center">
+      <Seo title="마이페이지" />
+
       <div className="bg-coverBg bg-cover bg-center h-[250px] bg-no-repeat relative">
         <div className="flex justify-center items-center space-x-8 absolute left-[300px] top-[120px] xl:left-[380px] text-white">
           {imgPreview && (
@@ -85,12 +88,13 @@ const MyPage = () => {
             <Link
               legacyBehavior
               href={{
-                pathname: `/profile/edit/${userInfo?.userId}`,
+                pathname: `/profile/edit/${userInfo?.userNickname}`,
                 query: {
                   id: userInfo?.userId,
                   userImg: userInfo?.userImg,
                 },
               }}
+              as={`/profile/edit/${userInfo?.userNickname}`}
             >
               <svg
                 className="w-9 h-9 cursor-pointer"

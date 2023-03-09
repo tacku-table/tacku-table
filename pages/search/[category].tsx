@@ -15,6 +15,7 @@ import Fuse from "fuse.js";
 import RecipeList from "@/components/searchPage/RecipeList";
 import ChangeSortedBtn from "@/components/searchPage/ChangeSortedBtn";
 import SearchTextBar from "@/components/searchPage/SearchTextBar";
+import Seo from "../../components/layout/Seo";
 
 // 카테고리별 불러오기
 const ClassifiedRecipe: NextPage = () => {
@@ -152,6 +153,7 @@ const ClassifiedRecipe: NextPage = () => {
 
     return (
         <div className="w-full flex flex-col justify-center items-center">
+            <Seo title="타쿠의 식탁" />
             <SearchTextBar setText={setText} />
             <ChangeSortedBtn
                 text={text}

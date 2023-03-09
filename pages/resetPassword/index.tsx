@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { confirmPasswordReset } from "firebase/auth";
 import { emailRegex, pwRegex } from "@/util";
 import { toast } from "react-toastify";
+import Seo from "../../components/layout/Seo";
 
 const ResetPassword = () => {
   //searchParams : URL 검색 매개변수를 읽다. url에 있는 oobcode를 읽는 것같다.
@@ -50,6 +51,8 @@ const ResetPassword = () => {
 
   return (
     <div className="w-[420px] h-full mx-auto text-center py-60">
+      <Seo title="비밀번호 찾기" />
+
       <h3 className="text-4xl font-bold text-center mb-10">비밀번호 변경</h3>
       <form onSubmit={handleSubmit}>
         <div className="mb-10">
