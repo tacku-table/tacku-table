@@ -32,10 +32,10 @@
         @apply block px-7 py-4 text-sm text-gray-900 hover:bg-mono30 hover:text-brand100;
     }
     .register-input {
-        @apply h-[40px] border-[1.5px] border-mono50 rounded-sm pl-3 focus:outline-none mt-2 text-xs;
+        @apply h-10 border border-mono50 rounded-sm pl-3 focus:outline-none mt-2 text-xs;
     }
     .sorted-btn {
-        @apply w-[87px] h-[35px] border text-mono80 border-mono50 border-collapse hover:bg-brand100 hover:text-white hover:transition hover:ease-out hover:duration-300 flex justify-center items-center cursor-pointer rounded-sm text-sm;
+        @apply w-20 h-9 border text-mono80 border-mono50 border-collapse hover:bg-brand100 hover:text-white hover:transition hover:ease-out hover:duration-300 flex justify-center items-center cursor-pointer rounded-sm text-sm;
     }
     .card {
         @apply w-full h-14 absolute transition-all duration-500 items-center bg-gradient-to-r from-orange-500 via-yellow-400 to-pink-400 text-transparent bg-clip-text font-medium;

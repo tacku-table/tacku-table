@@ -6,7 +6,7 @@ const Footer = () => {
     const { version } = packageJson;
 
     return (
-        <div className="bg-[#FFF5F5] flex flex-col justify-start text-mono100">
+        <div className="bg-[#FFF5F5] w-full flex flex-col justify-start text-mono100">
             <ul className="border-b border-white pt-6 w-4/6 mx-auto">
                 <li className="mb-4">
                     <span className="mr-7 w-[52px] h-[18px] text-xs">

@@ -135,20 +135,8 @@ const RegisterPage = () => {
         }
     };
 
-    // 브라우저 뒤로가기 버튼시 confirm창과 함께 "확인"클릭시 로그인 페이지로 이동하는 함수입니다.
-    useEffect(() => {
-        window.history.pushState(null, "null", document.URL);
-        window.addEventListener("popstate", function () {
-            const result = window.confirm("회원가입을 취소하시겠습니까?");
-            if (result) {
-                window.location.replace(`/login`);
-            }
-        });
-        // emailConfirm();
-    }, []);
-
     return (
-        <div className="w-[420px] mx-auto mb-20 text-mono100">
+        <div className="w-4/5 mx-auto mb-20 text-mono100">
             <form
                 onSubmit={handleSubmit(onValid, onInValid)}
                 className="flex flex-col relative"
@@ -172,9 +160,8 @@ const RegisterPage = () => {
                 ></input>
                 <p
                     className={cls(
-                        errors.email
-                            ? "mt-[5px] text-red100 text-xs"
-                            : "mt-[5px] h-[16px]"
+                        "mt-1",
+                        errors.email ? "text-red100 text-xs" : "h-4"
                     )}
                 >
                     {errors.email?.message}
@@ -209,9 +196,8 @@ const RegisterPage = () => {
                 </div>
                 <p
                     className={cls(
-                        errors.pw
-                            ? "mt-[5px] text-red100 text-xs"
-                            : "mt-[5px] h-[16px]"
+                        "mt-1",
+                        errors.pw ? "text-red100 text-xs" : "h-4"
                     )}
                 >
                     {errors.pw?.message}
@@ -247,9 +233,7 @@ const RegisterPage = () => {
                 </div>
                 <p
                     className={cls(
-                        errors.pwConfirm
-                            ? "mt-[5px] text-red100 text-xs"
-                            : "mt-[5px] h-[16px]"
+                        errors.pwConfirm ? "text-red100 text-xs" : "h-4"
                     )}
                 >
                     {errors.pwConfirm?.message}
@@ -257,51 +241,47 @@ const RegisterPage = () => {
                 <label htmlFor="nickname" className="font-semibold mt-4">
                     닉네임
                 </label>
-                <div className="relative">
-                    <div className="flex items-center">
-                        <input
-                            {...register("nickname", {
-                                required: "닉네임을 입력하세요",
-                                maxLength: {
-                                    message: "최대 8자까지 입력가능합니다",
-                                    value: 8,
-                                },
-                                onChange: () => {
-                                    setNotNicknameDuplicateCheck(true);
-                                },
-                                pattern: {
-                                    value: nickRegex,
-                                    message:
-                                        "8자 이하의 영어, 숫자, 한글로만 입력해주세요.",
-                                },
-                                validate: {
-                                    value: () =>
-                                        nicknameCheck ||
-                                        "닉네임 중복 체크 후 고유한 닉네임으로 설정해주세요",
-                                },
-                            })}
-                            id="nickname"
-                            type="text"
-                            placeholder="닉네임 입력"
-                            className="register-input w-4/5"
-                        ></input>
-                        <div
-                            className="mt-2 ml-10 cursor-pointer text-brand100 hover:text-white border border-brand100 hover:bg-brand100 font-medium text-sm px-2 py-2 text-center w-1/5"
-                            onClick={nicknameDuplicate}
-                        >
-                            중복 체크
-                        </div>
-                    </div>
-                    <p
-                        className={cls(
-                            errors.nickname
-                                ? "mt-[5px] text-red100 text-xs"
-                                : "mt-[5px] h-[16px]"
-                        )}
+                <div className="flex justify-between items-center">
+                    <input
+                        {...register("nickname", {
+                            required: "닉네임을 입력하세요",
+                            maxLength: {
+                                message: "최대 8자까지 입력가능합니다",
+                                value: 8,
+                            },
+                            onChange: () => {
+                                setNotNicknameDuplicateCheck(true);
+                            },
+                            pattern: {
+                                value: nickRegex,
+                                message:
+                                    "8자 이하의 영어, 숫자, 한글로만 입력해주세요.",
+                            },
+                            validate: {
+                                value: () =>
+                                    nicknameCheck ||
+                                    "닉네임 중복 체크 후 고유한 닉네임으로 설정해주세요",
+                            },
+                        })}
+                        id="nickname"
+                        type="text"
+                        placeholder="닉네임 입력"
+                        className="register-input w-7/12"
+                    ></input>
+                    <button
+                        className="text-brand100 hover:text-white border border-brand100 hover:bg-brand100 text-xs w-4/12 h-10 mt-2"
+                        onClick={nicknameDuplicate}
                     >
-                        {errors.nickname?.message}
-                    </p>
+                        중복 체크
+                    </button>
                 </div>
+                <p
+                    className={cls(
+                        errors.nickname ? "text-red100 text-xs" : "h-4"
+                    )}
+                >
+                    {errors.nickname?.message}
+                </p>
                 <div className="border border-mono50 mt-7"></div>
                 <div className="flex text-mono80 text-xs mt-2">
                     <input
@@ -324,7 +304,7 @@ const RegisterPage = () => {
                 </p>
                 <button
                     type="submit"
-                    className="bg-brand100 text-white h-[45px] mt-10"
+                    className="bg-brand100 text-white h-10 mt-10"
                 >
                     회원가입
                 </button>

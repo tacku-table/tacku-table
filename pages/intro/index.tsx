@@ -13,7 +13,7 @@ const App: NextPage = () => {
                 <div className="mt-10">
                     <p>
                         타쿠의 식탁은 프론트엔드 개발자 4명이 만든 사용자 공유형
-                        애니메이션전문 레시피사이트입니다.
+                        애니메이션음식전문 레시피사이트입니다.
                     </p>
                     <h4 className="mt-10 font-semibold text-mono100">
                         <span className="text-2xl font-semibold">
