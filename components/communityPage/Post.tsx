@@ -4,17 +4,14 @@ import Image from "next/image";
 import defaultImg from "../../public/images/test1.png";
 import useGetUserProfileNickName from "@/hooks/useGetUserProfileNickName";
 
-interface PostProp extends TCommunity {
-  post: TCommunity;
-}
-
 const Post = ({ post }: PostProp) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const writterUid = post.writterUid;
 
-  const { userNickName: writerNickname } =
-    useGetUserProfileNickName(writterUid);
+  const { userNickName: writerNickname } = useGetUserProfileNickName(
+    writterUid as unknown as string
+  );
 
   useEffect(() => {
     if (writerNickname) {

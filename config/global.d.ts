@@ -28,9 +28,19 @@ declare global {
     editorText?: string;
     writtenDate?: string;
     thumbnail?: string;
-    writerNickname?: string;
   }
-
+  interface PostProp {
+    post: {
+      id?: string;
+      writterUid?: string;
+      category?: string;
+      title?: string;
+      editorText?: string;
+      writtenDate?: string;
+      thumbnail?: string;
+      writerNickname?: string;
+    };
+  }
   interface MyTabProp {
     userInfo: TUserInfo | undefined;
   }
