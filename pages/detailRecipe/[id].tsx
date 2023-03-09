@@ -131,7 +131,13 @@ export default function DetailReciptPage(props: propsType) {
         />
         <meta name="twitter:image" content={props.targetWholeData?.thumbnail} />
       </Head>
-      <div className="xl:w-full sm:w-fit h-full flex flex-col items-center sm:mt-0 mt-20 bg-mono40 mx-auto">
+
+      {/* // 후보 : #FFF8F0 ,#FFF6E8
+    // 푸터로 괜찮은애 :#FFF8F0
+    // 레시피 배경색 : #FFF7E6
+    #cfbbac
+    // #b4855c #B9A89B #524439 #f6c8a0 */}
+      <div className="xl:w-full sm:w-fit h-full flex flex-col items-center sm:mt-0 mt-20 bg-[#FFF5F5] mx-auto">
         <div className="sm:w-[1180px] w-full sm:my-4 my-0 bg-white sm:pb-[131px] pb-10 sm:pt-[52px] pt-5 sm:px-[200px] px-3">
           <div className="bg-slate-100 w-full sm:h-[440px] h-[250px] overflow-hidden relative">
             <Image
@@ -186,12 +192,12 @@ export default function DetailReciptPage(props: propsType) {
               </span>
               <p>{props.targetWholeData?.cookingTime}</p>
             </div>
-            <div className="sm:flex justify-between  border-b-2 border-border-500 sm:pb-8 pb-3 my-5 text-center">
+            <div className="sm:flex justify-between border-b-2 border-border-500 sm:pb-8 pb-3 my-5 text-center">
               <p className="flex-1 sm:text-left sm:font-normal font-semibold">
                 {props.targetWholeData?.animationTitle}
               </p>
               <div className="flex justify-between sm:flex-1 flex-none sm:mt-0 mt-3">
-                <p>
+                <p className="text-white bg-[#F1946C] px-3 rounded-md">
                   {props.targetWholeData?.foodCategory.replaceAll("&", "/")}
                 </p>
                 <p>{getTimegap(props.targetWholeData?.createdAt)}</p>

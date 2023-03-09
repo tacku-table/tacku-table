@@ -53,13 +53,22 @@ function SocialShared(props: socialSharedType) {
   }, []);
   return (
     <div className="flex items-center justify-center">
-      <button onClick={kakaoShare} className="recipepage-share-button">
+      <button
+        onClick={kakaoShare}
+        className="text-brand100 recipepage-share-button"
+      >
         <SiKakaotalk />
       </button>
-      <button onClick={shareToFacebook} className="recipepage-share-button">
+      <button
+        onClick={shareToFacebook}
+        className="text-brand100 recipepage-share-button"
+      >
         <SiFacebook />
       </button>
-      <button onClick={shareToTwitter} className="recipepage-share-button">
+      <button
+        onClick={shareToTwitter}
+        className="text-brand100 recipepage-share-button"
+      >
         <SiTwitter />
       </button>
     </div>

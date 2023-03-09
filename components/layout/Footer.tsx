@@ -9,13 +9,12 @@ const Footer = () => {
     // 후보 : #FFF8F0 ,#FFF6E8
     // 푸터로 괜찮은애 :#FFF8F0
     // 레시피 배경색 : #FFF7E6
-    <div className="bg-[#FFF8F0] flex flex-col justify-start text-mono100">
+    // #b4855c #B9A89B #524439
+    <div className="bg-[#FFF8F0] border-t-[1px] border-mono70 flex flex-col justify-start text-mono100">
       <ul className="border-b border-white pt-6 w-4/6 mx-auto">
         <li className="mb-4">
           <span className="mr-7 w-[52px] h-[18px] text-xs">고객센터</span>
-          <span className="w-[280px] h-[43px] text-xl font-bold">
-            takus@email.com
-          </span>
+          <span className="w-[280px] h-[43px] text-xl">takus@email.com</span>
         </li>
         <li className="mb-4 w-[303px] h-[19px] text-xs">
           copyright © 타쿠의 식당. All rights reserved.
