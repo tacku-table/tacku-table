@@ -6,8 +6,11 @@ const Footer = () => {
     const { version } = packageJson;
 
     return (
-        <div className="bg-[#FFF5F5] w-full flex flex-col justify-start text-mono100 mx-auto">
-            <ul className="border-b border-white pt-6 w-4/6">
+        // 후보 : #FFF8F0 ,#FFF6E8
+        // 푸터로 괜찮은애 :#FFF8F0
+        // 레시피 배경색 : #FFF7E6
+        <div className="bg-[#FFF8F0] w-full flex flex-col justify-start text-mono100 mx-auto">
+            <ul className="border-b border-white pt-6 w-4/6 mx-auto">
                 <li className="mb-4">
                     <span className="mr-7 text-xs">고객센터</span>
                     <span className="text-xl font-bold">takus@email.com</span>
@@ -16,7 +19,7 @@ const Footer = () => {
                     copyright © 타쿠의 식당. All rights reserved.
                 </li>
             </ul>
-            <ul className="bottom-0 pt-4 pb-20 flex gap-7 text-xs w-4/6">
+            <ul className="bottom-0 pt-4 pb-20 flex gap-7 text-xs w-4/6 mx-auto">
                 <li className="">
                     <Link href="/intro">사이트소개</Link>
                 </li>
