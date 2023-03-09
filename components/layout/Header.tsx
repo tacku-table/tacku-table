@@ -28,7 +28,8 @@ const Header = () => {
         sessionStorage.clear();
         Success("로그아웃 성공!");
         setTimeout(() => {
-          location.reload();
+          // location.reload();
+          moveLoginPage();
         }, 2000);
       })
       .catch((error) => {
