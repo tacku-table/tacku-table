@@ -71,11 +71,6 @@ const Post = ({ post }: PostProp) => {
               {writerNickname}
             </span>
           </Link>
-          {/* <Link legacyBehavior href={`/profile/${post.writterUid}`}>
-            <span className="pl-3 cursor-pointer hover:font-semibold hover:text-mono80">
-              {writerNickname}
-            </span>
-          </Link> */}
         </div>
       </div>
     </div>

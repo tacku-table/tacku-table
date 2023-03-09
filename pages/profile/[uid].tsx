@@ -26,7 +26,6 @@ const MyPage = () => {
     const res = {
       id,
     };
-    console.log(router.query);
     setIsOwner(res);
     getCurrentUserInfo(id);
   }, [router.isReady]);
