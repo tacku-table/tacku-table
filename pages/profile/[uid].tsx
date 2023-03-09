@@ -16,15 +16,19 @@ const MyPage = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const router = useRouter();
+  // console.log(router);
+  // console.log(router.query);
+  // console.log(id);
 
   useEffect(() => {
     if (!router.isReady) return;
-    const { uid } = router.query;
+    const { id } = router.query;
     const res = {
-      uid,
+      id,
     };
+    console.log(router.query);
     setIsOwner(res);
-    getCurrentUserInfo(uid);
+    getCurrentUserInfo(id);
   }, [router.isReady]);
 
   const getCurrentUserInfo = async (uid: string | string[] | undefined) => {
@@ -85,12 +89,13 @@ const MyPage = () => {
             <Link
               legacyBehavior
               href={{
-                pathname: `/profile/edit/${userInfo?.userId}`,
+                pathname: `/profile/edit/${userInfo?.userNickname}`,
                 query: {
                   id: userInfo?.userId,
                   userImg: userInfo?.userImg,
                 },
               }}
+              as={`/profile/edit/${userInfo?.userNickname}`}
             >
               <svg
                 className="w-9 h-9 cursor-pointer"
