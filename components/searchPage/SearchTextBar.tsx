@@ -24,7 +24,7 @@ const SearchTextBar = ({ setText }: TypeSearchProps) => {
                 {...register("searchText")}
                 type="text"
                 className="w-3/5 sm:w-5/12 md:w-4/12 lg:w-3/12 xl:w-1/5 h-12 text-sm font-medium pl-7 focus:outline-none rounded-sm rounded-r-none border border-slate-300"
-                placeholder="하울의 움직이는 성 베이컨계란요리"
+                placeholder="타쿠들의 레시피를 찾아 볼까요?"
             ></input>
             <button
                 type="submit"
