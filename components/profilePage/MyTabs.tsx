@@ -29,7 +29,7 @@ const MyTabs = ({ userInfo, storageCurrentUser }: MyTabsProp) => {
   //   }
   return (
     <Tab.Group>
-      <Tab.List className="min-w-full flex space-x-16 justify-center items-center bg-white">
+      <Tab.List className="max-w-full w-11/12 flex space-x-16 justify-center items-center bg-white mx-auto">
         {storageCurrentUser?.uid === userInfo?.userId ? (
           <>
             {categoriesOfmine.map((category) => (
@@ -71,7 +71,7 @@ const MyTabs = ({ userInfo, storageCurrentUser }: MyTabsProp) => {
           </>
         )}
       </Tab.List>
-      <Tab.Panels className="w-[880px] h-full min-h-[501px] mt-8 mb-[100px] shadow-xl m-auto ">
+      <Tab.Panels className="max-w-[880px] w-11/12 h-full min-h-[501px] md:mt-8 mt-0 mb-[100px] shadow-xl mx-auto ">
         <MyBookmarkTab
           storageCurrentUser={storageCurrentUser}
           userInfo={userInfo}
