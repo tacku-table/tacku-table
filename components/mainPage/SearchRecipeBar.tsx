@@ -18,7 +18,7 @@ const SearchRecipeBar: NextPage = () => {
     return (
         <form
             onSubmit={handleSubmit(onValid, onInValid)}
-            className="relative mt-4 mb-24 flex"
+            className="relative mt-4 mb-24 flex w-full"
         >
             <input
                 {...register("text")}

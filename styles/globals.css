@@ -65,6 +65,9 @@
     .side-checkbox {
         @apply w-4 h-4 accent-orange-600;
     }
+    .show-more {
+        @apply text-brand100 border border-brand100 w-20 h-8 mb-4 rounded-sm hover:bg-brand100 hover:text-white transition-all duration-200;
+    }
 }
 @keyframes messageFadeIn {
     0% {

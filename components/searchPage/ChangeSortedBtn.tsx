@@ -19,7 +19,7 @@ const ChangeSortedBtn = ({
     const filteredOnlyTime = filteredTime?.length;
 
     return (
-        <div className="w-4/5 md:flex justify-between items-center relative mb-[20px]">
+        <div className="w-4/5 md:flex justify-between items-center relative mb-5">
             <ul className="flex justify-end absolute right-0">
                 <li
                     className={cls(

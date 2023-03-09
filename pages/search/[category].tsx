@@ -151,7 +151,7 @@ const ClassifiedRecipe: NextPage = () => {
     }, [router.query.category, isBest]);
 
     return (
-        <div className="w-full mt-20 flex flex-col justify-center items-center">
+        <div className="w-full flex flex-col justify-center items-center">
             <SearchTextBar setText={setText} />
             <ChangeSortedBtn
                 text={text}
@@ -161,7 +161,7 @@ const ClassifiedRecipe: NextPage = () => {
                 activeBestBtn={activeBestBtn}
                 inactiveBestBtn={inactiveBestBtn}
             />
-            <div className="w-4/5 border-b border-mono50 mb-[30px]"></div>
+            <div className="w-4/5 border-b border-mono50 mb-8"></div>
             <div className="w-4/5 md:flex md:justify-between mb-10">
                 <div className="bg-mono30 rounded-sm w-full md:w-1/5 h-9 px-6 mr-7 mb-7 flex justify-center items-center text-sm text-brand100">
                     {router.query.category?.toString().replaceAll("&", "/")}

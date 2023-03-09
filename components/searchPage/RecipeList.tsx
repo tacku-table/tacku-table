@@ -98,7 +98,7 @@ const RecipeList = ({
                 type="button"
                 onClick={next}
                 className={cls(
-                    "border-[2px] text-brand100 border-brand100 px-7 py-1 absolute bottom-0 -translate-x-1/2 left-1/2",
+                    "border-1 text-brand100 border-brand100 px-7 py-1 absolute bottom-0 -translate-x-1/2 left-1/2",
                     !lastDoc ||
                         text ||
                         filteredFood?.length ||
