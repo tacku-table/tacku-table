@@ -61,7 +61,7 @@ const Header = () => {
       className="fixed top-0 z-50 w-full h-[84px] xl:px-10 px-0 bg-white border-b-[1.5px] border-mono50 items-center text-sm"
       onClick={clearStorage}
     >
-      <div className="xl:w-11/12 md:w-max w-full sm:h-full flex justify-between sm:mx-auto items-center">
+      <div className="xl:w-11/12 md:w-max w-full h-full flex md:justify-between justify-around sm:mx-auto items-center">
         <ul className="flex justify-center items-center">
           {/* 햄버거버튼 */}
           <li className="header-title">
@@ -116,28 +116,16 @@ const Header = () => {
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
+                strokeWidth="1.5"
                 stroke="currentColor"
                 className="w-6 h-6 text-[#a3713d] mb-1 "
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
                 />
               </svg>
-            </Link>
-          </div>
-          {/* 모바일용 로고이미지 */}
-          <div className="md:hidden items-center mb-3 lg:hidden sm:hidden ml-3">
-            <Link href="/main" className="md:hidden">
-              <Image
-                src={logo2}
-                alt="logo_web"
-                width={150}
-                height={40}
-                priority
-              />
             </Link>
           </div>
 
@@ -157,7 +145,20 @@ const Header = () => {
             <Link href="/community">커뮤니티</Link>
           </li>
         </ul>
-        <div className="flex justify-center items-center">
+        {/* 모바일용 로고이미지 */}
+        <div className="md:hidden sm:-ml-0 -ml-8">
+          <Link href="/main" className="md:hidden ">
+            <Image
+              src={logo2}
+              alt="logo_web"
+              width={150}
+              height={40}
+              priority
+              className="mx-auto"
+            />
+          </Link>
+        </div>
+        <div className="flex justify-center items-center ">
           <Link
             href="/recipeWrite"
             className="lg:block md:block hidden mr-6 hover:text-mono80 hover:transition hover:ease-out hover:duration-300"
@@ -192,13 +193,13 @@ const Header = () => {
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
+                strokeWidth="1.5"
                 stroke="currentColor"
                 className="w-7 h-7 text-[#a3713d]"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
                 />
               </svg>
@@ -211,19 +212,19 @@ const Header = () => {
             <button
               type="button"
               onClick={logoutAction}
-              className="sm:hidden md:hidden lg:hidden mb-4 sorted-btn w-[60%] border-none sm:w-[87px] md:w-[87px] lg:w-[87px] mr-3 mt-1"
+              className="sm:hidden md:hidden lg:hidden sorted-btn w-[60%] border-none sm:w-[87px] md:w-[87px] lg:w-[87px] mx-auto"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
+                strokeWidth="1.5"
                 stroke="currentColor"
-                className="w-7 h-7 text-[#a3713d]"
+                className="w-12 h-12 text-[#a3713d]"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
                 />
               </svg>
@@ -233,19 +234,19 @@ const Header = () => {
             <button
               type="button"
               onClick={moveLoginPage}
-              className="sm:hidden md:hidden lg:hidden mb-4 sorted-btn w-[60%] border-none sm:w-[87px] md:w-[87px] lg:w-[87px] mr-3 mt-1"
+              className="sm:hidden md:hidden lg:hidden sorted-btn w-[60%] border-none sm:w-[87px] md:w-[87px] lg:w-[87px] mx-auto"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
+                strokeWidth="1.5"
                 stroke="currentColor"
-                className="w-8 h-8 text-[#a3713d]"
+                className="w-12 h-12 text-[#a3713d]"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
                 />
               </svg>
