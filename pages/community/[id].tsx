@@ -165,7 +165,7 @@ export default function DetailPage(props: propsType) {
                 >
                   {writterProfile === "null" ? (
                     <Image
-                      className="w-[40px] h-[40px] object-cover object-center float-left m-2"
+                      className="w-[40px] h-[40px] object-cover object-center float-left m-2 hover:opacity-50 rounded-md"
                       src={baseImg}
                       width={780}
                       height={270}
@@ -178,11 +178,13 @@ export default function DetailPage(props: propsType) {
                       width={100}
                       height={100}
                       alt="writterProfile"
-                      className="w-[40px] h-[40px] object-cover object-center float-left m-2"
+                      className="w-[40px] h-[40px] object-cover object-center float-left m-2 hover:opacity-50 rounded-md"
                     />
                   )}
 
-                  <h3 className="relative top-[15px]">{writterNickName}</h3>
+                  <span className="relative text-base top-[15px] cursor-pointer hover:font-semibold hover:text-mono80">
+                    {writterNickName}
+                  </span>
                 </Link>
                 <div className="text-[16px] text-mono80">
                   {detailPageWholeData.writtenDate}
