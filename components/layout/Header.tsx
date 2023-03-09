@@ -10,7 +10,6 @@ import Image from "next/image";
 import { setTimeout } from "timers";
 import Sidebar from "./Sidebar";
 import { Success } from "../toastify/Alert";
-import { useRouter } from "next/router";
 
 export const clearStorage = () => {
   sessionStorage.removeItem("filteredFoodData");
@@ -38,19 +37,10 @@ const Header = () => {
   const moveLoginPage = () => {
     location.href = "/login";
   };
-  const router = useRouter();
-
+  // 마이페이지
   const moveMyPage = (currentUser: string) => {
-    const { uid, displayName } = JSON.parse(currentUser);
-    router.push(
-      {
-        pathname: `/profile/${displayName}`,
-        query: {
-          id: uid,
-        },
-      },
-      `/profile/${displayName}`
-    );
+    const { uid } = JSON.parse(currentUser);
+    location.href = `/profile/${uid}`;
   };
 
   const clearStorageAndShowTotal = () => {
