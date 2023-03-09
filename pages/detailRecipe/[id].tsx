@@ -17,7 +17,6 @@ import { toast } from "react-toastify";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import { useRouter } from "next/router";
 
 interface propsType extends AppProps {
   targetWholeData: targetWholeDataType;
@@ -36,7 +35,6 @@ export default function DetailReciptPage(props: propsType) {
     {}
   );
 
-  const router = useRouter();
   useEffect(() => {
     //userData조회
     const user = sessionStorage.getItem("User") || "";
@@ -140,7 +138,10 @@ export default function DetailReciptPage(props: propsType) {
               className="image-detail"
               fill
               unoptimized
-              style={{ objectFit: "cover", objectPosition: "center" }}
+              style={{
+                objectFit: "cover",
+                objectPosition: "center",
+              }}
             />
           </div>
           <div className="flex-col my-5">
@@ -197,16 +198,11 @@ export default function DetailReciptPage(props: propsType) {
           </div>
           <div>
             <div className="flex items-center justify-between ">
-              <Link
+              <div
                 className="flex items-center cursor-pointer"
-                href={{
-                  pathname: `/profile/${userData?.userNickname}`,
-                  query: {
-                    id: userData?.userId,
-                    displayName: userData?.userNickname,
-                  },
+                onClick={() => {
+                  location.href = `/profile/${userData?.userId}`;
                 }}
-                as={`/profile/${userData?.userNickname}`}
               >
                 {userData?.userImg === "null" ? (
                   <Image
@@ -229,7 +225,7 @@ export default function DetailReciptPage(props: propsType) {
                   />
                 )}
                 <p className="pl-5 font-semibold">{userData.userNickname}</p>
-              </Link>
+              </div>
               {/* 수정/ 삭제 */}
               {props.targetWholeData?.uid == storageCurrentUser.uid ? (
                 <div className="flex items-center mt-0 w-[160px]">
