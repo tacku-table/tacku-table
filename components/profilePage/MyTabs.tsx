@@ -29,7 +29,7 @@ const MyTabs = ({ userInfo, storageCurrentUser }: MyTabsProp) => {
   //   }
   return (
     <Tab.Group>
-      <Tab.List className="max-w-full w-11/12 flex space-x-16 justify-center items-center bg-white mx-auto">
+      <Tab.List className="max-w-full w-11/12 flex sm:space-x-16 space-x-6 justify-center items-center bg-white mx-auto">
         {storageCurrentUser?.uid === userInfo?.userId ? (
           <>
             {categoriesOfmine.map((category) => (
@@ -37,7 +37,7 @@ const MyTabs = ({ userInfo, storageCurrentUser }: MyTabsProp) => {
                 key={category}
                 className={({ selected }) =>
                   cls(
-                    "w-fit pt-7 pb-[15px] text-[18px] font-medium leading-5 text-mono100 border-[3px] border-x-0  border-white",
+                    "w-fit pt-7 pb-[15px] sm:text-[18px] text-xs font-medium leading-5 text-mono100 border-[3px] border-x-0  border-white",
                     "ring-white ring-opacity-60 focus:outline-none focus:ring-2",
                     selected
                       ? "bg-white  border-b-brand100  border-b-[3px] font-bold"
