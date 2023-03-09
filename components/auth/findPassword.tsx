@@ -60,52 +60,54 @@ const FindPassword = () => {
   };
 
   return (
-    <div className="w-[420px] mx-auto my-40">
-      <div className="text-center mb-10">
-        <h3 className="text-4xl font-bold text-center mb-4">비밀번호 찾기</h3>
-        <p>비밀번호를 찾고자 하는 이메일을 입력해주세요.</p>
-        <p>비밀번호 재설정을 위한 이메일을 보내드리겠습니다.</p>
-      </div>
-      <h6 className="font-semibold text-base float-left">이메일</h6>
-      <input
-        id="email"
-        type="email"
-        placeholder="Example@example.com"
-        ref={emailRef}
-        value={email}
-        onChange={onChangeEmail}
-        className="register-input w-full h-10 border-1 border-mono60  text-input mb-10"
-      />
-      <button
-        type="submit"
-        onClick={handleResetPassword}
-        className="bg-brand100 text-white h-[40px] w-full mb-3"
-      >
-        이메일 발송
-      </button>
-      {emailError || (
-        <div className="text-red100 flex items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-5 h-5 mr-1"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
-            />
-          </svg>
-          <p>
-            {email === ""
-              ? "이메일을 입력하세요"
-              : "이메일형식에 맞게 입력해주세요"}
-          </p>
+    <div className="max-w-[420px] w-full mx-auto my-32">
+      <div className="w-10/12 mx-auto">
+        <div className="text-center mb-10">
+          <h3 className="text-4xl font-bold text-center mb-4">비밀번호 찾기</h3>
+          <p>비밀번호를 찾고자 하는 이메일을 입력해주세요.</p>
+          <p>비밀번호 재설정을 위한 이메일을 보내드리겠습니다.</p>
         </div>
-      )}
+        <h6 className="font-semibold text-base float-left">이메일</h6>
+        <input
+          id="email"
+          type="email"
+          placeholder="Example@example.com"
+          ref={emailRef}
+          value={email}
+          onChange={onChangeEmail}
+          className="register-input w-full h-10 border-1 border-mono60  text-input mb-10"
+        />
+        <button
+          type="submit"
+          onClick={handleResetPassword}
+          className="bg-brand100 text-white h-[40px] w-full mb-3"
+        >
+          이메일 발송
+        </button>
+        {emailError || (
+          <div className="text-red100 flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="w-5 h-5 mr-1"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
+              />
+            </svg>
+            <p>
+              {email === ""
+                ? "이메일을 입력하세요"
+                : "이메일형식에 맞게 입력해주세요"}
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

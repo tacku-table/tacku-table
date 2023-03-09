@@ -61,7 +61,7 @@ const Header = () => {
             className="fixed top-0 z-50 w-full h-[84px] xl:px-10 px-0 bg-white border-b-[1.5px] border-mono50 items-center text-sm"
             onClick={clearStorage}
         >
-            <div className="xl:w-11/12 md:w-max w-full sm:h-full flex justify-between sm:mx-auto items-center">
+            <div className="xl:w-11/12 md:w-max w-full sm:h-full flex md:justify-between justify-around sm:mx-auto items-center">
                 <ul className="flex justify-center items-center">
                     {/* 햄버거버튼 */}
                     <li className="header-title">

@@ -6,14 +6,14 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function App({ Component, pageProps }: AppProps) {
-    const queryClient = new QueryClient();
+  const queryClient = new QueryClient();
 
-    return (
-        <QueryClientProvider client={queryClient}>
-            <Layout>
-                <Component {...pageProps} />
-                <ToastContainer />
-            </Layout>
-        </QueryClientProvider>
-    );
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Layout>
+        <Component {...pageProps} />
+        <ToastContainer />
+      </Layout>
+    </QueryClientProvider>
+  );
 }
