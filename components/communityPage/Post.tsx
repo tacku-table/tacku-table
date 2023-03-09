@@ -4,7 +4,7 @@ import Image from "next/image";
 import defaultImg from "../../public/images/test1.png";
 import useGetUserProfileNickName from "@/hooks/useGetUserProfileNickName";
 
-interface PostProp {
+interface PostProp extends TCommunity {
   post: TCommunity;
 }
 
@@ -13,11 +13,11 @@ const Post = ({ post }: PostProp) => {
 
   const writterUid = post.writterUid;
 
-  const { userNickName: writterNickname } =
+  const { userNickName: writerNickname } =
     useGetUserProfileNickName(writterUid);
 
   useEffect(() => {
-    if (writterNickname) {
+    if (writerNickname) {
       setIsLoading(false);
     }
   });
@@ -58,9 +58,17 @@ const Post = ({ post }: PostProp) => {
           <div className="border-r border-mono60 px-3 w-[147px]">
             {post.writtenDate}
           </div>
-          <Link legacyBehavior href={`/profile/${post.writterUid}`}>
+          <Link
+            href={{
+              pathname: `/profile/${writerNickname}`,
+              query: {
+                id: post?.writterUid,
+              },
+            }}
+            as={`/profile/${writerNickname}`}
+          >
             <span className="pl-3 cursor-pointer hover:font-semibold hover:text-mono80">
-              {writterNickname}
+              {writerNickname}
             </span>
           </Link>
         </div>
