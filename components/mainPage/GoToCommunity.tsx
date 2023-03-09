@@ -13,7 +13,7 @@ const GoToCommunity: NextPage = () => {
                 src={chihiro}
                 className="w-full h-full absolute top-0 left-0 object-cover object-right"
             />
-            <div className="flex flex-col justify-center mx-auto w-[80%] z-50">
+            <div className="flex flex-col justify-center items-center z-50 bg-black w-full h-full bg-opacity-30 md:bg-opacity-10 md:items-start md:w-4/6">
                 <p className="text-xl font-semibold mb-4">커뮤니티</p>
                 <p className="text-sm">
                     애니메이션과 애니에 나오는 요리 등 다양한 주제로<br></br>

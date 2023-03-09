@@ -101,7 +101,20 @@ const SearchData: NextPage = () => {
     };
     // 검색
     const fuse = new Fuse(currentItems, {
-        keys: ["animationTitle", "foodTitle", "cookingTime"],
+        keys: [
+            {
+                name: "foodTitle",
+                weight: 0.5,
+            },
+            {
+                name: "animationTitle",
+                weight: 0.3,
+            },
+            {
+                name: "cookingTime",
+                weight: 0.2,
+            },
+        ],
         includeScore: true,
         threshold: 0.5, //일치정도(0~1.0)
         minMatchCharLength: text.length,
