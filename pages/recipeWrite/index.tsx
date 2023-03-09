@@ -9,6 +9,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { dbService } from "../../config/firebase";
 import baseImg from "/public/images/test1.png";
 import { toast, ToastContainer } from "react-toastify";
+import Seo from "../../components/layout/Seo";
 
 interface TitleType {
   title: string;
@@ -216,6 +217,8 @@ const RecipeWritePage = () => {
 
   return (
     <div className="mt-10 xl:w-full sm:w-fit h-full flex flex-col items-center pt-2 mx-auto sm:p-10">
+      <Seo title="레시피 글쓰기" />
+
       <ToastContainer position="top-right" autoClose={1000} />
       <div className="mt-[75px] rounded-md p-7 container max-w-[1180px] mx-auto flex justify-center flex-col">
         <h3 className="sm:text-4xl text-2xl font-bold">레시피 글쓰기 </h3>
