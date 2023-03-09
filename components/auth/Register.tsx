@@ -283,10 +283,10 @@ const RegisterPage = () => {
                             id="nickname"
                             type="text"
                             placeholder="닉네임 입력"
-                            className="register-input"
+                            className="register-input w-4/5"
                         ></input>
                         <div
-                            className="mt-2 ml-10 cursor-pointer text-brand100 hover:text-white border border-brand100 hover:bg-brand100 font-medium text-sm px-2 py-2 text-center"
+                            className="mt-2 ml-10 cursor-pointer text-brand100 hover:text-white border border-brand100 hover:bg-brand100 font-medium text-sm px-2 py-2 text-center w-1/5"
                             onClick={nicknameDuplicate}
                         >
                             중복 체크
