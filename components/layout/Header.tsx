@@ -77,7 +77,7 @@ const Header = () => {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="w-10 h-10  text-[#a3713d]"
+                className="w-10 h-10  text-[#f39e31]"
               >
                 <path
                   strokeLinecap="round"
@@ -118,7 +118,7 @@ const Header = () => {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="w-6 h-6 text-[#a3713d] mb-1 "
+                className="w-6 h-6 text-[#f39e31] mb-1 "
               >
                 <path
                   strokeLinecap="round"
@@ -195,7 +195,7 @@ const Header = () => {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="w-7 h-7 text-[#a3713d]"
+                className="w-7 h-7 text-[#f39e31]"
               >
                 <path
                   strokeLinecap="round"
@@ -220,7 +220,7 @@ const Header = () => {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="w-12 h-12 text-[#a3713d]"
+                className="w-12 h-12 text-[#f39e31]"
               >
                 <path
                   strokeLinecap="round"
@@ -242,7 +242,7 @@ const Header = () => {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="w-12 h-12 text-[#a3713d]"
+                className="w-12 h-12 text-[#f39e31]"
               >
                 <path
                   strokeLinecap="round"
@@ -257,7 +257,6 @@ const Header = () => {
             <button
               onClick={() => moveMyPage(storageCurrentUser)}
               className="mr-6 hover:text-mono80 hidden sm:block md:block lg:block hover:transition hover:ease-out hover:duration-300"
-              //   className="hover:text-mono80 hover:transition hover:ease-out hover:duration-300"
             >
               마이페이지
             </button>
