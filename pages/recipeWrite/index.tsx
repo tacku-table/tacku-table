@@ -40,6 +40,17 @@ const RecipeWritePage = () => {
   const [imgLoading, setImgLoading] = useState("");
 
   useEffect(() => {
+    const user = sessionStorage.getItem("User") || "";
+    if (user) {
+      const parseUser: parseUserType = JSON.parse(user);
+      setStorageCurrentUser(parseUser);
+    }
+    if (!user) {
+      setStorageCurrentUser({ user: "logout" });
+    }
+  }, []);
+
+  useEffect(() => {
     if (storageCurrentUser.user == "logout") {
       moveLoginPage();
     }
@@ -218,7 +229,6 @@ const RecipeWritePage = () => {
   return (
     <div className="mt-10 xl:w-full sm:w-fit h-full flex flex-col items-center pt-2 mx-auto sm:p-10">
       <Seo title="레시피 글쓰기" />
-
       <ToastContainer position="top-right" autoClose={1000} />
       <div className="mt-[75px] rounded-md p-7 container max-w-[1180px] mx-auto flex justify-center flex-col">
         <h3 className="sm:text-4xl text-2xl font-bold">레시피 글쓰기 </h3>
@@ -240,7 +250,7 @@ const RecipeWritePage = () => {
             </div>
             {/* 데스크탑일땐 sm , 모바일일땐 그냥 */}
             {searchTitle ? (
-              <div className="flex sm:flex-row bg-blue-200 ">
+              <div className="flex sm:flex-row ">
                 <div className="sm:ml-[5px] rounded-lg w-[450px] sm:text-center mt-1">
                   <select
                     className="sm:ml-[185px] w-[280px] h-[40px] mt-[16px] border border-mono60 rounded-[2px] text-center"
@@ -353,9 +363,9 @@ const RecipeWritePage = () => {
                 </div>
               </div>
             )}
-            <div className="bg-mono40 h-[210px] sm:mt-[42px] mt-[70px] ">
-              <div className="mt-[12px] float-right flex items-stretch">
-                <div className="mt-2 text-mono80 text-[16px]">
+            <div className="bg-mono40 h-[280px] sm:h-[210px] sm:mt-[42px] mt-[70px] ">
+              <div className="mt-[12px] float-right sm:float-right flex items-stretch">
+                <div className="sm:mt-2 mt-1 text-mono80 text-[16px]">
                   대표 이미지 별도 등록
                 </div>
                 <label htmlFor="ex_file">
@@ -375,7 +385,7 @@ const RecipeWritePage = () => {
                   accept="images/*"
                 />
               </div>
-              <div className="ml-[16px] pt-[20px] text-mono100 text-[16px]">
+              <div className="ml-[16px] pt-[20px] text-mono100 text-[16px] ">
                 등록된 대표 이미지
               </div>
               {imagePreview ? (

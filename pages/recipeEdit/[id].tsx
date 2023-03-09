@@ -231,13 +231,8 @@ const RecipeEditPage = ({
       downloadUrl = await getDownloadURL(response.ref);
       toastAlert("대표 이미지 업데이트 성공~!");
       await setImgLoading("loaded");
-
       setThumbnail(downloadUrl);
     }
-  };
-
-  const moveMain = () => {
-    location.href = "/main";
   };
 
   return (
@@ -374,8 +369,9 @@ const RecipeEditPage = ({
                 </div>
               </div>
             )}
+
             <div className="bg-mono40 sm:h-[210px] sm:mt-[42px] mt-[70px]">
-              <div className="mt-[12px] float-right flex items-stretch">
+              <div className="mt-[12px] float-right sm:float-right flex items-stretch">
                 <div className="mt-2 text-mono80 text-[16px]">대표 이미지</div>
                 <label htmlFor="ex_file">
                   <div className="rounded-[2px] border border-mono60 ml-[20px] text-[16px] text-center pt-1 hover:cursor-pointer w-[100px] h-[35px] bg-mono40 text-mono100">
