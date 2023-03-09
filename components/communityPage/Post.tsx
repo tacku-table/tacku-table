@@ -26,7 +26,7 @@ const Post = ({ post }: PostProp) => {
   }
 
   return (
-    <div className="border-b border-mono60 py-4 px-5 flex text-sm">
+    <div className="border-b border-mono60 py-4 px-5 flex text-sm h-[85px] sm:h-auto">
       <Link legacyBehavior href={`/community/${post.id}`}>
         {post.thumbnail === "" ? (
           <Image
@@ -55,7 +55,7 @@ const Post = ({ post }: PostProp) => {
         </Link>
         <div className="flex mt-3 text-mono70">
           <div className="border-r border-mono60 pr-3">{post.category}</div>
-          <div className="border-r border-mono60 px-3 w-[147px]">
+          <div className="border-r border-mono60 px-1 sm:px-3 w-[147px]">
             {post.writtenDate}
           </div>
           <Link legacyBehavior href={`/profile/${post.writterUid}`}>

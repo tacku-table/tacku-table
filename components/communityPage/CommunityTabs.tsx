@@ -15,16 +15,17 @@ const CommunityTabs = () => {
   ]);
 
   return (
-    <div className="min-w-[860px]">
+    <div className="sm:w-[860px] max-w-[860px] w-full">
       <Tab.Group>
         <Tab.List className="text-base font-medium text-center text-gray-500 border-b border-mono60">
-          <div className="flex flex-wrap -mb-px">
+          {/* <div className="flex flex-wrap -mb-px"> */}
+          <div className="flex items-start">
             {categories.map((category) => (
               <Tab
                 key={category}
                 className={({ selected }) =>
                   cls(
-                    "mr-2 inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-gray-300 hover:text-brand100 ring-white focus:outline-none",
+                    "sm:text-[16px] text-[12px] w-[23%] mr-2 inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-gray-300 hover:text-brand100 ring-white focus:outline-none",
                     `${selected ? " text-brand100" : "text-mono100"}`
                   )
                 }
