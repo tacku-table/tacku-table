@@ -8,23 +8,22 @@ import Video from "@/components/mainPage/Video";
 import Seo from "../../components/layout/Seo";
 
 const Main = () => {
-  return (
-    <div className="w-full">
-      <Seo title="타쿠의 식탁" />
-
-      <div className="w-4/5 mx-auto flex flex-col justify-center items-center xl:flex-row xl:gap-x-4">
-        <Video />
-        <Special />
-      </div>
-      <div className="w-4/5 mx-auto py-7 flex flex-col items-center">
-        <SearchRecipeBar />
-        <BestRecipe />
-        <NewRecipe />
-      </div>
-      <GoToCommunity />
-      <TopButton />
-    </div>
-  );
+    return (
+        <div className="w-full">
+            <Seo title="타쿠의 식탁" />
+            <div className="w-4/5 mx-auto flex flex-col justify-center items-center xl:flex-row xl:gap-x-4">
+                <Video />
+                <Special />
+            </div>
+            <div className="w-4/5 mx-auto py-7 flex flex-col items-center">
+                <SearchRecipeBar />
+                <BestRecipe />
+                <NewRecipe />
+            </div>
+            <GoToCommunity />
+            <TopButton />
+        </div>
+    );
 };
 
 export default Main;

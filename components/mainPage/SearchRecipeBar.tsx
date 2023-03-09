@@ -18,17 +18,17 @@ const SearchRecipeBar: NextPage = () => {
     return (
         <form
             onSubmit={handleSubmit(onValid, onInValid)}
-            className="relative mt-4 mb-24 flex"
+            className="relative mt-5 mb-20 md:mb-24 lg:mb-32 flex w-full justify-center"
         >
             <input
                 {...register("text")}
                 type="text"
-                className="w-[350px] h-[50px] text-sm font-medium pl-7 focus:outline-none rounded-[5px] rounded-r-none border border-slate-300"
+                className="w-4/5 sm:w-3/5 md:w-4/6 lg:w-3/6 xl:w-2/6 h-12 text-sm font-medium pl-7 focus:outline-none rounded-sm rounded-r-none border border-slate-300"
                 placeholder="하울의 움직이는 성 베이컨계란요리"
             ></input>
             <button
                 type="submit"
-                className="bg-brand100 rounded-[5px] rounded-l-none w-[50px] h-[50px] text-center"
+                className="bg-brand100 rounded-sm rounded-l-none w-14 h-12 text-center"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -36,7 +36,7 @@ const SearchRecipeBar: NextPage = () => {
                     viewBox="0 0 24 24"
                     strokeWidth="1.5"
                     stroke="currentColor"
-                    className="w-6 h-6 text-white absolute top-3 ml-3 pointer-events-none"
+                    className="w-6 h-6 text-white absolute top-3 ml-4 pointer-events-none"
                 >
                     <path
                         strokeLinecap="round"
