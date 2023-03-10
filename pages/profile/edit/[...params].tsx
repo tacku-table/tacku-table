@@ -10,6 +10,7 @@ import {
 } from "firebase/auth";
 import {
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -115,7 +116,8 @@ export default function ProfileEdit(props: ProfileEditProp) {
       if (result) {
         signOut(authService).then(() => {
           sessionStorage.clear();
-          deleteUser(currentUser)
+          deleteUser(currentUser);
+          deleteDoc(doc(dbService, "user", currentUser.uid))
             .then(() => {
               Success("회원탈퇴가 완료되었습니다.");
               location.href = "/main";
@@ -205,7 +207,7 @@ export default function ProfileEdit(props: ProfileEditProp) {
 
     if (!nickRegex.test(event.target.value)) {
       setNicknameMessage(
-        "8자 이하로 입력해주세요.(영어 또는 숫자 또는 한글만 가능)"
+        "2자 이상 8자 이하로 입력해주세요.(영어 또는 숫자 또는 한글만 가능)"
       );
       setIsNickname(false);
     } else {
@@ -213,7 +215,6 @@ export default function ProfileEdit(props: ProfileEditProp) {
         setNicknameMessage("사용 가능한 닉네임입니다.");
         setSaveNickname(nickname);
         return setIsNickname(true);
-        // return setNotNicknameDuplicateCheck(false);
       } else {
         if (nickname.length != 0) {
           setNicknameMessage("이미 다른 유저가 사용 중입니다.");
@@ -261,7 +262,9 @@ export default function ProfileEdit(props: ProfileEditProp) {
         await updatePassword(
           authService?.currentUser as unknown as User,
           changeUserPw as unknown as string
-        ).catch(() => Error("비밀번호 변경에 실패하였습니다."));
+        )
+          .then(() => Success("비밀번호 수정이 완료되었습니다."))
+          .catch(() => Error("비밀번호 변경에 실패하였습니다."));
       })
       .catch(() => Warn("재로그인이 필요합니다."));
   };
