@@ -14,17 +14,17 @@ import useGetCommunityComment from "@/hooks/useGetCommunityComment";
 import { toastAlert } from "../toastify/Alert";
 import Link from "next/link";
 
-const Comments = ({ boardId, uid }) => {
+const Comments = ({ boardId, uid }: { boardId: string; uid: string }) => {
   const [editComment, setEditComment] = useState("");
-  const [targetIndex, setTargetIndex] = useState("");
-  const [targetIsEdit, setTargetIsEdit] = useState("");
-  const commentRef = useRef("");
+  const [targetIndex, setTargetIndex] = useState<number | null>();
+  const [targetIsEdit, setTargetIsEdit] = useState<number | null>();
+  const commentRef = useRef<HTMLInputElement>(null);
 
   const { boardComments, comment, setComment, setReloadState } =
     useGetCommunityComment(boardId);
 
   // 댓글 add
-  const addComment = async (event) => {
+  const addComment = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     let today = new Date();
     let year = today.getFullYear();
@@ -51,7 +51,7 @@ const Comments = ({ boardId, uid }) => {
   };
 
   // 댓글 delete
-  const deleteComment = async (id) => {
+  const deleteComment = async (id: string) => {
     const userConfirm = window.confirm("해당 댓글을 정말 삭제하시겠습니까?");
     if (userConfirm) {
       try {
@@ -64,19 +64,25 @@ const Comments = ({ boardId, uid }) => {
     }
   };
 
-  const commentEdit = async (id, index, event) => {
+  const commentEdit = async (
+    id: string,
+    index: number,
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     setTargetIndex(index);
     setTargetIsEdit(index);
     const postRef = doc(dbService, "comments", id);
-    if (event.target.innerText == "완료") {
+    const buttonEventTarget: HTMLButtonElement = event.currentTarget;
+
+    if (buttonEventTarget.innerText == "완료") {
       if (editComment) {
         await updateDoc(postRef, {
           comment: editComment,
         });
         setReloadState("댓글 수정완료");
         toastAlert("🎉 댓글 수정 완료!");
-        setTargetIsEdit(!index);
-        setTargetIndex(!index);
+        setTargetIsEdit(null);
+        setTargetIndex(null);
       }
     }
   };
@@ -93,7 +99,7 @@ const Comments = ({ boardId, uid }) => {
 
           <div>
             <div>
-              {boardComments?.map((item, index) => {
+              {boardComments?.map((item: any, index: number) => {
                 return (
                   <div key={index}>
                     {/* targetIndex === index : 수정 input열리는 부분 */}
@@ -224,12 +230,12 @@ const Comments = ({ boardId, uid }) => {
                 setComment(e.target.value);
               }}
             />
-            <div
+            <button
               className="flex justify-center items-center rounded-sm text-center text-white border-none bg-brand100 sm:h-[90px] h-[40px] sm:w-[20%] cursor-pointer focus:outline-none ring-offset-2 hover:ring-2 ring-brand100"
               onClick={addComment}
             >
               <span className="px-2 text-sm sm:text-base">등록</span>
-            </div>
+            </button>
           </div>
         )}
       </div>
