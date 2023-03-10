@@ -31,7 +31,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      {/* {isLoading ? (
+      {isLoading ? (
         <Loding />
       ) : (
         <QueryClientProvider client={queryClient}>
@@ -40,14 +40,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <ToastContainer />
           </Layout>
         </QueryClientProvider>
-      )} */}
-      <Loding />
-      <QueryClientProvider client={queryClient}>
-        <Layout>
-          <Component {...pageProps} />
-          <ToastContainer />
-        </Layout>
-      </QueryClientProvider>
+      )}
     </>
   );
 }

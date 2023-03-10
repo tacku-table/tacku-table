@@ -1,19 +1,21 @@
 import React from "react";
 import Lottie from "react-lottie-player";
-import lottieJson from "@/animation/loding2.json";
+import lottieJson from "@/animation/loding.json";
 
 const Loding = () => {
   return (
-    <div className="w-full h-full fixed top-0 left-0 z-50 bg-white/[0.7] backdrop-blur-md">
-      <div className="w-1/3 h-1/3 absolute top-[30%] left-[35%]">
+    <div className="w-full h-full fixed top-0 left-0 z-[150] bg-white">
+      <div className="sm:w-1/3 w-2/3 h-1/3 absolute sm:top-[28%] top-[20%] sm:left-[35%] left-[17%]">
         <Lottie
           loop
           animationData={lottieJson}
           play
-          speed={2}
-          className="w-full bg-transparenth-[200px] transform -translate-x-[7%]"
+          speed={1.5}
+          className="w-full bg-transparenth-[200px] transform -translate-x-[5%]"
         />
-        <p className="text-center text-brand100 font-bold text-4xl">Loding</p>
+        <p className="text-center text-brand100 font-bold text-3xl animate-bounce-fast">
+          Loading...
+        </p>
       </div>
     </div>
   );
