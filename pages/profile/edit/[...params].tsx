@@ -518,11 +518,11 @@ export default function ProfileEdit(props: ProfileEditProp) {
                 <Link href="/intro/termsOfService">
                   <span className="ml-1 text-blue-500">이용약관</span>
                 </Link>
-                <span>과&nbsp;</span>
+                <span>{`과 `}</span>
                 <Link href="/intro/privacy">
                   <span className="ml-1 text-blue-500">개인정보취급방침</span>
                 </Link>
-                <span>에&nbsp;동의합니다.</span>
+                <span>{`에 동의합니다.`}</span>
               </div>
             </div>
             <button
