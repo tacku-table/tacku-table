@@ -58,7 +58,7 @@ const ClassifiedRecipe: NextPage = () => {
                     "==",
                     `${router.query.category}`
                 ),
-                limit(8)
+                limit(6)
             )
         );
         const newData = querySnapshot.docs.map((doc: any) => ({
@@ -100,7 +100,7 @@ const ClassifiedRecipe: NextPage = () => {
                     `${router.query.category}`
                 ),
                 startAfter(lastDoc),
-                limit(8)
+                limit(6)
             )
         );
         updateState(querySnapshot);
@@ -168,7 +168,7 @@ const ClassifiedRecipe: NextPage = () => {
                 <div className="bg-mono30 rounded-sm w-full md:w-1/5 h-9 px-6 mr-7 mb-7 flex justify-center items-center text-sm text-brand100">
                     {router.query.category?.toString().replaceAll("&", "/")}
                 </div>
-                <div className="w-full md:w-4/5 grid mx-auto sm:grid-cols-2 lg:grid-cols-2 lg:mx-0 xl:grid-cols-3 xl:mx-0 2xl:grid-cols-4 2xl:mx-0 gap-x-7 gap-y-9 relative pb-24">
+                <div className="w-full md:w-4/5 grid mx-auto sm:grid-cols-2 lg:grid-cols-2 lg:mx-0 xl:grid-cols-3 xl:mx-0 2xl:mx-0 gap-x-7 gap-y-9 relative pb-24">
                     <RecipeList
                         text={text}
                         next={next}

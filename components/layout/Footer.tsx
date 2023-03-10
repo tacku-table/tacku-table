@@ -13,7 +13,9 @@ const Footer = () => {
             <ul className="border-b border-white pt-6 w-4/6 mx-auto">
                 <li className="mb-4">
                     <span className="mr-7 text-xs">고객센터</span>
-                    <span className="text-xl font-bold">takus@email.com</span>
+                    <span className="text-lg font-semibold">
+                        takus@email.com
+                    </span>
                 </li>
                 <li className="mb-4 text-xs">
                     copyright © 타쿠의 식당. All rights reserved.

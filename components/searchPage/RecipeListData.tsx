@@ -68,16 +68,14 @@ const RecipeListData = ({ item }: { item: TypeRecipe }) => {
                 )}
             </div>
             <div className="text-sm text-slate-500 mt-1 flex justify-between">
-                <div className="flex text-ellipsis overflow-hidden whitespace-nowrap">
-                    <p className="text-ellipsis overflow-hidden whitespace-nowrap text-blue100 ml-2">
+                <div className="flex">
+                    <p className="text-blue100 ml-2">
                         &#35;{item.animationTitle!.slice(0, 12)}
                         {item.animationTitle!.length > 12 && "..."}
                     </p>
-                    <p className="whitespace-nowrap ml-4">
-                        &#35;{item.cookingTime}
-                    </p>
+                    <p className="ml-4">&#35;{item.cookingTime}</p>
                 </div>
-                <p className="whitespace-nowrap flex justify-center items-center gap-x-1 ml-4 mr-1">
+                <p className="flex justify-center items-center gap-x-1 ml-4 mr-1">
                     <VscEye></VscEye>
                     {item.viewCount}
                 </p>

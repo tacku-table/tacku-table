@@ -36,6 +36,7 @@ const RegisterPage = () => {
         register,
         handleSubmit,
         getValues,
+        watch,
         formState: { errors },
     } = useForm<RegisterForm>({ mode: "onChange" });
     const onValid = (data: RegisterForm) => {
@@ -46,6 +47,7 @@ const RegisterPage = () => {
     };
     const [showPw, setShowPw] = useState(false);
     const [showPwConfirm, setShowPwConfirm] = useState(false);
+    const [isUsing, setIsUsing] = useState([]);
     const [nicknameCheck, setNicknameCheck] = useState(false);
     const [notNicknameDuplicateCheck, setNotNicknameDuplicateCheck] =
         useState(true);
@@ -90,20 +92,18 @@ const RegisterPage = () => {
     };
 
     // 이메일 중복확인
-    // const emailConfirm = async () => {
-    //     const items = query(
-    //         collection(dbService, "user"),
-    //         where("userEmail", "==", getValues("email"))
-    //     );
-    //     const querySnapshot = await getDocs(items);
-    //     // const newData = querySnapshot.docs;
-    //     const newData = querySnapshot.docs.map((doc) => ({
-    //         ...doc.data(),
-    //     }));
-    //     // @ts-ignore
-    //     setIsUsing(newData);
-    //     console.log(isUsing);
-    // };
+    const emailConfirm = async () => {
+        const items = query(
+            collection(dbService, "user"),
+            where("userEmail", "==", watch("email"))
+        );
+        const querySnapshot = await getDocs(items);
+        const newData = querySnapshot.docs.map((doc) => ({
+            ...doc.data(),
+        }));
+        // @ts-ignore
+        setIsUsing(newData);
+    };
 
     // 닉네임 중복체크
     const nicknameDuplicate = async () => {
@@ -135,8 +135,12 @@ const RegisterPage = () => {
         }
     };
 
+    useEffect(() => {
+        emailConfirm();
+    }, [watch("email")]);
+
     return (
-        <div className="w-4/5 mx-auto mb-20 text-mono100">
+        <div className="w-4/5 sm:w-3/5 md:w-2/5 xl:w-1/3 2xl:w-1/4 mx-auto mb-20 text-mono100">
             <form
                 onSubmit={handleSubmit(onValid, onInValid)}
                 className="flex flex-col relative"
@@ -158,14 +162,16 @@ const RegisterPage = () => {
                     placeholder="Example@example.com"
                     className="register-input"
                 ></input>
-                <p
-                    className={cls(
-                        "mt-1",
-                        errors.email ? "text-red100 text-xs" : "h-4"
-                    )}
-                >
-                    {errors.email?.message}
-                </p>
+                {errors.email ? (
+                    <p className="text-red100 text-xs mt-1">
+                        {errors.email?.message}
+                    </p>
+                ) : null}
+                {isUsing.length > 0 ? (
+                    <p className="text-red100 text-xs mt-1">
+                        사용중인 이메일입니다
+                    </p>
+                ) : null}
                 <label htmlFor="pw" className="font-semibold mt-4">
                     비밀번호
                 </label>
