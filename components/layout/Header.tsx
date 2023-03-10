@@ -156,7 +156,7 @@ const Header = () => {
             <button
               type="button"
               onClick={moveLoginPage}
-              className="sorted-btn w-[60%] hidden sm:block md:block lg:block sm:w-[87px] md:w-[87px] lg:w-[87px] mr-1"
+              className="sorted-btn w-[60%] hidden sm:block sm:w-[87px] mr-1"
             >
               로그인
             </button>
@@ -259,7 +259,6 @@ const Header = () => {
             <button
               onClick={() => moveMyPage(storageCurrentUser)}
               className="mr-6 hover:text-mono80 hidden sm:block md:block lg:block hover:transition hover:ease-out hover:duration-300"
-              //   className="hover:text-mono80 hover:transition hover:ease-out hover:duration-300"
             >
               마이페이지
             </button>
@@ -269,7 +268,7 @@ const Header = () => {
                 pathname: "/login",
                 query: { headerstatus: "headerstatus" }, // array라 문자화
               }}
-              className="pl-5 pt-[6px] sorted-btn w-[60%] hidden sm:block md:block lg:block sm:w-[87px] md:w-[87px] lg:w-[87px] mr-1"
+              className="text-center sm:pt-[7px] sorted-btn w-[60%] hidden sm:block sm:w-[87px] mr-1"
             >
               회원가입
             </Link>
