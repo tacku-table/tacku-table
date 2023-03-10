@@ -370,11 +370,13 @@ const RecipeEditPage = ({
               </div>
             )}
 
-            <div className="bg-mono40 sm:h-[210px] sm:mt-[42px] mt-[70px]">
+            <div className="bg-mono40 sm:h-[240px] h-[210px] sm:mt-[42px] mt-[70px]">
               <div className="mt-[12px] float-right sm:float-right flex items-stretch">
-                <div className="mt-2 text-mono80 text-[16px]">대표 이미지</div>
+                <div className="mt-2 text-mono80 sm:text-[16px]">
+                  대표 이미지
+                </div>
                 <label htmlFor="ex_file">
-                  <div className="rounded-[2px] border border-mono60 ml-[20px] text-[16px] text-center pt-1 hover:cursor-pointer w-[100px] h-[35px] bg-mono40 text-mono100">
+                  <div className="p-1 mr-2 rounded-[2px] border border-mono60 ml-[20px] sm:text-[16px] text-center pt-1 hover:cursor-pointer sm:w-[100px] sm:h-[35px] bg-mono40 text-mono100">
                     이미지 선택
                   </div>
                 </label>
@@ -390,11 +392,11 @@ const RecipeEditPage = ({
                   accept="images/*"
                 />
               </div>
-              <div className="ml-[16px] pt-[20px] text-mono100 text-[16px]">
+              <div className="text-[16px] ml-[16px] pt-[20px] text-mono100 ">
                 등록된 대표 이미지
               </div>
               <Image
-                className="ml-[16px] w-[82px] h-[49px] pt-[16px]"
+                className="ml-[16px] w-[82px] h-[49px] sm:w-[120px] sm:h-[80px] sm:pt-[16px]"
                 loader={() => originImgThumbNail}
                 src={originImgThumbNail}
                 width={100}
@@ -444,6 +446,9 @@ const RecipeEditPage = ({
               등록
             </button>
             <button
+              onClick={() => {
+                location.href = "/main";
+              }}
               type="button"
               className="ml-[12px] w-[80px] sm:w-[180px] sm:h-[48px] border border-mono60"
             >

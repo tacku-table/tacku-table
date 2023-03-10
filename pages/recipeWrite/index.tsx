@@ -363,13 +363,13 @@ const RecipeWritePage = () => {
                 </div>
               </div>
             )}
-            <div className="bg-mono40 h-[280px] sm:h-[210px] sm:mt-[42px] mt-[70px] ">
-              <div className="mt-[12px] float-right sm:float-right flex items-stretch">
-                <div className="sm:mt-2 mt-1 text-mono80 text-[16px]">
+            <div className="bg-mono40 h-[180px] sm:h-[210px] sm:mt-[42px] mt-[70px] ">
+              <div className="sm:mt-[12px] float-right sm:float-right flex items-stretch">
+                <div className="text-[14px] sm:mt-2 mt-1 text-mono80 sm:text-[16px]">
                   대표 이미지 별도 등록
                 </div>
                 <label htmlFor="ex_file">
-                  <div className="rounded-[2px] border border-mono60 ml-[20px] text-[16px] text-center pt-1 hover:cursor-pointer w-[100px] h-[35px] bg-mono40 text-mono100">
+                  <div className="ml-1 text-[12px] rounded-[2px] border border-mono60 sm:ml-[20px] sm:text-[16px] text-center pt-1 hover:cursor-pointer sm:w-[100px] sm:h-[35px] bg-mono40 text-mono100">
                     이미지 선택
                   </div>
                 </label>
@@ -385,12 +385,12 @@ const RecipeWritePage = () => {
                   accept="images/*"
                 />
               </div>
-              <div className="ml-[16px] pt-[20px] text-mono100 text-[16px] ">
+              <div className="ml-2 text-[14px] pt-2 sm:ml-[16px] sm:pt-[20px] text-mono100 sm:text-[16px] ">
                 등록된 대표 이미지
               </div>
               {imagePreview ? (
                 <Image
-                  className="ml-[16px] w-[82px] h-[49px]"
+                  className="ml-2 sm:ml-[16px] sm:w-[82px] sm:h-[49px]"
                   src={imagePreview}
                   width={100}
                   height={100}
@@ -398,18 +398,18 @@ const RecipeWritePage = () => {
                 />
               ) : (
                 <Image
-                  className="ml-[16px] w-[82px] h-[49px] pt-[16px]"
+                  className="ml-2 w-[30%] h-[30%] sm:ml-[16px] sm:w-[82px] sm:h-[49px] sm:pt-[16px]"
                   src={baseImg}
                   width={100}
                   height={100}
                   alt="대표 이미지가 없습니다."
                 />
               )}
-              <div className="ml-[16px] pt-[28px] text-[16px] text-mono100">
+              <div className="ml-2 mt-2 sm:ml-[16px] sm:pt-[28px] sm:text-[16px] text-mono100">
                 공개 설정
               </div>
 
-              <div className="ml-[16px] flex items-stretch mt-[16px]">
+              <div className="ml-2 sm:ml-[16px] flex items-stretch sm:mt-[16px]">
                 <div className="flex items-stretch">
                   <input
                     className="accent-brand100 "
@@ -448,6 +448,9 @@ const RecipeWritePage = () => {
               등록
             </button>
             <button
+              onClick={() => {
+                location.href = "/main";
+              }}
               type="button"
               className="ml-[12px] w-[80px] sm:w-[180px] sm:h-[48px] border border-mono60"
             >
