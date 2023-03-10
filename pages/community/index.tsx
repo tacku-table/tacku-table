@@ -8,7 +8,8 @@ const Community = () => {
   const [storageCurrentUser, setStorageCurrentUser] = useState({});
 
   useEffect(() => {
-    const currentUser = JSON.parse(sessionStorage.getItem("User")) || "";
+    const currentUser =
+      JSON.parse(sessionStorage.getItem("User") as string) || "";
     if (currentUser) {
       setStorageCurrentUser(currentUser);
     } else {
