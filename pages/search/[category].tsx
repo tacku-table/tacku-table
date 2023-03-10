@@ -147,6 +147,7 @@ const ClassifiedRecipe: NextPage = () => {
         const storeSearchText = sessionStorage.getItem("searchData");
         result ? setIsBest(result) : setIsBest("createdAt");
         storeSearchText && setText(storeSearchText);
+        !storeSearchText && setText("");
         first();
         getList();
     }, [router.query.category, isBest]);

@@ -181,11 +181,11 @@ const SearchData: NextPage = () => {
         const storeFilteredTime = JSON.parse(
             sessionStorage.getItem("filteredTimeData")!
         );
-
         result && setIsBest(result);
         storeSearchText && setText(storeSearchText);
         storeFilteredFood && setFilteredFood(storeFilteredFood);
         storeFilteredTime && setFilteredTime(storeFilteredTime);
+        !storeSearchText && setText("");
         first();
         getList();
     }, [isBest]);
