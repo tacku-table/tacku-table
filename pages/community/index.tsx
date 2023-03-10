@@ -27,10 +27,10 @@ const Community = () => {
         <CommunityTabs />
 
         {storageCurrentUser !== "logout" && (
-          <div className="flex w-full justify-end">
+          <div className="flex w-full justify-end ">
             <Link
               href="/community/new"
-              className="flex sm:[100px] max-w-[100px] max-h-[35px] sm:h-[35px] w-full text-white bg-brand100 px-4 mt-4 mb-10 items-center justify-center rounded-sm"
+              className="flex sm:[100px] max-w-[100px] max-h-[35px] sm:h-[35px] w-full text-white bg-brand100 px-4 mt-4 mb-10 items-center justify-center rounded-sm cursor-pointer focus:outline-none ring-offset-2 hover:ring-2 ring-brand100"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
