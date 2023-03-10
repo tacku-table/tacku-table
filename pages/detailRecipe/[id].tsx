@@ -132,8 +132,8 @@ export default function DetailReciptPage(props: propsType) {
         />
         <meta name="twitter:image" content={props.targetWholeData?.thumbnail} />
       </Head>
-      <div className="xl:w-full sm:w-fit h-full flex flex-col items-center sm:mt-0 mt-20 bg-[#FFF6EA] mx-auto">
-        <div className=" sm:w-4/5 w-full sm:my-4 my-0 bg-[#fffdfa] sm:pb-[131px] pb-10 sm:pt-[52px] pt-5 sm:px-[200px] px-3">
+      <div className="w-full h-full flex flex-col items-center sm:mt-0 mt-20 bg-[#FFF6EA] mx-auto">
+        <div className=" sm:w-4/5 w-full sm:my-4 my-0 bg-[#fffdfa] sm:pb-[131px] pb-10 sm:pt-[52px] pt-5 sm:px-[15%] px-3">
           <div className="text-mono100 flex items-stretch float-right mb-2 ">
             <VscEye className="text-[20px] mr-2"></VscEye> {views}
           </div>
