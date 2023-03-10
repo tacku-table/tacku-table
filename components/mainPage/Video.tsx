@@ -10,7 +10,7 @@ const Video = () => {
     }, [hasWindow]);
 
     return (
-        <div className="relative pt-[56.25%] xl:pt-[31.65%] w-full xl:w-4/6">
+        <div className="relative pt-[56.25%] xl:pt-[33%] w-full xl:w-3/4">
             {hasWindow && (
                 <ReactPlayer
                     className="absolute top-0 left-0"

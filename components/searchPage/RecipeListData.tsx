@@ -70,8 +70,8 @@ const RecipeListData = ({ item }: { item: TypeRecipe }) => {
             <div className="text-sm text-slate-500 mt-1 flex justify-between">
                 <div className="flex">
                     <p className="text-blue100 ml-2">
-                        &#35;{item.animationTitle!.slice(0, 14)}
-                        {item.animationTitle!.length > 14 && "..."}
+                        &#35;{item.animationTitle!.slice(0, 12)}
+                        {item.animationTitle!.length > 12 && "..."}
                     </p>
                     <p className="ml-4">&#35;{item.cookingTime}</p>
                 </div>

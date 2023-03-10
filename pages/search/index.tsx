@@ -42,7 +42,7 @@ const SearchData: NextPage = () => {
         sessionStorage.setItem("userWatching", "createdAt");
         setIsBest("createdAt");
     };
-    // 전체목록(8개씩)
+    // 전체목록(6개씩)
     const first = async () => {
         const querySnapshot = await getDocs(
             query(
@@ -51,7 +51,7 @@ const SearchData: NextPage = () => {
                     isBest === "viewCount" ? "viewCount" : "createdAt",
                     "desc"
                 ),
-                limit(8)
+                limit(6)
             )
         );
         const newData = querySnapshot.docs.map((doc: any) => ({
@@ -81,7 +81,7 @@ const SearchData: NextPage = () => {
                     "desc"
                 ),
                 startAfter(lastDoc),
-                limit(8)
+                limit(6)
             )
         );
         updateState(querySnapshot);
@@ -227,7 +227,7 @@ const SearchData: NextPage = () => {
                             선택초기화<GrRotateLeft></GrRotateLeft>
                         </button>
                     </div>
-                    <div className="grid mx-auto sm:mx-0 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-x-7 gap-y-9 relative pb-24">
+                    <div className="grid mx-auto sm:mx-0 sm:grid-cols-2 lg:grid-cols-3 gap-x-7 gap-y-9 relative pb-24">
                         <RecipeList
                             text={text}
                             next={next}
