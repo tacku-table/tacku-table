@@ -16,7 +16,7 @@ const MyCommunityTab = ({ userInfo }: MyTabProp) => {
   }, [communityPost]);
 
   return (
-    <Tab.Panel className="pb-6 w-full">
+    <Tab.Panel className="pb-6 w-full h-[80%]">
       {communityList.length === 0 && <EmptyPost />}
       {communityList?.map((p) => (
         <div key={p.id} className="pt-6 px-1 sm:p-6">

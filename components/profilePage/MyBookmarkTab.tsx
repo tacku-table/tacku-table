@@ -55,12 +55,12 @@ const MyBookmarkTab = ({
   };
 
   return (
-    <Tab.Panel className="pb-6 w-full">
+    <Tab.Panel className="pb-6 w-full h-[80%]">
       {bookmarkPost?.length === 0 && <EmptyPost />}
       {bookmarkPost?.map((p) => (
         <div key={p.postId} className="py-6 px-1 sm:p-6">
           <hr className="border-mono50 mx-8 mb-6 border-[1px]" />
-          <div className="sm:space-x-[20px] space-x-4 items-center flex ">
+          <div className="sm:space-x-[20px] space-x-4 items-center flex">
             {p.thumbnail && (
               <div
                 onClick={() => {

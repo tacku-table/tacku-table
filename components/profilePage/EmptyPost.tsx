@@ -3,7 +3,7 @@ import emptyPostImg from "../../public/images/logo2-2.png";
 
 const EmptyPost = () => {
   return (
-    <div className="flex flex-col my-auto items-center">
+    <div className="flex flex-col my-auto items-center h">
       <div className="text-center m-auto pt-[183px] pb-[184px]">
         <Image
           className="m-auto sm:w-[240px] sm:h-[181px] object-cover object-center w-2/1"
