@@ -372,7 +372,7 @@ export default function ProfileEdit(props: ProfileEditProp) {
             <input
               disabled
               placeholder={`${userInfo?.userEmail}`}
-              className="w-[calc(100%_-_130px)]  sm:w-[300px] pl-3 border-mono60 border-[1px] h-10"
+              className="w-[calc(100%_-_130px)] sm:w-[300px] pl-3 border-mono60 border-[1px] h-10"
             />
           </div>
           {userInfo?.userPw !== "social" && (
@@ -395,11 +395,11 @@ export default function ProfileEdit(props: ProfileEditProp) {
                       type="password"
                       placeholder="변경할 비밀번호를 입력해주세요."
                       onChange={handleChangePassword}
-                      className="w-[calc(100%_-_130px)] sm:w-[300px] pl-3 border-mono60 border-[1px] h-10 focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
+                      className="w-[calc(100%_-_130px)] sm:w-[300px] pl-3 border-mono60 border-[1px] h-10 focus:outline-none focus:border-0 focus:ring-2 ring-brand100 placeholder:text-sm sm:placeholder:text-base"
                     />
                   </div>
                   <div className="grid-cols-2 items-end">
-                    <div className="h-[16px] ml-[176px] mt-1">
+                    <div className="h-[16px] ml-[130px] mt-1">
                       {(changeUserPw?.length as number) > 0 && (
                         <span
                           className={cls(
@@ -407,7 +407,7 @@ export default function ProfileEdit(props: ProfileEditProp) {
                             `${
                               isPassword
                                 ? "text-xs text-blue100"
-                                : "text-brand100"
+                                : "text-orange-500"
                             }`
                           )}
                         >
@@ -428,11 +428,11 @@ export default function ProfileEdit(props: ProfileEditProp) {
                       type="password"
                       placeholder="확인을 위해 비밀번호를 재입력해주세요."
                       onChange={handleChangePasswordConfirm}
-                      className="w-[calc(100%_-_130px)] sm:w-[300px] pl-3 border-mono60 border-[1px] h-10  focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
+                      className="w-[calc(100%_-_130px)] sm:w-[300px] pl-3 border-mono60 border-[1px] h-10  focus:outline-none focus:border-0 focus:ring-2 ring-brand100 placeholder:text-sm sm:placeholder:text-base"
                     />
                   </div>
                   <div className="grid-cols-2 items-end">
-                    <div className="h-[16px] ml-[176px] mt-1">
+                    <div className="h-[16px] ml-[130px] mt-1">
                       {confirmChangeUserPw?.length > 0 && (
                         <span
                           className={cls(
@@ -478,11 +478,12 @@ export default function ProfileEdit(props: ProfileEditProp) {
             </div>
 
             <div className="grid-cols-2 items-end">
-              <div className="sm:h-[16px] sm:ml-[176px] mt-1">
+              {/* <div className="h-[16px] sm:ml-[130px] mt-1"> */}
+              <div className="h-[16px] ml-[130px] mt-1">
                 {(changeUserNickname?.length as number) > 0 && (
                   <span
                     className={cls(
-                      "sm:text-xs",
+                      "text-xs",
                       `${isNickname ? "text-blue-600" : "text-orange-500"}`
                     )}
                   >
@@ -502,7 +503,7 @@ export default function ProfileEdit(props: ProfileEditProp) {
           <div>
             <div className="flex justify-start items-center h-[40px]">
               <span className="text-base w-[130px] ">회원탈퇴</span>
-              <div className="w-[calc(100%_-_130px)] sm:w-[300px]">
+              <div className="w-[calc(100%_-_130px)] sm:w-[300px] sm:text-base text-sm">
                 <label htmlFor="terms">
                   <input
                     id="terms"
