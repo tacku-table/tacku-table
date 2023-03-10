@@ -9,6 +9,7 @@ import EmptyPost from "./EmptyPost";
 import { getMyBookmark } from "../../api/firedb";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { User } from "firebase/auth";
+import { Success, Warn, Error } from "../toastify/Alert";
 
 const MyBookmarkTab = ({
   userInfo,
@@ -34,19 +35,6 @@ const MyBookmarkTab = ({
     getMyBookmark(userInfo?.userId as string)
   );
 
-  const toastAlert = (alertText: any) => {
-    toast(`${alertText}`, {
-      position: "top-right",
-      autoClose: 1300,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  };
-
   const handleDeleteBookmark = async (p: any) => {
     const userConfirm = window.confirm("즐겨찾기 레시피를 삭제하시겠습니까?");
     if (userConfirm) {
@@ -59,20 +47,20 @@ const MyBookmarkTab = ({
           )
         );
         getMyBookmark(userInfo?.userId as string);
-        toastAlert("삭제되었습니다");
+        Success("삭제되었습니다");
       } catch (error: any) {
-        toast.error("삭제에 실패하였습니다. 다시 시도해주세요.", error);
+        Error("삭제에 실패하였습니다. 다시 시도해주세요.");
       }
     }
   };
 
   return (
-    <Tab.Panel className="pb-6">
+    <Tab.Panel className="pb-6 w-full">
       {bookmarkPost?.length === 0 && <EmptyPost />}
       {bookmarkPost?.map((p) => (
-        <div key={p.postId} className="p-6">
+        <div key={p.postId} className="py-6 px-1 sm:p-6">
           <hr className="border-mono50 mx-8 mb-6 border-[1px]" />
-          <div className="pl-8 space-x-[20px] items-center flex">
+          <div className="sm:space-x-[20px] space-x-4 items-center flex ">
             {p.thumbnail && (
               <div
                 onClick={() => {
@@ -91,7 +79,7 @@ const MyBookmarkTab = ({
               </div>
             )}
             <div className="flex flex-col">
-              <div className="flex space-x-1">
+              <div className="flex space-x-1 w-full text-xs sm:text-base text-mono100">
                 <span>#{p.animationTitle}</span>
                 <span>#{p.cookingTime}</span>
               </div>
@@ -101,11 +89,13 @@ const MyBookmarkTab = ({
                   location.href = `/detailRecipe/${p.postId}`;
                 }}
               >
-                <span className="text-[24px]">{p.foodTitle}</span>
+                <span className="text-lg sm:text-[24px] font-semibold">
+                  {p.foodTitle}
+                </span>
               </div>
             </div>
           </div>
-          <div className="flex mt-9 ml-8 space-x-3 relative items-center">
+          <div className="flex mt-6 ml-5 sm:mt-9 sm:ml-8 space-x-3 relative items-center">
             <Post writerUid={p.writerUid} />
             {storageCurrentUser?.uid === userInfo?.userId && (
               <svg

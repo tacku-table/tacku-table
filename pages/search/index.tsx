@@ -18,6 +18,7 @@ import SideCookingTime from "@/components/searchPage/SideCookingTime";
 import TopButton from "@/components/button/TopButton";
 import { GrRotateLeft } from "react-icons/gr";
 import SearchTextBar from "@/components/searchPage/SearchTextBar";
+import Seo from "../../components/layout/Seo";
 
 const SearchData: NextPage = () => {
     const router = useRouter();
@@ -41,7 +42,7 @@ const SearchData: NextPage = () => {
         sessionStorage.setItem("userWatching", "createdAt");
         setIsBest("createdAt");
     };
-    // 전체목록(8개씩)
+    // 전체목록(6개씩)
     const first = async () => {
         const querySnapshot = await getDocs(
             query(
@@ -50,7 +51,7 @@ const SearchData: NextPage = () => {
                     isBest === "viewCount" ? "viewCount" : "createdAt",
                     "desc"
                 ),
-                limit(8)
+                limit(6)
             )
         );
         const newData = querySnapshot.docs.map((doc: any) => ({
@@ -80,7 +81,7 @@ const SearchData: NextPage = () => {
                     "desc"
                 ),
                 startAfter(lastDoc),
-                limit(8)
+                limit(6)
             )
         );
         updateState(querySnapshot);
@@ -100,7 +101,20 @@ const SearchData: NextPage = () => {
     };
     // 검색
     const fuse = new Fuse(currentItems, {
-        keys: ["animationTitle", "foodTitle", "cookingTime"],
+        keys: [
+            {
+                name: "foodTitle",
+                weight: 0.5,
+            },
+            {
+                name: "animationTitle",
+                weight: 0.3,
+            },
+            {
+                name: "cookingTime",
+                weight: 0.2,
+            },
+        ],
         includeScore: true,
         threshold: 0.5, //일치정도(0~1.0)
         minMatchCharLength: text.length,
@@ -167,18 +181,19 @@ const SearchData: NextPage = () => {
         const storeFilteredTime = JSON.parse(
             sessionStorage.getItem("filteredTimeData")!
         );
-
         result && setIsBest(result);
         storeSearchText && setText(storeSearchText);
         storeFilteredFood && setFilteredFood(storeFilteredFood);
         storeFilteredTime && setFilteredTime(storeFilteredTime);
+        !storeSearchText && setText("");
         first();
         getList();
     }, [isBest]);
 
     return (
         <>
-            <div className="w-full mt-20 flex flex-col justify-center items-center">
+            <div className="w-full flex flex-col justify-center items-center">
+                <Seo title="타쿠의 식탁" />
                 <TopButton />
                 <SearchTextBar setText={setText} />
                 <ChangeSortedBtn
@@ -191,26 +206,28 @@ const SearchData: NextPage = () => {
                     filteredFood={filteredFood}
                     filteredTime={filteredTime}
                 />
-                <div className="w-4/5 border-b border-mono70 mb-[30px]"></div>
+                <div className="w-4/5 border-b border-mono70 mb-8"></div>
                 <div className="w-4/5 flex flex-col items-center md:items-start md:flex-row md:justify-between mb-10">
-                    <div className="w-full flex justify-center gap-x-4 mx-auto mb-9 md:justify-start md:flex-col md:ml-1 md:mr-3">
-                        <SideFoodCate
-                            onCheckedFood={onCheckedFood}
-                            filteredFood={filteredFood}
-                        />
-                        <SideCookingTime
-                            onCheckedTime={onCheckedTime}
-                            filteredTime={filteredTime}
-                        />
+                    <div className="w-full md:w-[150px] flex flex-col justify-center items-center gap-x-4 mx-auto mb-9 md:justify-start md:ml-1 md:mr-3">
+                        <div className="w-full flex justify-between sm:justify-center sm:gap-x-10 md:flex-col">
+                            <SideFoodCate
+                                onCheckedFood={onCheckedFood}
+                                filteredFood={filteredFood}
+                            />
+                            <SideCookingTime
+                                onCheckedTime={onCheckedTime}
+                                filteredTime={filteredTime}
+                            />
+                        </div>
                         <button
                             onClick={clearChecked}
                             type="button"
-                            className="sorted-btn md:mt-7"
+                            className="sorted-btn mt-4 md:mt-7 md:self-start"
                         >
                             선택초기화<GrRotateLeft></GrRotateLeft>
                         </button>
                     </div>
-                    <div className="grid mx-auto sm:mx-0 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-x-7 gap-y-9 relative pb-24">
+                    <div className="w-full grid mx-auto sm:mx-0 sm:grid-cols-2 lg:grid-cols-3 gap-x-7 gap-y-9 relative pb-24">
                         <RecipeList
                             text={text}
                             next={next}

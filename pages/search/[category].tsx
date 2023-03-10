@@ -15,6 +15,7 @@ import Fuse from "fuse.js";
 import RecipeList from "@/components/searchPage/RecipeList";
 import ChangeSortedBtn from "@/components/searchPage/ChangeSortedBtn";
 import SearchTextBar from "@/components/searchPage/SearchTextBar";
+import Seo from "../../components/layout/Seo";
 
 // 카테고리별 불러오기
 const ClassifiedRecipe: NextPage = () => {
@@ -57,7 +58,7 @@ const ClassifiedRecipe: NextPage = () => {
                     "==",
                     `${router.query.category}`
                 ),
-                limit(8)
+                limit(6)
             )
         );
         const newData = querySnapshot.docs.map((doc: any) => ({
@@ -99,7 +100,7 @@ const ClassifiedRecipe: NextPage = () => {
                     `${router.query.category}`
                 ),
                 startAfter(lastDoc),
-                limit(8)
+                limit(6)
             )
         );
         updateState(querySnapshot);
@@ -146,12 +147,14 @@ const ClassifiedRecipe: NextPage = () => {
         const storeSearchText = sessionStorage.getItem("searchData");
         result ? setIsBest(result) : setIsBest("createdAt");
         storeSearchText && setText(storeSearchText);
+        !storeSearchText && setText("");
         first();
         getList();
     }, [router.query.category, isBest]);
 
     return (
-        <div className="w-full mt-20 flex flex-col justify-center items-center">
+        <div className="w-full flex flex-col justify-center items-center">
+            <Seo title="타쿠의 식탁" />
             <SearchTextBar setText={setText} />
             <ChangeSortedBtn
                 text={text}
@@ -161,12 +164,12 @@ const ClassifiedRecipe: NextPage = () => {
                 activeBestBtn={activeBestBtn}
                 inactiveBestBtn={inactiveBestBtn}
             />
-            <div className="w-4/5 border-b border-mono50 mb-[30px]"></div>
+            <div className="w-4/5 border-b border-mono50 mb-8"></div>
             <div className="w-4/5 md:flex md:justify-between mb-10">
                 <div className="bg-mono30 rounded-sm w-full md:w-1/5 h-9 px-6 mr-7 mb-7 flex justify-center items-center text-sm text-brand100">
                     {router.query.category?.toString().replaceAll("&", "/")}
                 </div>
-                <div className="w-full md:w-4/5 grid mx-auto sm:grid-cols-2 lg:grid-cols-2 lg:mx-0 xl:grid-cols-3 xl:mx-0 2xl:grid-cols-4 2xl:mx-0 gap-x-7 gap-y-9 relative pb-24">
+                <div className="w-full md:w-4/5 grid mx-auto sm:grid-cols-2 lg:grid-cols-2 lg:mx-0 xl:grid-cols-3 xl:mx-0 2xl:mx-0 gap-x-7 gap-y-9 relative pb-24">
                     <RecipeList
                         text={text}
                         next={next}
