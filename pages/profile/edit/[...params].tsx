@@ -205,7 +205,7 @@ export default function ProfileEdit(props: ProfileEditProp) {
 
     if (!nickRegex.test(event.target.value)) {
       setNicknameMessage(
-        "2자 이상 8자 이하로 입력해주세요.(영어 또는 숫자 또는 한글만 가능)"
+        "8자 이하로 입력해주세요.(영어 또는 숫자 또는 한글만 가능)"
       );
       setIsNickname(false);
     } else {
@@ -213,6 +213,7 @@ export default function ProfileEdit(props: ProfileEditProp) {
         setNicknameMessage("사용 가능한 닉네임입니다.");
         setSaveNickname(nickname);
         return setIsNickname(true);
+        // return setNotNicknameDuplicateCheck(false);
       } else {
         if (nickname.length != 0) {
           setNicknameMessage("이미 다른 유저가 사용 중입니다.");
@@ -478,13 +479,12 @@ export default function ProfileEdit(props: ProfileEditProp) {
               />
             </div>
 
-            <div className="grid-cols-2 items-end">
-              {/* <div className="h-[16px] sm:ml-[130px] mt-1"> */}
+            <div className="grid-cols-2 items-end relative">
               <div className="h-[16px] ml-[130px] mt-1">
                 {(changeUserNickname?.length as number) > 0 && (
                   <span
                     className={cls(
-                      "text-xs",
+                      "text-xs absolute",
                       `${isNickname ? "text-blue-600" : "text-orange-500"}`
                     )}
                   >
