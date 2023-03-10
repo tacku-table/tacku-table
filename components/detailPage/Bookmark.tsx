@@ -20,7 +20,6 @@ interface bookmarkType {
 const Bookmark = (props: bookmarkType) => {
   //북마크
   const [bookMark, setBookMark] = useState<UserType[] | any[]>([]);
-  console.log(bookMark);
   const [countBookMark, setCountBookMark] = useState<targetWholeDataType | any>(
     props.targetWholeData
   );
