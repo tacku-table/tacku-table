@@ -1,5 +1,20 @@
 // global.d.ts
 declare global {
+    interface TypeRecipe {
+        id?: string;
+        uid?: string;
+        animationTitle?: string;
+        foodTitle?: string;
+        ingredient?: string;
+        cookingTime?: string;
+        foodCategory?: string;
+        displayStatus?: string;
+        thumbnail?: string;
+        createdAt?: string | number;
+        content?: string;
+        children?: JSX.Element | JSX.Element[];
+        viewCount?: number;
+    }
     interface TBookmark {
         postId?: string;
         writerUid?: string;
@@ -43,21 +58,6 @@ declare global {
     }
     interface MyTabProp {
         userInfo: TUserInfo | undefined;
-    }
-    interface TypeRecipe {
-        id?: string;
-        uid?: string;
-        animationTitle?: string;
-        foodTitle?: string;
-        ingredient?: string;
-        cookingTime?: string;
-        foodCategory?: string;
-        displayStatus?: string;
-        thumbnail?: string;
-        createdAt?: string | number;
-        content?: string;
-        children?: JSX.Element | JSX.Element[];
-        viewCount?: number;
     }
     interface TypeShowPw {
         showPw: boolean;
