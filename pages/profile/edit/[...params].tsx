@@ -266,7 +266,9 @@ export default function ProfileEdit(props: ProfileEditProp) {
                 await updatePassword(
                     authService?.currentUser as unknown as User,
                     changeUserPw as unknown as string
-                ).catch(() => Error("비밀번호 변경에 실패하였습니다."));
+                )
+                    .then(() => Success("비밀번호 수정이 완료되었습니다."))
+                    .catch(() => Error("비밀번호 변경에 실패하였습니다."));
             })
             .catch(() => Warn("재로그인이 필요합니다."));
     };
