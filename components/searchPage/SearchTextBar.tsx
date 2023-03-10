@@ -23,7 +23,7 @@ const SearchTextBar = ({ setText }: TypeSearchProps) => {
             <input
                 {...register("searchText")}
                 type="text"
-                className="w-3/5 sm:w-5/12 md:w-4/12 lg:w-3/12 xl:w-1/5 h-12 text-sm font-medium pl-7 focus:outline-none rounded-sm rounded-r-none border border-slate-300"
+                className="w-3/5 sm:w-5/12 md:w-4/12 lg:w-3/12 xl:w-1/4 h-12 text-sm font-medium pl-7 focus:outline-none rounded-sm rounded-r-none border border-slate-300"
                 placeholder="타쿠들의 멋진 레시피들이 기다리고 있어요!"
             ></input>
             <button

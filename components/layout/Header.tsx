@@ -17,7 +17,6 @@ export const clearStorage = () => {
     sessionStorage.removeItem("filteredTimeData");
     sessionStorage.removeItem("searchData");
     sessionStorage.removeItem("userWatching");
-    console.log("clear");
 };
 
 const Header = () => {
