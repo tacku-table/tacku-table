@@ -19,8 +19,8 @@ const Community = () => {
   return (
     <>
       <Seo title="커뮤니티" />
-      <div className="flex max-w-[860px] w-full m-auto flex-col items-center font-medium">
-        <div className="mt-4">
+      <div className="mb-10 flex max-w-[860px] w-full m-auto flex-col items-center font-medium">
+        <div className="mt-4 w-full ">
           <SliderScreen />
         </div>
         <CommunityTabs />

@@ -150,7 +150,7 @@ const Login = ({ setStatus, status }: LoginProps) => {
       });
   };
   return (
-    <div className="max-w-[420px] m-auto mt-10">
+    <div className="max-w-[420px] h-full m-auto mt-10">
       <h3 className="text-4xl font-bold text-center text-mono100">로그인</h3>
       <div className="mt-[40px] p-4">
         <div className="text-center">
@@ -229,11 +229,11 @@ const Login = ({ setStatus, status }: LoginProps) => {
           <div className="my-5 flex justify-around">
             <button onClick={gooleLogin}>
               <AiFillGoogleSquare
-                style={{ fontSize: "55px", color: "#F16C34" }}
+                style={{ fontSize: "55px", color: "#f39e31" }}
               />
             </button>
             <button onClick={fackbookLogin}>
-              <AiFillFacebook style={{ fontSize: "55px", color: "#F16C34" }} />
+              <AiFillFacebook style={{ fontSize: "55px", color: "#f39e31" }} />
             </button>
           </div>
         </>

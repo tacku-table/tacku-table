@@ -10,15 +10,14 @@ const LoginPage = () => {
   const [status, setStatus] = useState<string>("login");
   const { headerstatus } = router.query;
   return (
-    <div>
+    <div className="h-screen flex justify-center items-center">
       <Seo title="로그인" />
-
       {headerstatus ? (
         <div className="grid items-center mx-auto mt-14">
           <Register />
         </div>
       ) : (
-        <div className="grid items-center mx-auto mt-14">
+        <div className="grid items-center mx-auto mt-14 w-full max-w-[420px]">
           {status === "login" && (
             <Login setStatus={setStatus} status={status} />
           )}

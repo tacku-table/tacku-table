@@ -236,11 +236,11 @@ const RecipeEditPage = ({
   };
 
   return (
-    <div className="mt-10 xl:w-full sm:w-fit h-full flex flex-col items-center pt-2 mx-auto sm:p-10">
+    <div className="mt-10 w-full h-full max-w-[1180px] flex flex-col items-center pt-2 mx-auto sm:p-10">
       <Seo title="레시피 수정" />
-
       <ToastContainer position="top-right" autoClose={1000} />
-      <div className="mt-[75px] rounded-md p-7 container max-w-[1180px] mx-auto flex justify-center flex-col">
+      <div className="mt-[75px] rounded-md p-7 container max-w-4/5 mx-auto flex justify-center flex-col">
+        {/* <div className="mt-[75px] rounded-md p-7 container max-w-[1180px] mx-auto flex justify-center flex-col"> */}
         <h3 className="sm:text-4xl text-2xl font-bold">레시피 수정하기</h3>
         <hr className="mt-[24px] h-px border-[1.5px] border-brand100"></hr>
 

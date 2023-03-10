@@ -18,6 +18,7 @@ import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Seo from "../../components/layout/Seo";
+import { VscEye } from "react-icons/vsc";
 
 interface propsType extends AppProps {
   targetWholeData: targetWholeDataType;
@@ -131,13 +132,16 @@ export default function DetailReciptPage(props: propsType) {
         />
         <meta name="twitter:image" content={props.targetWholeData?.thumbnail} />
       </Head>
-      <div className="xl:w-full sm:w-fit h-full flex flex-col items-center sm:mt-0 mt-20 bg-mono40 mx-auto">
-        <div className="sm:w-[1180px] w-full sm:my-4 my-0 bg-white sm:pb-[131px] pb-10 sm:pt-[52px] pt-5 sm:px-[200px] px-3">
+      <div className="xl:w-full sm:w-fit h-full flex flex-col items-center sm:mt-0 mt-20 bg-[#FFF6EA] mx-auto">
+        <div className=" sm:w-4/5 w-full sm:my-4 my-0 bg-[#fffdfa] sm:pb-[131px] pb-10 sm:pt-[52px] pt-5 sm:px-[200px] px-3">
+          <div className="text-mono100 flex items-stretch float-right mb-2 ">
+            <VscEye className="text-[20px] mr-2"></VscEye> {views}
+          </div>
           <div className="bg-slate-100 w-full sm:h-[440px] h-[250px] overflow-hidden relative">
             <Image
               src={`${props.targetWholeData?.thumbnail}`}
               alt="thumbnail"
-              className="image-detail"
+              className="image-detail rounded-md"
               fill
               unoptimized
               style={{
@@ -147,12 +151,15 @@ export default function DetailReciptPage(props: propsType) {
             />
           </div>
           <div className="flex-col my-5">
-            <div className="flex justify-between my-5">
-              <p className="text-2xl font-semibold">
-                {props.targetWholeData?.foodTitle}
-              </p>
-              <div className="flex items-center">
-                <div className="sm:mr-3 mr-2">
+            <div className="sm:flex justify-between my-5 items-center">
+              <div className="sm:bg-yellow-200 sm:h-[23px] rounded-sm px-4">
+                <p className=" sm:relative sm:-top-3 text-2xl font-semibold text-mono100">
+                  {props.targetWholeData?.foodTitle}
+                </p>
+              </div>
+
+              <div className="flex justify-end items-center mt-2 sm:mt-0">
+                <div className="sm:mr-3 ">
                   <SocialShared targetWholeData={props.targetWholeData} />
                 </div>
                 {storageCurrentUser.user === "guest" ? null : (
@@ -249,13 +256,13 @@ export default function DetailReciptPage(props: propsType) {
             </div>
           </div>
           <div>
-            <p className="text-[24px] border-b-2 border-border-500 pb-3 mt-12 font-semibold">
+            <p className="text-mono100 text-[24px] border-b-2 border-border-500 pb-3 mt-12 font-semibold">
               재료
             </p>
             <p className="mt-8"> {props.targetWholeData?.ingredient}</p>
           </div>
           <div className="text-[24px] border-b-2 border-border-500 pb-3 mt-16 mb-8 font-semibold">
-            <p>레시피</p>
+            <p className="text-mono100">레시피</p>
           </div>
           <div className="w-4/5 m-auto text-center items-center">
             <div
@@ -265,7 +272,6 @@ export default function DetailReciptPage(props: propsType) {
             />
           </div>
           <div className=" flex justify-between items-center border-b-2 border-border-500 pb-4 mt-11 sm:mb-8 mb-0">
-            <div>조회수 : {views}</div>
             <TopButton className="border-2 border-border-500 px-4 py-2 " />
           </div>
         </div>

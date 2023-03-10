@@ -15,7 +15,7 @@ const CommunityTabs = () => {
   ]);
 
   return (
-    <div className="sm:w-[860px] max-w-[860px] w-full">
+    <div className="max-w-[860px] w-full">
       <Tab.Group>
         <Tab.List className="text-base font-medium text-center text-gray-500 border-b border-mono60">
           {/* <div className="flex flex-wrap -mb-px"> */}
