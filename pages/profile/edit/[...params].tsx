@@ -30,8 +30,8 @@ import {
 import { storage } from "../../../config/firebase";
 import { pwRegex, nickRegex, cls } from "../../../util";
 import { useRouter } from "next/router";
-import { toast } from "react-toastify";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { Success, Error, Warn } from "@/components/toastify/Alert";
 import Seo from "../../../components/layout/Seo";
 
 interface ProfileEditProp {
@@ -74,10 +74,8 @@ export default function ProfileEdit(props: ProfileEditProp) {
   // 닉네임 중복확인
   const [notNicknameDuplicateCheck, setNotNicknameDuplicateCheck] =
     useState(true);
-  const [saveNickname, setSaveNickname] = useState<any>("");
-  const [nicknameCheck, setNicknameCheck] = useState(false);
-  // const [error, setError] = useState("");
-  // const [nicknameErrorMsg, setNicknameErrorMsg] = useState("");
+  const [saveNickname, setSaveNickname] = useState<string>("");
+
   // 이용약관 체크
   const [agree, setAgree] = useState(false);
 
@@ -100,41 +98,29 @@ export default function ProfileEdit(props: ProfileEditProp) {
   }, []);
   useEffect(() => {
     if (storageCurrentUser == ("logout" as unknown as undefined)) {
-      location.href = "/loginPage";
+      location.href = "/login";
     }
   }, [storageCurrentUser]);
 
-  const toastAlert = (alertText: string) => {
-    toast(`${alertText}`, {
-      position: "top-right",
-      autoClose: 1300,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  };
   const deleteCurrentUser = () => {
     const currentUser = authService.currentUser;
 
     if (currentUser) {
-      const result = confirm("정말 회원탈퇴를 하실건가요?🥹");
+      const result = confirm(
+        `탈퇴 후에도 작성한 게시글은 남아있습니다.
+회원탈퇴를 진행하시겠습니까?`
+      );
 
       if (result) {
         signOut(authService).then(() => {
           sessionStorage.clear();
           deleteUser(currentUser)
             .then(() => {
-              toastAlert("회원탈퇴가 완료되었습니다.");
-              location.href = "/mainPage";
+              Success("회원탈퇴가 완료되었습니다.");
+              location.href = "/main";
             })
             .catch((error) => {
-              toast.error(
-                "회원탈퇴에 실패하였습니다. 다시 시도해주세요.\n",
-                error
-              );
+              Error("회원탈퇴에 실패하였습니다. 다시 시도해주세요.");
             });
         });
       } else {
@@ -249,9 +235,9 @@ export default function ProfileEdit(props: ProfileEditProp) {
       displayName: changeUserNickname,
     })
       .then(() => {
-        toastAlert("닉네임 변경 완료");
+        Success("닉네임 변경 완료");
       })
-      .catch((error) => toast.error("닉네임 변경에 실패하였습니다.\n", error));
+      .catch(() => Error("닉네임 변경에 실패하였습니다."));
   };
   // 비밀번호 변경
   const handleUpdatePassword = async (uid: string) => {
@@ -273,11 +259,9 @@ export default function ProfileEdit(props: ProfileEditProp) {
         await updatePassword(
           authService?.currentUser as unknown as User,
           changeUserPw as unknown as string
-        ).catch((error) =>
-          toast.error("비밀번호 변경에 실패하였습니다.\n", error)
-        );
+        ).catch(() => Error("비밀번호 변경에 실패하였습니다."));
       })
-      .catch((error) => toast.error("재로그인이 필요합니다.", error));
+      .catch(() => Warn("재로그인이 필요합니다."));
   };
 
   // 이미지 변경
@@ -299,7 +283,7 @@ export default function ProfileEdit(props: ProfileEditProp) {
           userImg: url,
         }).then(() => {
           setImgPreview("uploading");
-          toastAlert("프로필 이미지 변경 완료");
+          Success("프로필 이미지 변경 완료");
         });
         // setImgPreview(url);
         setShowUserUpdateImg(url);
@@ -310,13 +294,17 @@ export default function ProfileEdit(props: ProfileEditProp) {
   return (
     <>
       <Seo title="회원정보수정" />
-
       <div className="flex flex-col justify-center items-center my-20 lg:my-[86px]">
-        <div className="flex items-center relative w-full justify-center pb-10">
-          <span className="text-4xl text-center font-bold">회원정보 수정</span>
-          <button className="absolute right-0" onClick={() => router.back()}>
+        <div className="flex items-center relative justify-center pb-10">
+          <span className="text-4xl text-center font-bold text-mono100">
+            회원정보 수정
+          </span>
+          <button
+            className="absolute -top-12 -right-12 sm:-right-40"
+            onClick={() => router.back()}
+          >
             <svg
-              className="w-8 h-8 rounded-full text-mono100  hover:text-white hover:bg-brand100 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium text-sm text-center inline-flex items-center mb-2"
+              className="w-8 h-8 rounded-full text-mono100 hover:text-white hover:bg-brand100 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium text-sm text-center inline-flex items-center mb-2"
               fill="none"
               stroke="currentColor"
               strokeWidth="1.5"
@@ -332,10 +320,10 @@ export default function ProfileEdit(props: ProfileEditProp) {
             </svg>
           </button>
         </div>
-        <div className="flex flex-col justify-center space-y-10">
-          <div className="flex gap-14 items-start">
-            <span className="text-base  min-w-[120px]">프로필 이미지</span>
-            <div className="flex flex-col">
+        <div className="flex flex-col justify-center px-4 sm:px-0 space-y-8 sm:space-y-10">
+          <div className="w-full flex justify-start items-start">
+            <span className="text-base w-[130px]">프로필 이미지</span>
+            <div className="w-[calc(100%_-_130px)] flex flex-col">
               {showUserUpdateImg && (
                 <div>
                   <Image
@@ -351,7 +339,7 @@ export default function ProfileEdit(props: ProfileEditProp) {
                   />
                 </div>
               )}
-              <div className="mt-3 flex justify-between space-x-2">
+              <div className="mt-3 flex justify-start space-x-2">
                 <label className="cursor-pointer">
                   <div className=" text-white disabled:opacity-50 bg-brand100 hover:bg-brand100 focus:ring-4 focus:outline-none focus:ring-brand100/50 font-medium rounded-sm text-sm px-2 py-2 text-center inline-flex justify-center items-center dark:hover:bg-brand100/80 dark:focus:ring-brand100/40 ">
                     <span>이미지 편집</span>
@@ -379,76 +367,68 @@ export default function ProfileEdit(props: ProfileEditProp) {
             </div>
           </div>
 
-          <div className="flex gap-14 items-center">
-            <span className="text-base min-w-[120px]">이메일</span>
+          <div className="w-full flex justify-start items-center">
+            <span className="text-base w-[130px]">이메일</span>
             <input
               disabled
               placeholder={`${userInfo?.userEmail}`}
-              className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10"
+              className="w-[calc(100%_-_130px)]  sm:w-[300px] pl-3 border-mono60 border-[1px] h-10"
             />
           </div>
           {userInfo?.userPw !== "social" && (
             <>
-              <div>
-                <div className="flex gap-14 items-center">
-                  {!togglePwChange && (
-                    <>
-                      <span className="text-base min-w-[120px] ">
-                        비밀번호 변경
-                      </span>
-                      <div className="px-2 py-1 text-center w-fit border-mono60 border-[1px] text-base">
-                        <button onClick={() => setTogglePwChange(true)}>
-                          변경하기
-                        </button>
-                      </div>
-                    </>
-                  )}
-                  {togglePwChange && (
-                    <div className="">
-                      <div className="flex gap-14 items-center">
-                        <span className="text-base min-w-[120px] ">
-                          비밀번호 변경
-                        </span>
-                        <input
-                          type="password"
-                          placeholder="변경할 비밀번호를 입력해주세요."
-                          onChange={handleChangePassword}
-                          className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10 focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
-                        />
-                      </div>
-                      <div className="grid-cols-2 items-end">
-                        <div className="h-[16px] ml-[176px] mt-1">
-                          {(changeUserPw?.length as number) > 0 && (
-                            <span
-                              className={cls(
-                                "text-xs",
-                                `${
-                                  isPassword
-                                    ? "text-xs text-blue100"
-                                    : "text-brand100"
-                                }`
-                              )}
-                            >
-                              {passwordMessage}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  )}
+              {!togglePwChange && (
+                <div className="flex justify-start items-center">
+                  <span className="text-base w-[130px]">비밀번호 변경</span>
+                  <div className="px-2 py-1 text-center border-mono60 border-[1px] text-base">
+                    <button onClick={() => setTogglePwChange(true)}>
+                      변경하기
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
               {togglePwChange && (
                 <div>
-                  <div className="flex gap-14 items-center">
-                    <span className="text-base min-w-[120px]">
+                  <div className="w-full flex justify-start items-center">
+                    <span className="text-base w-[130px]">비밀번호 변경</span>
+                    <input
+                      type="password"
+                      placeholder="변경할 비밀번호를 입력해주세요."
+                      onChange={handleChangePassword}
+                      className="w-[calc(100%_-_130px)] sm:w-[300px] pl-3 border-mono60 border-[1px] h-10 focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
+                    />
+                  </div>
+                  <div className="grid-cols-2 items-end">
+                    <div className="h-[16px] ml-[176px] mt-1">
+                      {(changeUserPw?.length as number) > 0 && (
+                        <span
+                          className={cls(
+                            "text-xs",
+                            `${
+                              isPassword
+                                ? "text-xs text-blue100"
+                                : "text-brand100"
+                            }`
+                          )}
+                        >
+                          {passwordMessage}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+              {togglePwChange && (
+                <div>
+                  <div className="w-full flex justify-start items-center">
+                    <span className="text-base w-[130px]">
                       비밀번호 변경 확인
                     </span>
                     <input
                       type="password"
                       placeholder="확인을 위해 비밀번호를 재입력해주세요."
                       onChange={handleChangePasswordConfirm}
-                      className="min-w-[300px] pl-3 border-mono60 border-[1px] h-10  focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
+                      className="w-[calc(100%_-_130px)] sm:w-[300px] pl-3 border-mono60 border-[1px] h-10  focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
                     />
                   </div>
                   <div className="grid-cols-2 items-end">
@@ -486,23 +466,23 @@ export default function ProfileEdit(props: ProfileEditProp) {
           )}
 
           <div className={cls(`${togglePwChange && "mt-8"}`)}>
-            <div className="flex gap-14 items-center">
-              <span className="text-bases w-[120px]">닉네임 변경</span>
+            <div className="w-full flex justify-start items-center">
+              <span className="text-base w-[130px]">닉네임 변경</span>
               <input
                 type="text"
                 onChange={(event) =>
                   handleChangeNickname(event, setChangeUserNickname)
                 }
-                className="w-[300px] pl-3 border-mono60 border-[1px] h-10  focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
+                className="w-[calc(100%_-_130px)] sm:w-[300px] pl-3 border-mono60 border-[1px] h-10 focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
               />
             </div>
 
             <div className="grid-cols-2 items-end">
-              <div className="h-[16px] ml-[176px] mt-1">
+              <div className="sm:h-[16px] sm:ml-[176px] mt-1">
                 {(changeUserNickname?.length as number) > 0 && (
                   <span
                     className={cls(
-                      "text-xs",
+                      "sm:text-xs",
                       `${isNickname ? "text-blue-600" : "text-orange-500"}`
                     )}
                   >
@@ -520,9 +500,9 @@ export default function ProfileEdit(props: ProfileEditProp) {
             </div>
           </div>
           <div>
-            <div className="flex gap-14 items-center">
-              <span className="text-bases w-[120px]">회원탈퇴</span>
-              <div className="max-w-[300px]">
+            <div className="flex justify-start items-center h-[40px]">
+              <span className="text-base w-[130px] ">회원탈퇴</span>
+              <div className="w-[calc(100%_-_130px)] sm:w-[300px]">
                 <label htmlFor="terms">
                   <input
                     id="terms"

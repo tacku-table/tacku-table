@@ -17,12 +17,12 @@ const RecipeTab = ({ userInfo }: MyTabProp) => {
   }, [recipePost]);
 
   return (
-    <Tab.Panel className="pb-6">
+    <Tab.Panel className="pb-6 w-full">
       {recipeList.length === 0 && <EmptyPost />}
       {recipeList?.map((p) => (
-        <div key={p.postId} className="pt-6 px-6 mb-5">
+        <div key={p.postId} className="pt-6 px-1 sm:p-6">
           <hr className="border-mono50 mx-8 my-6 border-[1px]" />
-          <div className="pl-8 space-x-[20px] items-center flex">
+          <div className="space-x-4 sm:space-x-[20px] items-center flex">
             <Link legacyBehavior href={`/detailRecipe/${p.postId}`}>
               <Image
                 className="w-[180px] h-[135px] object-cover aspect-[4/3] cursor-pointer rounded-md"
@@ -35,12 +35,14 @@ const RecipeTab = ({ userInfo }: MyTabProp) => {
               />
             </Link>
             <div className="flex flex-col">
-              <div className="flex space-x-1">
+              <div className="flex space-x-1 w-full text-xs sm:text-base text-mono100">
                 <span>#{p.animationTitle}</span>
                 <span>#{p.cookingTime}</span>
               </div>
               <Link legacyBehavior href={`/detailRecipe/${p.postId}`}>
-                <a className="text-[24px]">{p.foodTitle}</a>
+                <a className="text-lg sm:text-[24px] font-semibold">
+                  {p.foodTitle}
+                </a>
               </Link>
             </div>
           </div>
