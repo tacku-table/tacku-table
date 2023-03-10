@@ -134,7 +134,7 @@ const NewCommunityPost = () => {
     location.href = "/community";
   };
   return (
-    <div className="w-[1180px] h-full m-auto flex flex-col my-[74px]">
+    <div className="mt-10 w-full h-full max-w-[1180px] flex flex-col items-center pt-2 mx-auto sm:p-10 p-7">
       <Seo title="커뮤니티 글쓰기" />
       <p className="w-full text-4xl font-bold pb-6 border-b-2 border-brand100">
         커뮤니티 글쓰기
@@ -169,7 +169,7 @@ const NewCommunityPost = () => {
             setEditorText={setEditorText}
           />
         </div>
-        <div className="w-full h-[215px] bg-mono40 border-x border-b border-mono60  px-4">
+        <div className="mt-6 sm:mt-0 w-full h-[170px] bg-mono40 border-x border-b border-mono60  px-4">
           {imgLoading == "loading" && (
             <div className="flex items-center justify-center">
               <div className="text-center absolute rounded-lg flex bg-brand100 w-[500px] h-[200px]">
@@ -182,11 +182,11 @@ const NewCommunityPost = () => {
           )}
 
           <div className="mt-[12px] float-right flex items-stretch">
-            <div className="mt-2 text-mono80 text-[16px]">
+            <div className="mt-2 text-mono80 sm:text-[16px] text-[10px]">
               대표 이미지 별도 등록
             </div>
             <label>
-              <div className="rounded-[2px] border border-mono60 ml-[20px] text-[16px] text-center pt-1 hover:cursor-pointer w-[100px] h-[35px] bg-mono40 text-mono100">
+              <div className="mt-1 text-[10px] w-[50px] h-[20px] rounded-[3px] border  border-mono60 ml-[7px] sm:text-[16px] text-center hover:cursor-pointer sm:w-[100px] sm:h-[35px] bg-mono40 text-mono100">
                 이미지 선택
               </div>
               <input
@@ -202,11 +202,11 @@ const NewCommunityPost = () => {
               />
             </label>
           </div>
-          <div className="ml-[16px] pt-[20px] text-mono100 text-[16px]">
+          <div className="text-[10px] sm:ml-[16px] pt-[20px] text-mono100 sm:text-[16px]">
             등록된 대표 이미지
           </div>
 
-          <div className=" w-[140px] h-[97px] overflow-hidden relative border border-mono60 mt-5 ">
+          <div className="w-[30%] h-[80px] sm:w-[140px] sm:h-[97px] overflow-hidden relative border border-mono60 mt-5 ">
             {imgPreview ? (
               <Image
                 src={imgPreview}
@@ -238,7 +238,7 @@ const NewCommunityPost = () => {
         </div>
         <div className="flex justify-end">
           <button
-            className="w-44 h-11 mt-24 text-white bg-brand100 "
+            className="sm:w-44 sm:h-11 sm:mt-24 mt-2 w-1/5 text-white bg-brand100 "
             type="submit"
           >
             등록
