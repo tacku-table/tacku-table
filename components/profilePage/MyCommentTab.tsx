@@ -53,7 +53,7 @@ const MyCommentTab = ({ userInfo }: MyTabProp) => {
   };
 
   return (
-    <Tab.Panel className="pb-6 w-full">
+    <Tab.Panel className="pb-6 w-full h-[80%]">
       {commentPost?.length === 0 && <EmptyPost></EmptyPost>}
       {commentPost?.map((p) => (
         <div key={p.postId} className="pt-6 px-1 sm:p-6">

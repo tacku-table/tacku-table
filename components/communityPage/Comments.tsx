@@ -9,8 +9,10 @@ import {
 import React, { useRef, useState } from "react";
 import Image from "next/image";
 import baseImg from "../../public/images/test1.png";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import useGetCommunityComment from "@/hooks/useGetCommunityComment";
+import { toastAlert } from "../toastify/Alert";
+import Link from "next/link";
 
 const Comments = ({ boardId, uid }: { boardId: string; uid: string }) => {
   const [editComment, setEditComment] = useState("");
@@ -20,19 +22,6 @@ const Comments = ({ boardId, uid }: { boardId: string; uid: string }) => {
 
   const { boardComments, comment, setComment, setReloadState } =
     useGetCommunityComment(boardId);
-
-  const toastAlert = (alertText: string) => {
-    toast(`${alertText}`, {
-      position: "top-right",
-      autoClose: 1300,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  };
 
   // 댓글 add
   const addComment = async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -103,10 +92,10 @@ const Comments = ({ boardId, uid }: { boardId: string; uid: string }) => {
       <div>
         <ToastContainer position="top-right" autoClose={1000} />
         <div>
-          <h3 className="text-[21px]">
-            댓글
-            <b className="text-[#FF0000]"> {boardComments.length}</b>
-          </h3>
+          <div className="flex space-x-2 items-center">
+            <h3 className="sm:text-xl text-lg">댓글</h3>
+            <b className="text-[#FF0000]">{boardComments.length}</b>
+          </div>
 
           <div>
             <div>
@@ -118,7 +107,7 @@ const Comments = ({ boardId, uid }: { boardId: string; uid: string }) => {
                       <div>
                         {item.commentProfile == "null" ? (
                           <Image
-                            className="w-[40px] h-[40px] object-cover object-center float-left m-2"
+                            className="w-[40px] h-[40px] object-cover object-center float-left m-2 rounded-md"
                             src={baseImg}
                             width={780}
                             height={270}
@@ -126,7 +115,7 @@ const Comments = ({ boardId, uid }: { boardId: string; uid: string }) => {
                           />
                         ) : (
                           <Image
-                            className="w-[40px] h-[40px] object-cover object-center float-left m-2"
+                            className="w-[40px] h-[40px] object-cover object-center float-left m-2 rounded-md"
                             src={item.commentProfile}
                             loader={({ src }) => src}
                             width={780}
@@ -152,7 +141,7 @@ const Comments = ({ boardId, uid }: { boardId: string; uid: string }) => {
                       <div>
                         {item.commentProfile === "null" ? (
                           <Image
-                            className="w-[40px] h-[40px] object-cover object-center float-left m-2"
+                            className="w-[40px] h-[40px] object-cover object-center float-left m-2 rounded-md"
                             src={baseImg}
                             width={780}
                             height={270}
@@ -160,7 +149,7 @@ const Comments = ({ boardId, uid }: { boardId: string; uid: string }) => {
                           />
                         ) : (
                           <Image
-                            className="w-[40px] h-[40px] object-cover object-center float-left m-2"
+                            className="w-[40px] h-[40px] object-cover object-center float-left m-2 rounded-md"
                             src={item.commentProfile}
                             loader={({ src }) => src}
                             width={780}
@@ -214,27 +203,27 @@ const Comments = ({ boardId, uid }: { boardId: string; uid: string }) => {
           </div>
         </div>
         {uid === "guest" ? (
-          <div className="w-full text-center mt-5">
+          <div className="w-full flex text-center mt-5 justify-evenly sm:space-x-3">
             <input
               disabled
-              className="h-[90px] w-5/6 border-[2px] border-brand100"
+              // className="h-[90px] w-5/6 border-[2px] border-brand100"
+              className="border-mono70 border rounded-[2px] sm:h-[90px] h-[40px] w-[80%] p-3 focus:outline-none placeholder:text-xs sm:placeholder:text-base"
               type="text"
               placeholder=" 로그인 후 댓글 작성해주세요."
             />
-            <button
-              className="ml-2 text-white border-none bg-brand100 w-[80px] h-[90px] lg:w-1/8 md:w-1/8 sm:1/8"
-              type="button"
-              style={{ border: "1px solid black" }}
+            <Link
+              className="flex justify-center items-center rounded-sm text-center text-white border-none bg-brand100 sm:h-[90px] h-[40px] sm:w-[20%] cursor-pointer focus:outline-none ring-offset-2 hover:ring-2 ring-brand100"
+              href="/login"
             >
-              로그인
-            </button>
+              <span className="px-2 text-sm sm:text-base">로그인</span>
+            </Link>
           </div>
         ) : (
-          <div className="w-full text-center mt-5">
+          <div className="w-full flex text-center mt-5 justify-evenly sm:space-x-3">
             <input
               ref={commentRef}
-              className="border-mono80 border rounded-[2px] h-[90px] w-5/6 p-3"
-              placeholder=" 타쿠의식탁 커뮤니티가 훈훈해지는 댓글을 남겨주세요."
+              className="border-mono70 border rounded-[2px] sm:h-[90px] h-[40px] w-[80%] p-3 focus:outline-none placeholder:text-xs sm:placeholder:text-base"
+              placeholder="타쿠의식탁 커뮤니티가 훈훈해지는 댓글을 남겨주세요."
               type="text"
               value={comment}
               onChange={(e) => {
@@ -242,11 +231,10 @@ const Comments = ({ boardId, uid }: { boardId: string; uid: string }) => {
               }}
             />
             <button
-              className="rounded-[2px] ml-2 text-white border-none bg-brand100 w-[80px] h-[90px] lg:w-1/8 md:w-1/8 sm:1/8"
-              type="button"
+              className="flex justify-center items-center rounded-sm text-center text-white border-none bg-brand100 sm:h-[90px] h-[40px] sm:w-[20%] cursor-pointer focus:outline-none ring-offset-2 hover:ring-2 ring-brand100"
               onClick={addComment}
             >
-              등록
+              <span className="px-2 text-sm sm:text-base">등록</span>
             </button>
           </div>
         )}

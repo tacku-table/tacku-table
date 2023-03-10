@@ -17,7 +17,7 @@ const RecipeTab = ({ userInfo }: MyTabProp) => {
   }, [recipePost]);
 
   return (
-    <Tab.Panel className="pb-6 w-full">
+    <Tab.Panel className="pb-6 w-full h-[80%]">
       {recipeList.length === 0 && <EmptyPost />}
       {recipeList?.map((p) => (
         <div key={p.postId} className="pt-6 px-1 sm:p-6">
