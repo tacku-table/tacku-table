@@ -60,7 +60,7 @@ const RegisterPage = () => {
             getValues("email"),
             getValues("pw")
         )
-            .then(async (data) => {
+            .then((data) => {
                 Promise.all([
                     setDoc(doc(dbService, "user", data.user.uid), {
                         userId: data.user.uid,
