@@ -6,30 +6,28 @@ const { withSentryConfig } = require("@sentry/nextjs");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
-  compiler: {
-    styledComponents: true, // Next에게 styled-component도 처리해달라고 옵션을 설정해줌
-  },
+    reactStrictMode: true,
+    compiler: {
+        styledComponents: true, // Next에게 styled-component도 처리해달라고 옵션을 설정해줌
+    },
 };
 
 module.exports = nextConfig;
 
-// next.config.js
-const withVideos = require("next-videos");
-
-module.exports = withVideos();
-
 module.exports = withSentryConfig(
-  module.exports,
-  { silent: true },
-  { hideSourcemaps: true }
+    module.exports,
+    { silent: true },
+    { hideSourcemaps: true }
 );
 
 const moduleExports = {
-  sentry: {
-    disableServerWebpackPlugin: true,
-    disableClientWebpackPlugin: true,
-  },
+    sentry: {
+        disableServerWebpackPlugin: true,
+        disableClientWebpackPlugin: true,
+    },
+    experimental: {
+        scrollRestoration: true,
+    },
 };
 
 module.exports = withSentryConfig(moduleExports);

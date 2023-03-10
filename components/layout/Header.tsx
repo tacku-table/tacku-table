@@ -17,6 +17,7 @@ export const clearStorage = () => {
   sessionStorage.removeItem("filteredTimeData");
   sessionStorage.removeItem("searchData");
   sessionStorage.removeItem("userWatching");
+  console.log("clear");
 };
 
 const Header = () => {
@@ -61,7 +62,7 @@ const Header = () => {
       className="fixed top-0 z-50 w-full h-[84px] xl:px-10 px-0 bg-white border-b-[1.5px] border-mono50 items-center text-sm"
       onClick={clearStorage}
     >
-      <div className="xl:w-11/12 md:w-max w-full h-full flex md:justify-between justify-around sm:mx-auto items-center">
+      <div className="xl:w-11/12 md:w-max w-full sm:h-full flex md:justify-between justify-around sm:mx-auto items-center">
         <ul className="flex justify-center items-center">
           {/* 햄버거버튼 */}
           <li className="header-title">
@@ -77,7 +78,7 @@ const Header = () => {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="w-10 h-10  text-[#f39e31]"
+                className="w-10 h-10  text-[#a3713d]"
               >
                 <path
                   strokeLinecap="round"
@@ -109,23 +110,16 @@ const Header = () => {
               </div>
             </Link>
           </li>
-          {/* 글쓰기 버튼 */}
-          <div className="relative right-6 flex items-stretch md:hidden text-[#4f3315] text-[13px]">
-            <Link href="/recipeWrite">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-6 h-6 text-[#f39e31] mb-1 "
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
-                />
-              </svg>
+          {/* 모바일용 로고이미지 */}
+          <div className="md:hidden items-center mb-3 lg:hidden sm:hidden ml-3">
+            <Link href="/main" className="md:hidden">
+              <Image
+                src={logo2}
+                alt="logo_web"
+                width={150}
+                height={40}
+                priority
+              />
             </Link>
           </div>
 
@@ -145,20 +139,7 @@ const Header = () => {
             <Link href="/community">커뮤니티</Link>
           </li>
         </ul>
-        {/* 모바일용 로고이미지 */}
-        <div className="md:hidden sm:-ml-0 -ml-8">
-          <Link href="/main" className="md:hidden ">
-            <Image
-              src={logo2}
-              alt="logo_web"
-              width={150}
-              height={40}
-              priority
-              className="mx-auto"
-            />
-          </Link>
-        </div>
-        <div className="flex justify-center items-center ">
+        <div className="flex justify-center items-center">
           <Link
             href="/recipeWrite"
             className="lg:block md:block hidden mr-6 hover:text-mono80 hover:transition hover:ease-out hover:duration-300"
@@ -182,6 +163,25 @@ const Header = () => {
               로그인
             </button>
           )}
+          {/* 글쓰기 버튼 */}
+          <div className="relative right-6 flex items-stretch md:hidden text-[#4f3315] text-[13px]">
+            <Link href="/recipeWrite">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="w-6 h-6 text-[#a3713d] mb-3"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
+                />
+              </svg>
+            </Link>
+          </div>
           {/* 모바일 myPage 버튼 */}
           {storageCurrentUser && (
             <button
@@ -195,7 +195,7 @@ const Header = () => {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="w-7 h-7 text-[#f39e31]"
+                className="w-7 h-7 text-[#a3713d]"
               >
                 <path
                   strokeLinecap="round"
@@ -212,7 +212,7 @@ const Header = () => {
             <button
               type="button"
               onClick={logoutAction}
-              className="sm:hidden md:hidden lg:hidden sorted-btn w-[60%] border-none sm:w-[87px] md:w-[87px] lg:w-[87px] mx-auto"
+              className="sm:hidden md:hidden lg:hidden mb-4 sorted-btn w-[60%] border-none sm:w-[87px] md:w-[87px] lg:w-[87px] mr-3 mt-1"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -220,7 +220,7 @@ const Header = () => {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="w-12 h-12 text-[#f39e31]"
+                className="w-7 h-7 text-[#a3713d]"
               >
                 <path
                   strokeLinecap="round"
@@ -234,7 +234,7 @@ const Header = () => {
             <button
               type="button"
               onClick={moveLoginPage}
-              className="sm:hidden md:hidden lg:hidden sorted-btn w-[60%] border-none sm:w-[87px] md:w-[87px] lg:w-[87px] mx-auto"
+              className="sm:hidden md:hidden lg:hidden mb-4 sorted-btn w-[60%] border-none sm:w-[87px] md:w-[87px] lg:w-[87px] mr-3 mt-1"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -242,7 +242,7 @@ const Header = () => {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="w-12 h-12 text-[#f39e31]"
+                className="w-8 h-8 text-[#a3713d]"
               >
                 <path
                   strokeLinecap="round"
@@ -257,6 +257,7 @@ const Header = () => {
             <button
               onClick={() => moveMyPage(storageCurrentUser)}
               className="mr-6 hover:text-mono80 hidden sm:block md:block lg:block hover:transition hover:ease-out hover:duration-300"
+              //   className="hover:text-mono80 hover:transition hover:ease-out hover:duration-300"
             >
               마이페이지
             </button>
