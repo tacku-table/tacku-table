@@ -95,14 +95,19 @@ const RegisterPage = () => {
     const emailConfirm = async () => {
         const items = query(
             collection(dbService, "user"),
-            where("userEmail", "==", watch("email"))
+            where("userEmail", "==", getValues("email"))
         );
         const querySnapshot = await getDocs(items);
         const newData = querySnapshot.docs.map((doc) => ({
             ...doc.data(),
         }));
-        // @ts-ignore
-        setIsUsing(newData);
+        if (newData.length > 0) {
+            Warn("이미 사용 중인 이메일입니다.");
+        } else if (newData.length === 0) {
+            Success("사용 가능한 이메일입니다.");
+        } else {
+            Error("에러가 발생했습니다. 관리자에게 문의하세요!");
+        }
     };
 
     // 닉네임 중복체크
@@ -135,12 +140,7 @@ const RegisterPage = () => {
         }
     };
 
-    useEffect(() => {
-        emailConfirm();
-    }, [watch("email")]);
-
     return (
-        // <div className="w-4/5 sm:w-3/5 md:w-2/5 xl:w-1/3 2xl:w-1/4 mx-auto mb-20 text-mono100">
         <div className="w-full px-8 sm:px-0">
             <form
                 onSubmit={handleSubmit(onValid, onInValid)}
@@ -150,29 +150,34 @@ const RegisterPage = () => {
                 <label htmlFor="email" className="font-semibold mt-4">
                     이메일
                 </label>
-                <input
-                    {...register("email", {
-                        required: "이메일을 입력하세요",
-                        pattern: {
-                            value: emailRegex,
-                            message: "이메일형식에 맞게 입력해주세요",
-                        },
-                    })}
-                    id="email"
-                    type="email"
-                    placeholder="Example@example.com"
-                    className="register-input"
-                ></input>
-                {errors.email ? (
-                    <p className="text-red100 text-xs mt-1">
-                        {errors.email?.message}
-                    </p>
-                ) : null}
-                {isUsing.length > 0 ? (
-                    <p className="text-red100 text-xs mt-1">
-                        사용중인 이메일입니다
-                    </p>
-                ) : null}
+                <div className="flex justify-between items-center">
+                    <input
+                        {...register("email", {
+                            required: "이메일을 입력하세요",
+                            pattern: {
+                                value: emailRegex,
+                                message: "이메일형식에 맞게 입력해주세요",
+                            },
+                        })}
+                        id="email"
+                        type="email"
+                        placeholder="Example@example.com"
+                        className="register-input w-7/12"
+                    ></input>
+                    <button
+                        className="text-brand100 hover:text-white border border-brand100 hover:bg-brand100 text-xs w-4/12 h-10 mt-2"
+                        onClick={emailConfirm}
+                    >
+                        중복 체크
+                    </button>
+                </div>
+                <p
+                    className={cls(
+                        errors.email ? "text-red100 text-xs" : "h-4"
+                    )}
+                >
+                    {errors.email?.message}
+                </p>
                 <label htmlFor="pw" className="font-semibold mt-4">
                     비밀번호
                 </label>
