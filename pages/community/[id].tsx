@@ -65,14 +65,6 @@ export default function DetailPage(props: propsType) {
     setDetailPageWholeData(props.targetWholeData);
   }, []);
 
-  useEffect(() => {
-    console.log(
-      "writterNickName, writterProfile",
-      writterNickName,
-      writterProfile
-    );
-  }, [writterNickName, writterProfile]);
-
   // 글 수정
   const updatePost = async (postId: string) => {
     setIsPostEdit(!isPostEdit);
@@ -110,22 +102,22 @@ export default function DetailPage(props: propsType) {
   };
 
   return (
-    <div className="bg-[#FFF6EA] py-16">
+    <div className="bg-[#FFF6EA] sm:py-16 py-0">
       <Seo title="커뮤니티" />
       <div
-        className="sm:pt-[75px] rounded-md p-7 container sm:w-[780px] mx-auto flex justify-center flex-col bg-[#fffdfa]
+        className="sm:pt-[75px] rounded-md pt-16 px-7 pb-7 container sm:w-[780px] mx-auto flex justify-center flex-col bg-[#fffdfa]
       ]"
       >
-        <h3 className="sm:text-4xl pt-[24px] text-2xl">
-          {detailPageWholeData.category}게시판
-        </h3>
-        <div className=" flex justify-end">
+        <div className="flex justify-between items-center pb-[24px]">
+          <span className="sm:text-lg text-xl">
+            {detailPageWholeData.category}게시판
+          </span>
           <button
             onClick={moveMain}
             type="button"
-            className="bg-brand100 text-white h-[35px]  w-[100px]"
+            className="bg-brand100 text-mono30 px-2 py-1 rounded-sm text-sm focus:outline-none ring-offset-2 hover:ring-2 ring-brand100"
           >
-            목록보기
+            글목록
           </button>
         </div>
 
@@ -134,7 +126,9 @@ export default function DetailPage(props: propsType) {
           {isPostEdit ? (
             <>
               <div className="p-3">
-                <div className="text-mono100 pb-2 ml-1"> 글제목</div>
+                <div className="text-mono100 pb-2 ml-1">
+                  <span>글제목</span>
+                </div>
                 <input
                   className="border w-[320px] mb-3 text-[14px] p-3 rounded-[2px] border-mono60 text-mono80"
                   type="text"
@@ -143,7 +137,9 @@ export default function DetailPage(props: propsType) {
                     setEditPostTitle(e.target.value);
                   }}
                 />
-                <div className="text-mono100 pb-2 ml-1"> 글내용 </div>
+                <div className="text-mono100 pb-2 ml-1">
+                  <span>내용</span>
+                </div>
 
                 <EditorComponent
                   setEditorText={setEditPostContent}
@@ -153,14 +149,14 @@ export default function DetailPage(props: propsType) {
             </>
           ) : (
             <>
-              <div className="sm:text-[24px] text-lg text-mono100 font-medium pt-[30px]">
+              <div className="sm:text-4xl text-2xl text-mono100 font-medium pt-[20px] sm:pt-[30px] mb-4">
                 {detailPageWholeData.title}
               </div>
               <div className="flex justify-between items-center">
-                <div className="h-[60px] flex">
+                <div className="h-[60px] flex items-center justify-center space-x-4">
                   {writterProfile === "null" ? (
                     <Image
-                      className="w-[40px] h-[40px] object-cover object-center float-left m-2"
+                      className="w-[40px] h-[40px] object-cover object-center float-left rounded-md"
                       src={baseImg}
                       width={780}
                       height={270}
@@ -173,13 +169,14 @@ export default function DetailPage(props: propsType) {
                       width={100}
                       height={100}
                       alt="writterProfile"
-                      className="w-[40px] h-[40px] object-cover object-center float-left m-2"
+                      className="w-[40px] h-[40px] object-cover object-center float-left rounded-md"
                     />
                   )}
-
-                  <h3 className="relative top-[15px]">{writterNickName}</h3>
+                  <span className="text-base sm:text-lg">
+                    {writterNickName}
+                  </span>
                 </div>
-                <div className="text-[16px] text-mono80">
+                <div className="text-sm text-mono80">
                   {detailPageWholeData.writtenDate}
                 </div>
               </div>
@@ -188,7 +185,7 @@ export default function DetailPage(props: propsType) {
                 {/* 대표사진 */}
                 {detailPageWholeData.thumbnail === "" ? (
                   <Image
-                    className="sm:w-[780px] sm:h-[270px] md:w-5/6 mb-10 m-auto"
+                    className="sm:w-1/3 mb-10 m-auto rounded-sm"
                     src={baseImg}
                     width={780}
                     height={270}
@@ -198,7 +195,7 @@ export default function DetailPage(props: propsType) {
                   <Image
                     src={detailPageWholeData.thumbnail}
                     loader={({ src }) => src}
-                    className="lg:w-5/6 md:w-5/6 mb-10 m-auto"
+                    className="sm:w-1/3 mb-10 m-auto"
                     width={780}
                     height={270}
                     alt="커뮤썸네일"
@@ -213,15 +210,15 @@ export default function DetailPage(props: propsType) {
             </>
           )}
           {uid === props.targetWholeData.uid && (
-            <div className="flex float-right mt-2">
+            <div className="flex float-right mt-2 space-x-2">
               <button
-                className="text-mono80 bg-mono50 text-[16px] w-[80px] h-[30px]"
+                className="text-mono80 bg-mono50 text-sm sm:text-base px-2 py-1 rounded-md"
                 onClick={() => updatePost(props.targetId)}
               >
                 {isPostEdit ? "완료" : "수정"}
               </button>
               <button
-                className="text-mono80 bg-mono50 text-[16px] w-[80px] h-[30px] ml-2"
+                className="text-mono80 bg-mono50 text-sm sm:text-base px-2 py-1 rounded-md"
                 onClick={() => deletePost(props.targetId)}
               >
                 삭제
