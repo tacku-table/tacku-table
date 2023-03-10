@@ -50,6 +50,7 @@ module.exports = {
       animation: {
         "up-down": "up-down 2s ease-out linear",
         "fade-in": "fade-in 2s ease-out infinite",
+        "bounce-fast": "bounce 0.8s infinite",
       },
       backgroundImage: {
         chihiro: "url('../public/images/chihiro.jpg')",
