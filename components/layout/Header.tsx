@@ -78,7 +78,7 @@ const Header = () => {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="w-10 h-10  text-[#a3713d]"
+                className="w-10 h-10 text-[#a3713d]"
               >
                 <path
                   strokeLinecap="round"
@@ -92,6 +92,7 @@ const Header = () => {
             <Link href="/main">
               <div className="lg:block hidden">
                 <Image
+                  className="w-[155px]"
                   src={logo2}
                   alt="logo_web"
                   width={155}
@@ -101,6 +102,7 @@ const Header = () => {
               </div>
               <div className="lg:hidden hidden md:block">
                 <Image
+                  className="w-[60px]"
                   src={logo22}
                   alt="logo_web"
                   width={60}
