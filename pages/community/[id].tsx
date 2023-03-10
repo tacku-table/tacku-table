@@ -110,13 +110,13 @@ export default function DetailPage(props: propsType) {
   };
 
   return (
-    <div className="bg-[#FFF6EA] ">
+    <div className="bg-[#FFF6EA] py-16">
       <Seo title="커뮤니티" />
       <div
-        className="pt-[75px] rounded-md p-7 container w-[780px] mx-auto flex justify-center flex-col bg-[#fffdfa]
+        className="sm:pt-[75px] rounded-md p-7 container sm:w-[780px] mx-auto flex justify-center flex-col bg-[#fffdfa]
       ]"
       >
-        <h3 className="text-4xl pt-[24px]">
+        <h3 className="sm:text-4xl pt-[24px] text-2xl">
           {detailPageWholeData.category}게시판
         </h3>
         <div className=" flex justify-end">
@@ -153,7 +153,7 @@ export default function DetailPage(props: propsType) {
             </>
           ) : (
             <>
-              <div className="text-[24px] text-mono100 font-medium pt-[30px]">
+              <div className="sm:text-[24px] text-lg text-mono100 font-medium pt-[30px]">
                 {detailPageWholeData.title}
               </div>
               <div className="flex justify-between items-center">
@@ -188,7 +188,7 @@ export default function DetailPage(props: propsType) {
                 {/* 대표사진 */}
                 {detailPageWholeData.thumbnail === "" ? (
                   <Image
-                    className="w-[780px] h-[270px] lg:w-5/6 md:w-5/6 mb-10 m-auto"
+                    className="sm:w-[780px] sm:h-[270px] md:w-5/6 mb-10 m-auto"
                     src={baseImg}
                     width={780}
                     height={270}
