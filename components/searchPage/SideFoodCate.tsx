@@ -20,10 +20,7 @@ const SideFoodCate = ({ onCheckedFood, filteredFood }: TypeFoodProps) => {
             <div className="flex flex-col justify-center gap-y-3">
                 {categoryFoodList.map((item) => {
                     return (
-                        <div
-                            key={item.name}
-                            className="text-mono80 text-sm hover:transition-all hover:text-brand100 hover:font-medium"
-                        >
+                        <div key={item.name} className="text-mono80 text-sm">
                             <input
                                 type="checkbox"
                                 id={item.name}
@@ -40,7 +37,10 @@ const SideFoodCate = ({ onCheckedFood, filteredFood }: TypeFoodProps) => {
                                 }
                                 className="side-checkbox"
                             />
-                            <label htmlFor={item.name} className="ml-2">
+                            <label
+                                htmlFor={item.name}
+                                className="ml-2 hover:transition-all hover:text-brand100 hover:font-medium"
+                            >
                                 {item.name.toString().replaceAll("&", "/")}
                             </label>
                         </div>

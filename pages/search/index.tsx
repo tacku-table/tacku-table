@@ -208,7 +208,7 @@ const SearchData: NextPage = () => {
                 />
                 <div className="w-4/5 border-b border-mono70 mb-8"></div>
                 <div className="w-4/5 flex flex-col items-center md:items-start md:flex-row md:justify-between mb-10">
-                    <div className="w-full flex flex-col justify-center items-center gap-x-4 mx-auto mb-9 md:justify-start md:ml-1 md:mr-3">
+                    <div className="w-full md:w-[150px] flex flex-col justify-center items-center gap-x-4 mx-auto mb-9 md:justify-start md:ml-1 md:mr-3">
                         <div className="w-full flex justify-between sm:justify-center sm:gap-x-10 md:flex-col">
                             <SideFoodCate
                                 onCheckedFood={onCheckedFood}
@@ -227,7 +227,7 @@ const SearchData: NextPage = () => {
                             선택초기화<GrRotateLeft></GrRotateLeft>
                         </button>
                     </div>
-                    <div className="grid mx-auto sm:mx-0 sm:grid-cols-2 lg:grid-cols-3 gap-x-7 gap-y-9 relative pb-24">
+                    <div className="w-full grid mx-auto sm:mx-0 sm:grid-cols-2 lg:grid-cols-3 gap-x-7 gap-y-9 relative pb-24">
                         <RecipeList
                             text={text}
                             next={next}
