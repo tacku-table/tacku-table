@@ -34,6 +34,7 @@ import { useRouter } from "next/router";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { Success, Error, Warn } from "@/components/toastify/Alert";
 import Seo from "../../../components/layout/Seo";
+import Link from "next/link";
 
 interface ProfileEditProp {
     id: string;
@@ -387,7 +388,7 @@ export default function ProfileEdit(props: ProfileEditProp) {
                         <input
                             disabled
                             placeholder={`${userInfo?.userEmail}`}
-                            className="w-[calc(100%_-_130px)]  sm:w-[300px] pl-3 border-mono60 border-[1px] h-10"
+                            className="w-[calc(100%_-_130px)] sm:w-[300px] pl-3 border-mono60 border-[1px] h-10"
                         />
                     </div>
                     {userInfo?.userPw !== "social" && (
@@ -418,11 +419,11 @@ export default function ProfileEdit(props: ProfileEditProp) {
                                             type="password"
                                             placeholder="변경할 비밀번호를 입력해주세요."
                                             onChange={handleChangePassword}
-                                            className="w-[calc(100%_-_130px)] sm:w-[300px] pl-3 border-mono60 border-[1px] h-10 focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
+                                            className="w-[calc(100%_-_130px)] sm:w-[300px] pl-3 border-mono60 border-[1px] h-10 focus:outline-none focus:border-0 focus:ring-2 ring-brand100 placeholder:text-sm sm:placeholder:text-base"
                                         />
                                     </div>
                                     <div className="grid-cols-2 items-end">
-                                        <div className="h-[16px] ml-[176px] mt-1">
+                                        <div className="h-[16px] ml-[130px] mt-1">
                                             {(changeUserPw?.length as number) >
                                                 0 && (
                                                 <span
@@ -431,7 +432,7 @@ export default function ProfileEdit(props: ProfileEditProp) {
                                                         `${
                                                             isPassword
                                                                 ? "text-xs text-blue100"
-                                                                : "text-brand100"
+                                                                : "text-orange-500"
                                                         }`
                                                     )}
                                                 >
@@ -454,11 +455,11 @@ export default function ProfileEdit(props: ProfileEditProp) {
                                             onChange={
                                                 handleChangePasswordConfirm
                                             }
-                                            className="w-[calc(100%_-_130px)] sm:w-[300px] pl-3 border-mono60 border-[1px] h-10  focus:outline-none focus:border-0 focus:ring-2 ring-brand100"
+                                            className="w-[calc(100%_-_130px)] sm:w-[300px] pl-3 border-mono60 border-[1px] h-10  focus:outline-none focus:border-0 focus:ring-2 ring-brand100 placeholder:text-sm sm:placeholder:text-base"
                                         />
                                     </div>
                                     <div className="grid-cols-2 items-end">
-                                        <div className="h-[16px] ml-[176px] mt-1">
+                                        <div className="h-[16px] ml-[130px] mt-1">
                                             {confirmChangeUserPw?.length >
                                                 0 && (
                                                 <span
@@ -515,11 +516,12 @@ export default function ProfileEdit(props: ProfileEditProp) {
                         </div>
 
                         <div className="grid-cols-2 items-end">
-                            <div className="sm:h-[16px] sm:ml-[176px] mt-1">
+                            {/* <div className="h-[16px] sm:ml-[130px] mt-1"> */}
+                            <div className="h-[16px] ml-[130px] mt-1">
                                 {(changeUserNickname?.length as number) > 0 && (
                                     <span
                                         className={cls(
-                                            "sm:text-xs",
+                                            "text-xs",
                                             `${
                                                 isNickname
                                                     ? "text-blue-600"
@@ -549,7 +551,7 @@ export default function ProfileEdit(props: ProfileEditProp) {
                             <span className="text-base w-[130px] ">
                                 회원탈퇴
                             </span>
-                            <div className="w-[calc(100%_-_130px)] sm:w-[300px]">
+                            <div className="w-[calc(100%_-_130px)] sm:w-[300px] sm:text-base text-sm">
                                 <label htmlFor="terms">
                                     <input
                                         id="terms"
@@ -560,15 +562,19 @@ export default function ProfileEdit(props: ProfileEditProp) {
                                             setAgree(target.checked);
                                         }}
                                     />
+                                </label>
+                                <Link href="/intro/termsOfService">
                                     <span className="ml-1 text-blue-500">
                                         이용약관
-                                    </span>{" "}
-                                    과&nbsp;
+                                    </span>
+                                </Link>
+                                <span>{`과 `}</span>
+                                <Link href="/intro/privacy">
                                     <span className="ml-1 text-blue-500">
                                         개인정보취급방침
                                     </span>
-                                    에&nbsp;동의합니다.
-                                </label>
+                                </Link>
+                                <span>{`에 동의합니다.`}</span>
                             </div>
                         </div>
                         <button
