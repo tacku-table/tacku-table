@@ -28,7 +28,7 @@ const SliderScreen: NextPage = () => {
   }, [index]);
 
   return (
-    <div className="sm:w-[820px] sm:h-[412px] max-w-[820px] max-h-[412px] w-[390px] h-[230px] relative overflow-hidden  rounded-lg">
+    <div className="w-full sm:aspect-video aspect-[4/3] relative overflow-hidden rounded-lg">
       {cards.map((item, i) => {
         const indexLeft = mod(index - 1, cards.length);
         const indexRight = mod(index + 1, cards.length);
@@ -36,13 +36,15 @@ const SliderScreen: NextPage = () => {
         let classN = "";
         switch (i) {
           case index:
-            classN = "ani-card";
+            classN = "ani-card w-full h-full object-cover";
             break;
           case indexLeft:
-            classN = "ani-card transform translate-x-[860px] opacity-20";
+            classN =
+              "ani-card transform translate-x-[100%] opacity-20 w-full h-full object-cover";
             break;
           case indexRight:
-            classN = "ani-card transform -translate-x-[860px] opacity-20";
+            classN =
+              "ani-card transform -translate-x-[100%] opacity-20 w-full h-full object-cover";
         }
         return (
           <Image

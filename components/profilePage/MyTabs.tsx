@@ -24,9 +24,7 @@ const MyTabs = ({ userInfo, storageCurrentUser }: MyTabsProp) => {
     "님의 레시피",
     "님의 커뮤니티글",
   ]);
-  //   if (isLoading) {
-  //     return <></>;
-  //   }
+
   return (
     <Tab.Group>
       <Tab.List className="flex space-x-6 sm:space-x-16 justify-center items-center bg-white mx-auto">
@@ -71,7 +69,7 @@ const MyTabs = ({ userInfo, storageCurrentUser }: MyTabsProp) => {
           </>
         )}
       </Tab.List>
-      <Tab.Panels className="w-11/12 h-full  md:mt-8 mt-0 mb-[100px] shadow-xl mx-auto ">
+      <Tab.Panels className="bg-[#fffdfa] w-11/12 h-full  md:mt-8 mt-0 mb-[100px] shadow-xl mx-auto ">
         <MyBookmarkTab
           storageCurrentUser={storageCurrentUser}
           userInfo={userInfo}
