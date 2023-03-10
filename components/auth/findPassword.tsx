@@ -10,19 +10,6 @@ const FindPassword = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(true);
-  //뒤로가기 누르면 로그인 창으로 이동
-  useEffect(() => {
-    window.history.pushState(null, "null", document.URL);
-    window.addEventListener("popstate", function (event) {
-      const result = window.confirm("정말 나가시겠습니까?");
-      if (result) {
-        window.location.replace(`/login`);
-      }
-      if (!result) {
-        return false;
-      }
-    });
-  }, []);
 
   // email password 유효성검사
   const changePassword = () => {
