@@ -14,7 +14,7 @@ const FCItems: NextPage = () => {
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95"
         >
-            <Menu.Items className="menu-wh w-[160px]">
+            <Menu.Items className="menu-wh w-40">
                 <ul className="flex flex-col">
                     <Menu.Item>
                         <li>

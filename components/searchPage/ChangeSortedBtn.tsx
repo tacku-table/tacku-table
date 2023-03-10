@@ -19,7 +19,7 @@ const ChangeSortedBtn = ({
     const filteredOnlyTime = filteredTime?.length;
 
     return (
-        <div className="w-4/5 md:flex justify-between items-center relative mb-[20px]">
+        <div className="w-4/5 flex justify-between items-center relative mb-4">
             <ul className="flex justify-end absolute right-0">
                 <li
                     className={cls(
@@ -44,25 +44,14 @@ const ChangeSortedBtn = ({
                     최신순
                 </li>
             </ul>
-
             <p
                 className={cls(
-                    "text-white lg:text-mono100 flex items-center ml-4 lg:ml-5",
+                    "text-mono100 flex md:justify-center items-center sm:ml-4 lg:ml-5",
                     text ? "" : "hidden"
                 )}
             >
-                <span className="text-mono100 lg:text-white">
-                    Results&nbsp;:&nbsp;
-                </span>
-                <span
-                    className={cls(
-                        `text-white lg:text-red100 text-lg inline-block mr-1`
-                    )}
-                >
-                    {text ? `"${text}"` : null}
-                </span>
-                <span className="text-white lg:text-mono100">
-                    {text ? `에 대한` : null}&nbsp;
+                <span className="text-mono100 lg:ml-7">
+                    Results&nbsp;&nbsp;
                 </span>
                 <span className="text-red100 text-lg lg:text-base">
                     {dataResults
@@ -85,19 +74,16 @@ const ChangeSortedBtn = ({
                             : dataResults.length
                         : null}
                 </span>
-                <span className="text-white lg:text-mono100">
-                    건의 레시피가 준비되어 있습니다
-                </span>
             </p>
             <p
                 className={cls(
-                    "text-white md:text-mono100",
+                    "text-white md:text-mono100 flex lg:justify-center items-center",
                     dataResults?.length || (text && !dataResults?.length)
                         ? "hidden"
                         : ""
                 )}
             >
-                <span className="text-mono100 ml-7 lg:ml-10">Total&nbsp;</span>
+                <span className="text-mono100 lg:ml-7">Total&nbsp;&nbsp;</span>
                 <span className="text-red100 text-lg">
                     {currentItems?.length
                         ? filteredFoodAndTime

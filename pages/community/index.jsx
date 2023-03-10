@@ -19,16 +19,17 @@ const Community = () => {
   return (
     <>
       <Seo title="커뮤니티" />
-      <div className="flex min-w-[860px]  m-auto flex-col items-center font-medium ">
-        <div className="mt-4">
+      <div className="mb-10 flex max-w-[860px] w-full m-auto flex-col items-center font-medium">
+        <div className="mt-4 w-full ">
           <SliderScreen />
         </div>
         <CommunityTabs />
+
         {storageCurrentUser !== "logout" && (
           <div className="flex w-full justify-end">
             <Link
               href="/community/new"
-              className="flex w-[100px] h-[35px] text-white bg-brand100 px-4 mt-4 mb-10 items-center justify-center rounded-sm"
+              className="flex sm:[100px] max-w-[100px] max-h-[35px] sm:h-[35px] w-full text-white bg-brand100 px-4 mt-4 mb-10 items-center justify-center rounded-sm"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

@@ -10,7 +10,7 @@ const Loding = () => {
           loop
           animationData={lottieJson}
           play
-          speed={1.5}
+          speed={1.4}
           className="w-full bg-transparenth-[200px] transform -translate-x-[5%]"
         />
         <p className="text-center text-brand100 font-bold text-3xl animate-bounce-fast">

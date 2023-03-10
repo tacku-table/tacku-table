@@ -110,9 +110,12 @@ export default function DetailPage(props: propsType) {
   };
 
   return (
-    <div className="bg-[#FFF5F5] ">
+    <div className="bg-[#FFF6EA] ">
       <Seo title="커뮤니티" />
-      <div className="pt-[75px] rounded-md p-7 container w-[780px] mx-auto flex justify-center flex-col bg-white">
+      <div
+        className="pt-[75px] rounded-md p-7 container w-[780px] mx-auto flex justify-center flex-col bg-[#fffdfa]
+      ]"
+      >
         <h3 className="text-4xl pt-[24px]">
           {detailPageWholeData.category}게시판
         </h3>
