@@ -36,7 +36,6 @@ const RegisterPage = () => {
         register,
         handleSubmit,
         getValues,
-        watch,
         formState: { errors },
     } = useForm<RegisterForm>({ mode: "onChange" });
     const onValid = (data: RegisterForm) => {
@@ -47,7 +46,6 @@ const RegisterPage = () => {
     };
     const [showPw, setShowPw] = useState(false);
     const [showPwConfirm, setShowPwConfirm] = useState(false);
-    const [isUsing, setIsUsing] = useState([]);
     const [nicknameCheck, setNicknameCheck] = useState(false);
     const [notNicknameDuplicateCheck, setNotNicknameDuplicateCheck] =
         useState(true);
@@ -60,7 +58,7 @@ const RegisterPage = () => {
             getValues("email"),
             getValues("pw")
         )
-            .then(async (data) => {
+            .then((data) => {
                 Promise.all([
                     setDoc(doc(dbService, "user", data.user.uid), {
                         userId: data.user.uid,
@@ -267,7 +265,7 @@ const RegisterPage = () => {
                             pattern: {
                                 value: nickRegex,
                                 message:
-                                    "8자 이하의 영어, 숫자, 한글로만 입력해주세요.",
+                                    "2자 이상 8자 이하의 영어, 숫자, 한글로만 입력해주세요.",
                             },
                             validate: {
                                 value: () =>
