@@ -36,7 +36,6 @@ const RegisterPage = () => {
         register,
         handleSubmit,
         getValues,
-        watch,
         formState: { errors },
     } = useForm<RegisterForm>({ mode: "onChange" });
     const onValid = (data: RegisterForm) => {
@@ -47,7 +46,6 @@ const RegisterPage = () => {
     };
     const [showPw, setShowPw] = useState(false);
     const [showPwConfirm, setShowPwConfirm] = useState(false);
-    const [isUsing, setIsUsing] = useState([]);
     const [nicknameCheck, setNicknameCheck] = useState(false);
     const [notNicknameDuplicateCheck, setNotNicknameDuplicateCheck] =
         useState(true);
