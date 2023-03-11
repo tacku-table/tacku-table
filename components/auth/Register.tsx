@@ -265,7 +265,7 @@ const RegisterPage = () => {
                             pattern: {
                                 value: nickRegex,
                                 message:
-                                    "8자 이하의 영어, 숫자, 한글로만 입력해주세요.",
+                                    "2자 이상 8자 이하의 영어, 숫자, 한글로만 입력해주세요.",
                             },
                             validate: {
                                 value: () =>
