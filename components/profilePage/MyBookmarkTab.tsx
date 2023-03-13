@@ -10,6 +10,7 @@ import { getMyBookmark } from "../../api/firedb";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { User } from "firebase/auth";
 import { Success, Warn, Error } from "../toastify/Alert";
+import Loading from "../loding/Loding";
 
 const MyBookmarkTab = ({
   userInfo,
@@ -30,10 +31,13 @@ const MyBookmarkTab = ({
   const {
     isLoading,
     data: bookmarkPost,
-    refetch,
+    isError,
   } = useQuery(["bookmark", userInfo?.userId], () =>
     getMyBookmark(userInfo?.userId as string)
   );
+
+  if (isLoading) return <Loading />;
+  if (isError) return <div>데이터를 가져오지 못했습니다.</div>;
 
   const handleDeleteBookmark = async (p: any) => {
     const userConfirm = window.confirm("즐겨찾기 레시피를 삭제하시겠습니까?");
