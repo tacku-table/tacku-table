@@ -13,12 +13,12 @@ import { getStorage } from "firebase/storage";
 //     appId: process.env.NEXT_PUBLIC_APP_ID,
 // };
 const firebaseConfig = {
-    apiKey: "AIzaSyANw6jE7NE7yF6F8TYYJalVwD2FuOLTqJ0",
-    authDomain: "taku-e9992.firebaseapp.com",
-    projectId: "taku-e9992",
-    storageBucket: "taku-e9992.appspot.com",
-    messagingSenderId: "139053130279",
-    appId: "1:139053130279:web:ae70760c52da59bb6b2402",
+    apiKey: "AIzaSyAeZ8RkBEJcoOhVGoZc8mltIG2p4axysH8",
+    authDomain: "taku-prac.firebaseapp.com",
+    projectId: "taku-prac",
+    storageBucket: "taku-prac.appspot.com",
+    messagingSenderId: "273872805758",
+    appId: "1:273872805758:web:3795f0f78c78b471ad9d2f",
 };
 
 let firebase;

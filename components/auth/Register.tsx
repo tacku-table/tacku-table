@@ -67,10 +67,6 @@ const RegisterPage = () => {
                         userPw: getValues("pw"),
                         userImg: "null",
                     }),
-                    updateProfile(data.user, {
-                        displayName: getValues("nickname"),
-                        photoURL: "null",
-                    }),
                     Success("회원가입성공! 로그인해주세요"),
                 ]);
                 setTimeout(() => {
