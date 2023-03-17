@@ -1,10 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { authService, dbService } from "@/config/firebase";
-import {
-    createUserWithEmailAndPassword,
-    signOut,
-    updateProfile,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { cls, emailRegex, pwRegex, nickRegex } from "@/util";
 import {
     setDoc,
@@ -58,8 +54,8 @@ const RegisterPage = () => {
             getValues("email"),
             getValues("pw")
         )
-            .then((data) => {
-                Promise.all([
+            .then(async (data) => {
+                await Promise.all([
                     setDoc(doc(dbService, "user", data.user.uid), {
                         userId: data.user.uid,
                         userNickname: getValues("nickname"),
@@ -69,12 +65,10 @@ const RegisterPage = () => {
                     }),
                     Success("회원가입성공! 로그인해주세요"),
                 ]);
-                setTimeout(() => {
-                    signOut(authService).then(() => {
-                        sessionStorage.clear();
-                        location.href = "/login";
-                    });
-                }, 1000);
+                signOut(authService).then(() => {
+                    sessionStorage.clear();
+                    location.href = "/login";
+                });
             })
             .catch((error) => {
                 console.log(error.message);
