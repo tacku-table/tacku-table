@@ -7,40 +7,43 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loding from "@/components/loding/Loding";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+// import { ReactQueryDevtools } from "@tanstack/react-query-devtools/build/lib/devtools";
 
 export default function App({ Component, pageProps }: AppProps) {
-  const queryClient = new QueryClient();
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
-  useEffect(() => {
-    const start = () => {
-      setIsLoading(true);
-    };
-    const end = () => {
-      setIsLoading(false);
-    };
-    router.events.on("routeChangeStart", start);
-    router.events.on("routeChangeComplete", end);
-    router.events.on("routeChangeError", end);
-    return () => {
-      router.events.off("routeChangeStart", start);
-      router.events.off("routeChangeComplete", end);
-      router.events.off("routeChangeError", end);
-    };
-  }, []);
+    const queryClient = new QueryClient();
+    const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
+    useEffect(() => {
+        const start = () => {
+            setIsLoading(true);
+        };
+        const end = () => {
+            setIsLoading(false);
+        };
+        router.events.on("routeChangeStart", start);
+        router.events.on("routeChangeComplete", end);
+        router.events.on("routeChangeError", end);
+        return () => {
+            router.events.off("routeChangeStart", start);
+            router.events.off("routeChangeComplete", end);
+            router.events.off("routeChangeError", end);
+        };
+    }, []);
 
-  return (
-    <>
-      {isLoading ? (
-        <Loding />
-      ) : (
-        <QueryClientProvider client={queryClient}>
-          <Layout>
-            <Component {...pageProps} />
-            <ToastContainer />
-          </Layout>
-        </QueryClientProvider>
-      )}
-    </>
-  );
+    return (
+        <>
+            {isLoading ? (
+                <Loding />
+            ) : (
+                <QueryClientProvider client={queryClient}>
+                    <Layout>
+                        <Component {...pageProps} />
+                        <ToastContainer />
+                    </Layout>
+                    <ReactQueryDevtools initialIsOpen={false} />
+                </QueryClientProvider>
+            )}
+        </>
+    );
 }

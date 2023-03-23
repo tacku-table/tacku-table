@@ -7,7 +7,7 @@ import { cls } from "@/util";
 const RecipeList = ({
     next,
     text,
-    lastDoc,
+    // lastDoc,
     currentItems,
     totalItems,
     dataResults,
@@ -86,7 +86,7 @@ const RecipeList = ({
                     <p className="pt-4">게시물이 존재하지 않습니다</p>
                 </div>
             )}
-            <button
+            {/* <button
                 type="button"
                 onClick={next}
                 className={cls(
@@ -102,7 +102,7 @@ const RecipeList = ({
                 )}
             >
                 더보기
-            </button>
+            </button> */}
         </>
     );
 };
